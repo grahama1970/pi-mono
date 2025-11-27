@@ -163,7 +163,10 @@ export const editTool: AgentTool<typeof editSchema> = {
 						if (signal) {
 							signal.removeEventListener("abort", onAbort);
 						}
-						reject(new Error(`File not found: ${path}`));
+						resolve({
+							content: [{ type: "text", text: `Error: File not found: ${path}` }],
+							details: undefined,
+						});
 						return;
 					}
 
@@ -185,11 +188,15 @@ export const editTool: AgentTool<typeof editSchema> = {
 						if (signal) {
 							signal.removeEventListener("abort", onAbort);
 						}
-						reject(
-							new Error(
-								`Could not find the exact text in ${path}. The old text must match exactly including all whitespace and newlines.`,
-							),
-						);
+						resolve({
+							content: [
+								{
+									type: "text",
+									text: `Could not find the exact text in ${path}. The old text must match exactly including all whitespace and newlines.`,
+								},
+							],
+							details: undefined,
+						});
 						return;
 					}
 
@@ -200,11 +207,15 @@ export const editTool: AgentTool<typeof editSchema> = {
 						if (signal) {
 							signal.removeEventListener("abort", onAbort);
 						}
-						reject(
-							new Error(
-								`Found ${occurrences} occurrences of the text in ${path}. The text must be unique. Please provide more context to make it unique.`,
-							),
-						);
+						resolve({
+							content: [
+								{
+									type: "text",
+									text: `Found ${occurrences} occurrences of the text in ${path}. The text must be unique. Please provide more context to make it unique.`,
+								},
+							],
+							details: undefined,
+						});
 						return;
 					}
 
@@ -223,11 +234,15 @@ export const editTool: AgentTool<typeof editSchema> = {
 						if (signal) {
 							signal.removeEventListener("abort", onAbort);
 						}
-						reject(
-							new Error(
-								`No changes made to ${path}. The replacement produced identical content. This might indicate an issue with special characters or the text not existing as expected.`,
-							),
-						);
+						resolve({
+							content: [
+								{
+									type: "text",
+									text: `No changes made to ${path}. The replacement produced identical content. This might indicate an issue with special characters or the text not existing as expected.`,
+								},
+							],
+							details: undefined,
+						});
 						return;
 					}
 
@@ -259,7 +274,11 @@ export const editTool: AgentTool<typeof editSchema> = {
 					}
 
 					if (!aborted) {
-						reject(error);
+						const message = error instanceof Error ? error.message : String(error);
+						resolve({
+							content: [{ type: "text", text: `Error: ${message}` }],
+							details: undefined,
+						});
 					}
 				}
 			})();

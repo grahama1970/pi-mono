@@ -114,10 +114,20 @@ export class Poller {
 
 	private scheduleNext(delayMs: number): void {
 		if (this.stopped) return;
-		this.timer = setTimeout(() => void this.tick(), delayMs);
+		this.timer = setTimeout(() => {
+			void this.doTick();
+		}, delayMs);
 	}
 
-	private async tick(): Promise<void> {
+	async forceTick(): Promise<void> {
+		await this.doTick();
+	}
+
+	getIntervalMs(): number {
+		return this.settings.pollIntervalMs;
+	}
+
+	private async doTick(): Promise<void> {
 		if (this.running || this.stopped || !this.settings.enabled) return;
 		this.running = true;
 		let nextDelay = this.settings.pollIntervalMs;

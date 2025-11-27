@@ -76,6 +76,12 @@ export async function createPollerRuntime(
 		updateStatus: (id, status) => poller.updateStatus(id, status),
 		getInboxCount: () => poller.getInboxCount(),
 		isEnabled: () => poller.isEnabled(),
+		getStatus: () => ({
+			enabled: poller.isEnabled(),
+			intervalMs: poller.getIntervalMs(),
+			inboxCount: poller.getInboxCount(),
+		}),
+		forceTick: () => poller.forceTick(),
 	};
 
 	return { poller, uiBridge };

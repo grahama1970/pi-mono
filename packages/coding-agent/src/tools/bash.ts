@@ -70,13 +70,15 @@ export const bashTool: AgentTool<typeof bashSchema> = {
 	name: "bash",
 	label: "bash",
 	description:
-		"Execute a bash command in the current working directory. Returns stdout and stderr. Optionally provide a timeout in seconds.",
+		"Execute a bash command in the current working directory. Returns stdout and stderr. If no timeout is provided, a default of 30 seconds is used.",
 	parameters: bashSchema,
 	execute: async (
 		_toolCallId: string,
 		{ command, timeout }: { command: string; timeout?: number },
 		signal?: AbortSignal,
 	) => {
+		const effectiveTimeout = timeout ?? 30;
+
 		return new Promise((resolve, _reject) => {
 			const { shell, args } = getShellConfig();
 			const child = spawn(shell, [...args, command], {
@@ -90,11 +92,11 @@ export const bashTool: AgentTool<typeof bashSchema> = {
 
 			// Set timeout if provided
 			let timeoutHandle: NodeJS.Timeout | undefined;
-			if (timeout !== undefined && timeout > 0) {
+			if (effectiveTimeout > 0) {
 				timeoutHandle = setTimeout(() => {
 					timedOut = true;
 					onAbort();
-				}, timeout * 1000);
+				}, effectiveTimeout * 1000);
 			}
 
 			// Collect stdout
@@ -128,32 +130,6 @@ export const bashTool: AgentTool<typeof bashSchema> = {
 					signal.removeEventListener("abort", onAbort);
 				}
 
-				if (signal?.aborted) {
-					let output = "";
-					if (stdout) output += stdout;
-					if (stderr) {
-						if (output) output += "\n";
-						output += stderr;
-					}
-					if (output) output += "\n\n";
-					output += "Command aborted";
-					_reject(new Error(output));
-					return;
-				}
-
-				if (timedOut) {
-					let output = "";
-					if (stdout) output += stdout;
-					if (stderr) {
-						if (output) output += "\n";
-						output += stderr;
-					}
-					if (output) output += "\n\n";
-					output += `Command timed out after ${timeout} seconds`;
-					_reject(new Error(output));
-					return;
-				}
-
 				let output = "";
 				if (stdout) output += stdout;
 				if (stderr) {
@@ -161,12 +137,32 @@ export const bashTool: AgentTool<typeof bashSchema> = {
 					output += stderr;
 				}
 
+				// If aborted
+				if (signal?.aborted) {
+					if (output) output += "\n\n";
+					output += "Command failed (aborted)";
+					resolve({ content: [{ type: "text", text: output }], details: undefined });
+					return;
+				}
+
+				// If timed out
+				if (timedOut) {
+					if (output) output += "\n\n";
+					output += `Command failed (timed out after ${effectiveTimeout} seconds)`;
+					resolve({ content: [{ type: "text", text: output }], details: undefined });
+					return;
+				}
+
+				// Non-zero exit code
 				if (code !== 0 && code !== null) {
 					if (output) output += "\n\n";
-					_reject(new Error(`${output}Command exited with code ${code}`));
-				} else {
-					resolve({ content: [{ type: "text", text: output || "(no output)" }], details: undefined });
+					output += `Command failed (exited with code ${code})`;
+					resolve({ content: [{ type: "text", text: output }], details: undefined });
+					return;
 				}
+
+				// Success
+				resolve({ content: [{ type: "text", text: output || "(no output)" }], details: undefined });
 			});
 
 			// Handle abort signal - kill entire process tree
