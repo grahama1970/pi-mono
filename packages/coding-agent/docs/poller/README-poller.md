@@ -40,6 +40,43 @@ If you want a pure, upstream-aligned experience, simply remove the poller wiring
   - `HttpAdapter` for any HTTP service (e.g., python-arango, custom API).
   This keeps DB logic out of the agent core and lets you swap backends without changing the poller.
 
+## Example: extractor agent → coding agent
+
+One motivating workflow for this fork mirrors the “agent-to-agent comms” pattern from Codex:
+
+- You run a **per-project extractor agent** that digests logs, telemetry, or other repos.
+- When it finds something actionable (bug, refactor, task), it writes a message into the shared
+  `messages` collection for a specific `agentId` (for example, `ProjectA`).
+- The **coding agent** runs with the poller enabled and the same `agentId`. While idle, it
+  discovers these messages, turns them into system prompts, and surfaces them in the TUI inbox.
+- You (or another automation layer) drive completion via `/poll ack|done|failed <id>`.
+
+At the Arango level, the extractor just needs to insert a document like:
+
+```jsonc
+{
+  "to_agent": "ProjectA",
+  "from_agent": "extractor-pi",
+  "type": "task",
+  "status": "queued",
+  "payload_ref": "gh://repo#1234",   // optional pointer (issue/PR/etc.)
+  "payload": {                       // optional inline details
+    "summary": "Flaky test in foo.test.ts",
+    "repro": "npm test foo -- --runInBand"
+  }
+}
+```
+
+From that point on:
+- The poller claims it (`status: in_progress`, lease set).
+- The coding agent sees a system prompt describing the task and uses its normal tools.
+- When the work is truly done, `/poll done <id>` pushes the final status back into Arango.
+
+This keeps:
+- **Extractor logic** (BM25/graph search, heuristics, etc.) in its own service or agent.
+- **Inbox + execution** responsibilities in the coding agent.
+- A clean, DB-level contract (`messages` collection) between agents.
+
 ## How it stays decoupled
 
 - No changes to tools (`read`, `write`, `edit`, `bash`) or the agent core.
@@ -50,8 +87,73 @@ If you want a pure, upstream-aligned experience, simply remove the poller wiring
   - Removing the import / call in `main.ts`.
   - Dropping the `poller` section from `settings.json`.
 
+## Further reading
+
+- `CONTRACT.md` – full architecture, lifecycle, and acceptance criteria.
+- `QUICKSTART.md` – concrete configuration examples, wiring, and troubleshooting tips.
+- `scripts/poller-smoke.mjs` – inserts a test message into Arango for a quick manual end-to-end check.
+
+## Alternative: external queue worker (tmux-friendly)
+
+The upstream maintainer prefers keeping queue consumption **outside** the coding agent:
+- A small worker process pops jobs from Arango (or any queue).
+- For each job, it runs `pi-coding-agent` once in JSON mode and writes results back.
+
+This fork ships a minimal example at `scripts/queue-worker.mjs`:
+
+```bash
+cd /home/graham/workspace/experiments/pi-mono/packages/coding-agent
+export PI_CODING_AGENT_DIR=./src/poller
+node scripts/queue-worker.mjs
+```
+
+That script:
+- Selects a few `queued` messages for the configured `agentId`.
+- Marks them `in_progress` with a short lease.
+- Builds a simple system prompt and runs `node dist/cli.js -p "<prompt>" --mode json --no-session`.
+- Marks the message `done` (exit code 0) or `failed` (non-zero).
+
+To run it continuously in the background with `tmux`:
+
+```bash
+cd /home/graham/workspace/experiments/pi-mono/packages/coding-agent
+tmux new -s queue-worker '
+  export PI_CODING_AGENT_DIR=./src/poller;
+  while true; do
+    node scripts/queue-worker.mjs;
+    sleep 5;
+  done
+'
+```
+
+Use this pattern when you want **fully automated** processing with no TUI at all. Use the in-process poller + `/poll`
+commands when you want an interactive “Inbox: N” experience inside the coding agent.
+
 ## Configure
-Add to your settings (e.g., `~/.pi/agent/settings.json`):
+
+For this experimental fork, the easiest self-contained setup is:
+
+1. Point the coding agent at a project-local settings directory:
+
+   ```bash
+   export PI_CODING_AGENT_DIR=./packages/coding-agent/src/poller
+   ```
+
+2. Copy the example settings file and edit it:
+
+   ```bash
+   cd packages/coding-agent/src/poller
+   cp settings.example.json settings.json
+   # then fill in your real Arango URL, database, collection, and credentials
+   ```
+
+On first startup, the poller will automatically create the configured database and
+messages collection in ArangoDB if they do not exist (similar to python-arango).
+
+If you prefer a global setup, you can still omit `PI_CODING_AGENT_DIR`, in which case
+the coding agent uses the default `~/.pi/agent/settings.json`.
+
+A typical `settings.json` looks like this:
 ```json
 {
   "poller": {
@@ -79,9 +181,19 @@ Add to your settings (e.g., `~/.pi/agent/settings.json`):
 import { createPollerRuntime } from "./poller/setup.js";
 
 const pollerSettings = settingsManager.getPollerSettings();
-const runtime = await createPollerRuntime(agent, pollerSettings, (count) => {
-  // e.g., feed into status bar
-});
+const runtime = await createPollerRuntime(agent, pollerSettings);
+if (runtime) {
+  // Subscribe to inbox count changes for status bar / badge
+  runtime.poller.events.on("inboxIncrement", (delta) => {
+    // e.g., update "Inbox: N" in the TUI
+  });
+
+  // Use runtime.uiBridge from your /poll command handler:
+  // - runtime.uiBridge.listInbox()
+  // - runtime.uiBridge.setEnabled(true|false)
+  // - runtime.uiBridge.setIntervalMs(ms)
+  // - runtime.uiBridge.updateStatus(id, "acked" | "done" | "failed")
+}
 ```
 
 ## Use

@@ -78,7 +78,9 @@ export function resolveApiKey(keyConfig: string): string | undefined {
  * Returns { models, error } - either models array or error message
  */
 function loadCustomModels(): { models: Model<Api>[]; error: string | null } {
-	const configPath = join(homedir(), ".pi", "agent", "models.json");
+	// Prefer project-local config via PI_CODING_AGENT_DIR, then fall back to ~/.pi/agent
+	const baseDir = process.env.PI_CODING_AGENT_DIR || join(homedir(), ".pi", "agent");
+	const configPath = join(baseDir, "models.json");
 	if (!existsSync(configPath)) {
 		return { models: [], error: null };
 	}

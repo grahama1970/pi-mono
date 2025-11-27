@@ -66,6 +66,8 @@ export interface PollerUiBridge {
 	updateStatus(id: string, status: "acked" | "done" | "failed"): Promise<void>;
 	getInboxCount(): number;
 	isEnabled(): boolean;
+	getStatus(): { enabled: boolean; intervalMs: number; inboxCount: number };
+	forceTick(): Promise<void>;
 }
 
 export interface PollerEvents {

@@ -169,7 +169,23 @@ export const readTool: AgentTool<typeof readSchema> = {
 					}
 
 					if (!aborted) {
-						reject(error);
+						// For tools, return a human-readable error message instead of throwing
+						let message: string;
+						if ((error as any)?.code === "ENOENT") {
+							message = `Error: File not found: ${path}`;
+						} else if (error instanceof Error && error.message.startsWith("Offset")) {
+							// Preserve detailed offset message from above
+							message = `Error: ${error.message}`;
+						} else if (error instanceof Error) {
+							message = `Error: ${error.message}`;
+						} else {
+							message = `Error: ${String(error)}`;
+						}
+
+						resolve({
+							content: [{ type: "text", text: message }],
+							details: undefined,
+						});
 					}
 				}
 			})();

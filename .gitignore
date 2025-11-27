@@ -24,5 +24,6 @@ coverage/
 .nyc_output/
 .pi_config/
 
-
 packages/coding-agent/docs/poller/source/
+packages/coding-agent/src/poller/settings.json
+packages/coding-agent/src/poller/models.json

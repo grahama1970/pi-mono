@@ -1485,6 +1485,22 @@ export class TuiRenderer {
 				return;
 			}
 
+			if (sub === "status") {
+				const status = this.poller.getStatus();
+				this.renderPollText([
+					`Enabled: ${status.enabled ? "yes" : "no"}`,
+					`Interval: ${status.intervalMs} ms`,
+					`Inbox: ${status.inboxCount}`,
+				]);
+				return;
+			}
+
+			if (sub === "now") {
+				await this.poller.forceTick();
+				this.renderPollText(["Poll tick executed (idle-only gate still applies)."]);
+				return;
+			}
+
 			if (sub === "interval") {
 				const ms = Number(parts[2] ?? "");
 				if (!Number.isFinite(ms) || ms <= 0) {
@@ -1507,7 +1523,7 @@ export class TuiRenderer {
 				return;
 			}
 
-			this.showError("Usage: /poll [on|off|interval <ms>|ack <id>|done <id>|failed <id>]");
+			this.showError("Usage: /poll [on|off|status|now|interval <ms>|ack <id>|done <id>|failed <id>]");
 		} catch (error) {
 			const message = error instanceof Error ? error.message : "Unknown error";
 			this.showError(message);
