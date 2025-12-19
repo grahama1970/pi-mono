@@ -1,4 +1,5 @@
 import { type Api, getApiKey, getModels, getProviders, type KnownProvider, type Model } from "@mariozechner/pi-ai";
+import { getCodexCliAuth } from "@mariozechner/pi-ai/node";
 import { type Static, Type } from "@sinclair/typebox";
 import AjvModule from "ajv";
 import { existsSync, readFileSync } from "fs";
@@ -282,6 +283,16 @@ export async function getApiKeyForModel(model: Model<Api>): Promise<string | und
 		}
 
 		// 3. Fall back to ANTHROPIC_API_KEY env var
+	}
+
+	if (model.provider === "codex") {
+		const envToken = process.env.CODEX_ACCESS_TOKEN;
+		if (envToken && envToken.trim() !== "") {
+			return envToken;
+		}
+
+		const auth = await getCodexCliAuth();
+		return auth?.accessToken;
 	}
 
 	if (model.provider === "github-copilot") {

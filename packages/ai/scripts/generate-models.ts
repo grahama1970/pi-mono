@@ -398,33 +398,73 @@ async function generateModels() {
 		});
 	}
 
-	if (!allModels.some(m => m.provider === "openai" && m.id === "gpt-5.1-codex")) {
+	if (!allModels.some(m => m.provider === "codex" && m.id === "gpt-5.1-codex")) {
 		allModels.push({
 			id: "gpt-5.1-codex",
 			name: "GPT-5.1 Codex",
 			api: "openai-responses",
-			baseUrl: "https://api.openai.com/v1",
-			provider: "openai",
+			baseUrl: "https://chatgpt.com/backend-api/codex",
+			provider: "codex",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
 				input: 1.25,
-				output: 5,
+				output: 10,
 				cacheRead: 0.125,
-				cacheWrite: 1.25,
+				cacheWrite: 0,
 			},
 			contextWindow: 400000,
 			maxTokens: 128000,
 		});
 	}
 
-	if (!allModels.some(m => m.provider === "openai" && m.id === "gpt-5.1-codex-max")) {
+	if (!allModels.some(m => m.provider === "codex" && m.id === "gpt-5.1-codex-mini")) {
 		allModels.push({
-			id: "gpt-5.1-codex-max",
-			name: "GPT-5.1 Codex Max",
+			id: "gpt-5.1-codex-mini",
+			name: "GPT-5.1 Codex mini",
 			api: "openai-responses",
-			baseUrl: "https://api.openai.com/v1",
-			provider: "openai",
+			baseUrl: "https://chatgpt.com/backend-api/codex",
+			provider: "codex",
+			reasoning: true,
+			input: ["text", "image"],
+			cost: {
+				input: 0.25,
+				output: 2,
+				cacheRead: 0.025,
+				cacheWrite: 0,
+			},
+			contextWindow: 400000,
+			maxTokens: 128000,
+		});
+	}
+
+	if (!allModels.some(m => m.provider === "codex" && m.id === "codex-mini-latest")) {
+		allModels.push({
+			id: "codex-mini-latest",
+			name: "Codex Mini",
+			api: "openai-responses",
+			baseUrl: "https://chatgpt.com/backend-api/codex",
+			provider: "codex",
+			reasoning: true,
+			input: ["text"],
+			cost: {
+				input: 1.5,
+				output: 6,
+				cacheRead: 0.375,
+				cacheWrite: 0,
+			},
+			contextWindow: 200000,
+			maxTokens: 100000,
+		});
+	}
+
+	if (!allModels.some(m => m.provider === "codex" && m.id === "gpt-5-codex")) {
+		allModels.push({
+			id: "gpt-5-codex",
+			name: "GPT-5 Codex",
+			api: "openai-responses",
+			baseUrl: "https://chatgpt.com/backend-api/codex",
+			provider: "codex",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {

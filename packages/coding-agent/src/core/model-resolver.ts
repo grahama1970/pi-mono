@@ -12,7 +12,8 @@ import type { SettingsManager } from "./settings-manager.js";
 /** Default model IDs for each known provider */
 export const defaultModelPerProvider: Record<KnownProvider, string> = {
 	anthropic: "claude-sonnet-4-5",
-	openai: "gpt-5.1-codex",
+	openai: "gpt-5.1-chat-latest",
+	codex: "gpt-5.1-codex",
 	google: "gemini-2.5-pro",
 	"github-copilot": "gpt-4o",
 	openrouter: "openai/gpt-5.1-codex",

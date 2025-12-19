@@ -18,6 +18,11 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"useDefineForClassFields": false,
-		"types": ["node"]
+		"types": ["node"],
+		"paths": {
+			"@mariozechner/pi-ai": ["./packages/ai/src/index.ts"],
+			"@mariozechner/pi-ai/node": ["./packages/ai/src/node/index.ts"],
+			"@mariozechner/pi-ai/*": ["./packages/ai/src/*"]
+		}
 	}
 }

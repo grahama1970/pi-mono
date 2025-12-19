@@ -7,6 +7,7 @@
 		"paths": {
 			"*": ["./*"],
 			"@mariozechner/pi-ai": ["../../ai/dist/index.d.ts"],
+			"@mariozechner/pi-ai/node": ["../../ai/dist/node/index.d.ts"],
 			"@mariozechner/pi-tui": ["../../tui/dist/index.d.ts"],
 			"@mariozechner/pi-web-ui": ["../dist/index.d.ts"]
 		},
