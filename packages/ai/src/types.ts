@@ -30,7 +30,7 @@ export type KnownProvider =
 	| "anthropic"
 	| "google"
 	| "openai"
-	| "codex"
+	| "codex-experimental"
 	| "github-copilot"
 	| "xai"
 	| "groq"

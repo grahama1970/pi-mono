@@ -398,19 +398,19 @@ async function generateModels() {
 		});
 	}
 
-	if (!allModels.some(m => m.provider === "codex" && m.id === "gpt-5.1-codex")) {
+	if (!allModels.some(m => m.provider === "codex-experimental" && m.id === "gpt-5.1-codex")) {
 		allModels.push({
 			id: "gpt-5.1-codex",
-			name: "GPT-5.1 Codex",
+			name: "GPT-5.1 Codex (Experimental)",
 			api: "openai-responses",
 			baseUrl: "https://chatgpt.com/backend-api/codex",
-			provider: "codex",
+			provider: "codex-experimental",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
-				input: 1.25,
-				output: 10,
-				cacheRead: 0.125,
+				input: 0,
+				output: 0,
+				cacheRead: 0,
 				cacheWrite: 0,
 			},
 			contextWindow: 400000,
@@ -418,19 +418,19 @@ async function generateModels() {
 		});
 	}
 
-	if (!allModels.some(m => m.provider === "codex" && m.id === "gpt-5.1-codex-mini")) {
+	if (!allModels.some(m => m.provider === "codex-experimental" && m.id === "gpt-5.1-codex-mini")) {
 		allModels.push({
 			id: "gpt-5.1-codex-mini",
-			name: "GPT-5.1 Codex mini",
+			name: "GPT-5.1 Codex mini (Experimental)",
 			api: "openai-responses",
 			baseUrl: "https://chatgpt.com/backend-api/codex",
-			provider: "codex",
+			provider: "codex-experimental",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
-				input: 0.25,
-				output: 2,
-				cacheRead: 0.025,
+				input: 0,
+				output: 0,
+				cacheRead: 0,
 				cacheWrite: 0,
 			},
 			contextWindow: 400000,
@@ -438,19 +438,19 @@ async function generateModels() {
 		});
 	}
 
-	if (!allModels.some(m => m.provider === "codex" && m.id === "codex-mini-latest")) {
+	if (!allModels.some(m => m.provider === "codex-experimental" && m.id === "codex-mini-latest")) {
 		allModels.push({
 			id: "codex-mini-latest",
-			name: "Codex Mini",
+			name: "Codex Mini (Experimental)",
 			api: "openai-responses",
 			baseUrl: "https://chatgpt.com/backend-api/codex",
-			provider: "codex",
+			provider: "codex-experimental",
 			reasoning: true,
 			input: ["text"],
 			cost: {
-				input: 1.5,
-				output: 6,
-				cacheRead: 0.375,
+				input: 0,
+				output: 0,
+				cacheRead: 0,
 				cacheWrite: 0,
 			},
 			contextWindow: 200000,
@@ -458,19 +458,19 @@ async function generateModels() {
 		});
 	}
 
-	if (!allModels.some(m => m.provider === "codex" && m.id === "gpt-5-codex")) {
+	if (!allModels.some(m => m.provider === "codex-experimental" && m.id === "gpt-5-codex")) {
 		allModels.push({
 			id: "gpt-5-codex",
-			name: "GPT-5 Codex",
+			name: "GPT-5 Codex (Experimental)",
 			api: "openai-responses",
 			baseUrl: "https://chatgpt.com/backend-api/codex",
-			provider: "codex",
+			provider: "codex-experimental",
 			reasoning: true,
 			input: ["text", "image"],
 			cost: {
-				input: 1.25,
-				output: 10,
-				cacheRead: 0.125,
+				input: 0,
+				output: 0,
+				cacheRead: 0,
 				cacheWrite: 0,
 			},
 			contextWindow: 400000,

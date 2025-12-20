@@ -139,6 +139,12 @@ If you get "The requested model is not supported" error, enable the model in VS 
 
 Tokens stored in `~/.pi/agent/oauth.json`. Use `/logout` to clear.
 
+**Codex (experimental/unsupported):**
+
+- Uses Codex CLI login (`~/.codex/auth.json`) or `CODEX_ACCESS_TOKEN`.
+- Run `codex` once to sign in.
+- This uses ChatGPT’s backend and may break without notice.
+
 ### Quick Start
 
 ```bash

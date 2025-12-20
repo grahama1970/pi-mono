@@ -285,7 +285,7 @@ export async function getApiKeyForModel(model: Model<Api>): Promise<string | und
 		// 3. Fall back to ANTHROPIC_API_KEY env var
 	}
 
-	if (model.provider === "codex") {
+	if (model.provider === "codex-experimental") {
 		const envToken = process.env.CODEX_ACCESS_TOKEN;
 		if (envToken && envToken.trim() !== "") {
 			return envToken;

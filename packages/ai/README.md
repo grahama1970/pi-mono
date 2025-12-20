@@ -7,6 +7,7 @@ Unified LLM API with automatic model discovery, provider configuration, token an
 ## Supported Providers
 
 - **OpenAI**
+- **Codex (experimental/unsupported)**
 - **Anthropic**
 - **Google**
 - **Mistral**

@@ -369,8 +369,10 @@ export async function main(args: string[]) {
 
 				const key = await getApiKeyForModel(currentModel);
 				if (!key) {
-					if (currentModel.provider === "codex") {
-						throw new Error('Codex OAuth not found. Run "codex" once to sign in (creates ~/.codex/auth.json).');
+					if (currentModel.provider === "codex-experimental") {
+						throw new Error(
+							'Codex (experimental) OAuth not found. Run "codex" once to sign in (creates ~/.codex/auth.json).',
+						);
 					}
 					throw new Error(
 						`No API key found for provider "${currentModel.provider}". Please set the appropriate environment variable or update ${getModelsPath()}`,
