@@ -19,13 +19,13 @@ Invoke OpenAI Codex CLI headlessly from within pi-mono.
 
 ## Installation
 
-The tool is auto-discovered from `~/.pi/agent/tools/codex/`:
+The tool is auto-discovered from `~/.pi/agent/tools/codex-experimental/`:
 
 ```bash
 # From pi-mono root
-mkdir -p ~/.pi/agent/tools/codex
-ln -sf "$(pwd)/packages/coding-agent/examples/custom-tools/codex/index.ts" \
-  ~/.pi/agent/tools/codex/index.ts
+mkdir -p ~/.pi/agent/tools/codex-experimental
+ln -sf "$(pwd)/packages/coding-agent/examples/custom-tools/codex-experimental/index.ts" \
+  ~/.pi/agent/tools/codex-experimental/index.ts
 ```
 
 ## Usage
