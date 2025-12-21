@@ -235,4 +235,57 @@ The PR should include:
 - Avoids ToS/stability concerns (delegates to CLI)
 - Follows existing patterns (`CustomAgentTool`)
 
-The only question is whether this belongs in `examples/` or a separate `contrib/` directory.
+## Changes Based on Review Feedback
+
+The following changes were made to address Copilot review feedback:
+
+### 1. Replaced `any` types with `ThemeInterface`
+
+```typescript
+interface ThemeInterface {
+  fg(color: string, text: string): string;
+  bold(text: string): string;
+}
+```
+
+### 2. Removed emojis, using ASCII markers
+
+- `⏳` → `[running]`
+- `✓` → `[ok]`
+- `✗` → `[error]` / `[exit N]`
+- `💭` → `[thinking]`
+- `💬` → `[message]`
+- `📄` → `[file]`
+- `→` → `->`
+
+### 3. Changed to safe defaults
+
+- **Sandbox**: Defaults to `read-only` (was implicit `workspace-write`)
+- **--full-auto**: Only used when `workspace-write` explicitly requested
+- Description updated to emphasize read-only default
+
+### 4. Improved error handling
+
+- ENOENT: "Codex CLI not found. Install with: npm install -g @openai/codex"
+- EACCES: "Permission denied running Codex CLI"
+- Other: Generic spawn error message
+
+### 5. Added `settled` guard
+
+Prevents double resolve/reject edge cases:
+
+```typescript
+let settled = false;
+const safeResolve = (value) => {
+  if (!settled) {
+    settled = true;
+    resolve(value);
+  }
+};
+```
+
+### 6. Updated README
+
+- Added EXPERIMENTAL warning
+- Added CAUTION for workspace-write mode
+- Added platform notes (macOS/Linux tested, Windows best-effort)

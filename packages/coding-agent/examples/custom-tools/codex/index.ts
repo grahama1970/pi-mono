@@ -1,13 +1,17 @@
 /**
  * Codex Tool - Invoke Codex CLI headlessly within pi-mono
  *
- * This tool wraps `codex exec --json` as a subprocess, streaming JSONL events
- * to the TUI and returning the final result. It enables pi-mono users to leverage
- * Codex without switching tools, while delegating auth to the Codex CLI.
+ * EXPERIMENTAL: This tool wraps `codex exec --json` as a subprocess, streaming
+ * JSONL events to the TUI and returning the final result. It enables pi-mono
+ * users to leverage Codex without switching tools, while delegating auth to
+ * the Codex CLI.
  *
  * Prerequisites:
  * - Codex CLI installed (`npm i -g @openai/codex`)
  * - Logged in (`codex login`)
+ *
+ * WARNING: The `workspace-write` sandbox mode allows Codex to modify files.
+ * Use with caution.
  */
 
 import { spawn, type ChildProcess } from "node:child_process";
@@ -15,6 +19,13 @@ import { Type } from "@sinclair/typebox";
 import { StringEnum } from "@mariozechner/pi-ai";
 import { Text } from "@mariozechner/pi-tui";
 import type { CustomAgentTool, CustomToolFactory } from "@mariozechner/pi-coding-agent";
+
+// Minimal theme interface for the methods we use
+// (Avoids depending on internal Theme class or using `any`)
+interface ThemeInterface {
+  fg(color: string, text: string): string;
+  bold(text: string): string;
+}
 
 // Codex JSONL event types (based on actual Codex CLI output)
 interface CodexEvent {
@@ -70,7 +81,7 @@ const codexSchema = Type.Object({
   sandbox: Type.Optional(
     StringEnum(["read-only", "workspace-write"] as const, {
       description:
-        "Sandbox mode. 'read-only' for exploration, 'workspace-write' for modifications.",
+        "Sandbox mode. Defaults to 'read-only'. Use 'workspace-write' to allow file modifications.",
     })
   ),
   workDir: Type.Optional(
@@ -93,9 +104,10 @@ const factory: CustomToolFactory = (pi) => {
     name: "codex",
     label: "Codex",
     description:
-      "Invoke OpenAI Codex CLI to execute a task. Codex can read/write files, run commands, and iterate on problems. " +
+      "Invoke OpenAI Codex CLI to execute a task. Codex can read files and run commands. " +
       "Use this for tasks where Codex's capabilities complement the current model (e.g., specialized code generation, " +
-      "alternative perspective). The result will include Codex's final output.",
+      "alternative perspective). By default, Codex runs in read-only mode. " +
+      "Set sandbox to 'workspace-write' to allow file modifications.",
     parameters: codexSchema,
 
     async execute(
@@ -110,16 +122,22 @@ const factory: CustomToolFactory = (pi) => {
       const events: CodexEvent[] = [];
       let lastMessage = "";
       let child: ChildProcess | null = null;
+      let settled = false; // Guard against double resolve/reject
 
       // Build command args
-      const args = ["exec", "--json", "--full-auto"];
+      // Default to read-only sandbox for safety; only use --full-auto with workspace-write
+      const args = ["exec", "--json"];
+      const sandboxMode = params.sandbox || "read-only";
+
+      if (sandboxMode === "workspace-write") {
+        args.push("--full-auto");
+        args.push("-s", "workspace-write");
+      } else {
+        args.push("-s", "read-only");
+      }
 
       if (params.model) {
         args.push("-m", params.model);
-      }
-
-      if (params.sandbox) {
-        args.push("-s", params.sandbox);
       }
 
       // Add the prompt
@@ -128,9 +146,26 @@ const factory: CustomToolFactory = (pi) => {
       const workDir = params.workDir || pi.cwd;
 
       return new Promise((resolve, reject) => {
+        const safeResolve = (value: {
+          content: Array<{ type: "text"; text: string }>;
+          details: CodexDetails;
+        }) => {
+          if (!settled) {
+            settled = true;
+            resolve(value);
+          }
+        };
+
+        const safeReject = (error: Error) => {
+          if (!settled) {
+            settled = true;
+            reject(error);
+          }
+        };
+
         // Check if already aborted
         if (signal?.aborted) {
-          resolve({
+          safeResolve({
             content: [
               { type: "text", text: "Codex execution aborted before start." },
             ],
@@ -253,7 +288,7 @@ const factory: CustomToolFactory = (pi) => {
               lastMessage || "(Codex completed with no message output)";
           }
 
-          resolve({
+          safeResolve({
             content: [{ type: "text", text: resultText }],
             details: {
               events,
@@ -271,19 +306,28 @@ const factory: CustomToolFactory = (pi) => {
             signal.removeEventListener("abort", onAbort);
           }
 
-          reject(
-            new Error(
-              `Failed to spawn Codex: ${err.message}. Is Codex CLI installed?`
-            )
-          );
+          // Provide targeted error messages based on error type
+          const nodeErr = err as NodeJS.ErrnoException;
+          let errorMessage: string;
+
+          if (nodeErr.code === "ENOENT") {
+            errorMessage =
+              "Codex CLI not found. Install with: npm install -g @openai/codex";
+          } else if (nodeErr.code === "EACCES") {
+            errorMessage = `Permission denied running Codex CLI: ${err.message}`;
+          } else {
+            errorMessage = `Failed to spawn Codex: ${err.message}`;
+          }
+
+          safeReject(new Error(errorMessage));
         });
       });
     },
 
     // Custom rendering for tool call
-    renderCall(args: CodexParams, theme: any) {
+    renderCall(args: CodexParams, theme: ThemeInterface) {
       const model = args.model ? ` (${args.model})` : "";
-      const sandbox = args.sandbox ? ` [${args.sandbox}]` : "";
+      const sandbox = args.sandbox ? ` [${args.sandbox}]` : " [read-only]";
       const prompt =
         args.prompt.length > 80
           ? args.prompt.slice(0, 77) + "..."
@@ -307,7 +351,7 @@ const factory: CustomToolFactory = (pi) => {
         isError?: boolean;
       },
       options: { expanded?: boolean },
-      theme: any
+      theme: ThemeInterface
     ) {
       const { details, isError } = result;
 
@@ -319,8 +363,8 @@ const factory: CustomToolFactory = (pi) => {
           ? formatEventForDisplay(lastEvent)
           : "Starting...";
         return new Text(
-          theme.fg("warning", "⏳ ") +
-            theme.fg("muted", `Codex running (${eventCount} events)`) +
+          theme.fg("warning", "[running] ") +
+            theme.fg("muted", `Codex (${eventCount} events)`) +
             "\n" +
             statusText,
           0,
@@ -332,7 +376,7 @@ const factory: CustomToolFactory = (pi) => {
       if (isError || details?.error) {
         const errorMsg = details?.error || "Unknown error";
         return new Text(
-          theme.fg("error", "✗ Codex error: ") + theme.fg("muted", errorMsg),
+          theme.fg("error", "[error] Codex: ") + theme.fg("muted", errorMsg),
           0,
           0
         );
@@ -346,7 +390,7 @@ const factory: CustomToolFactory = (pi) => {
 
       if (options.expanded) {
         return new Text(
-          theme.fg("success", "✓ ") +
+          theme.fg("success", "[ok] ") +
             theme.fg(
               "muted",
               `Codex completed (exit ${exitCode}, ${
@@ -361,7 +405,7 @@ const factory: CustomToolFactory = (pi) => {
       }
 
       return new Text(
-        theme.fg("success", "✓ ") + theme.fg("muted", `Codex: `) + preview,
+        theme.fg("success", "[ok] ") + theme.fg("muted", "Codex: ") + preview,
         0,
         0
       );
@@ -392,9 +436,9 @@ function formatEventForDisplay(event: CodexEvent): string {
       const itemEvent = event as CodexItemEvent;
       const item = itemEvent.item;
       if (item.type === "command_execution") {
-        return `→ Running: ${item.command || "(command)"}`;
+        return `-> Running: ${item.command || "(command)"}`;
       }
-      return `→ ${item.type}`;
+      return `-> ${item.type}`;
     }
 
     case "item.completed": {
@@ -402,18 +446,18 @@ function formatEventForDisplay(event: CodexEvent): string {
       const item = itemEvent.item;
       switch (item.type) {
         case "reasoning":
-          return `💭 ${item.text || ""}`;
+          return `[thinking] ${item.text || ""}`;
         case "command_execution": {
           const output = item.aggregated_output || "";
           const preview = output.length > 50 ? output.slice(0, 47) + "..." : output;
-          const status = item.exit_code === 0 ? "✓" : `✗ (${item.exit_code})`;
+          const status = item.exit_code === 0 ? "[ok]" : `[exit ${item.exit_code}]`;
           return `${status} ${preview.trim()}`;
         }
         case "agent_message":
-          return `💬 ${item.text || ""}`;
+          return `[message] ${item.text || ""}`;
         case "file_create":
         case "file_edit":
-          return `📄 ${item.type}`;
+          return `[file] ${item.type}`;
         default:
           return `[${item.type}]`;
       }
