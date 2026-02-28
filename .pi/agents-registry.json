@@ -1,0 +1,642 @@
+{
+  "version": 1,
+  "generated_by": "agents-registry",
+  "agent_count": 9,
+  "agents": [
+    {
+      "id": "brandon-bailey",
+      "name": "brandon-bailey",
+      "scope": "brandon_bailey",
+      "provides": [
+        "sparta-quality-assessment",
+        "space-cybersecurity-review",
+        "threat-modeling",
+        "cwe-classification",
+        "shadow-lego-tier2-teaching",
+        "qra-validation-cascade"
+      ],
+      "composes": [
+        "memory",
+        "taxonomy",
+        "sparta-review",
+        "sparta-qra-validator-gpt",
+        "monitor-sparta",
+        "review-paper",
+        "dogpile",
+        "ask",
+        "batch-quality",
+        "ingest-code",
+        "hack",
+        "battle",
+        "argue",
+        "edge-verifier",
+        "doc2qra",
+        "formalize-request"
+      ],
+      "collaborators": [
+        {
+          "id": "embry",
+          "role": "peer"
+        },
+        {
+          "id": "margaret-chen",
+          "role": "peer"
+        },
+        {
+          "id": "jennifer-cheung",
+          "role": "peer"
+        },
+        {
+          "id": "noah-evans",
+          "role": "peer"
+        },
+        {
+          "id": "rob-armstrong",
+          "role": "peer"
+        },
+        {
+          "id": "paul-martinez",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "corruption",
+        "fragility"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/brandon-bailey/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "embry",
+      "name": "embry",
+      "scope": "embry-lawson",
+      "provides": [
+        "guided-onboarding",
+        "sparta-research-assistance",
+        "persona-orchestration",
+        "documentation-review",
+        "cross-persona-consultation"
+      ],
+      "composes": [
+        "memory",
+        "taxonomy",
+        "bootcamp",
+        "review-paper",
+        "paper-lab",
+        "argue",
+        "ask",
+        "dogpile",
+        "formalize-request",
+        "converse",
+        "doc2qra",
+        "edge-verifier",
+        "service-status",
+        "data-audit",
+        "project-state"
+      ],
+      "collaborators": [
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "margaret-chen",
+          "role": "peer"
+        },
+        {
+          "id": "jennifer-cheung",
+          "role": "peer"
+        },
+        {
+          "id": "noah-evans",
+          "role": "peer"
+        },
+        {
+          "id": "rob-armstrong",
+          "role": "peer"
+        },
+        {
+          "id": "paul-martinez",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility",
+        "loyalty"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/embry/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "graham-anderson",
+      "name": "graham-anderson",
+      "scope": "graham-anderson",
+      "provides": [
+        "system-architecture",
+        "architectural-decisions",
+        "darpa-engagement",
+        "program-strategy",
+        "data-science-oversight",
+        "persona-design",
+        "taxonomy-design",
+        "quality-methodology",
+        "air-gap-architecture",
+        "cross-project-coordination"
+      ],
+      "composes": [
+        "memory",
+        "assess",
+        "plan",
+        "orchestrate",
+        "create-persona",
+        "create-figure",
+        "project-state",
+        "handoff",
+        "dogpile",
+        "analytics",
+        "quality-audit",
+        "lean4-prove",
+        "taxonomy",
+        "review-code",
+        "review-paper",
+        "ops-workstation",
+        "ops-arango",
+        "benchmark-models",
+        "embedding",
+        "agent-inbox",
+        "monitor-skills",
+        "skills-ci",
+        "ops-chutes",
+        "scillm",
+        "ask",
+        "converse",
+        "treesitter",
+        "github-search"
+      ],
+      "collaborators": [
+        {
+          "id": "nico-bailon",
+          "role": "peer"
+        },
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "embry",
+          "role": "peer"
+        },
+        {
+          "id": "margaret-chen",
+          "role": "peer"
+        },
+        {
+          "id": "jennifer-cheung",
+          "role": "peer"
+        },
+        {
+          "id": "rob-armstrong",
+          "role": "peer"
+        },
+        {
+          "id": "noah-evans",
+          "role": "peer"
+        },
+        {
+          "id": "paul-martinez",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility",
+        "corruption",
+        "loyalty",
+        "stealth"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/graham-anderson/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "jennifer-cheung",
+      "name": "jennifer-cheung",
+      "scope": "jennifer_cheung",
+      "provides": [
+        "extraction-quality-assessment",
+        "naval-cybersecurity-review",
+        "cmmc-compliance-assessment",
+        "cui-classification",
+        "oscal-export",
+        "shadow-lego-tier2-teaching"
+      ],
+      "composes": [
+        "memory",
+        "taxonomy",
+        "extractor-quality-check",
+        "review-paper",
+        "cmmc-assessor",
+        "cui-marker",
+        "export-oscal",
+        "compliance-timeline",
+        "ingest-compliance-doc",
+        "edge-verifier",
+        "doc2qra",
+        "social-bridge",
+        "argue",
+        "ask",
+        "dogpile"
+      ],
+      "collaborators": [
+        {
+          "id": "margaret-chen",
+          "role": "peer"
+        },
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "paul-martinez",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility",
+        "corruption",
+        "loyalty"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/jennifer-cheung/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "margaret-chen",
+      "name": "margaret-chen",
+      "scope": "margaret_chen",
+      "provides": [
+        "extraction-quality-assessment",
+        "do-178c-verification",
+        "requirements-traceability",
+        "pdf-fidelity-review",
+        "shadow-lego-tier2-teaching"
+      ],
+      "composes": [
+        "memory",
+        "taxonomy",
+        "extractor-quality-check",
+        "review-paper",
+        "edge-verifier",
+        "lean4-prove",
+        "formalize-request",
+        "doc2qra",
+        "learn-datalake",
+        "review-pdf",
+        "argue",
+        "ask",
+        "dogpile"
+      ],
+      "collaborators": [
+        {
+          "id": "jennifer-cheung",
+          "role": "peer"
+        },
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "noah-evans",
+          "role": "peer"
+        },
+        {
+          "id": "rob-armstrong",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility",
+        "corruption",
+        "loyalty"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/margaret-chen/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "nico-bailon",
+      "name": "nico-bailon",
+      "scope": "nico-bailon",
+      "provides": [
+        "embry-os-development",
+        "pi-extension-development",
+        "skill-authoring",
+        "ml-pipeline-operations",
+        "data-science-analysis",
+        "formal-verification",
+        "full-stack-debugging",
+        "air-gapped-deployment-dev",
+        "gpu-inference-operations",
+        "graph-database-engineering"
+      ],
+      "composes": [
+        "memory",
+        "assess",
+        "plan",
+        "orchestrate",
+        "create-figure",
+        "skills-ci",
+        "test-lab",
+        "review-code",
+        "security-scan",
+        "lean4-prove",
+        "extractor",
+        "debug-pdf",
+        "ops-workstation",
+        "create-classifier",
+        "create-gpt",
+        "analytics",
+        "benchmark-models",
+        "regressor-lab",
+        "classifier-lab",
+        "gpt-lab",
+        "assistant-lab",
+        "skill-lab",
+        "create-context",
+        "handoff",
+        "review-pdf",
+        "monitor-skills",
+        "ops-arango",
+        "embedding",
+        "taxonomy",
+        "scillm",
+        "best-practices-python",
+        "best-practices-skills",
+        "best-practices-react",
+        "best-practices-kde",
+        "sync-sites",
+        "ops-workstation",
+        "service-status",
+        "converse",
+        "ask",
+        "dogpile",
+        "treesitter",
+        "github-search",
+        "agent-inbox"
+      ],
+      "collaborators": [
+        {
+          "id": "paul-martinez",
+          "role": "peer"
+        },
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "embry",
+          "role": "peer"
+        },
+        {
+          "id": "margaret-chen",
+          "role": "peer"
+        },
+        {
+          "id": "jennifer-cheung",
+          "role": "peer"
+        },
+        {
+          "id": "rob-armstrong",
+          "role": "peer"
+        },
+        {
+          "id": "noah-evans",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility",
+        "corruption",
+        "loyalty",
+        "stealth"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/nico-bailon/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "noah-evans",
+      "name": "noah-evans",
+      "scope": "noah-evans",
+      "provides": [
+        "system-safety-analysis",
+        "assurance-case-construction",
+        "hazard-identification",
+        "stamp-stpa-analysis",
+        "fault-tree-analysis",
+        "fmea-assessment"
+      ],
+      "composes": [
+        "memory",
+        "taxonomy",
+        "create-assurance-case",
+        "lean4-prove",
+        "formalize-request",
+        "edge-verifier",
+        "doc2qra",
+        "review-paper",
+        "argue",
+        "ask",
+        "dogpile"
+      ],
+      "collaborators": [
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "margaret-chen",
+          "role": "peer"
+        },
+        {
+          "id": "rob-armstrong",
+          "role": "peer"
+        },
+        {
+          "id": "paul-martinez",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/noah-evans/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "paul-martinez",
+      "name": "paul-martinez",
+      "scope": "paul-martinez",
+      "provides": [
+        "ics-ot-security-assessment",
+        "plant-floor-operations",
+        "drift-detection",
+        "cmmc-manufacturing-compliance",
+        "air-gapped-deployment",
+        "supply-chain-risk-assessment"
+      ],
+      "composes": [
+        "memory",
+        "taxonomy",
+        "ops-f36-plant",
+        "monitor-drift-sensors",
+        "cmmc-assessor",
+        "ingest-compliance-doc",
+        "cui-marker",
+        "sync-sites",
+        "compliance-timeline",
+        "sparta-review",
+        "converse",
+        "edge-verifier",
+        "doc2qra",
+        "argue",
+        "ask",
+        "dogpile"
+      ],
+      "collaborators": [
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "noah-evans",
+          "role": "peer"
+        },
+        {
+          "id": "jennifer-cheung",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility",
+        "corruption"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/paul-martinez/AGENTS.md"
+      },
+      "active": true
+    },
+    {
+      "id": "rob-armstrong",
+      "name": "rob-armstrong",
+      "scope": "rob-armstrong",
+      "provides": [
+        "formal-verification",
+        "lean4-proof-generation",
+        "assurance-case-verification",
+        "type-theoretic-analysis",
+        "cryptographic-verification",
+        "model-checking"
+      ],
+      "composes": [
+        "memory",
+        "taxonomy",
+        "lean4-prove",
+        "formalize-request",
+        "create-assurance-case",
+        "edge-verifier",
+        "doc2qra",
+        "extractor",
+        "ingest-code",
+        "review-paper",
+        "argue",
+        "ask",
+        "dogpile"
+      ],
+      "collaborators": [
+        {
+          "id": "brandon-bailey",
+          "role": "peer"
+        },
+        {
+          "id": "margaret-chen",
+          "role": "peer"
+        },
+        {
+          "id": "noah-evans",
+          "role": "peer"
+        }
+      ],
+      "taxonomy_bridges": [
+        "precision",
+        "resilience",
+        "fragility"
+      ],
+      "voice": {
+        "enabled": false
+      },
+      "inference": {},
+      "paths": {
+        "agents_md": ".pi/agents/rob-armstrong/AGENTS.md"
+      },
+      "active": true
+    }
+  ]
+}
