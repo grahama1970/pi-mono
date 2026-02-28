@@ -4,9 +4,11 @@ import {
 	AgentSession,
 	AuthStorage,
 	convertToLlm,
+	createExtensionRuntime,
 	formatSkillsForPrompt,
 	loadSkillsFromDir,
 	ModelRegistry,
+	type ResourceLoader,
 	SessionManager,
 	type Skill,
 } from "@mariozechner/pi-coding-agent";
@@ -448,12 +450,31 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 		log.logInfo(`[${channelId}] Loaded ${loadedSession.messages.length} messages from context.jsonl`);
 	}
 
+	const resourceLoader: ResourceLoader = {
+		getExtensions: () => ({ extensions: [], errors: [], runtime: createExtensionRuntime() }),
+		getSkills: () => ({ skills: [], diagnostics: [] }),
+		getPrompts: () => ({ prompts: [], diagnostics: [] }),
+		getThemes: () => ({ themes: [], diagnostics: [] }),
+		getAgentsFiles: () => ({ agentsFiles: [] }),
+		getSystemPrompt: () => systemPrompt,
+		getAppendSystemPrompt: () => [],
+		getPathMetadata: () => new Map(),
+		extendResources: () => {},
+		reload: async () => {},
+	};
+
+	const baseToolsOverride = Object.fromEntries(tools.map((tool) => [tool.name, tool]));
+
 	// Create AgentSession wrapper
 	const session = new AgentSession({
 		agent,
 		sessionManager,
-		settingsManager: settingsManager as any,
+		// MomSettingsManager is a subset-compatible implementation of SettingsManager
+		settingsManager: settingsManager as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- cross-package type mismatch
+		cwd: process.cwd(),
 		modelRegistry,
+		resourceLoader,
+		baseToolsOverride,
 	});
 
 	// Mutable per-run state - event handler references this
@@ -535,7 +556,19 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 		} else if (event.type === "message_end") {
 			const agentEvent = event as AgentEvent & { type: "message_end" };
 			if (agentEvent.message.role === "assistant") {
-				const assistantMsg = agentEvent.message as any;
+				const assistantMsg = agentEvent.message as {
+					role: string;
+					content: Array<{ type: string; thinking?: string; text?: string }>;
+					stopReason?: string;
+					errorMessage?: string;
+					usage?: {
+						input: number;
+						output: number;
+						cacheRead: number;
+						cacheWrite: number;
+						cost: { input: number; output: number; cacheRead: number; cacheWrite: number; total: number };
+					};
+				};
 
 				if (assistantMsg.stopReason) {
 					runState.stopReason = assistantMsg.stopReason;
@@ -556,14 +589,13 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 					runState.totalUsage.cost.total += assistantMsg.usage.cost.total;
 				}
 
-				const content = agentEvent.message.content;
 				const thinkingParts: string[] = [];
 				const textParts: string[] = [];
-				for (const part of content) {
-					if (part.type === "thinking") {
-						thinkingParts.push((part as any).thinking);
-					} else if (part.type === "text") {
-						textParts.push((part as any).text);
+				for (const part of assistantMsg.content) {
+					if (part.type === "thinking" && part.thinking) {
+						thinkingParts.push(part.thinking);
+					} else if (part.type === "text" && part.text) {
+						textParts.push(part.text);
 					}
 				}
 
@@ -582,17 +614,27 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 				}
 			}
 		} else if (event.type === "auto_compaction_start") {
-			log.logInfo(`Auto-compaction started (reason: ${(event as any).reason})`);
+			const compStartEvent = event as { type: "auto_compaction_start"; reason?: string };
+			log.logInfo(`Auto-compaction started (reason: ${compStartEvent.reason})`);
 			queue.enqueue(() => ctx.respond("_Compacting context..._", false), "compaction start");
 		} else if (event.type === "auto_compaction_end") {
-			const compEvent = event as any;
+			const compEvent = event as {
+				type: "auto_compaction_end";
+				result?: { tokensBefore: number };
+				aborted?: boolean;
+			};
 			if (compEvent.result) {
 				log.logInfo(`Auto-compaction complete: ${compEvent.result.tokensBefore} tokens compacted`);
 			} else if (compEvent.aborted) {
 				log.logInfo("Auto-compaction aborted");
 			}
 		} else if (event.type === "auto_retry_start") {
-			const retryEvent = event as any;
+			const retryEvent = event as {
+				type: "auto_retry_start";
+				attempt: number;
+				maxAttempts: number;
+				errorMessage: string;
+			};
 			log.logWarning(`Retrying (${retryEvent.attempt}/${retryEvent.maxAttempts})`, retryEvent.errorMessage);
 			queue.enqueue(
 				() => ctx.respond(`_Retrying (${retryEvent.attempt}/${retryEvent.maxAttempts})..._`, false),
@@ -810,10 +852,17 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 			if (runState.totalUsage.cost.total > 0) {
 				// Get last non-aborted assistant message for context calculation
 				const messages = session.messages;
+				type AssistantWithUsage = {
+					role: string;
+					stopReason?: string;
+					usage: { input: number; output: number; cacheRead: number; cacheWrite: number };
+				};
 				const lastAssistantMessage = messages
 					.slice()
 					.reverse()
-					.find((m) => m.role === "assistant" && (m as any).stopReason !== "aborted") as any;
+					.find((m) => m.role === "assistant" && (m as AssistantWithUsage).stopReason !== "aborted") as
+					| AssistantWithUsage
+					| undefined;
 
 				const contextTokens = lastAssistantMessage
 					? lastAssistantMessage.usage.input +
