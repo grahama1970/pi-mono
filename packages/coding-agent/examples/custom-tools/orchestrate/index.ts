@@ -60,6 +60,7 @@ import type {
 } from "@mariozechner/pi-coding-agent";
 import { Text } from "@mariozechner/pi-tui";
 import { type Static, Type } from "@sinclair/typebox";
+import { getAgentRegistry } from "../../../src/core/agent-registry.js";
 
 // Constants
 const DEFAULT_TASK_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
@@ -1011,9 +1012,49 @@ interface AgentConfigError {
 
 /**
  * Walk up from cwd looking for .pi/agents/{name}/AGENTS.md (persona agents).
- * Returns AgentConfig if found, null otherwise.
+ * Tries the centralized AgentRegistry first (fast, cached), then falls back
+ * to filesystem walk + manual YAML parsing if registry miss.
  */
 function loadPersonaAgentConfig(agentName: string): AgentConfig | null {
+	// ── Registry path (primary) ──
+	try {
+		const entry = getAgentRegistry().getById(agentName);
+		if (entry) {
+			// Registry has metadata but not the full AGENTS.md body — read it
+			const mdPath = path.resolve(process.cwd(), entry.paths.agents_md);
+			if (fs.existsSync(mdPath)) {
+				const content = fs.readFileSync(mdPath, "utf-8");
+				const normalized = content.replace(/\r\n/g, "\n");
+
+				// Strip frontmatter to get the system prompt body
+				let body = normalized;
+				if (normalized.startsWith("---")) {
+					const endIndex = normalized.indexOf("\n---", 3);
+					if (endIndex !== -1) {
+						body = normalized.slice(endIndex + 4).trim();
+					}
+				}
+
+				if (!body.trim()) return null;
+
+				const collaborators = entry.collaborators.map((c) => c.id);
+				return {
+					name: entry.name,
+					description: `Persona agent: ${entry.name}`,
+					tools: ["Read", "Grep", "Glob", "Bash", "Edit", "Write"],
+					systemPrompt: body,
+					personaMeta:
+						entry.composes.length || collaborators.length
+							? { composes: entry.composes, collaborators }
+							: undefined,
+				};
+			}
+		}
+	} catch {
+		// Registry unavailable — fall through to filesystem walk
+	}
+
+	// ── Filesystem fallback ──
 	let currentDir = process.cwd();
 	while (true) {
 		const candidate = path.join(currentDir, ".pi", "agents", agentName, "AGENTS.md");
@@ -1021,8 +1062,6 @@ function loadPersonaAgentConfig(agentName: string): AgentConfig | null {
 			const content = fs.readFileSync(candidate, "utf-8");
 			const normalized = content.replace(/\r\n/g, "\n");
 
-			// Extract frontmatter and body — persona AGENTS.md uses YAML lists,
-			// so we parse name, composes, and collaborators from frontmatter
 			let body = normalized;
 			let name = agentName;
 			const composes: string[] = [];
@@ -1034,11 +1073,9 @@ function loadPersonaAgentConfig(agentName: string): AgentConfig | null {
 					const frontmatterBlock = normalized.slice(4, endIndex);
 					body = normalized.slice(endIndex + 4).trim();
 
-					// Extract name from frontmatter (simple key: value match)
 					const nameMatch = frontmatterBlock.match(/^name:\s*(.+)$/m);
 					if (nameMatch) name = nameMatch[1].trim();
 
-					// Extract YAML list sections (composes, collaborators)
 					const parseYamlList = (key: string): string[] => {
 						const re = new RegExp(`^${key}:\\s*$`, "m");
 						const match = frontmatterBlock.match(re);
@@ -1048,10 +1085,9 @@ function loadPersonaAgentConfig(agentName: string): AgentConfig | null {
 						for (const line of frontmatterBlock.slice(startIdx).split("\n")) {
 							const itemMatch = line.match(/^\s+-\s+(.+)/);
 							if (itemMatch) {
-								// Strip inline comments (e.g. "jennifer-cheung    # co-assessor")
 								items.push(itemMatch[1].replace(/#.*$/, "").trim());
 							} else if (line.match(/^\S/)) {
-								break; // Next top-level key
+								break;
 							}
 						}
 						return items;

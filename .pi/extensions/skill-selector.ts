@@ -1,5 +1,6 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { readFileSync, readdirSync, existsSync } from "fs";
+import { join, resolve } from "path";
 
 /**
  * Skill Selector Extension — Hybrid skill filtering prehook.
@@ -233,6 +234,68 @@ function expandComposes(selected: string[], skills: SkillEntry[], pi?: Extension
 	return Array.from(expanded);
 }
 
+// ─── Persona-Aware Filtering (Agent Registry) ───────────────────────────────
+
+interface AgentRegistryEntry {
+	id: string;
+	name: string;
+	composes: string[];
+}
+
+/** Cached agent registry (loaded once per session from .pi/agents-registry.json) */
+let agentRegistry: AgentRegistryEntry[] | null = null;
+
+/**
+ * Load agent registry from .pi/agents-registry.json (walk up from cwd).
+ * Returns cached result after first load.
+ */
+function loadAgentRegistry(): AgentRegistryEntry[] {
+	if (agentRegistry !== null) return agentRegistry;
+	agentRegistry = [];
+	let dir = process.cwd();
+	while (true) {
+		const candidate = join(dir, ".pi", "agents-registry.json");
+		if (existsSync(candidate)) {
+			try {
+				const data = JSON.parse(readFileSync(candidate, "utf8"));
+				if (Array.isArray(data.agents)) {
+					agentRegistry = data.agents.map((a: any) => ({
+						id: a.id,
+						name: a.name,
+						composes: Array.isArray(a.composes) ? a.composes : [],
+					}));
+				}
+			} catch {
+				// Registry unreadable — continue without persona filtering
+			}
+			break;
+		}
+		const parent = resolve(dir, "..");
+		if (parent === dir) break;
+		dir = parent;
+	}
+	return agentRegistry;
+}
+
+/**
+ * Detect persona name in prompt and return their composed skills.
+ * Matches: "brandon, /assess ...", "ask brandon-bailey to ...", "nico ...", etc.
+ */
+function getPersonaSkills(prompt: string): string[] {
+	const agents = loadAgentRegistry();
+	if (agents.length === 0) return [];
+
+	const lower = prompt.toLowerCase();
+	for (const agent of agents) {
+		// Match full id (e.g. "brandon-bailey") or first name (e.g. "brandon")
+		const firstName = agent.id.split("-")[0];
+		if (lower.includes(agent.id) || (firstName.length >= 4 && lower.includes(firstName))) {
+			return agent.composes;
+		}
+	}
+	return [];
+}
+
 // ─── Trigger Index (Implicit Skill Matching) ────────────────────────────────
 
 /** Stopwords to exclude from description tokenization */
@@ -452,8 +515,12 @@ export default function skillSelector(pi: ExtensionAPI) {
 			const slashRefs = parseSlashReferences(prompt)
 				.filter((name) => availableNames.has(name));
 
-			// ── Combine: explicit refs + core + composes deps ──
-			const requested = [...slashRefs, ...CORE_SKILLS];
+			// ── Persona-aware: if prompt mentions a persona, include their skills ──
+			const personaSkills = getPersonaSkills(prompt)
+				.filter((name) => availableNames.has(name));
+
+			// ── Combine: explicit refs + core + persona skills + composes deps ──
+			const requested = [...slashRefs, ...CORE_SKILLS, ...personaSkills];
 			const withDeps = expandComposes(requested, skills, pi);
 
 			// ── Implicit matching: when no slash refs, use trigger index ──
@@ -538,6 +605,7 @@ export default function skillSelector(pi: ExtensionAPI) {
 					prompt: prompt.substring(0, 200),
 					mode: matchMode,
 					slash_refs: slashRefs,
+					persona_skills: personaSkills.length > 0 ? personaSkills.slice(0, 10) : undefined,
 					trigger_matches: triggerMatches.slice(0, 10),
 					selected: Array.from(finalNames),
 					total_available: skills.length,
