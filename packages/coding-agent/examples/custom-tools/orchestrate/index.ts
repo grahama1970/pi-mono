@@ -60,6 +60,7 @@ import type {
 } from "@mariozechner/pi-coding-agent";
 import { Text } from "@mariozechner/pi-tui";
 import { type Static, Type } from "@sinclair/typebox";
+import { compileTasks } from "../../../../../.pi/extensions/ptc-compiler.js";
 import { getAgentRegistry } from "../../../src/core/agent-registry.js";
 
 // Constants
@@ -665,6 +666,13 @@ const OrchestrateParams = Type.Object({
 			description: "Direct mode: Task description/prompt for the agent",
 		}),
 	),
+	// Parallel execution
+	parallel: Type.Optional(
+		Type.Boolean({
+			description: "Enable parallel execution of independent tasks (default: true)",
+			default: true,
+		}),
+	),
 	// Resume/pause parameters
 	resume: Type.Optional(
 		Type.String({
@@ -899,9 +907,17 @@ function parseTaskFile(filePath: string): TaskFileContent {
 					currentTask.maxCostUSD = parseFloat(maxCostMatch[1]);
 				} else if (costStrategyMatch) {
 					currentTask.costStrategy = costStrategyMatch[1] as "cheapest-first" | "balanced" | "quality-first";
-				} else if (trimmed && !trimmed.startsWith("-")) {
-					currentTask.description =
-						(currentTask.description || "") + (currentTask.description ? "\n" : "") + trimmed;
+				} else {
+					// Parse `- skill: /foo with <model>` from task description lines
+					const skillWithModelMatch = trimmed.match(/^-\s*skill:\s*\/[\w-]+(?:\s+\S+)*?\s+with\s+(\w+)\s*$/i);
+					if (skillWithModelMatch && !currentTask.model) {
+						currentTask.model = skillWithModelMatch[1].trim();
+					}
+					// Non-metadata lines become task description
+					if (!trimmed.startsWith("-")) {
+						currentTask.description =
+							(currentTask.description || "") + (currentTask.description ? "\n" : "") + trimmed;
+					}
 				}
 			}
 		}
@@ -2828,6 +2844,7 @@ async function executeTaskFileMode(
 	continueOnError: boolean,
 	archive: boolean,
 	taskTimeoutMs: number,
+	enableParallel: boolean,
 	signal?: AbortSignal,
 	onUpdate?: (result: AgentToolResult<OrchestrateDetails>) => void,
 ): Promise<AgentToolResult<OrchestrateDetails>> {
@@ -2899,47 +2916,40 @@ async function executeTaskFileMode(
 		};
 	}
 
-	// Multi-pass execution: retry skipped tasks until no progress
-	let remainingTasks = [...initialPendingTasks];
+	// Compile tasks into execution levels using DAG analysis
+	const executionPlan = compileTasks(initialPendingTasks, completedIds);
 	let wasPaused = false;
 
-	while (remainingTasks.length > 0) {
-		let madeProgress = false;
-		const stillPending: ParsedTask[] = [];
+	// Log execution plan if parallel is enabled and there are parallel levels
+	if (enableParallel && executionPlan.maxParallelism > 1 && onUpdate) {
+		onUpdate({
+			content: [
+				{
+					type: "text" as const,
+					text: `PTC: ${executionPlan.estimatedRoundTrips} levels (vs ${executionPlan.serialRoundTrips} serial), max parallelism: ${executionPlan.maxParallelism}`,
+				},
+			],
+			details,
+		});
+	}
 
-		for (const task of remainingTasks) {
-			// Check for abort/pause
-			if (signal?.aborted) {
-				// Save paused state
-				state.status = "paused";
-				state.pausedAt = new Date().toISOString();
-				state.completedTaskIds = Array.from(completedIds);
-				state.results = results;
-				state.currentTaskId = task.id;
-				saveState(cwd, state);
-
-				details.status = "paused";
-				details.sessionId = sessionId;
-				wasPaused = true;
-				break;
-			}
-
-			// Check dependencies - must be in completedIds
-			const unmetDeps = task.dependencies.filter((depId) => !completedIds.has(depId));
-
-			if (unmetDeps.length > 0) {
-				// Defer to next pass
-				stillPending.push(task);
-				continue;
-			}
-
-			details.currentTask = `Task ${task.id}/${parsed.tasks.length}: ${task.title}`;
-			state.currentTaskId = task.id;
+	for (const level of executionPlan.levels) {
+		// Check for abort/pause before each level
+		if (signal?.aborted) {
+			state.status = "paused";
+			state.pausedAt = new Date().toISOString();
+			state.completedTaskIds = Array.from(completedIds);
+			state.results = results;
 			saveState(cwd, state);
+			details.status = "paused";
+			details.sessionId = sessionId;
+			wasPaused = true;
+			break;
+		}
 
-			// Phase 4: Budget enforcement - check before executing
-			if (sessionBudget?.exceeded) {
-				// Budget already exceeded - halt orchestration
+		// Phase 4: Budget enforcement
+		if (sessionBudget?.exceeded) {
+			for (const task of level.tasks) {
 				results.push({
 					taskId: task.id,
 					title: task.title,
@@ -2949,119 +2959,170 @@ async function executeTaskFileMode(
 					durationMs: 0,
 					error: "Session budget exceeded",
 				});
-				stillPending.push(...remainingTasks.slice(remainingTasks.indexOf(task) + 1));
-				break;
 			}
+			continue;
+		}
 
-			// Update progress
+		// Filter to tasks not yet completed (handles resume case)
+		const pending = level.tasks.filter((t) => !completedIds.has(t.id));
+		if (pending.length === 0) continue;
+
+		if (enableParallel && pending.length > 1) {
+			// Parallel execution via Promise.allSettled
 			if (onUpdate) {
+				const taskNames = pending.map((t) => `Task ${t.id}`).join(", ");
 				onUpdate({
 					content: [
 						{
 							type: "text" as const,
-							text: `Running Task ${task.id}/${parsed.tasks.length}: ${task.title} (${task.agent})`,
+							text: `Running level ${level.level} in parallel (${pending.length} tasks): ${taskNames}`,
 						},
 					],
 					details,
 				});
 			}
 
-			// Execute task (uses retry-until-pass if configured)
-			const result = await runTaskWithRetry(task, parsed, cwd, taskTimeoutMs, outputDir, signal);
-			results.push(result);
-			madeProgress = true;
+			const parallelResults = await Promise.allSettled(
+				pending.map((task) => runTaskWithRetry(task, parsed, cwd, taskTimeoutMs, outputDir, signal)),
+			);
 
-			if (result.status === "success") {
-				// Update checkbox in file
-				updateTaskCheckbox(absolutePath, task.lineStart, task.id, true);
-				completedIds.add(task.id);
-				details.completedTasks++;
+			let levelFailed = false;
+			for (let i = 0; i < parallelResults.length; i++) {
+				const settled = parallelResults[i];
+				const task = pending[i];
+				const result: TaskResult =
+					settled.status === "fulfilled"
+						? settled.value
+						: {
+								taskId: task.id,
+								title: task.title,
+								agent: task.agent,
+								status: "failed" as const,
+								output: "",
+								durationMs: 0,
+								error: String(settled.reason),
+							};
+				results.push(result);
 
-				// Phase 4: Update session budget
-				if (sessionBudget && result.cost !== undefined) {
-					sessionBudget.currentCost += result.cost;
-					sessionBudget.tasksCompleted++;
-					sessionBudget.taskCosts.push({
-						taskId: task.id,
-						provider: result.provider || "unknown",
-						model: result.model || "unknown",
-						tokenUsage: result.tokenUsage || { inputTokens: 0, outputTokens: 0, totalTokens: 0 },
-						estimatedCost: result.cost,
-					});
+				if (result.status === "success") {
+					updateTaskCheckbox(absolutePath, task.lineStart, task.id, true);
+					completedIds.add(task.id);
+					details.completedTasks++;
 
-					// Check alert threshold
-					if (!sessionBudget.alertFired && sessionBudget.currentCost >= sessionBudget.alertThreshold) {
-						sessionBudget.alertFired = true;
-						if (onUpdate) {
-							const alertPct = ((sessionBudget.currentCost / sessionBudget.maxCostUSD) * 100).toFixed(1);
-							onUpdate({
-								content: [
-									{
-										type: "text" as const,
-										text: `⚠️  Cost alert: ${alertPct}% of budget used ($${sessionBudget.currentCost.toFixed(2)}/$${sessionBudget.maxCostUSD.toFixed(2)})`,
-									},
-								],
-								details,
-							});
+					// Phase 4: Update session budget
+					if (sessionBudget && result.cost !== undefined) {
+						sessionBudget.currentCost += result.cost;
+						sessionBudget.tasksCompleted++;
+						sessionBudget.taskCosts.push({
+							taskId: task.id,
+							provider: result.provider || "unknown",
+							model: result.model || "unknown",
+							tokenUsage: result.tokenUsage || { inputTokens: 0, outputTokens: 0, totalTokens: 0 },
+							estimatedCost: result.cost,
+						});
+
+						if (!sessionBudget.alertFired && sessionBudget.currentCost >= sessionBudget.alertThreshold) {
+							sessionBudget.alertFired = true;
+						}
+						if (sessionBudget.currentCost > sessionBudget.maxCostUSD) {
+							sessionBudget.exceeded = true;
 						}
 					}
-
-					// Check budget exceeded
-					if (sessionBudget.currentCost > sessionBudget.maxCostUSD) {
-						sessionBudget.exceeded = true;
-						if (onUpdate) {
-							onUpdate({
-								content: [
-									{
-										type: "text" as const,
-										text: `❌ Budget exceeded: $${sessionBudget.currentCost.toFixed(2)}/$${sessionBudget.maxCostUSD.toFixed(2)} - Halting orchestration`,
-									},
-								],
-								details,
-							});
-						}
-					}
-
-					// Task-level budget check
-					if (task.maxCostUSD !== undefined && result.cost > task.maxCostUSD) {
-						// Note: Task already completed, but log the budget violation
-						if (onUpdate) {
-							onUpdate({
-								content: [
-									{
-										type: "text" as const,
-										text: `⚠️  Task ${task.id} exceeded its budget: $${result.cost.toFixed(2)}/$${task.maxCostUSD.toFixed(2)}`,
-									},
-								],
-								details,
-							});
-						}
-					}
+				} else if (!continueOnError) {
+					levelFailed = true;
 				}
+			}
 
-				// Save progress after each successful task
-				state.completedTaskIds = Array.from(completedIds);
-				state.results = results;
-				saveState(cwd, state);
-			} else if (!continueOnError) {
+			// Save state after each level
+			state.completedTaskIds = Array.from(completedIds);
+			state.results = results;
+			saveState(cwd, state);
+
+			if (levelFailed && !continueOnError) {
 				details.status = "failed";
 				state.status = "failed";
 				saveState(cwd, state);
 				break;
 			}
-		}
+		} else {
+			// Serial execution (single task or parallel disabled)
+			for (const task of pending) {
+				if (signal?.aborted) {
+					state.status = "paused";
+					state.pausedAt = new Date().toISOString();
+					state.completedTaskIds = Array.from(completedIds);
+					state.results = results;
+					state.currentTaskId = task.id;
+					saveState(cwd, state);
+					details.status = "paused";
+					details.sessionId = sessionId;
+					wasPaused = true;
+					break;
+				}
 
-		if (wasPaused || details.status === "failed") {
-			break;
-		}
+				details.currentTask = `Task ${task.id}/${parsed.tasks.length}: ${task.title}`;
+				state.currentTaskId = task.id;
+				saveState(cwd, state);
 
-		remainingTasks = stillPending;
+				if (onUpdate) {
+					onUpdate({
+						content: [
+							{
+								type: "text" as const,
+								text: `Running Task ${task.id}/${parsed.tasks.length}: ${task.title} (${task.agent})`,
+							},
+						],
+						details,
+					});
+				}
 
-		// Exit if no progress was made this pass (prevents infinite loop)
-		if (!madeProgress && remainingTasks.length > 0) {
-			break;
+				const result = await runTaskWithRetry(task, parsed, cwd, taskTimeoutMs, outputDir, signal);
+				results.push(result);
+
+				if (result.status === "success") {
+					updateTaskCheckbox(absolutePath, task.lineStart, task.id, true);
+					completedIds.add(task.id);
+					details.completedTasks++;
+
+					if (sessionBudget && result.cost !== undefined) {
+						sessionBudget.currentCost += result.cost;
+						sessionBudget.tasksCompleted++;
+						sessionBudget.taskCosts.push({
+							taskId: task.id,
+							provider: result.provider || "unknown",
+							model: result.model || "unknown",
+							tokenUsage: result.tokenUsage || { inputTokens: 0, outputTokens: 0, totalTokens: 0 },
+							estimatedCost: result.cost,
+						});
+
+						if (!sessionBudget.alertFired && sessionBudget.currentCost >= sessionBudget.alertThreshold) {
+							sessionBudget.alertFired = true;
+						}
+						if (sessionBudget.currentCost > sessionBudget.maxCostUSD) {
+							sessionBudget.exceeded = true;
+						}
+					}
+
+					state.completedTaskIds = Array.from(completedIds);
+					state.results = results;
+					saveState(cwd, state);
+				} else if (!continueOnError) {
+					details.status = "failed";
+					state.status = "failed";
+					saveState(cwd, state);
+					break;
+				}
+			}
+
+			if (wasPaused || details.status === "failed") {
+				break;
+			}
 		}
 	}
+
+	// Collect remaining tasks that were never reached
+	const allPlacedIds = new Set(executionPlan.levels.flatMap((l) => l.tasks.map((t) => t.id)));
+	const remainingTasks = initialPendingTasks.filter((t) => !completedIds.has(t.id) && !allPlacedIds.has(t.id));
 
 	// Handle paused state - return early with pause info
 	if (wasPaused) {
@@ -3315,6 +3376,8 @@ const factory: ExtensionFactory = (pi: ExtensionAPI) => {
 				continueOnError = false,
 				archive = true,
 				taskTimeoutMs = DEFAULT_TASK_TIMEOUT_MS,
+				// Parallel execution
+				parallel: enableParallel = true,
 				// Direct mode parameters
 				gate,
 				maxRetries = 3,
@@ -3486,6 +3549,7 @@ const factory: ExtensionFactory = (pi: ExtensionAPI) => {
 					savedState.continueOnError,
 					savedState.archive,
 					savedState.taskTimeoutMs,
+					enableParallel,
 					signal,
 					onUpdate,
 				);
@@ -3591,6 +3655,7 @@ const factory: ExtensionFactory = (pi: ExtensionAPI) => {
 				continueOnError,
 				archive,
 				taskTimeoutMs,
+				enableParallel,
 				signal,
 				onUpdate,
 			);
