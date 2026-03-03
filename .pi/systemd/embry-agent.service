@@ -6,11 +6,12 @@ PartOf=embry-session.target
 [Service]
 Type=simple
 WorkingDirectory=%h/workspace/experiments/pi-mono
-ExecStart=/usr/bin/node %h/workspace/experiments/pi-mono/packages/coding-agent/dist/dbus/cli.js --cwd %h/workspace/experiments/pi-mono
+ExecStart=%h/.nvm/versions/node/v22.15.0/bin/node %h/workspace/experiments/pi-mono/packages/coding-agent/dist/dbus/cli.js --cwd %h/workspace/experiments/pi-mono
 EnvironmentFile=-%h/workspace/experiments/pi-mono/.env
 Environment=XDG_RUNTIME_DIR=/run/user/%U
-Environment=EMBRY_MIN_WORKERS=1
-Environment=EMBRY_MAX_WORKERS=4
+Environment=PATH=%h/.nvm/versions/node/v22.15.0/bin:/usr/local/bin:/usr/bin:/bin
+Environment=EMBRY_MIN_WORKERS=2
+Environment=EMBRY_MAX_WORKERS=10
 Restart=always
 RestartSec=5
 RestartMaxDelaySec=30
