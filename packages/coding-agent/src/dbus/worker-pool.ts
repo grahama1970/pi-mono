@@ -5,16 +5,18 @@
  * auto-scaling, backpressure, and event correlation.
  */
 
+import * as fs from "node:fs";
+import * as path from "node:path";
 import type { AgentEvent } from "@mariozechner/pi-agent-core";
 import type { RpcExtensionUIRequest } from "../modes/rpc/rpc-types.js";
 import { type BridgeOptions, type PooledRequest, type PoolOptions, type QueuedRequest, WorkerState } from "./types.js";
 import { Worker } from "./worker.js";
 
 const DEFAULT_POOL_OPTIONS: PoolOptions = {
-	minWorkers: 1,
-	maxWorkers: 4,
-	maxQueueDepth: 16,
-	idleTimeoutMs: 5 * 60 * 1000, // 5 minutes
+	minWorkers: 2,
+	maxWorkers: 10,
+	maxQueueDepth: 64,
+	idleTimeoutMs: 10 * 60 * 1000, // 10 minutes (Pi cold start is 8s — keep warm longer)
 	circuitBreakerThreshold: 3,
 };
 
@@ -43,9 +45,21 @@ export class WorkerPool {
 	}
 
 	async start(): Promise<void> {
-		// Spawn minimum workers
-		for (let i = 0; i < this.options.minWorkers; i++) {
-			await this.spawnWorker();
+		// Discover registered personas for affinity pre-assignment
+		const personas = this.discoverPersonas();
+
+		// Spawn workers: at least minWorkers, or one per persona (whichever is larger)
+		const targetWorkers = Math.max(this.options.minWorkers, Math.min(personas.length, this.options.maxWorkers));
+		const spawnPromises: Promise<Worker>[] = [];
+		for (let i = 0; i < targetWorkers; i++) {
+			spawnPromises.push(this.spawnWorker());
+		}
+		const workers = await Promise.all(spawnPromises);
+
+		// Pre-assign persona affinity to spawned workers
+		for (let i = 0; i < Math.min(personas.length, workers.length); i++) {
+			workers[i].personaAffinity = personas[i];
+			console.log(`[pool] Worker-${workers[i].id} affinity: ${personas[i]}`);
 		}
 
 		// Start idle check timer for auto-shrink
@@ -299,5 +313,23 @@ export class WorkerPool {
 			if (worker.isHealthy) return worker;
 		}
 		return null;
+	}
+
+	/**
+	 * Discover registered personas by scanning .pi/agents/ directory.
+	 * Returns persona names (directory names) that have an AGENTS.md file.
+	 */
+	private discoverPersonas(): string[] {
+		const cwd = this.bridgeOptions.cwd ?? process.cwd();
+		const agentsDir = path.join(cwd, ".pi", "agents");
+		try {
+			if (!fs.existsSync(agentsDir)) return [];
+			const entries = fs.readdirSync(agentsDir, { withFileTypes: true });
+			return entries
+				.filter((e) => e.isDirectory() && fs.existsSync(path.join(agentsDir, e.name, "AGENTS.md")))
+				.map((e) => e.name);
+		} catch {
+			return [];
+		}
 	}
 }
