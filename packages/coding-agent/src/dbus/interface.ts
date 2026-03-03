@@ -66,21 +66,25 @@ export const INTROSPECTION_XML = `
       <arg name="response" type="s" direction="out"/>
     </method>
 
-    <!-- Signals -->
+    <!-- Signals (all carry requestId for event correlation) -->
     <signal name="MessageUpdate">
+      <arg name="requestId" type="s"/>
       <arg name="text" type="s"/>
     </signal>
 
     <signal name="ToolExecution">
+      <arg name="requestId" type="s"/>
       <arg name="name" type="s"/>
       <arg name="args" type="s"/>
     </signal>
 
     <signal name="AgentEnd">
+      <arg name="requestId" type="s"/>
       <arg name="response" type="s"/>
     </signal>
 
     <signal name="ExtensionUIRequest">
+      <arg name="requestId" type="s"/>
       <arg name="id" type="s"/>
       <arg name="method" type="s"/>
       <arg name="title" type="s"/>
@@ -90,6 +94,7 @@ export const INTROSPECTION_XML = `
     <signal name="Ready"/>
 
     <signal name="Error">
+      <arg name="requestId" type="s"/>
       <arg name="message" type="s"/>
     </signal>
 

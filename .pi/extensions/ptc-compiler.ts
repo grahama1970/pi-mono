@@ -34,6 +34,52 @@
  *      return summarize(t1, t2, t3)
  */
 
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+
+/**
+ * Pi extension wrapper — exposes compileTasks as a callable tool.
+ * The orchestrator at packages/coding-agent/examples/custom-tools/orchestrate/
+ * imports the library functions directly. This wrapper makes them available
+ * as a Pi tool so agents can invoke DAG compilation from prompts.
+ */
+export default function ptcCompiler(pi: ExtensionAPI) {
+	pi.registerTool({
+		name: "ptc_compile",
+		description:
+			"Compile a task list into a DAG execution plan. Groups independent tasks into parallel levels using Kahn's algorithm. Returns estimated round-trips and max parallelism.",
+		parameters: {
+			type: "object" as const,
+			properties: {
+				tasks: {
+					type: "array",
+					description: "Array of {id, title, dependencies: number[]} objects",
+					items: {
+						type: "object",
+						properties: {
+							id: { type: "number" },
+							title: { type: "string" },
+							dependencies: { type: "array", items: { type: "number" } },
+						},
+						required: ["id", "title", "dependencies"],
+					},
+				},
+				completed_ids: {
+					type: "array",
+					description: "Array of task IDs already completed",
+					items: { type: "number" },
+				},
+			},
+			required: ["tasks"],
+		} as any,
+		execute: async (_toolCallId: string, params: unknown) => {
+			const args = params as { tasks: ParsedTaskMinimal[]; completed_ids?: number[] };
+			const completedSet = new Set(args.completed_ids ?? []);
+			const plan = compileTasks(args.tasks, completedSet);
+			return formatExecutionPlan(plan);
+		},
+	} as any);
+}
+
 export interface ParsedTaskMinimal {
 	id: number;
 	title: string;

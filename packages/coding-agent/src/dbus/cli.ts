@@ -16,7 +16,14 @@ import { AgentDBusBridge } from "./bridge.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-function parseArgs(): { cwd?: string; provider?: string; model?: string; sessionFile?: string } {
+function parseArgs(): {
+	cwd?: string;
+	provider?: string;
+	model?: string;
+	sessionFile?: string;
+	minWorkers?: number;
+	maxWorkers?: number;
+} {
 	const args = process.argv.slice(2);
 	const result: Record<string, string> = {};
 
@@ -34,20 +41,33 @@ function parseArgs(): { cwd?: string; provider?: string; model?: string; session
 			case "--session":
 				result.sessionFile = args[++i];
 				break;
+			case "--min-workers":
+				result.minWorkers = args[++i];
+				break;
+			case "--max-workers":
+				result.maxWorkers = args[++i];
+				break;
 			case "--help":
 			case "-h":
 				console.log("Usage: pi-dbus [--cwd DIR] [--provider PROVIDER] [--model MODEL] [--session FILE]");
+				console.log("              [--min-workers N] [--max-workers N]");
 				console.log("");
 				console.log("Registers org.embry.Agent on the D-Bus session bus.");
-				console.log("Pi runs as a child process in RPC mode.");
+				console.log("Pi runs as child process(es) in RPC mode via a worker pool.");
 				console.log("");
 				console.log("Options:");
-				console.log("  --session FILE   Resume from a specific session file");
+				console.log("  --session FILE     Resume from a specific session file");
+				console.log("  --min-workers N    Minimum worker pool size (default: 1, env: EMBRY_MIN_WORKERS)");
+				console.log("  --max-workers N    Maximum worker pool size (default: 4, env: EMBRY_MAX_WORKERS)");
 				process.exit(0);
 		}
 	}
 
-	return result;
+	return {
+		...result,
+		minWorkers: result.minWorkers ? Number.parseInt(result.minWorkers, 10) : undefined,
+		maxWorkers: result.maxWorkers ? Number.parseInt(result.maxWorkers, 10) : undefined,
+	} as any;
 }
 
 async function main(): Promise<void> {
@@ -56,13 +76,24 @@ async function main(): Promise<void> {
 	// Pi CLI is at dist/cli.js, two dirs up from dist/dbus/cli.js
 	const piCliPath = resolve(__dirname, "..", "cli.js");
 
-	const bridge = new AgentDBusBridge({
-		cwd: opts.cwd ?? process.cwd(),
-		provider: opts.provider,
-		model: opts.model,
-		cliPath: piCliPath,
-		sessionFile: opts.sessionFile,
-	});
+	// Pool sizing: CLI flags > env vars > defaults
+	const minWorkers =
+		opts.minWorkers ??
+		(process.env.EMBRY_MIN_WORKERS ? Number.parseInt(process.env.EMBRY_MIN_WORKERS, 10) : undefined);
+	const maxWorkers =
+		opts.maxWorkers ??
+		(process.env.EMBRY_MAX_WORKERS ? Number.parseInt(process.env.EMBRY_MAX_WORKERS, 10) : undefined);
+
+	const bridge = new AgentDBusBridge(
+		{
+			cwd: opts.cwd ?? process.cwd(),
+			provider: opts.provider,
+			model: opts.model,
+			cliPath: piCliPath,
+			sessionFile: opts.sessionFile,
+		},
+		{ minWorkers, maxWorkers },
+	);
 
 	// Graceful shutdown
 	const shutdown = async () => {

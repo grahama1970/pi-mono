@@ -9,9 +9,16 @@ WorkingDirectory=%h/workspace/experiments/pi-mono
 ExecStart=/usr/bin/node %h/workspace/experiments/pi-mono/packages/coding-agent/dist/dbus/cli.js --cwd %h/workspace/experiments/pi-mono
 EnvironmentFile=-%h/workspace/experiments/pi-mono/.env
 Environment=XDG_RUNTIME_DIR=/run/user/%U
+Environment=EMBRY_MIN_WORKERS=1
+Environment=EMBRY_MAX_WORKERS=4
 Restart=always
 RestartSec=5
 RestartMaxDelaySec=30
+ProtectSystem=strict
+PrivateTmp=yes
+NoNewPrivileges=true
+ProtectHome=read-only
+RestrictSUIDSGID=yes
 
 [Install]
 WantedBy=embry-session.target
