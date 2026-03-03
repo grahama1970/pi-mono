@@ -40,7 +40,7 @@ export enum RequestPriority {
 export interface QueuedRequest {
 	id: string;
 	priority: RequestPriority;
-	type: "ask" | "askAsync" | "steer" | "followUp" | "abort" | "askWithHints" | "askAs";
+	type: "ask" | "askAsync" | "steer" | "followUp" | "abort" | "askWithHints" | "askAs" | "askAsAsync";
 	prompt?: string;
 	hints?: RequestHints;
 	persona?: string;
@@ -54,4 +54,31 @@ export interface RequestHints {
 	model?: string;
 	provider?: string;
 	thinking?: string;
+}
+
+// --- Phase 5: Multi-Tenant Worker Pool ---
+
+export enum WorkerState {
+	STARTING = "starting",
+	IDLE = "idle",
+	BUSY = "busy",
+	DRAINING = "draining",
+	CRASHED = "crashed",
+}
+
+export interface PooledRequest extends QueuedRequest {
+	enqueuedAt: number;
+}
+
+export interface PoolOptions {
+	minWorkers: number;
+	maxWorkers: number;
+	maxQueueDepth: number;
+	idleTimeoutMs: number;
+	circuitBreakerThreshold: number;
+}
+
+export interface BridgePoolOptions {
+	minWorkers?: number;
+	maxWorkers?: number;
 }
