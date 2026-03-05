@@ -1,5 +1,5 @@
 /**
- * Pi extension — 6 WezTerm tools + /panes command.
+ * Pi extension — 12 WezTerm tools + /panes command.
  *
  * Control flow: Embry OS → Pi (D-Bus) → WezTerm (CLI)
  *
@@ -64,6 +64,7 @@ export default function weztermExtension(pi: ExtensionAPI) {
 		}),
 		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
 			const { workspace } = params as { workspace?: string };
+			const effectiveWorkspace = workspace ?? cli.currentWorkspace();
 			let panes: PaneInfo[];
 			try {
 				panes = await cli.listPanes(_signal);
@@ -74,12 +75,183 @@ export default function weztermExtension(pi: ExtensionAPI) {
 				};
 			}
 
-			if (workspace) {
-				panes = panes.filter((p) => p.workspace === workspace);
+			if (effectiveWorkspace) {
+				panes = panes.filter((p) => p.workspace === effectiveWorkspace);
 			}
 			return {
 				content: [{ type: "text", text: JSON.stringify(panes, null, 2) }],
-				details: { count: panes.length, workspace: workspace ?? "all" },
+				details: { count: panes.length, workspace: effectiveWorkspace ?? "all" },
+			};
+		},
+	});
+
+	pi.registerTool({
+		name: "wezterm_list_workspaces",
+		label: "List Workspaces",
+		description:
+			"List all WezTerm workspaces with pane counts and active status. Returns workspace names, pane counts, and which workspace is currently active.",
+		parameters: Type.Object({}),
+		async execute(_toolCallId, _params, _signal, _onUpdate, _ctx) {
+			try {
+				const workspaces = await cli.listWorkspaces(_signal);
+				return {
+					content: [{ type: "text", text: JSON.stringify(workspaces, null, 2) }],
+					details: { count: workspaces.length },
+				};
+			} catch (e) {
+				return {
+					content: [
+						{ type: "text", text: `Failed to list workspaces: ${e instanceof Error ? e.message : String(e)}` },
+					],
+					details: { error: true, count: 0 },
+				};
+			}
+		},
+	});
+
+	pi.registerTool({
+		name: "wezterm_switch_workspace",
+		label: "Switch Workspace",
+		description: "Switch to a named WezTerm workspace by activating one of its panes.",
+		parameters: Type.Object({
+			workspace: Type.String({ description: "Name of the workspace to switch to" }),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { workspace } = params as { workspace: string };
+			try {
+				await cli.switchWorkspace(workspace, _signal);
+			} catch (e) {
+				return {
+					content: [
+						{ type: "text", text: `Failed to switch workspace: ${e instanceof Error ? e.message : String(e)}` },
+					],
+					details: { error: true, workspace },
+				};
+			}
+			return {
+				content: [{ type: "text", text: `Switched to workspace "${workspace}"` }],
+				details: { workspace },
+			};
+		},
+	});
+
+	pi.registerTool({
+		name: "wezterm_rename_workspace",
+		label: "Rename Workspace",
+		description: "Rename an existing WezTerm workspace.",
+		parameters: Type.Object({
+			old_name: Type.String({ description: "Current workspace name" }),
+			new_name: Type.String({ description: "New workspace name" }),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { old_name, new_name } = params as { old_name: string; new_name: string };
+			if (!new_name || !/^[a-zA-Z0-9_-]+$/.test(new_name)) {
+				return {
+					content: [{ type: "text", text: `Invalid workspace name: "${new_name}" (must match [a-zA-Z0-9_-]+)` }],
+					details: { error: true },
+				};
+			}
+			try {
+				await cli.renameWorkspace(old_name, new_name, _signal);
+			} catch (e) {
+				return {
+					content: [
+						{ type: "text", text: `Failed to rename workspace: ${e instanceof Error ? e.message : String(e)}` },
+					],
+					details: { error: true, old_name, new_name },
+				};
+			}
+			return {
+				content: [{ type: "text", text: `Renamed workspace "${old_name}" to "${new_name}"` }],
+				details: { old_name, new_name },
+			};
+		},
+	});
+
+	pi.registerTool({
+		name: "wezterm_close_workspace",
+		label: "Close Workspace",
+		description:
+			"Close an entire WezTerm workspace by killing all its panes. Cannot close the last remaining workspace.",
+		parameters: Type.Object({
+			workspace: Type.String({ description: "Name of the workspace to close" }),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { workspace } = params as { workspace: string };
+			try {
+				const workspaces = await cli.listWorkspaces(_signal);
+				if (workspaces.length <= 1) {
+					return {
+						content: [{ type: "text", text: "Cannot close the last remaining workspace" }],
+						details: { error: true, workspace },
+					};
+				}
+				const count = await cli.closeWorkspace(workspace, _signal);
+				return {
+					content: [{ type: "text", text: `Closed workspace "${workspace}" (${count} panes killed)` }],
+					details: { workspace, panesKilled: count },
+				};
+			} catch (e) {
+				return {
+					content: [
+						{ type: "text", text: `Failed to close workspace: ${e instanceof Error ? e.message : String(e)}` },
+					],
+					details: { error: true, workspace },
+				};
+			}
+		},
+	});
+
+	pi.registerTool({
+		name: "wezterm_send_keys",
+		label: "Send Keys",
+		description:
+			"Send key sequences to a WezTerm pane. Use named keys like 'Ctrl-C', 'Enter', 'Tab', 'Escape', 'Up', 'Down', etc. Single characters are sent as-is.",
+		parameters: Type.Object({
+			pane_id: Type.Number({ description: "Target pane ID" }),
+			keys: Type.Array(Type.String(), {
+				description:
+					"Key sequence. Named keys: Ctrl-C, Ctrl-D, Ctrl-Z, Ctrl-L, Ctrl-A, Ctrl-E, Ctrl-K, Ctrl-U, Ctrl-W, Ctrl-R, Enter, Tab, Escape, Backspace, Up, Down, Left, Right, Home, End, PageUp, PageDown, Delete. Single chars sent as-is.",
+			}),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { pane_id, keys } = params as { pane_id: number; keys: string[] };
+			try {
+				await cli.sendKeys(pane_id, keys, _signal);
+			} catch (e) {
+				return {
+					content: [{ type: "text", text: `Failed to send keys: ${e instanceof Error ? e.message : String(e)}` }],
+					details: { error: true, paneId: pane_id },
+				};
+			}
+			return {
+				content: [{ type: "text", text: `Sent ${keys.length} key(s) to pane ${pane_id}: ${keys.join(", ")}` }],
+				details: { paneId: pane_id, keys },
+			};
+		},
+	});
+
+	pi.registerTool({
+		name: "wezterm_kill_pane",
+		label: "Kill Pane",
+		description: "Kill/close a specific WezTerm pane by its ID.",
+		parameters: Type.Object({
+			pane_id: Type.Number({ description: "Pane ID to kill" }),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { pane_id } = params as { pane_id: number };
+			try {
+				await cli.killPane(pane_id, _signal);
+				managedPanes.delete(pane_id);
+			} catch (e) {
+				return {
+					content: [{ type: "text", text: `Failed to kill pane: ${e instanceof Error ? e.message : String(e)}` }],
+					details: { error: true, paneId: pane_id },
+				};
+			}
+			return {
+				content: [{ type: "text", text: `Killed pane ${pane_id}` }],
+				details: { paneId: pane_id },
 			};
 		},
 	});

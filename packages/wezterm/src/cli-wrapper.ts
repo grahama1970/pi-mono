@@ -4,9 +4,15 @@
  */
 
 import { execFile } from "node:child_process";
-import type { PaneInfo, SpawnWorkspaceOptions, SplitPaneOptions } from "./types.js";
+import type { PaneInfo, SpawnWorkspaceOptions, SplitPaneOptions, WorkspaceInfo } from "./types.js";
+import { KEY_SEQUENCES } from "./types.js";
 
 const WEZTERM = process.env.WEZTERM_EXECUTABLE ?? "wezterm";
+
+/** Read workspace from environment for workspace-relative routing */
+export function currentWorkspace(): string | undefined {
+	return process.env.WEZMUX_WORKSPACE_ID || undefined;
+}
 
 function exec(args: string[], signal?: AbortSignal): Promise<string> {
 	return new Promise((resolve, reject) => {
@@ -122,6 +128,74 @@ export async function getText(
 export async function activatePane(paneId: number, signal?: AbortSignal): Promise<void> {
 	validatePaneId(paneId);
 	await exec(["activate-pane", "--pane-id", String(paneId)], signal);
+}
+
+export async function listWorkspaces(signal?: AbortSignal): Promise<WorkspaceInfo[]> {
+	const panes = await listPanes(signal);
+	const workspaceMap = new Map<string, { paneIds: number[]; hasActive: boolean }>();
+
+	for (const pane of panes) {
+		const ws = workspaceMap.get(pane.workspace);
+		if (ws) {
+			ws.paneIds.push(pane.pane_id);
+			if (pane.is_active) ws.hasActive = true;
+		} else {
+			workspaceMap.set(pane.workspace, {
+				paneIds: [pane.pane_id],
+				hasActive: pane.is_active,
+			});
+		}
+	}
+
+	return Array.from(workspaceMap.entries()).map(([name, ws]) => ({
+		name,
+		paneCount: ws.paneIds.length,
+		isActive: ws.hasActive,
+		paneIds: ws.paneIds,
+	}));
+}
+
+export async function renameWorkspace(oldName: string, newName: string, signal?: AbortSignal): Promise<void> {
+	await exec(["rename-workspace", "--workspace", oldName, newName], signal);
+}
+
+export async function switchWorkspace(name: string, signal?: AbortSignal): Promise<void> {
+	const panes = await listPanes(signal);
+	const targetPane = panes.find((p) => p.workspace === name);
+	if (!targetPane) {
+		throw new Error(`Workspace "${name}" not found`);
+	}
+	await activatePane(targetPane.pane_id, signal);
+}
+
+export async function closeWorkspace(name: string, signal?: AbortSignal): Promise<number> {
+	const panes = await listPanes(signal);
+	const workspacePanes = panes.filter((p) => p.workspace === name);
+	if (workspacePanes.length === 0) {
+		throw new Error(`Workspace "${name}" not found`);
+	}
+	for (const pane of workspacePanes) {
+		await killPane(pane.pane_id, signal);
+	}
+	return workspacePanes.length;
+}
+
+export async function killPane(paneId: number, signal?: AbortSignal): Promise<void> {
+	validatePaneId(paneId);
+	await exec(["kill-pane", "--pane-id", String(paneId)], signal);
+}
+
+export async function sendKeys(paneId: number, keys: string[], signal?: AbortSignal): Promise<void> {
+	validatePaneId(paneId);
+	const sequence = keys
+		.map((key) => {
+			const seq = KEY_SEQUENCES[key];
+			if (seq) return seq;
+			if (key.length === 1) return key;
+			throw new Error(`Unknown key: "${key}". Valid keys: ${Object.keys(KEY_SEQUENCES).join(", ")}`);
+		})
+		.join("");
+	await exec(["send-text", "--pane-id", String(paneId), "--no-paste", sequence], signal);
 }
 
 export async function spawnWorkspace(opts: SpawnWorkspaceOptions, signal?: AbortSignal): Promise<number> {
