@@ -1,0 +1,192 @@
+#!/usr/bin/env python3
+"""
+embry-wezterm-bridge — D-Bus helper for WezTerm agent keybindings.
+Requires Python 3.9+.
+
+Sends Ask, Steer, FollowUp, and Abort commands to org.embry.Agent
+via busctl. Designed to be called from WezTerm Lua callbacks.
+
+Usage:
+    embry-wezterm-bridge ask "your prompt here"
+    embry-wezterm-bridge steer "steering message"
+    embry-wezterm-bridge followup "follow-up message"
+    embry-wezterm-bridge abort
+    embry-wezterm-bridge state
+"""
+
+import json
+import re
+import subprocess
+import sys
+from typing import Tuple
+
+if sys.version_info < (3, 9):
+    print("Error: Python 3.9+ required", file=sys.stderr)
+    sys.exit(1)
+
+BUS_NAME = "org.embry.Agent"
+OBJECT_PATH = "/org/embry/Agent"
+INTERFACE = "org.embry.Agent"
+
+
+def busctl_call(method: str, signature: str = "", *args: str) -> Tuple[bool, str]:
+    """Call a D-Bus method via busctl. Returns (success, stdout)."""
+    cmd = [
+        "busctl", "--user", "call",
+        BUS_NAME, OBJECT_PATH, INTERFACE,
+        method,
+    ]
+    if signature:
+        cmd.append(signature)
+        cmd.extend(args)
+
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        try:
+            stdout, stderr = proc.communicate(timeout=10)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.communicate()  # reap the zombie
+            return False, "timeout"
+        if proc.returncode == 0:
+            return True, stdout.strip()
+        else:
+            err_msg = stderr.strip() or f"busctl exited with code {proc.returncode}"
+            return False, err_msg
+    except OSError as e:
+        return False, f"busctl not available: {e}"
+
+
+def _agent_offline_hint(out: str) -> bool:
+    """Check if the error indicates the agent or D-Bus is offline."""
+    lower = out.lower()
+    return any(hint in lower for hint in (
+        "not found", "unknown", "no such file", "failed to connect",
+        "connection refused", "no such service",
+    ))
+
+
+def cmd_ask(prompt: str) -> int:
+    """Send an AskAsync request to the agent."""
+    if not prompt.strip():
+        print("Error: prompt cannot be empty", file=sys.stderr)
+        return 1
+    ok, out = busctl_call("AskAsync", "s", prompt)
+    if ok:
+        print(f"Asked: {prompt[:60]}...")
+        return 0
+
+    if _agent_offline_hint(out):
+        print(f"Agent offline or D-Bus service not running: {out}", file=sys.stderr)
+        print("Start the agent with: pi --mode rpc", file=sys.stderr)
+    else:
+        print(f"Failed to ask: {out}", file=sys.stderr)
+    return 1
+
+
+def cmd_steer(message: str) -> int:
+    """Send a Steer message to redirect the running agent."""
+    if not message.strip():
+        print("Error: message cannot be empty", file=sys.stderr)
+        return 1
+    ok, out = busctl_call("Steer", "s", message)
+    if ok:
+        print(f"Steered: {message[:60]}...")
+        return 0
+    print(f"Failed to steer: {out}", file=sys.stderr)
+    return 1
+
+
+def cmd_followup(message: str) -> int:
+    """Send a FollowUp message after agent completes."""
+    if not message.strip():
+        print("Error: message cannot be empty", file=sys.stderr)
+        return 1
+    ok, out = busctl_call("FollowUp", "s", message)
+    if ok:
+        print(f"Follow-up: {message[:60]}...")
+        return 0
+    print(f"Failed to follow up: {out}", file=sys.stderr)
+    return 1
+
+
+def cmd_abort() -> int:
+    """Abort the running agent."""
+    ok, out = busctl_call("Abort")
+    if ok:
+        print("Agent aborted.")
+        return 0
+    print(f"Failed to abort: {out}", file=sys.stderr)
+    return 1
+
+
+def cmd_state() -> int:
+    """Get and print the current agent state."""
+    ok, out = busctl_call("GetState")
+    if not ok:
+        if _agent_offline_hint(out):
+            print("Agent offline (D-Bus service not running)", file=sys.stderr)
+        else:
+            print(f"Failed to get state: {out}", file=sys.stderr)
+        return 1
+
+    # Parse busctl output: s "json..."
+    match = re.match(r'^s "(.+)"$', out)
+    if match:
+        json_str = match.group(1).replace('\\"', '"')
+        try:
+            state = json.loads(json_str)
+            print(json.dumps(state, indent=2))
+            return 0
+        except json.JSONDecodeError:
+            pass
+
+    # Could not parse — print raw output and signal failure
+    print(out, file=sys.stderr)
+    return 1
+
+
+COMMANDS = {
+    "ask": (cmd_ask, 1, "ask <prompt>"),
+    "steer": (cmd_steer, 1, "steer <message>"),
+    "followup": (cmd_followup, 1, "followup <message>"),
+    "abort": (cmd_abort, 0, "abort"),
+    "state": (cmd_state, 0, "state"),
+}
+
+
+def main() -> int:
+    if len(sys.argv) < 2 or sys.argv[1] in ("-h", "--help"):
+        print("Usage: embry-wezterm-bridge <command> [args]")
+        print("\nCommands:")
+        for name, (_, _, usage) in sorted(COMMANDS.items()):
+            print(f"  {usage}")
+        return 0
+
+    cmd_name = sys.argv[1]
+    if cmd_name not in COMMANDS:
+        print(f"Unknown command: {cmd_name}", file=sys.stderr)
+        return 1
+
+    func, nargs, usage = COMMANDS[cmd_name]
+    remaining = sys.argv[2:]
+
+    if len(remaining) < nargs:
+        print(f"Usage: embry-wezterm-bridge {usage}", file=sys.stderr)
+        return 1
+
+    if nargs == 0:
+        return func()
+    elif nargs == 1:
+        return func(" ".join(remaining))
+    else:
+        return func(*remaining[:nargs])
+
+
+if __name__ == "__main__":
+    sys.exit(main())
