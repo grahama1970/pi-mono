@@ -55,3 +55,37 @@ export interface SpawnWorkspaceOptions {
 	cwd?: string;
 	command?: string[];
 }
+
+export interface WorkspaceInfo {
+	name: string;
+	paneCount: number;
+	isActive: boolean;
+	paneIds: number[];
+}
+
+/** Key name → escape sequence mapping for sendKeys */
+export const KEY_SEQUENCES: Record<string, string> = {
+	Enter: "\r",
+	Tab: "\t",
+	Escape: "\x1b",
+	Backspace: "\x7f",
+	"Ctrl-C": "\x03",
+	"Ctrl-D": "\x04",
+	"Ctrl-Z": "\x1a",
+	"Ctrl-L": "\x0c",
+	"Ctrl-A": "\x01",
+	"Ctrl-E": "\x05",
+	"Ctrl-K": "\x0b",
+	"Ctrl-U": "\x15",
+	"Ctrl-W": "\x17",
+	"Ctrl-R": "\x12",
+	Up: "\x1b[A",
+	Down: "\x1b[B",
+	Right: "\x1b[C",
+	Left: "\x1b[D",
+	Home: "\x1b[H",
+	End: "\x1b[F",
+	PageUp: "\x1b[5~",
+	PageDown: "\x1b[6~",
+	Delete: "\x1b[3~",
+};

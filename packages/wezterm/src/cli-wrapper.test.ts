@@ -73,3 +73,58 @@ describe("spawnWorkspace error handling", () => {
 		await expect(cli.spawnWorkspace({ workspace: "test-ws" })).rejects.toThrow();
 	});
 });
+
+describe("validatePaneId (via killPane)", () => {
+	it("rejects negative pane IDs", async () => {
+		await expect(cli.killPane(-1)).rejects.toThrow("Invalid pane_id");
+	});
+
+	it("rejects float pane IDs", async () => {
+		await expect(cli.killPane(2.5)).rejects.toThrow("Invalid pane_id");
+	});
+});
+
+describe("validatePaneId (via sendKeys)", () => {
+	it("rejects negative pane IDs", async () => {
+		await expect(cli.sendKeys(-1, ["Enter"])).rejects.toThrow("Invalid pane_id");
+	});
+});
+
+describe("sendKeys validation", () => {
+	it("rejects unknown key names", async () => {
+		await expect(cli.sendKeys(0, ["FakeKey"])).rejects.toThrow("Unknown key");
+	});
+
+	it("accepts named keys", async () => {
+		// This will fail at exec level (no wezterm), but should pass validation
+		await expect(cli.sendKeys(0, ["Ctrl-C", "Enter"])).rejects.not.toThrow("Unknown key");
+	});
+
+	it("accepts single characters", async () => {
+		await expect(cli.sendKeys(0, ["a", "b", "c"])).rejects.not.toThrow("Unknown key");
+	});
+});
+
+describe("listWorkspaces error handling", () => {
+	it("fails gracefully when WezTerm is not running", { timeout: 15_000 }, async () => {
+		await expect(cli.listWorkspaces()).rejects.toThrow();
+	});
+});
+
+describe("renameWorkspace error handling", () => {
+	it("fails gracefully when WezTerm is not running", { timeout: 15_000 }, async () => {
+		await expect(cli.renameWorkspace("old", "new")).rejects.toThrow();
+	});
+});
+
+describe("switchWorkspace error handling", () => {
+	it("fails gracefully when WezTerm is not running", { timeout: 15_000 }, async () => {
+		await expect(cli.switchWorkspace("test")).rejects.toThrow();
+	});
+});
+
+describe("closeWorkspace error handling", () => {
+	it("fails gracefully when WezTerm is not running", { timeout: 15_000 }, async () => {
+		await expect(cli.closeWorkspace("test")).rejects.toThrow();
+	});
+});
