@@ -26,6 +26,12 @@ config.adjust_window_size_when_changing_font_size = false
 -- Status bar
 config.enable_scroll_bar = false
 
+-- Pane dimming (unfocused panes)
+config.inactive_pane_hsb = {
+	saturation = 0.9,
+	brightness = 0.85,
+}
+
 -- Sidebar (workspace navigator + agent state)
 config.enable_sidebar = true
 config.sidebar_position = "Left"
