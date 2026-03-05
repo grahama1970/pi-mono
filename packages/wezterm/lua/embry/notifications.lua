@@ -143,6 +143,20 @@ function M.setup(config)
 		})
 	end)
 
+	-- Listen for OSC 777/9 toast notifications from terminal programs
+	-- This increments unread counts for the workspace containing the pane
+	wezterm.on("toast-notification", function(window, pane)
+		local ws = window:active_workspace()
+		if ws then
+			-- The toast was already shown by the Rust handler;
+			-- we just need to track unread state for the sidebar
+			local active = wezterm.mux.get_active_workspace and wezterm.mux.get_active_workspace()
+			if ws ~= active then
+				unread_counts[ws] = (unread_counts[ws] or 0) + 1
+			end
+		end
+	end)
+
 	wezterm.on("embry-error", function(err_body)
 		local msg = type(err_body) == "string" and err_body or "Agent error occurred"
 		local active = wezterm.mux.get_active_workspace and wezterm.mux.get_active_workspace()
