@@ -1,0 +1,30 @@
+{
+	"name": "@embry/pi-wezterm",
+	"version": "0.1.0",
+	"description": "Pi extension for WezTerm terminal control — spawn panes, send commands, read output",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "tsc -p tsconfig.build.json",
+		"install-lua": "bash scripts/install.sh"
+	},
+	"dependencies": {
+		"@mariozechner/pi-coding-agent": "0.37.3",
+		"@mariozechner/pi-ai": "0.37.3",
+		"@sinclair/typebox": "^0.34.0"
+	},
+	"devDependencies": {
+		"typescript": "^5.7.0"
+	},
+	"files": [
+		"dist",
+		"bin",
+		"lua",
+		"scripts"
+	]
+}
