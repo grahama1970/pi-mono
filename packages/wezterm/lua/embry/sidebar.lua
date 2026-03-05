@@ -1,9 +1,13 @@
--- embry/sidebar.lua — Sidebar content formatter for agent state display
--- Formats agent state into structured text for the WezTerm sidebar widget.
+-- embry/sidebar.lua — Sidebar workspace list + agent state display
+-- Sends workspace entries and agent state to the native sidebar widget.
 local wezterm = require("wezterm")
 local state = require("embry.state")
 
 local M = {}
+
+-- Workspace color/pin state (persisted per-session in Lua)
+local workspace_colors = {}
+local workspace_pinned = {}
 
 -- Shorten model names for display
 local MODEL_SHORT = {
@@ -35,47 +39,29 @@ local function shorten_model(name)
 	return short
 end
 
-local function format_sidebar_content(agent)
+local function format_agent_content(agent)
 	local lines = {}
-
-	-- Header
-	table.insert(lines, "--- Embry Agent ---")
-	table.insert(lines, "")
 
 	if not agent.online then
 		table.insert(lines, "Status: Offline")
-		table.insert(lines, "")
-		table.insert(lines, "Agent not running.")
-		table.insert(lines, "Start with: pi --mode rpc")
 		return table.concat(lines, "\n")
 	end
 
-	-- Status
 	if agent.isStreaming then
 		table.insert(lines, "Status: Streaming...")
 	else
 		table.insert(lines, "Status: Ready")
 	end
-	table.insert(lines, "")
 
-	-- Model
 	table.insert(lines, "Model: " .. shorten_model(agent.currentModel))
 
-	-- Thinking level
 	local thinking = agent.thinkingLevel or "off"
 	table.insert(lines, "Thinking: " .. (THINKING_LABELS[thinking] or thinking))
-	table.insert(lines, "")
 
-	-- Session info
 	if agent.sessionName and agent.sessionName ~= "" then
 		table.insert(lines, "Session: " .. agent.sessionName)
 	end
-	if agent.sessionId and agent.sessionId ~= "" then
-		local short_id = agent.sessionId:sub(1, 8)
-		table.insert(lines, "ID: " .. short_id .. "...")
-	end
 
-	-- Message count
 	if agent.messageCount and agent.messageCount > 0 then
 		table.insert(lines, "Messages: " .. tostring(agent.messageCount))
 	end
@@ -83,19 +69,56 @@ local function format_sidebar_content(agent)
 	return table.concat(lines, "\n")
 end
 
+local function collect_workspaces(window)
+	local mux_window = window:mux_window()
+	if not mux_window then
+		return {}
+	end
+
+	local active_workspace = mux_window:get_workspace()
+	local all_workspaces = wezterm.mux.get_workspace_names()
+	local entries = {}
+
+	for i, ws_name in ipairs(all_workspaces) do
+		table.insert(entries, {
+			name = ws_name,
+			color = workspace_colors[ws_name],
+			pinned = workspace_pinned[ws_name] or false,
+			order = i,
+			unread_count = 0,
+			active = (ws_name == active_workspace),
+		})
+	end
+
+	return entries
+end
+
+-- Public API for Lua scripts to set workspace colors
+function M.set_workspace_color(name, color)
+	workspace_colors[name] = color
+end
+
+function M.set_workspace_pinned(name, pinned)
+	workspace_pinned[name] = pinned
+end
+
 function M.setup(_config)
 	wezterm.on("update-status", function(window, _pane)
-		local ok, agent = pcall(state.get)
-		if not ok then
-			return
+		-- Update workspace list
+		local ws_ok, entries = pcall(collect_workspaces, window)
+		if ws_ok and entries then
+			pcall(function()
+				window:update_workspaces(entries)
+			end)
 		end
-		local content = format_sidebar_content(agent)
-		-- pcall: set_sidebar_content only exists on patched WezTerm builds
-		local set_ok, err = pcall(function()
-			window:set_sidebar_content(content)
-		end)
-		if not set_ok then
-			wezterm.log_warn("embry sidebar: " .. tostring(err))
+
+		-- Update agent state content
+		local ok, agent = pcall(state.get)
+		if ok then
+			local content = format_agent_content(agent)
+			pcall(function()
+				window:set_sidebar_content(content)
+			end)
 		end
 	end)
 end

@@ -26,10 +26,10 @@ config.adjust_window_size_when_changing_font_size = false
 -- Status bar
 config.enable_scroll_bar = false
 
--- Sidebar (agent state panel)
+-- Sidebar (workspace navigator + agent state)
 config.enable_sidebar = true
-config.sidebar_position = "Right"
-config.sidebar_width = "30cell"
+config.sidebar_position = "Left"
+config.sidebar_width = "24cell"
 
 -- Wire up Embry OS event handlers
 embry.setup(config)
