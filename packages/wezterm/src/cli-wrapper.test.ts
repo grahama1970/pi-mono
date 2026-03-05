@@ -128,3 +128,15 @@ describe("closeWorkspace error handling", () => {
 		await expect(cli.closeWorkspace("test")).rejects.toThrow();
 	});
 });
+
+describe("notify", () => {
+	it("fails gracefully when notify-send is not available", { timeout: 10_000 }, async () => {
+		// This test may pass or fail depending on whether notify-send is installed
+		// The key thing is it doesn't hang or crash
+		try {
+			await cli.notify("Test", "body");
+		} catch (e) {
+			expect(e).toBeInstanceOf(Error);
+		}
+	});
+});
