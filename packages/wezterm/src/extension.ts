@@ -1,5 +1,5 @@
 /**
- * Pi extension — 13 WezTerm tools + /panes command.
+ * Pi extension — 14 WezTerm tools + /panes command.
  *
  * Control flow: Embry OS → Pi (D-Bus) → WezTerm (CLI)
  *
