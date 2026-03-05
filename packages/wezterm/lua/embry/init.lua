@@ -12,6 +12,7 @@ M.notifications = require("embry.notifications")
 M.metadata = require("embry.metadata")
 M.sidebar = require("embry.sidebar")
 M.palette = require("embry.palette")
+M.session = require("embry.session")
 
 function M.setup(config)
 	M.status_bar.setup(config)
@@ -22,6 +23,7 @@ function M.setup(config)
 	M.metadata.setup(config)
 	M.sidebar.setup(config)
 	M.palette.setup(config)
+	M.session.setup(config)
 
 	-- Set workspace env vars in spawned panes (Task 1.8: cmux parity #10)
 	config.set_environment_variables = config.set_environment_variables or {}

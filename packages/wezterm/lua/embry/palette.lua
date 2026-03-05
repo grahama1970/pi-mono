@@ -27,6 +27,9 @@ local function build_palette_choices()
 		{ id = "agent_ask", label = "Ask Agent                        CTRL+SHIFT+a" },
 		{ id = "agent_steer", label = "Steer Agent                      CTRL+SHIFT+s" },
 		{ id = "agent_abort", label = "Abort Agent                      CTRL+SHIFT+q" },
+		{ id = "save_session", label = "Save Session" },
+		{ id = "save_session_as", label = "Save Session As..." },
+		{ id = "restore_session", label = "Restore Session..." },
 	}
 end
 
@@ -136,6 +139,44 @@ local function execute_action(window, pane, action_id)
 		)
 	elseif action_id == "agent_abort" then
 		wezterm.run_child_process({ "embry-wezterm-bridge", "abort" })
+	elseif action_id == "save_session" then
+		local session = require("embry.session")
+		session.save()
+	elseif action_id == "save_session_as" then
+		window:perform_action(
+			act.PromptInputLine({
+				description = "Session name:",
+				action = wezterm.action_callback(function(_w, _p, line)
+					if line and line ~= "" then
+						local session = require("embry.session")
+						session.save(line)
+					end
+				end),
+			}),
+			pane
+		)
+	elseif action_id == "restore_session" then
+		local session = require("embry.session")
+		local sessions = session.list_sessions()
+		if #sessions > 0 then
+			local choices = {}
+			for _, name in ipairs(sessions) do
+				table.insert(choices, { id = name, label = name })
+			end
+			window:perform_action(
+				act.InputSelector({
+					title = "Restore Session",
+					choices = choices,
+					fuzzy = true,
+					action = wezterm.action_callback(function(_w, _p, id)
+						if id then
+							session.restore(id)
+						end
+					end),
+				}),
+				pane
+			)
+		end
 	end
 end
 
