@@ -198,6 +198,29 @@ export async function sendKeys(paneId: number, keys: string[], signal?: AbortSig
 	await exec(["send-text", "--pane-id", String(paneId), "--no-paste", sequence], signal);
 }
 
+export async function notify(
+	title: string,
+	body: string,
+	urgency: "low" | "normal" | "critical" = "normal",
+	signal?: AbortSignal,
+): Promise<void> {
+	const args = ["notify-send", "--app-name=WezMux", `--urgency=${urgency}`, title, body];
+	return new Promise((resolve, reject) => {
+		execFile(args[0], args.slice(1), { timeout: 5_000, signal }, (err) => {
+			if (err) {
+				const code = (err as NodeJS.ErrnoException).code;
+				if (code === "ENOENT") {
+					reject(new Error("notify-send not found (install libnotify-bin)"));
+				} else {
+					reject(new Error(`notify-send failed: ${err.message}`));
+				}
+			} else {
+				resolve();
+			}
+		});
+	});
+}
+
 export async function spawnWorkspace(opts: SpawnWorkspaceOptions, signal?: AbortSignal): Promise<number> {
 	const args = ["spawn", "--new-window", "--workspace", opts.workspace];
 	if (opts.cwd) {

@@ -1,5 +1,5 @@
 /**
- * Pi extension — 12 WezTerm tools + /panes command.
+ * Pi extension — 13 WezTerm tools + /panes command.
  *
  * Control flow: Embry OS → Pi (D-Bus) → WezTerm (CLI)
  *
@@ -252,6 +252,40 @@ export default function weztermExtension(pi: ExtensionAPI) {
 			return {
 				content: [{ type: "text", text: `Killed pane ${pane_id}` }],
 				details: { paneId: pane_id },
+			};
+		},
+	});
+
+	pi.registerTool({
+		name: "wezterm_notify",
+		label: "Send Notification",
+		description: "Send a desktop notification via freedesktop notify-send. Appears in KDE/GNOME notification center.",
+		parameters: Type.Object({
+			title: Type.String({ description: "Notification title" }),
+			body: Type.Optional(Type.String({ description: "Notification body text" })),
+			urgency: Type.Optional(
+				Type.Union([Type.Literal("low"), Type.Literal("normal"), Type.Literal("critical")], {
+					description: "Urgency level (default: normal)",
+				}),
+			),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { title, body, urgency } = params as {
+				title: string;
+				body?: string;
+				urgency?: "low" | "normal" | "critical";
+			};
+			try {
+				await cli.notify(title, body ?? "", urgency, _signal);
+			} catch (e) {
+				return {
+					content: [{ type: "text", text: `Failed to notify: ${e instanceof Error ? e.message : String(e)}` }],
+					details: { error: true },
+				};
+			}
+			return {
+				content: [{ type: "text", text: `Notification sent: "${title}"` }],
+				details: { title },
 			};
 		},
 	});

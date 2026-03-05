@@ -2,6 +2,7 @@
 -- Sends workspace entries and agent state to the native sidebar widget.
 local wezterm = require("wezterm")
 local state = require("embry.state")
+local notifications = require("embry.notifications")
 
 local M = {}
 
@@ -85,7 +86,7 @@ local function collect_workspaces(window)
 			color = workspace_colors[ws_name],
 			pinned = workspace_pinned[ws_name] or false,
 			order = i,
-			unread_count = 0,
+			unread_count = notifications.get_unread(ws_name),
 			active = (ws_name == active_workspace),
 		})
 	end
@@ -104,6 +105,13 @@ end
 
 function M.setup(_config)
 	wezterm.on("update-status", function(window, _pane)
+		-- Clear unread for the currently active workspace
+		local mux_window = window:mux_window()
+		if mux_window then
+			local active_ws = mux_window:get_workspace()
+			notifications.clear_unread(active_ws)
+		end
+
 		-- Update workspace list
 		local ws_ok, entries = pcall(collect_workspaces, window)
 		if ws_ok and entries then

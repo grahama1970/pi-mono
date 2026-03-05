@@ -114,6 +114,18 @@ function M.setup(config)
 		{ key = "9", mods = "LEADER", action = act.SwitchWorkspaceRelative(8) },
 		-- LEADER+s: workspace switcher (fuzzy)
 		{ key = "s", mods = "LEADER", action = act.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }) },
+		-- LEADER+u: jump to workspace with most unread notifications
+		{
+			key = "u",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				local notifications = require("embry.notifications")
+				local ws, count = notifications.most_unread_workspace()
+				if ws and count > 0 then
+					window:perform_action(act.SwitchToWorkspace({ name = ws }), pane)
+				end
+			end),
+		},
 
 		-- === Close pane ===
 		{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
