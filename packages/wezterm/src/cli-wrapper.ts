@@ -4,6 +4,7 @@
  */
 
 import { execFile } from "node:child_process";
+import { readFile } from "node:fs/promises";
 import type { PaneInfo, SpawnWorkspaceOptions, SplitPaneOptions, WorkspaceInfo } from "./types.js";
 import { KEY_SEQUENCES } from "./types.js";
 
@@ -11,7 +12,7 @@ const WEZTERM = process.env.WEZTERM_EXECUTABLE ?? "wezterm";
 
 /** Read workspace from environment for workspace-relative routing */
 export function currentWorkspace(): string | undefined {
-	return process.env.WEZMUX_WORKSPACE_ID || undefined;
+	return process.env.PI_TERM_WORKSPACE_ID || undefined;
 }
 
 function exec(args: string[], signal?: AbortSignal): Promise<string> {
@@ -204,7 +205,7 @@ export async function notify(
 	urgency: "low" | "normal" | "critical" = "normal",
 	signal?: AbortSignal,
 ): Promise<void> {
-	const args = ["notify-send", "--app-name=WezMux", `--urgency=${urgency}`, title, body];
+	const args = ["notify-send", "--app-name=Pi Term", `--urgency=${urgency}`, title, body];
 	return new Promise((resolve, reject) => {
 		execFile(args[0], args.slice(1), { timeout: 5_000, signal }, (err) => {
 			if (err) {
@@ -231,4 +232,69 @@ export async function spawnWorkspace(opts: SpawnWorkspaceOptions, signal?: Abort
 	}
 	const stdout = await exec(args, signal);
 	return parsePaneId(stdout, "spawn");
+}
+
+/** Read the last error context written by embry-agentic.zsh precmd hook */
+export async function getLastError(): Promise<{
+	exit_code: number;
+	command: string;
+	cwd: string;
+	timestamp: number;
+} | null> {
+	const user = process.env.USER ?? process.env.LOGNAME ?? "unknown";
+	const errFile = `/tmp/embry-last-error-${user}`;
+	try {
+		const content = await readFile(errFile, "utf-8");
+		return JSON.parse(content.trim());
+	} catch {
+		return null;
+	}
+}
+
+/** Send a command to a pane, wait for output to stabilize, return the result */
+export async function interact(
+	paneId: number,
+	command: string,
+	opts: { timeoutMs?: number; settlMs?: number } = {},
+	signal?: AbortSignal,
+): Promise<string> {
+	validatePaneId(paneId);
+	const timeoutMs = opts.timeoutMs ?? 10_000;
+	const settlMs = opts.settlMs ?? 500;
+
+	// Capture current text to know what's new
+	const before = await getText(paneId, undefined, undefined, signal);
+	const beforeLines = before.split("\n").length;
+
+	// Send the command
+	await sendText(paneId, `${command}\n`, signal);
+
+	// Wait for output to stabilize (no new lines for settlMs)
+	const deadline = Date.now() + timeoutMs;
+	let lastLineCount = beforeLines;
+	let stableAt = 0;
+
+	while (Date.now() < deadline) {
+		await new Promise((r) => setTimeout(r, 200));
+		if (signal?.aborted) throw new Error("interact cancelled");
+
+		const current = await getText(paneId, undefined, undefined, signal);
+		const currentLines = current.split("\n").length;
+
+		if (currentLines !== lastLineCount) {
+			lastLineCount = currentLines;
+			stableAt = Date.now();
+		} else if (stableAt > 0 && Date.now() - stableAt >= settlMs) {
+			// Output has settled
+			break;
+		} else if (stableAt === 0) {
+			stableAt = Date.now();
+		}
+	}
+
+	// Return only the new output
+	const after = await getText(paneId, undefined, undefined, signal);
+	const afterLines = after.split("\n");
+	const newLines = afterLines.slice(beforeLines);
+	return newLines.join("\n").trim();
 }
