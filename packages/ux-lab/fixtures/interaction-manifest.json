@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "app": "UX Lab",
+  "base_url": "http://localhost:3002",
+  "surfaces": [
+    {
+      "name": "initial-load",
+      "path": "/",
+      "elements": [
+        {
+          "name": "full-viewport",
+          "selector": "#root",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full app renders on initial load",
+              "expected": "Dark background (#0a0a1a). Left toolbar visible with MODE and SHAPE sections. Center canvas with grid lines. Right panel showing PROPERTIES and AGENTS headers. Bottom area: AGENT INBOX header, course correction input with 'All agents' dropdown and green Send button, OPERATIONS section, status bar with 'Zoom: 100%' and '0 elements'. No blank/purple page. No console errors crashing the tree."
+            }
+          ]
+        },
+        {
+          "name": "toolbar",
+          "selector": "[data-testid='toolbar']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Toolbar with tool groups",
+              "expected": "Vertical toolbar on left edge. Two groups: MODE (select triangle icon in accent purple, pointer hand icon) and SHAPE (rectangle, circle, text T, line). Below: UI section with Btn, card, list, grid icons. Active tool highlighted with accent color (#7c3aed) background. Icons visible and not clipped."
+            }
+          ]
+        },
+        {
+          "name": "course-correction",
+          "selector": "[data-testid='course-correction']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Course correction chat well",
+              "expected": "Horizontal bar spanning full width. Left: 'All agents' dropdown select. Center: text input with placeholder 'Course correction...'. Right: green (#00ff88) 'Send' button. NVIS styling — dark background, dim borders."
+            },
+            {
+              "action": "click",
+              "target": "input[placeholder='Course correction...']",
+              "description": "Focus the chat input",
+              "screenshot_after": true,
+              "expected": "Input focused with visible cursor. Border or outline changes to indicate focus state (accent color or brighter border)."
+            }
+          ]
+        },
+        {
+          "name": "agent-panel",
+          "selector": "[data-testid='agent-panel']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Agent panel empty state",
+              "expected": "Panel header 'AGENTS' with count badge showing '0'. Below: 'No agents connected' dim text. Panel width ~260px, dark secondary background."
+            }
+          ]
+        },
+        {
+          "name": "properties-panel",
+          "selector": "[data-testid='properties-panel']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Properties panel empty state",
+              "expected": "Panel header 'PROPERTIES' in uppercase. Below: 'Select an element to edit its properties' dim centered text. Same width and background as agent panel."
+            }
+          ]
+        },
+        {
+          "name": "operation-log",
+          "selector": "[data-testid='operation-log']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Operation log empty state",
+              "expected": "Header 'OPERATIONS' with 'All agents' filter dropdown on right. Below: 'No operations yet' dim centered text."
+            }
+          ]
+        },
+        {
+          "name": "status-bar",
+          "selector": "[data-testid='status-bar']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Status bar at bottom",
+              "expected": "Full-width bar at very bottom. Shows 'Zoom: 100%' on left and '0 elements' next to it. Dark background, small dim text (~11px)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "with-agents",
+      "path": "/",
+      "setup_commands": [
+        "curl -s -X POST http://localhost:3001/api/v1/agents/register -H 'Content-Type: application/json' -d '{\"name\":\"test-navbar\",\"color\":\"#00ff88\",\"zone\":{\"x\":0,\"y\":0,\"width\":1024,\"height\":64}}'",
+        "curl -s -X POST http://localhost:3001/api/v1/agents/register -H 'Content-Type: application/json' -d '{\"name\":\"test-card\",\"color\":\"#44aaff\",\"zone\":{\"x\":0,\"y\":80,\"width\":512,\"height\":400}}'"
+      ],
+      "elements": [
+        {
+          "name": "agent-panel-populated",
+          "selector": "[data-testid='agent-panel']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Agent panel with registered agents",
+              "expected": "AGENTS header with count badge showing '2' or more. List of agents: 'test-navbar' with green (#00ff88) color dot and 'idle' status, 'test-card' with blue (#44aaff) color dot and 'idle' status. Each agent shows name, colored indicator, and status text."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "annotation-mode",
+      "path": "/",
+      "setup_commands": [
+        "curl -s -X POST http://localhost:3001/api/v1/annotations/load -H 'Content-Type: application/json' -d @fixtures/sample-annotations.json"
+      ],
+      "elements": [
+        {
+          "name": "mode-switcher",
+          "selector": "#root",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Mode tabs visible in top bar",
+              "expected": "Top bar shows 'UX Lab' brand followed by 'Canvas' and 'Annotate' tabs. Canvas tab active by default with ACCENT (#7c3aed) underline. Annotate tab is DIM (#505050)."
+            },
+            {
+              "action": "click",
+              "target": "button:has-text('Annotate')",
+              "description": "Switch to Annotate mode",
+              "screenshot_after": true,
+              "expected": "Annotate tab now has ACCENT underline. Canvas/toolbar/right-panel replaced by AnnotationView. Progress bar visible at top. Label bar with 5 entity chips. Token annotation area in center. Decision buttons at bottom."
+            }
+          ]
+        },
+        {
+          "name": "annotation-view",
+          "selector": "[data-testid='annotation-view']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Full annotation view layout",
+              "expected": "Dark background (#0a0a1a). Top: progress bar showing '0 / 10 completed' and 'Item 1 of 10'. Below: label bar with 5 chips (CONTROL_ID green, TECHNIQUE blue, TACTIC amber, THREAT red, EVIDENCE purple). Center: token annotation card with words from first annotation item. Right sidebar: SPARTA Context panel (tactic, technique, controls) and Source panel (collection, doc ID, page, confidence). Bottom: Accept (green), Reject (red), Skip (dim) buttons."
+            }
+          ]
+        },
+        {
+          "name": "label-bar",
+          "selector": "[data-testid='label-bar']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Entity label chips",
+              "expected": "5 chips in a row: CONTROL_ID (#00ff88), TECHNIQUE (#44aaff), TACTIC (#ffaa00), THREAT (#ff4444), EVIDENCE (#7c3aed). Each has keyboard shortcut number (1-5). All initially outline-only (no fill)."
+            },
+            {
+              "action": "click",
+              "target": "button:has-text('CONTROL_ID')",
+              "description": "Activate CONTROL_ID label",
+              "screenshot_after": true,
+              "expected": "CONTROL_ID chip now has filled green background. Other chips remain outline-only."
+            }
+          ]
+        },
+        {
+          "name": "decision-buttons",
+          "selector": "[data-testid='decision-buttons']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Accept/Reject/Skip buttons",
+              "expected": "Three buttons centered: '✓ Accept A' (green border, green tint), '✗ Reject R' (red border, red tint), '→ Skip S' (dim border). Each shows keyboard shortcut letter."
+            }
+          ]
+        },
+        {
+          "name": "sparta-context",
+          "selector": "[data-testid='sparta-context']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "SPARTA context panel for current item",
+              "expected": "Header 'SPARTA Context'. Fields: Tactic (amber badge 'Harden'), Technique (blue badge 'Credential Hardening'), Controls (green badge 'Access Control'). Related Controls section with green-bordered chips: AC-2(1), AC-2(2), AC-2(3), AC-2(4), IA-2."
+            }
+          ]
+        },
+        {
+          "name": "citation-panel",
+          "selector": "[data-testid='citation-panel']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Citation source panel",
+              "expected": "Header 'Source'. Fields: Collection 'NIST SP 800-53r5', Doc ID 'sp800-53r5-ac-2', Page '42', Confidence '95%' (green). Green confidence bar nearly full."
+            }
+          ]
+        },
+        {
+          "name": "progress-bar",
+          "selector": "[data-testid='progress-bar']",
+          "interactions": [
+            {
+              "action": "screenshot",
+              "description": "Annotation progress tracking",
+              "expected": "Text showing '0 / 10 completed' left, 'Item 1 of 10' right. Below: empty progress bar track (no colored segments yet since nothing accepted/rejected/skipped)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

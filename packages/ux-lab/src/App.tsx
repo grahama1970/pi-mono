@@ -6,10 +6,16 @@ import { Toolbar } from './components/Toolbar'
 import { Sidebar } from './components/Sidebar'
 import { PropertiesPanel } from './components/PropertiesPanel'
 import { AgentPanel } from './components/AgentPanel'
+import { ManifestPanel } from './components/ManifestPanel'
 import { OperationLog } from './components/OperationLog'
+import { CourseCorrection } from './components/CourseCorrection'
 import { ExportPanel } from './components/ExportPanel'
 import { StatusBar } from './components/StatusBar'
 import { useKeyboardShortcuts } from './components/useKeyboardShortcuts'
+import { useServerSync } from './hooks/useServerSync'
+import { AnnotationView } from './components/annotation/AnnotationView'
+
+type AppMode = 'canvas' | 'annotate'
 
 const styles = {
   app: {
@@ -47,6 +53,14 @@ const styles = {
     display: 'flex',
     gap: 4,
   },
+  modeTab: {
+    border: 'none',
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    fontSize: 12,
+    padding: '6px 12px',
+    fontWeight: 600,
+  },
   topButton: {
     border: 'none',
     backgroundColor: 'transparent',
@@ -81,8 +95,10 @@ function App() {
   const [activeTool, setActiveTool] = useState('select')
   const [sidebarVisible, setSidebarVisible] = useState(false)
   const [exportVisible, setExportVisible] = useState(false)
+  const [appMode, setAppMode] = useState<AppMode>('canvas')
 
-  useKeyboardShortcuts()
+  useKeyboardShortcuts(appMode)
+  useServerSync()
 
   const handleToolSelect = useCallback((toolId: string) => {
     setActiveTool(toolId)
@@ -93,7 +109,27 @@ function App() {
       {/* Top menu bar */}
       <div style={styles.topBar}>
         <div style={styles.topBarLeft}>
-          <span style={styles.brandName}>Paper Clone</span>
+          <span style={styles.brandName}>UX Lab</span>
+          <button
+            style={{
+              ...styles.modeTab,
+              color: appMode === 'canvas' ? NVIS.WHITE : NVIS.DIM,
+              borderBottom: appMode === 'canvas' ? `2px solid ${NVIS.ACCENT}` : '2px solid transparent',
+            }}
+            onClick={() => setAppMode('canvas')}
+          >
+            Canvas
+          </button>
+          <button
+            style={{
+              ...styles.modeTab,
+              color: appMode === 'annotate' ? NVIS.WHITE : NVIS.DIM,
+              borderBottom: appMode === 'annotate' ? `2px solid ${NVIS.ACCENT}` : '2px solid transparent',
+            }}
+            onClick={() => setAppMode('annotate')}
+          >
+            Annotate
+          </button>
         </div>
         <div style={styles.topBarButtons}>
           <button
@@ -111,24 +147,34 @@ function App() {
         </div>
       </div>
 
-      {/* Main layout: toolbar | canvas | sidebar/properties */}
-      <div style={styles.main}>
-        <Toolbar activeTool={activeTool} onToolSelect={handleToolSelect} />
+      {/* Main layout: mode-dependent */}
+      {appMode === 'canvas' ? (
+        <>
+          <div style={styles.main}>
+            <Toolbar activeTool={activeTool} onToolSelect={handleToolSelect} />
 
-        <div style={styles.canvasArea}>
-          <InfiniteCanvas width={1200} height={800} />
-          <AgentOverlay />
-        </div>
+            <div style={styles.canvasArea}>
+              <InfiniteCanvas width={1200} height={800} />
+              <AgentOverlay />
+            </div>
 
-        {sidebarVisible && <Sidebar visible={sidebarVisible} />}
-        <div style={styles.rightPanel}>
-          <PropertiesPanel />
-          <AgentPanel />
-        </div>
-      </div>
+            {sidebarVisible && <Sidebar visible={sidebarVisible} />}
+            <div style={styles.rightPanel}>
+              <PropertiesPanel />
+              <AgentPanel />
+              <ManifestPanel />
+            </div>
+          </div>
 
-      {/* Operation log */}
-      <OperationLog />
+          {/* Course correction chat well */}
+          <CourseCorrection />
+
+          {/* Operation log */}
+          <OperationLog />
+        </>
+      ) : (
+        <AnnotationView />
+      )}
 
       {/* Status bar */}
       <StatusBar />
