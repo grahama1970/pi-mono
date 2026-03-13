@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useCanvasStore } from "../store/canvasStore";
 
-export function useKeyboardShortcuts() {
+export function useKeyboardShortcuts(appMode: "canvas" | "annotate") {
 	const undo = useCanvasStore((s) => s.undo);
 	const redo = useCanvasStore((s) => s.redo);
 	const removeElements = useCanvasStore((s) => s.removeElements);
@@ -9,6 +9,9 @@ export function useKeyboardShortcuts() {
 
 	useEffect(() => {
 		const handler = (e: KeyboardEvent) => {
+			// Canvas shortcuts only fire in canvas mode
+			if (appMode !== "canvas") return;
+
 			const target = e.target as HTMLElement;
 			// Ignore shortcuts when typing in input/textarea/select
 			if (
@@ -56,5 +59,5 @@ export function useKeyboardShortcuts() {
 
 		window.addEventListener("keydown", handler);
 		return () => window.removeEventListener("keydown", handler);
-	}, [undo, redo, removeElements, setSelection]);
+	}, [appMode, undo, redo, removeElements, setSelection]);
 }

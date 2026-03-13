@@ -71,3 +71,36 @@ export interface UxDesignDocument {
 	variables: UxDesignVariables;
 	brief?: Record<string, unknown>; // parsed DESIGN_BOARD.md content
 }
+
+// --- SPARTA Annotation Types ---
+
+export interface EntityLabel {
+	start: number; // token index (inclusive)
+	end: number; // token index (exclusive)
+	label: string; // e.g. "CONTROL_ID", "TECHNIQUE", "TACTIC", "THREAT", "EVIDENCE"
+	color: string; // hex from NVIS palette
+}
+
+export interface SpartaContext {
+	tactic: string; // e.g. "TA0001"
+	technique: string; // e.g. "SA-01"
+	controlsCategory: string; // e.g. "Access Control"
+	relatedControls: string[]; // e.g. ["AC-2", "AC-3"]
+}
+
+export interface CitationSource {
+	collection: string; // e.g. "NIST_SP"
+	documentId: string; // e.g. "800-53r5"
+	pageNumber: number;
+	confidence: number; // 0-1
+}
+
+export interface AnnotationItem {
+	id: string;
+	text: string; // raw sentence
+	tokens: string[]; // word array (split on whitespace)
+	spartaContext: SpartaContext;
+	citation: CitationSource;
+	status: "pending" | "accepted" | "rejected" | "skipped";
+	labels: EntityLabel[];
+}
