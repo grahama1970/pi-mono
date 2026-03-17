@@ -7,9 +7,15 @@
  */
 process.title = "pi";
 
+import { setBedrockProviderModule } from "@mariozechner/pi-ai";
+import { bedrockProviderModule } from "@mariozechner/pi-ai/bedrock-provider";
 import { existsSync } from "fs";
 import { dirname, join } from "path";
+import { EnvHttpProxyAgent, setGlobalDispatcher } from "undici";
 import { main } from "./main.js";
+
+setGlobalDispatcher(new EnvHttpProxyAgent());
+setBedrockProviderModule(bedrockProviderModule);
 
 /**
  * Recursively find and load .env file from CWD upwards.
@@ -34,4 +40,5 @@ function loadEnv() {
 }
 
 loadEnv();
+
 main(process.argv.slice(2));

@@ -25,6 +25,7 @@ read README.md, then ask which module(s) to work on. Based on the answer, read t
 - NEVER run: `npm run dev`, `npm run build`, `npm test`
 - Only run specific tests if user instructs: `npx tsx ../../node_modules/vitest/dist/cli.js --run test/specific.test.ts`
 - Run tests from the package root, not the repo root.
+- If you create or modify a test file, you MUST run that test file and iterate until it passes.
 - When writing tests, run them, identify issues in either the test or implementation, and iterate until fixed.
 - NEVER commit unless user asks
 
@@ -36,10 +37,25 @@ When reading issues:
   gh issue view <number> --json title,body,comments,labels,state
   ```
 
+## OSS Weekend
+- If the user says `enable OSS weekend mode until X`, run `node scripts/oss-weekend.mjs --mode=close --end-date=YYYY-MM-DD --git` with the requested end date
+- If the user says `end OSS weekend mode`, run `node scripts/oss-weekend.mjs --mode=open --git`
+- The script updates `README.md`, `packages/coding-agent/README.md`, and `.github/oss-weekend.json`
+- With `--git`, the script stages only those OSS weekend files, commits them, and pushes them
+- During OSS weekend, `.github/workflows/oss-weekend-issues.yml` auto-closes new issues from non-maintainers, and `.github/workflows/pr-gate.yml` auto-closes PRs from approved non-maintainers with the weekend message
+
 When creating issues:
 - Add `pkg:*` labels to indicate which package(s) the issue affects
   - Available labels: `pkg:agent`, `pkg:ai`, `pkg:coding-agent`, `pkg:mom`, `pkg:pods`, `pkg:tui`, `pkg:web-ui`
 - If an issue spans multiple packages, add all relevant labels
+
+When posting issue/PR comments:
+- Write the full comment to a temp file and use `gh issue comment --body-file` or `gh pr comment --body-file`
+- Never pass multi-line markdown directly via `--body` in shell commands
+- Preview the exact comment text before posting
+- Post exactly one final comment unless the user explicitly asks for multiple comments
+- If a comment is malformed, delete it immediately, then post one corrected comment
+- Keep comments concise, technical, and in the user's tone
 
 When closing issues via commit:
 - Include `fixes #<number>` or `closes #<number>` in the commit message

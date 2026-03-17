@@ -38,6 +38,7 @@ export interface Args {
 	themes?: string[];
 	noThemes?: boolean;
 	listModels?: string | true;
+	offline?: boolean;
 	verbose?: boolean;
 	messages: string[];
 	fileArgs: string[];
@@ -125,7 +126,7 @@ export function parseArgs(args: string[], extensionFlags?: Map<string, { type: "
 		} else if ((arg === "--extension" || arg === "-e") && i + 1 < args.length) {
 			result.extensions = result.extensions ?? [];
 			result.extensions.push(args[++i]);
-		} else if (arg === "--no-extensions") {
+		} else if (arg === "--no-extensions" || arg === "-ne") {
 			result.noExtensions = true;
 		} else if (arg === "--skill" && i + 1 < args.length) {
 			result.skills = result.skills ?? [];
@@ -136,9 +137,9 @@ export function parseArgs(args: string[], extensionFlags?: Map<string, { type: "
 		} else if (arg === "--theme" && i + 1 < args.length) {
 			result.themes = result.themes ?? [];
 			result.themes.push(args[++i]);
-		} else if (arg === "--no-skills") {
+		} else if (arg === "--no-skills" || arg === "-ns") {
 			result.noSkills = true;
-		} else if (arg === "--no-prompt-templates") {
+		} else if (arg === "--no-prompt-templates" || arg === "-np") {
 			result.noPromptTemplates = true;
 		} else if (arg === "--no-themes") {
 			result.noThemes = true;
@@ -151,6 +152,8 @@ export function parseArgs(args: string[], extensionFlags?: Map<string, { type: "
 			}
 		} else if (arg === "--verbose") {
 			result.verbose = true;
+		} else if (arg === "--offline") {
+			result.offline = true;
 		} else if (arg.startsWith("@")) {
 			result.fileArgs.push(arg.slice(1)); // Remove @ prefix
 		} else if (arg.startsWith("--") && extensionFlags) {
@@ -180,16 +183,17 @@ ${chalk.bold("Usage:")}
   ${APP_NAME} [options] [@files...] [messages...]
 
 ${chalk.bold("Commands:")}
-  ${APP_NAME} install <source> [-l]    Install extension source and add to settings
-  ${APP_NAME} remove <source> [-l]     Remove extension source from settings
-  ${APP_NAME} update [source]          Update installed extensions (skips pinned sources)
-  ${APP_NAME} list                     List installed extensions from settings
-  ${APP_NAME} config                   Open TUI to enable/disable package resources
-  ${APP_NAME} <command> --help         Show help for install/remove/update/list
+  ${APP_NAME} install <source> [-l]     Install extension source and add to settings
+  ${APP_NAME} remove <source> [-l]      Remove extension source from settings
+  ${APP_NAME} uninstall <source> [-l]   Alias for remove
+  ${APP_NAME} update [source]           Update installed extensions (skips pinned sources)
+  ${APP_NAME} list                      List installed extensions from settings
+  ${APP_NAME} config                    Open TUI to enable/disable package resources
+  ${APP_NAME} <command> --help          Show help for install/remove/uninstall/update/list
 
 ${chalk.bold("Options:")}
   --provider <name>              Provider name (default: google)
-  --model <id>                   Model ID (default: gemini-2.5-flash)
+  --model <pattern>              Model pattern or ID (supports "provider/id" and optional ":<thinking>")
   --api-key <key>                API key (defaults to env vars)
   --system-prompt <text>         System prompt (default: coding assistant prompt)
   --append-system-prompt <text>  Append text or file contents to the system prompt
@@ -207,16 +211,17 @@ ${chalk.bold("Options:")}
                                  Available: read, bash, edit, write, grep, find, ls
   --thinking <level>             Set thinking level: off, minimal, low, medium, high, xhigh
   --extension, -e <path>         Load an extension file (can be used multiple times)
-  --no-extensions                Disable extension discovery (explicit -e paths still work)
+  --no-extensions, -ne           Disable extension discovery (explicit -e paths still work)
   --skill <path>                 Load a skill file or directory (can be used multiple times)
-  --no-skills                    Disable skills discovery and loading
+  --no-skills, -ns               Disable skills discovery and loading
   --prompt-template <path>       Load a prompt template file or directory (can be used multiple times)
-  --no-prompt-templates          Disable prompt template discovery and loading
+  --no-prompt-templates, -np     Disable prompt template discovery and loading
   --theme <path>                 Load a theme file or directory (can be used multiple times)
   --no-themes                    Disable theme discovery and loading
   --export <file>                Export session file to HTML and exit
   --list-models [search]         List available models (with optional fuzzy search)
   --verbose                      Force verbose startup (overrides quietStartup setting)
+  --offline                      Disable startup network operations (same as PI_OFFLINE=1)
   --help, -h                     Show this help
   --version, -v                  Show version number
 
@@ -243,6 +248,12 @@ ${chalk.bold("Examples:")}
 
   # Use different model
   ${APP_NAME} --provider openai --model gpt-4o-mini "Help me refactor this code"
+
+  # Use model with provider prefix (no --provider needed)
+  ${APP_NAME} --model openai/gpt-4o "Help me refactor this code"
+
+  # Use model with thinking level shorthand
+  ${APP_NAME} --model sonnet:high "Solve this complex problem"
 
   # Limit model cycling to specific models
   ${APP_NAME} --models claude-sonnet,claude-haiku,gpt-4o
@@ -281,6 +292,7 @@ ${chalk.bold("Environment Variables:")}
   ZAI_API_KEY                      - ZAI API key
   MISTRAL_API_KEY                  - Mistral API key
   MINIMAX_API_KEY                  - MiniMax API key
+  OPENCODE_API_KEY                 - OpenCode Zen/OpenCode Go API key
   KIMI_API_KEY                     - Kimi For Coding API key
   AWS_PROFILE                      - AWS profile for Amazon Bedrock
   AWS_ACCESS_KEY_ID                - AWS access key for Amazon Bedrock
@@ -289,6 +301,7 @@ ${chalk.bold("Environment Variables:")}
   AWS_REGION                       - AWS region for Amazon Bedrock (e.g., us-east-1)
   ${ENV_AGENT_DIR.padEnd(32)} - Session storage directory (default: ~/${CONFIG_DIR_NAME}/agent)
   PI_PACKAGE_DIR                   - Override package directory (for Nix/Guix store paths)
+  PI_OFFLINE                       - Disable startup network operations when set to 1/true/yes
   PI_SHARE_VIEWER_URL              - Base URL for /share command (default: https://pi.dev/session/)
   PI_AI_ANTIGRAVITY_VERSION        - Override Antigravity User-Agent version (e.g., 1.23.0)
 

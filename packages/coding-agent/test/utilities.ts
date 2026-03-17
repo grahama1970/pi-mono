@@ -6,7 +6,8 @@ import { chmodSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync }
 import { homedir, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { Agent } from "@mariozechner/pi-agent-core";
-import { getModel, getOAuthApiKey, type OAuthCredentials, type OAuthProvider } from "@mariozechner/pi-ai";
+import { getModel, type OAuthCredentials, type OAuthProvider } from "@mariozechner/pi-ai";
+import { getOAuthApiKey } from "@mariozechner/pi-ai/oauth";
 import { AgentSession } from "../src/core/agent-session.js";
 import { AuthStorage } from "../src/core/auth-storage.js";
 import { createExtensionRuntime } from "../src/core/extensions/loader.js";
@@ -119,7 +120,7 @@ export const PI_AGENT_DIR = join(homedir(), ".pi", "agent");
  * Use this for tests that need real OAuth credentials.
  */
 export function getRealAuthStorage(): AuthStorage {
-	return new AuthStorage(AUTH_PATH);
+	return AuthStorage.create(AUTH_PATH);
 }
 
 /**
@@ -214,7 +215,7 @@ export function createTestSession(options: TestSessionOptions = {}): TestSession
 		settingsManager.applyOverrides(options.settingsOverrides);
 	}
 
-	const authStorage = new AuthStorage(join(tempDir, "auth.json"));
+	const authStorage = AuthStorage.create(join(tempDir, "auth.json"));
 	const modelRegistry = new ModelRegistry(authStorage, tempDir);
 
 	const session = new AgentSession({

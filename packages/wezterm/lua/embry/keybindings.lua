@@ -5,8 +5,8 @@ local act = wezterm.action
 
 local M = {}
 
--- Bridge script (installed to ~/.local/bin by install.sh)
-local BRIDGE = "embry-wezterm-bridge"
+-- Pi CLI for agent communication (pi -p for single-shot prompts)
+local PI_CMD = "pi"
 
 function M.setup(config)
 	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
@@ -127,6 +127,110 @@ function M.setup(config)
 			end),
 		},
 
+		-- === Browser sidecar ===
+		-- LEADER+b: toggle browser
+		{
+			key = "b",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				local browser = require("embry.browser")
+				if browser.is_open(window) then
+					browser.close(window)
+				else
+					browser.open(window)
+				end
+			end),
+		},
+		-- LEADER+g: navigate browser (go to URL)
+		{
+			key = "g",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				local browser = require("embry.browser")
+				window:perform_action(
+					act.PromptInputLine({
+						description = "Navigate to URL:",
+						action = wezterm.action_callback(function(w, p, url)
+							if url and url ~= "" then
+								if not url:match("^https?://") then
+									url = "https://" .. url
+								end
+								if browser.is_open(w) then
+									browser.navigate(w, url)
+								else
+									browser.open(w, url)
+								end
+							end
+						end),
+					}),
+					pane
+				)
+			end),
+		},
+
+		-- LEADER+d: show git diff in browser for review
+		{
+			key = "d",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				local browser = require("embry.browser")
+				local ok, msg = browser.show_diff(window)
+				if not ok then
+					window:toast_notification("Pi Term", msg or "No diff available", nil, 3000)
+				end
+			end),
+		},
+
+		-- LEADER+D: show staged diff (git diff --cached)
+		{
+			key = "D",
+			mods = "LEADER|SHIFT",
+			action = wezterm.action_callback(function(window, pane)
+				local browser = require("embry.browser")
+				local ok, msg = browser.show_diff(window, "--cached")
+				if not ok then
+					window:toast_notification("Pi Term", msg or "No staged diff", nil, 3000)
+				end
+			end),
+		},
+
+		-- LEADER+SHIFT+B: split browser right
+		{
+			key = "B",
+			mods = "LEADER|SHIFT",
+			action = wezterm.action_callback(function(window, pane)
+				local browser = require("embry.browser")
+				browser.open_split(window, "right")
+			end),
+		},
+
+		-- === Sidebar focus toggle ===
+		-- LEADER+e: toggle sidebar focus / visibility
+		{
+			key = "e",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, _pane)
+				local overrides = window:get_config_overrides() or {}
+				local current = overrides.enable_sidebar
+				if current == nil then
+					current = true
+				end
+				overrides.enable_sidebar = not current
+				window:set_config_overrides(overrides)
+			end),
+		},
+
+		-- LEADER+0: pure terminal mode — collapse all panels
+		{
+			key = "0",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, _pane)
+				local overrides = window:get_config_overrides() or {}
+				overrides.enable_sidebar = false
+				window:set_config_overrides(overrides)
+			end),
+		},
+
 		-- === Close pane ===
 		{ key = "x", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
 
@@ -135,7 +239,32 @@ function M.setup(config)
 
 		-- === Agent interaction ===
 
-		-- Ask agent: opens input prompt, sends via D-Bus
+		-- LEADER+Enter: open inline Pi chat pane at bottom (or focus existing one)
+		{
+			key = "Enter",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				-- Look for an existing Pi pane in this tab
+				local tab = pane:tab()
+				if tab then
+					for _, p in ipairs(tab:panes()) do
+						local title = p:get_title()
+						if title and title:match("^pi") then
+							p:activate()
+							return
+						end
+					end
+				end
+				-- No existing Pi pane — split bottom 30% and launch Pi chat
+				pane:split({
+					direction = "Bottom",
+					size = 0.3,
+					args = { "pi", "--mode", "chat" },
+				})
+			end),
+		},
+
+		-- Ask agent: opens input prompt, sends to Pi
 		{
 			key = "a",
 			mods = "CTRL|SHIFT",
@@ -144,7 +273,7 @@ function M.setup(config)
 				action = wezterm.action_callback(function(_window, _pane, line)
 					if line and line ~= "" then
 						wezterm.run_child_process({
-							BRIDGE, "ask", line,
+							PI_CMD, "-p", line,
 						})
 					end
 				end),
@@ -160,7 +289,7 @@ function M.setup(config)
 				action = wezterm.action_callback(function(_window, _pane, line)
 					if line and line ~= "" then
 						wezterm.run_child_process({
-							BRIDGE, "steer", line,
+							PI_CMD, "-p", "steer: " .. line,
 						})
 					end
 				end),
@@ -176,7 +305,7 @@ function M.setup(config)
 				action = wezterm.action_callback(function(_window, _pane, line)
 					if line and line ~= "" then
 						wezterm.run_child_process({
-							BRIDGE, "followup", line,
+							PI_CMD, "-p", line,
 						})
 					end
 				end),
@@ -188,7 +317,7 @@ function M.setup(config)
 			key = "q",
 			mods = "CTRL|SHIFT",
 			action = wezterm.action_callback(function(_window, _pane)
-				wezterm.run_child_process({ BRIDGE, "abort" })
+				wezterm.run_child_process({ PI_CMD, "-p", "abort current task" })
 			end),
 		},
 	}

@@ -53,6 +53,26 @@ local function truncate(s, max_len)
 end
 
 function M.setup(config)
+	-- Window title: "Pi Term - <cwd basename>" instead of default "$W"
+	wezterm.on("format-window-title", function(tab, _pane, _tabs, _panes, _cfg)
+		local pane = tab.active_pane
+		local title = pane.title or ""
+		-- Try to extract cwd basename for a clean title
+		local url = pane.current_working_dir
+		if url then
+			local path = url.file_path or tostring(url)
+			path = path:gsub("/$", "")
+			local basename = path:match("([^/]+)$")
+			if basename then
+				return "Pi Term - " .. basename
+			end
+		end
+		if title ~= "" then
+			return "Pi Term - " .. truncate(title, 40)
+		end
+		return "Pi Term"
+	end)
+
 	wezterm.on("format-tab-title", function(tab, _tabs, _panes, _cfg, hover, _max_width)
 		local pane = tab.active_pane
 		local title = pane.title
@@ -60,11 +80,7 @@ function M.setup(config)
 		local index = tab.tab_index + 1
 
 		-- Workspace prefix if not "default"
-		-- Note: user_vars.workspace requires shell integration (OSC 1337) which most shells don't set.
-		-- Fall back to the tab's workspace field which WezTerm populates natively.
-		local ws = (tab.active_pane.user_vars and tab.active_pane.user_vars.workspace)
-			or tab.active_pane.workspace
-			or nil
+		local ws = (pane.user_vars and pane.user_vars.workspace) or nil
 		local ws_prefix = ""
 		if ws and ws ~= "" and ws ~= "default" then
 			ws_prefix = ws .. ":"

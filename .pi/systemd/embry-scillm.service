@@ -12,6 +12,11 @@ EnvironmentFile=-%h/workspace/experiments/pi-mono/.env
 Environment=XDG_RUNTIME_DIR=/run/user/%U
 Restart=always
 RestartSec=5
+ProtectSystem=strict
+PrivateTmp=yes
+NoNewPrivileges=true
+ProtectHome=read-only
+RestrictSUIDSGID=yes
 
 [Install]
 WantedBy=embry-session.target

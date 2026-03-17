@@ -5,8 +5,12 @@ local wezterm = require("wezterm")
 
 local M = {}
 
-local SESSION_DIR = os.getenv("HOME") .. "/.local/share/wezmux/sessions"
+local SESSION_DIR = os.getenv("HOME") .. "/.local/share/pi/term/sessions"
 local AUTOSAVE_FILE = SESSION_DIR .. "/autosave.json"
+
+-- Recently closed tabs (LIFO stack for reopen)
+local closed_tabs = {}
+local MAX_CLOSED_TABS = 20
 
 -- Ensure session directory exists
 local function ensure_dir()
@@ -148,6 +152,36 @@ local function restore_layout(layout)
 	end
 end
 
+-- Track a closed tab for reopen
+function M.track_closed_tab(cwd, title)
+	table.insert(closed_tabs, {
+		cwd = cwd or "",
+		title = title or "",
+		timestamp = os.time(),
+	})
+	-- Keep stack bounded
+	while #closed_tabs > MAX_CLOSED_TABS do
+		table.remove(closed_tabs, 1)
+	end
+end
+
+-- Reopen the most recently closed tab
+function M.reopen_tab(window, pane)
+	if #closed_tabs == 0 then
+		return false
+	end
+	local entry = table.remove(closed_tabs)
+	local spawn_args = {}
+	if entry.cwd and entry.cwd ~= "" then
+		spawn_args.cwd = entry.cwd
+	end
+	window:perform_action(
+		wezterm.action.SpawnCommandInNewTab(spawn_args),
+		pane
+	)
+	return true
+end
+
 -- Public API
 
 function M.save(name)
@@ -190,7 +224,18 @@ function M.delete_session(name)
 	os.remove(path)
 end
 
-function M.setup(_config)
+function M.setup(config)
+	-- Track closed tabs for reopen (LEADER+SHIFT+T)
+	if config.keys then
+		table.insert(config.keys, {
+			key = "T",
+			mods = "LEADER|SHIFT",
+			action = wezterm.action_callback(function(window, pane)
+				M.reopen_tab(window, pane)
+			end),
+		})
+	end
+
 	-- Auto-save on window close
 	wezterm.on("window-close-requested", function(_window, _pane)
 		pcall(M.save)

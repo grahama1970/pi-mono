@@ -20,9 +20,8 @@ if [ ! -d "$BIN_DIR" ]; then
 	exit 1
 fi
 
-echo "Installing Embry OS WezTerm config..."
+echo "Installing Pi Term config..."
 echo "  Source: ${LUA_DIR}"
-echo "  Bridge: ${BIN_DIR}"
 echo "  Target: ${WEZTERM_DIR}"
 
 mkdir -p "$WEZTERM_DIR"
@@ -58,18 +57,34 @@ fi
 ln -s "$LUA_DIR/wezterm.lua" "$WEZTERM_DIR/wezterm.lua"
 ln -s "$LUA_DIR/embry" "$WEZTERM_DIR/embry"
 
-# Install bridge to PATH
-chmod +x "$BIN_DIR/embry-wezterm-bridge"
-
-if [ -L "$LOCAL_BIN/embry-wezterm-bridge" ]; then
-	rm "$LOCAL_BIN/embry-wezterm-bridge"
+# Install pi-term launcher
+if [ -x "$BIN_DIR/pi-term" ]; then
+	ln -sf "$BIN_DIR/pi-term" "$LOCAL_BIN/pi-term"
+	echo "  Installed: $LOCAL_BIN/pi-term → $BIN_DIR/pi-term"
 fi
-ln -s "$BIN_DIR/embry-wezterm-bridge" "$LOCAL_BIN/embry-wezterm-bridge"
-echo "  Installed bridge: $LOCAL_BIN/embry-wezterm-bridge"
+
+SHELL_DIR="$(cd "$SCRIPT_DIR/../shell" && pwd)"
+
+# Install shell integration: add source line to .zshrc if not present
+SHELL_SOURCE="source ${SHELL_DIR}/embry-agentic.zsh"
+if [ -f "$SHELL_DIR/embry-agentic.zsh" ]; then
+	if ! grep -qF "embry-agentic.zsh" "${HOME}/.zshrc" 2>/dev/null; then
+		echo "" >> "${HOME}/.zshrc"
+		echo "# Embry OS agentic shell hooks" >> "${HOME}/.zshrc"
+		echo "[[ -f ${SHELL_DIR}/embry-agentic.zsh ]] && ${SHELL_SOURCE}" >> "${HOME}/.zshrc"
+		echo "  Added shell hooks to ~/.zshrc"
+	else
+		echo "  Shell hooks already in ~/.zshrc"
+	fi
+fi
 
 echo ""
-echo "Done. Restart WezTerm to apply."
+echo "Done. Restart WezTerm to apply Pi Term config."
 echo "Status bar will show 'agent: offline' until pi-dbus is running."
 echo ""
-echo "NOTE: Ensure ~/.local/bin is in your PATH for keybindings to work."
-echo "Test bridge with: embry-wezterm-bridge state"
+echo "New shell functions: ask, fix, grab"
+echo "  ask \"how do I ...\"   — ask Pi directly from the shell"
+echo "  fix                  — diagnose last failed command"
+echo "  grab [N]             — capture last N lines of output"
+echo ""
+echo "Requires: pi CLI in PATH (install from pi-mono)"

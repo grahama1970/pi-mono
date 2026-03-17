@@ -3,6 +3,7 @@
 local wezterm = require("wezterm")
 local state = require("embry.state")
 local notifications = require("embry.notifications")
+local browser = require("embry.browser")
 
 local M = {}
 
@@ -38,6 +39,30 @@ local function shorten_model(name)
 		short = short:sub(1, 16)
 	end
 	return short
+end
+
+local function format_browser_content(window)
+	local bstate = browser.get_state(window)
+	if not bstate then
+		return nil
+	end
+	local lines = {}
+	table.insert(lines, "--- Browser ---")
+	if bstate.title and bstate.title ~= "" then
+		local title = bstate.title
+		if #title > 30 then
+			title = title:sub(1, 27) .. "..."
+		end
+		table.insert(lines, title)
+	end
+	if bstate.url and bstate.url ~= "" then
+		local url = bstate.url
+		if #url > 40 then
+			url = url:sub(1, 37) .. "..."
+		end
+		table.insert(lines, url)
+	end
+	return table.concat(lines, "\n")
 end
 
 local function format_agent_content(agent)
@@ -104,6 +129,14 @@ function M.set_workspace_pinned(name, pinned)
 end
 
 function M.setup(_config)
+	-- Handle file clicks from the native sidebar file explorer.
+	-- Opens the file in the active pane using $EDITOR (or vi fallback).
+	wezterm.on("sidebar-file-open", function(_window, pane, path)
+		local editor = os.getenv("EDITOR") or os.getenv("VISUAL") or "vi"
+		-- Quote path to handle spaces
+		pane:send_text(editor .. " '" .. path:gsub("'", "'\\''") .. "'\n")
+	end)
+
 	wezterm.on("update-status", function(window, _pane)
 		-- Clear unread for the currently active workspace
 		local mux_window = window:mux_window()
@@ -120,12 +153,28 @@ function M.setup(_config)
 			end)
 		end
 
-		-- Update agent state content
+		-- Update agent state content + browser metadata
 		local ok, agent = pcall(state.get)
+		local content_parts = {}
 		if ok then
-			local content = format_agent_content(agent)
+			table.insert(content_parts, format_agent_content(agent))
+		end
+
+		-- Poll browser events and show browser state
+		if mux_window then
+			local active_ws = mux_window:get_workspace()
 			pcall(function()
-				window:set_sidebar_content(content)
+				browser.poll_events(active_ws)
+			end)
+			local browser_content = format_browser_content(window)
+			if browser_content then
+				table.insert(content_parts, browser_content)
+			end
+		end
+
+		if #content_parts > 0 then
+			pcall(function()
+				window:set_sidebar_content(table.concat(content_parts, "\n"))
 			end)
 		end
 	end)

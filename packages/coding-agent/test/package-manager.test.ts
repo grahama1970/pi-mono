@@ -1,24 +1,45 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DefaultPackageManager, type ProgressEvent, type ResolvedResource } from "../src/core/package-manager.js";
 import { SettingsManager } from "../src/core/settings-manager.js";
 
-// Helper to check if a resource is enabled
-const isEnabled = (r: ResolvedResource, pathMatch: string, matchFn: "endsWith" | "includes" = "endsWith") =>
-	matchFn === "endsWith" ? r.path.endsWith(pathMatch) && r.enabled : r.path.includes(pathMatch) && r.enabled;
+function normalizeForMatch(value: string): string {
+	return value.replace(/\\/g, "/");
+}
 
-const isDisabled = (r: ResolvedResource, pathMatch: string, matchFn: "endsWith" | "includes" = "endsWith") =>
-	matchFn === "endsWith" ? r.path.endsWith(pathMatch) && !r.enabled : r.path.includes(pathMatch) && !r.enabled;
+function pathEndsWith(actualPath: string, suffix: string): boolean {
+	return normalizeForMatch(actualPath).endsWith(normalizeForMatch(suffix));
+}
+
+// Helper to check if a resource is enabled
+const isEnabled = (r: ResolvedResource, pathMatch: string, matchFn: "endsWith" | "includes" = "endsWith") => {
+	const normalizedPath = normalizeForMatch(r.path);
+	const normalizedMatch = normalizeForMatch(pathMatch);
+	return matchFn === "endsWith"
+		? normalizedPath.endsWith(normalizedMatch) && r.enabled
+		: normalizedPath.includes(normalizedMatch) && r.enabled;
+};
+
+const isDisabled = (r: ResolvedResource, pathMatch: string, matchFn: "endsWith" | "includes" = "endsWith") => {
+	const normalizedPath = normalizeForMatch(r.path);
+	const normalizedMatch = normalizeForMatch(pathMatch);
+	return matchFn === "endsWith"
+		? normalizedPath.endsWith(normalizedMatch) && !r.enabled
+		: normalizedPath.includes(normalizedMatch) && !r.enabled;
+};
 
 describe("DefaultPackageManager", () => {
 	let tempDir: string;
 	let agentDir: string;
 	let settingsManager: SettingsManager;
 	let packageManager: DefaultPackageManager;
+	let previousOfflineEnv: string | undefined;
 
 	beforeEach(() => {
+		previousOfflineEnv = process.env.PI_OFFLINE;
+		delete process.env.PI_OFFLINE;
 		tempDir = join(tmpdir(), `pm-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
 		mkdirSync(tempDir, { recursive: true });
 		agentDir = join(tempDir, "agent");
@@ -33,16 +54,25 @@ describe("DefaultPackageManager", () => {
 	});
 
 	afterEach(() => {
+		if (previousOfflineEnv === undefined) {
+			delete process.env.PI_OFFLINE;
+		} else {
+			process.env.PI_OFFLINE = previousOfflineEnv;
+		}
+		vi.restoreAllMocks();
+		vi.unstubAllGlobals();
 		rmSync(tempDir, { recursive: true, force: true });
 	});
 
 	describe("resolve", () => {
-		it("should return empty paths when no sources configured", async () => {
+		it("should return no package-sourced paths when no sources configured", async () => {
 			const result = await packageManager.resolve();
 			expect(result.extensions).toEqual([]);
-			expect(result.skills).toEqual([]);
 			expect(result.prompts).toEqual([]);
 			expect(result.themes).toEqual([]);
+			expect(result.skills.every((r) => r.metadata.source === "auto" && r.metadata.origin === "top-level")).toBe(
+				true,
+			);
 		});
 
 		it("should resolve local extension paths from settings", async () => {
@@ -143,7 +173,99 @@ Content`,
 			);
 
 			// Should NOT find helper.ts (not declared in manifest)
-			expect(result.extensions.some((r) => r.path.endsWith("helper.ts"))).toBe(false);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "helper.ts"))).toBe(false);
+		});
+	});
+
+	describe(".agents/skills auto-discovery", () => {
+		it("should scan .agents/skills from cwd up to git repo root", async () => {
+			const repoRoot = join(tempDir, "repo");
+			const nestedCwd = join(repoRoot, "packages", "feature");
+			mkdirSync(nestedCwd, { recursive: true });
+			mkdirSync(join(repoRoot, ".git"), { recursive: true });
+
+			const aboveRepoSkill = join(tempDir, ".agents", "skills", "above-repo", "SKILL.md");
+			mkdirSync(join(tempDir, ".agents", "skills", "above-repo"), { recursive: true });
+			writeFileSync(aboveRepoSkill, "---\nname: above-repo\ndescription: above\n---\n");
+
+			const repoRootSkill = join(repoRoot, ".agents", "skills", "repo-root", "SKILL.md");
+			mkdirSync(join(repoRoot, ".agents", "skills", "repo-root"), { recursive: true });
+			writeFileSync(repoRootSkill, "---\nname: repo-root\ndescription: repo\n---\n");
+
+			const nestedSkill = join(repoRoot, "packages", ".agents", "skills", "nested", "SKILL.md");
+			mkdirSync(join(repoRoot, "packages", ".agents", "skills", "nested"), { recursive: true });
+			writeFileSync(nestedSkill, "---\nname: nested\ndescription: nested\n---\n");
+
+			const pm = new DefaultPackageManager({
+				cwd: nestedCwd,
+				agentDir,
+				settingsManager,
+			});
+
+			const result = await pm.resolve();
+			expect(result.skills.some((r) => r.path === repoRootSkill && r.enabled)).toBe(true);
+			expect(result.skills.some((r) => r.path === nestedSkill && r.enabled)).toBe(true);
+			expect(result.skills.some((r) => r.path === aboveRepoSkill)).toBe(false);
+		});
+
+		it("should scan .agents/skills up to filesystem root when not in a git repo", async () => {
+			const nonRepoRoot = join(tempDir, "non-repo");
+			const nestedCwd = join(nonRepoRoot, "a", "b");
+			mkdirSync(nestedCwd, { recursive: true });
+
+			const rootSkill = join(nonRepoRoot, ".agents", "skills", "root", "SKILL.md");
+			mkdirSync(join(nonRepoRoot, ".agents", "skills", "root"), { recursive: true });
+			writeFileSync(rootSkill, "---\nname: root\ndescription: root\n---\n");
+
+			const middleSkill = join(nonRepoRoot, "a", ".agents", "skills", "middle", "SKILL.md");
+			mkdirSync(join(nonRepoRoot, "a", ".agents", "skills", "middle"), { recursive: true });
+			writeFileSync(middleSkill, "---\nname: middle\ndescription: middle\n---\n");
+
+			const pm = new DefaultPackageManager({
+				cwd: nestedCwd,
+				agentDir,
+				settingsManager,
+			});
+
+			const result = await pm.resolve();
+			expect(result.skills.some((r) => r.path === rootSkill && r.enabled)).toBe(true);
+			expect(result.skills.some((r) => r.path === middleSkill && r.enabled)).toBe(true);
+		});
+
+		it("should keep ~/.agents/skills user-scoped when cwd is under home in a non-git directory", async () => {
+			const previousHome = process.env.HOME;
+			process.env.HOME = tempDir;
+
+			try {
+				const cwd = join(tempDir, "scratch", "nested");
+				const localAgentDir = join(tempDir, ".pi", "agent");
+				const localSettingsManager = SettingsManager.inMemory();
+				mkdirSync(cwd, { recursive: true });
+				mkdirSync(localAgentDir, { recursive: true });
+
+				const homeSkill = join(tempDir, ".agents", "skills", "home-skill", "SKILL.md");
+				mkdirSync(join(tempDir, ".agents", "skills", "home-skill"), { recursive: true });
+				writeFileSync(homeSkill, "---\nname: home-skill\ndescription: home\n---\n");
+
+				const pm = new DefaultPackageManager({
+					cwd,
+					agentDir: localAgentDir,
+					settingsManager: localSettingsManager,
+				});
+
+				const result = await pm.resolve();
+				const matchingSkills = result.skills.filter((r) => r.path === homeSkill);
+				expect(matchingSkills).toHaveLength(1);
+				expect(matchingSkills[0]?.enabled).toBe(true);
+				expect(matchingSkills[0]?.metadata.scope).toBe("user");
+				expect(matchingSkills[0]?.metadata.source).toBe("auto");
+			} finally {
+				if (previousHome === undefined) {
+					delete process.env.HOME;
+				} else {
+					process.env.HOME = previousHome;
+				}
+			}
 		});
 	});
 
@@ -227,8 +349,8 @@ Content`,
 			writeFileSync(join(pkgDir, "themes", "dark.json"), "{}");
 
 			const result = await packageManager.resolveExtensionSources([pkgDir]);
-			expect(result.extensions.some((r) => r.path.endsWith("main.ts") && r.enabled)).toBe(true);
-			expect(result.themes.some((r) => r.path.endsWith("dark.json") && r.enabled)).toBe(true);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "main.ts") && r.enabled)).toBe(true);
+			expect(result.themes.some((r) => pathEndsWith(r.path, "dark.json") && r.enabled)).toBe(true);
 		});
 	});
 
@@ -245,6 +367,68 @@ Content`,
 
 			// For now just verify no errors - npm/git would trigger actual events
 			expect(events.length).toBe(0);
+		});
+	});
+
+	describe("npmCommand", () => {
+		it("should use npmCommand argv for npm installs", async () => {
+			settingsManager = SettingsManager.inMemory({
+				npmCommand: ["mise", "exec", "node@20", "--", "npm"],
+			});
+			packageManager = new DefaultPackageManager({
+				cwd: tempDir,
+				agentDir,
+				settingsManager,
+			});
+
+			const runCommandSpy = vi.spyOn(packageManager as any, "runCommand").mockResolvedValue(undefined);
+
+			await packageManager.install("npm:@scope/pkg");
+
+			expect(runCommandSpy).toHaveBeenCalledWith(
+				"mise",
+				["exec", "node@20", "--", "npm", "install", "-g", "@scope/pkg"],
+				undefined,
+			);
+		});
+
+		it("should use npmCommand argv for npm root lookup and invalidate cached root when npmCommand changes", () => {
+			settingsManager = SettingsManager.inMemory({
+				npmCommand: ["mise", "exec", "node@20", "--", "npm"],
+			});
+			packageManager = new DefaultPackageManager({
+				cwd: tempDir,
+				agentDir,
+				settingsManager,
+			});
+
+			const root20 = join(tempDir, "node20", "lib", "node_modules");
+			const root22 = join(tempDir, "node22", "lib", "node_modules");
+			mkdirSync(join(root20, "@scope", "pkg"), { recursive: true });
+
+			const runCommandSyncSpy = vi
+				.spyOn(packageManager as any, "runCommandSync")
+				.mockImplementation((...callArgs: unknown[]) => {
+					const [command, args] = callArgs as [string, string[]];
+					if (command !== "mise") {
+						throw new Error(`unexpected command ${command}`);
+					}
+					if (args[1] === "node@20") {
+						return root20;
+					}
+					if (args[1] === "node@22") {
+						return root22;
+					}
+					throw new Error(`unexpected args ${args.join(" ")}`);
+				});
+
+			expect(packageManager.getInstalledPath("npm:@scope/pkg", "user")).toBe(join(root20, "@scope", "pkg"));
+			expect(runCommandSyncSpy).toHaveBeenNthCalledWith(1, "mise", ["exec", "node@20", "--", "npm", "root", "-g"]);
+
+			settingsManager.setNpmCommand(["mise", "exec", "node@22", "--", "npm"]);
+
+			expect(packageManager.getInstalledPath("npm:@scope/pkg", "user")).toBeUndefined();
+			expect(runCommandSyncSpy).toHaveBeenNthCalledWith(2, "mise", ["exec", "node@22", "--", "npm", "root", "-g"]);
 		});
 	});
 
@@ -269,12 +453,22 @@ Content`,
 		it("should recognize github URLs without git: prefix", async () => {
 			const events: ProgressEvent[] = [];
 			packageManager.setProgressCallback((event) => events.push(event));
+			const previousGitTerminalPrompt = process.env.GIT_TERMINAL_PROMPT;
+			process.env.GIT_TERMINAL_PROMPT = "0";
 
-			// This should be parsed as a git source, not throw "unsupported"
 			try {
-				await packageManager.install("https://github.com/nonexistent/repo");
-			} catch {
-				// Expected to fail - repo doesn't exist
+				// This should be parsed as a git source, not throw "unsupported"
+				try {
+					await packageManager.install("https://github.com/nonexistent/repo");
+				} catch {
+					// Expected to fail - repo doesn't exist
+				}
+			} finally {
+				if (previousGitTerminalPrompt === undefined) {
+					delete process.env.GIT_TERMINAL_PROMPT;
+				} else {
+					process.env.GIT_TERMINAL_PROMPT = previousGitTerminalPrompt;
+				}
 			}
 
 			// Should have attempted clone, not thrown unsupported error
@@ -287,7 +481,7 @@ Content`,
 
 			expect((packageManager as any).parseSource("git:github.com/user/repo@v1").type).toBe("git");
 			expect((packageManager as any).parseSource("https://github.com/user/repo@v1").type).toBe("git");
-			expect((packageManager as any).parseSource("git@github.com:user/repo@v1").type).toBe("git");
+			expect((packageManager as any).parseSource("git:git@github.com:user/repo@v1").type).toBe("git");
 			expect((packageManager as any).parseSource("ssh://git@github.com/user/repo@v1").type).toBe("git");
 
 			expect((packageManager as any).parseSource("/absolute/path/to/package").type).toBe("local");
@@ -316,7 +510,9 @@ Content`,
 			expect(added).toBe(true);
 
 			const settings = settingsManager.getGlobalSettings();
-			expect(settings.packages?.[0]).toBe(relative(agentDir, pkgDir) || ".");
+			const rel = relative(agentDir, pkgDir);
+			const expected = rel.startsWith(".") ? rel : `./${rel}`;
+			expect(settings.packages?.[0]).toBe(expected);
 		});
 
 		it("should store project local packages relative to .pi settings base", () => {
@@ -328,7 +524,9 @@ Content`,
 			expect(added).toBe(true);
 
 			const settings = settingsManager.getProjectSettings();
-			expect(settings.packages?.[0]).toBe(relative(join(tempDir, ".pi"), projectPkgDir) || ".");
+			const rel = relative(join(tempDir, ".pi"), projectPkgDir);
+			const expected = rel.startsWith(".") ? rel : `./${rel}`;
+			expect(settings.packages?.[0]).toBe(expected);
 		});
 
 		it("should remove local package entries using equivalent path forms", () => {
@@ -368,11 +566,16 @@ Content`,
 			expect(parsed.pinned).toBe(true);
 		});
 
-		it("should parse HTTPS URLs without protocol", async () => {
-			const parsed = (packageManager as any).parseSource("github.com/user/repo");
+		it("should parse host/path shorthand only with git: prefix", async () => {
+			const parsed = (packageManager as any).parseSource("git:github.com/user/repo");
 			expect(parsed.type).toBe("git");
 			expect(parsed.host).toBe("github.com");
 			expect(parsed.path).toBe("user/repo");
+		});
+
+		it("should treat host/path shorthand as local without git: prefix", async () => {
+			const parsed = (packageManager as any).parseSource("github.com/user/repo");
+			expect(parsed.type).toBe("local");
 		});
 
 		it("should parse HTTPS URLs with .git suffix", async () => {
@@ -403,10 +606,10 @@ Content`,
 			expect(parsed.path).toBe("user/repo");
 		});
 
-		it("should generate correct package identity for HTTPS URLs", async () => {
+		it("should generate correct package identity for protocol and git:-prefixed URLs", async () => {
 			const identity1 = (packageManager as any).getPackageIdentity("https://github.com/user/repo");
 			const identity2 = (packageManager as any).getPackageIdentity("https://github.com/user/repo@v1.0.0");
-			const identity3 = (packageManager as any).getPackageIdentity("github.com/user/repo");
+			const identity3 = (packageManager as any).getPackageIdentity("git:github.com/user/repo");
 			const identity4 = (packageManager as any).getPackageIdentity("https://github.com/user/repo.git");
 
 			// All should have the same identity (normalized)
@@ -416,7 +619,7 @@ Content`,
 			expect(identity4).toBe("git:github.com/user/repo");
 		});
 
-		it("should deduplicate HTTPS URLs with different formats", async () => {
+		it("should deduplicate git URLs with different supported formats", async () => {
 			const pkgDir = join(tempDir, "https-dedup-pkg");
 			mkdirSync(join(pkgDir, "extensions"), { recursive: true });
 			writeFileSync(join(pkgDir, "extensions", "test.ts"), "export default function() {}");
@@ -425,14 +628,14 @@ Content`,
 			// In reality, these would all point to the same local dir after install
 			settingsManager.setPackages([
 				"https://github.com/user/repo",
-				"github.com/user/repo",
+				"git:github.com/user/repo",
 				"https://github.com/user/repo.git",
 			]);
 
 			// Since these URLs don't actually exist and we can't clone them,
 			// we verify they produce the same identity
 			const id1 = (packageManager as any).getPackageIdentity("https://github.com/user/repo");
-			const id2 = (packageManager as any).getPackageIdentity("github.com/user/repo");
+			const id2 = (packageManager as any).getPackageIdentity("git:github.com/user/repo");
 			const id3 = (packageManager as any).getPackageIdentity("https://github.com/user/repo.git");
 
 			expect(id1).toBe(id2);
@@ -546,7 +749,7 @@ Content`,
 			const result = await packageManager.resolveExtensionSources([pkgDir]);
 			expect(result.extensions.some((r) => isEnabled(r, "local.ts"))).toBe(true);
 			expect(result.extensions.some((r) => isEnabled(r, "remote.ts"))).toBe(true);
-			expect(result.extensions.some((r) => r.path.endsWith("skip.ts"))).toBe(false);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "skip.ts"))).toBe(false);
 		});
 
 		it("should support glob patterns in manifest skills", async () => {
@@ -613,7 +816,7 @@ Content`,
 			// bar.ts should be excluded (by user)
 			expect(result.extensions.some((r) => isDisabled(r, "bar.ts"))).toBe(true);
 			// baz.ts should be excluded (by manifest)
-			expect(result.extensions.some((r) => r.path.endsWith("baz.ts"))).toBe(false);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "baz.ts"))).toBe(false);
 		});
 
 		it("should exclude extensions from package with ! pattern", async () => {
@@ -915,7 +1118,7 @@ Content`,
 		it("should dedupe SSH and HTTPS URLs for same repo", async () => {
 			// Same repository, different URL formats
 			const httpsUrl = "https://github.com/user/repo";
-			const sshUrl = "git@github.com:user/repo";
+			const sshUrl = "git:git@github.com:user/repo";
 
 			const httpsIdentity = (packageManager as any).getPackageIdentity(httpsUrl);
 			const sshIdentity = (packageManager as any).getPackageIdentity(sshUrl);
@@ -928,7 +1131,7 @@ Content`,
 
 		it("should dedupe SSH and HTTPS with refs", async () => {
 			const httpsUrl = "https://github.com/user/repo@v1.0.0";
-			const sshUrl = "git@github.com:user/repo@v1.0.0";
+			const sshUrl = "git:git@github.com:user/repo@v1.0.0";
 
 			const httpsIdentity = (packageManager as any).getPackageIdentity(httpsUrl);
 			const sshIdentity = (packageManager as any).getPackageIdentity(sshUrl);
@@ -941,7 +1144,7 @@ Content`,
 
 		it("should dedupe SSH URL with ssh:// protocol and git@ format", async () => {
 			const sshProtocol = "ssh://git@github.com/user/repo";
-			const gitAt = "git@github.com:user/repo";
+			const gitAt = "git:git@github.com:user/repo";
 
 			const sshProtocolIdentity = (packageManager as any).getPackageIdentity(sshProtocol);
 			const gitAtIdentity = (packageManager as any).getPackageIdentity(gitAt);
@@ -952,15 +1155,15 @@ Content`,
 			expect(sshProtocolIdentity).toBe(gitAtIdentity);
 		});
 
-		it("should dedupe all URL formats for same repo (HTTPS, SSH, git@)", async () => {
+		it("should dedupe all supported URL formats for same repo", async () => {
 			const urls = [
 				"https://github.com/user/repo",
-				"github.com/user/repo",
 				"https://github.com/user/repo.git",
-				"git@github.com:user/repo",
-				"git@github.com:user/repo.git",
 				"ssh://git@github.com/user/repo",
 				"git:https://github.com/user/repo",
+				"git:github.com/user/repo",
+				"git:git@github.com:user/repo",
+				"git:git@github.com:user/repo.git",
 			];
 
 			const identities = urls.map((url) => (packageManager as any).getPackageIdentity(url));
@@ -973,7 +1176,7 @@ Content`,
 
 		it("should keep different repos separate (HTTPS vs SSH)", async () => {
 			const repo1Https = "https://github.com/user/repo1";
-			const repo2Ssh = "git@github.com:user/repo2";
+			const repo2Ssh = "git:git@github.com:user/repo2";
 
 			const id1 = (packageManager as any).getPackageIdentity(repo1Https);
 			const id2 = (packageManager as any).getPackageIdentity(repo2Ssh);
@@ -1009,11 +1212,11 @@ export default function(api) { api.registerTool({ name: "test", description: "te
 			const result = await packageManager.resolveExtensionSources([pkgDir]);
 
 			// Should find the index.ts and standalone.ts
-			expect(result.extensions.some((r) => r.path.endsWith("subagent/index.ts") && r.enabled)).toBe(true);
-			expect(result.extensions.some((r) => r.path.endsWith("standalone.ts") && r.enabled)).toBe(true);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "subagent/index.ts") && r.enabled)).toBe(true);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "standalone.ts") && r.enabled)).toBe(true);
 
 			// Should NOT find agents.ts as a standalone extension
-			expect(result.extensions.some((r) => r.path.endsWith("agents.ts"))).toBe(false);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "agents.ts"))).toBe(false);
 		});
 
 		it("should respect package.json pi.extensions manifest in subdirectories", async () => {
@@ -1035,10 +1238,10 @@ export default function(api) { api.registerTool({ name: "test", description: "te
 			const result = await packageManager.resolveExtensionSources([pkgDir]);
 
 			// Should find main.ts declared in manifest
-			expect(result.extensions.some((r) => r.path.endsWith("custom/main.ts") && r.enabled)).toBe(true);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "custom/main.ts") && r.enabled)).toBe(true);
 
 			// Should NOT find utils.ts (not declared in manifest)
-			expect(result.extensions.some((r) => r.path.endsWith("utils.ts"))).toBe(false);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "utils.ts"))).toBe(false);
 		});
 
 		it("should handle mixed top-level files and subdirectories", async () => {
@@ -1059,12 +1262,12 @@ export default function(api) { api.registerTool({ name: "test", description: "te
 			const result = await packageManager.resolveExtensionSources([pkgDir]);
 
 			// Should find simple.ts and complex/index.ts
-			expect(result.extensions.some((r) => r.path.endsWith("simple.ts") && r.enabled)).toBe(true);
-			expect(result.extensions.some((r) => r.path.endsWith("complex/index.ts") && r.enabled)).toBe(true);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "simple.ts") && r.enabled)).toBe(true);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "complex/index.ts") && r.enabled)).toBe(true);
 
 			// Should NOT find helper modules
-			expect(result.extensions.some((r) => r.path.endsWith("complex/a.ts"))).toBe(false);
-			expect(result.extensions.some((r) => r.path.endsWith("complex/b.ts"))).toBe(false);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "complex/a.ts"))).toBe(false);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "complex/b.ts"))).toBe(false);
 
 			// Total should be exactly 2
 			expect(result.extensions.filter((r) => r.enabled).length).toBe(2);
@@ -1084,8 +1287,70 @@ export default function(api) { api.registerTool({ name: "test", description: "te
 			const result = await packageManager.resolveExtensionSources([pkgDir]);
 
 			// Should only find the valid top-level extension
-			expect(result.extensions.some((r) => r.path.endsWith("valid.ts") && r.enabled)).toBe(true);
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "valid.ts") && r.enabled)).toBe(true);
 			expect(result.extensions.filter((r) => r.enabled).length).toBe(1);
+		});
+	});
+
+	describe("offline mode and network timeouts", () => {
+		it("should skip installing missing package sources when offline", async () => {
+			process.env.PI_OFFLINE = "1";
+			settingsManager.setProjectPackages(["npm:missing-package", "git:github.com/example/missing-repo"]);
+
+			const installParsedSourceSpy = vi.spyOn(packageManager as any, "installParsedSource");
+
+			const result = await packageManager.resolve();
+			const allResources = [...result.extensions, ...result.skills, ...result.prompts, ...result.themes];
+			expect(allResources.some((r) => r.metadata.origin === "package")).toBe(false);
+			expect(installParsedSourceSpy).not.toHaveBeenCalled();
+		});
+
+		it("should skip refreshing temporary git sources when offline", async () => {
+			process.env.PI_OFFLINE = "1";
+			const gitSource = "git:github.com/example/repo";
+			const parsedGitSource = (packageManager as any).parseSource(gitSource);
+			const installedPath = (packageManager as any).getGitInstallPath(parsedGitSource, "temporary") as string;
+
+			mkdirSync(join(installedPath, "extensions"), { recursive: true });
+			writeFileSync(join(installedPath, "extensions", "index.ts"), "export default function() {};");
+
+			const refreshTemporaryGitSourceSpy = vi.spyOn(packageManager as any, "refreshTemporaryGitSource");
+
+			const result = await packageManager.resolveExtensionSources([gitSource], { temporary: true });
+			expect(result.extensions.some((r) => pathEndsWith(r.path, "extensions/index.ts") && r.enabled)).toBe(true);
+			expect(refreshTemporaryGitSourceSpy).not.toHaveBeenCalled();
+		});
+
+		it("should not call fetch in npmNeedsUpdate when offline", async () => {
+			process.env.PI_OFFLINE = "1";
+			const installedPath = join(tempDir, "installed-package");
+			mkdirSync(installedPath, { recursive: true });
+			writeFileSync(join(installedPath, "package.json"), JSON.stringify({ version: "1.0.0" }));
+
+			const fetchSpy = vi.spyOn(globalThis, "fetch");
+
+			const needsUpdate = await (packageManager as any).npmNeedsUpdate(
+				{ type: "npm", spec: "example", name: "example", pinned: false },
+				installedPath,
+			);
+
+			expect(needsUpdate).toBe(false);
+			expect(fetchSpy).not.toHaveBeenCalled();
+		});
+
+		it("should pass an AbortSignal timeout when fetching npm latest version", async () => {
+			const fetchMock = vi.fn().mockResolvedValue({
+				ok: true,
+				json: async () => ({ version: "1.2.3" }),
+			});
+			vi.stubGlobal("fetch", fetchMock);
+
+			const latest = await (packageManager as any).getLatestNpmVersion("example");
+			expect(latest).toBe("1.2.3");
+			expect(fetchMock).toHaveBeenCalledTimes(1);
+
+			const [, options] = fetchMock.mock.calls[0] as [string, RequestInit | undefined];
+			expect(options?.signal).toBeDefined();
 		});
 	});
 });

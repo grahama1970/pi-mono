@@ -3,6 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { basename, join } from "path";
 import { APP_NAME, getExportTemplateDir } from "../../config.js";
 import { getResolvedThemeColors, getThemeExportColors } from "../../modes/interactive/theme/theme.js";
+import type { ToolInfo } from "../extensions/types.js";
 import type { SessionEntry } from "../session-manager.js";
 import { SessionManager } from "../session-manager.js";
 
@@ -13,19 +14,20 @@ import { SessionManager } from "../session-manager.js";
 export interface ToolHtmlRenderer {
 	/** Render a tool call to HTML. Returns undefined if tool has no custom renderer. */
 	renderCall(toolName: string, args: unknown): string | undefined;
-	/** Render a tool result to HTML. Returns undefined if tool has no custom renderer. */
+	/** Render a tool result to HTML. Returns collapsed/expanded or undefined if tool has no custom renderer. */
 	renderResult(
 		toolName: string,
 		result: Array<{ type: string; text?: string; data?: string; mimeType?: string }>,
 		details: unknown,
 		isError: boolean,
-	): string | undefined;
+	): { collapsed?: string; expanded?: string } | undefined;
 }
 
 /** Pre-rendered HTML for a custom tool call and result */
 interface RenderedToolHtml {
 	callHtml?: string;
-	resultHtml?: string;
+	resultHtmlCollapsed?: string;
+	resultHtmlExpanded?: string;
 }
 
 export interface ExportOptions {
@@ -128,7 +130,7 @@ interface SessionData {
 	entries: ReturnType<SessionManager["getEntries"]>;
 	leafId: string | null;
 	systemPrompt?: string;
-	tools?: { name: string; description: string }[];
+	tools?: ToolInfo[];
 	/** Pre-rendered HTML for custom tool calls/results, keyed by tool call ID */
 	renderedTools?: Record<string, RenderedToolHtml>;
 }
@@ -203,11 +205,12 @@ function preRenderCustomTools(
 			// Only render if we have a pre-rendered call OR it's not a built-in tool
 			const existing = renderedTools[msg.toolCallId];
 			if (existing || !BUILTIN_TOOLS.has(toolName)) {
-				const resultHtml = toolRenderer.renderResult(toolName, msg.content, msg.details, msg.isError || false);
-				if (resultHtml) {
+				const rendered = toolRenderer.renderResult(toolName, msg.content, msg.details, msg.isError || false);
+				if (rendered) {
 					renderedTools[msg.toolCallId] = {
 						...existing,
-						resultHtml,
+						resultHtmlCollapsed: rendered.collapsed,
+						resultHtmlExpanded: rendered.expanded,
 					};
 				}
 			}
@@ -253,7 +256,7 @@ export async function exportSessionToHtml(
 		entries,
 		leafId: sm.getLeafId(),
 		systemPrompt: state?.systemPrompt,
-		tools: state?.tools?.map((t) => ({ name: t.name, description: t.description })),
+		tools: state?.tools?.map((t) => ({ name: t.name, description: t.description, parameters: t.parameters })),
 		renderedTools,
 	};
 

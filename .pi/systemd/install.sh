@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Install Embry OS systemd user services.
 # Usage: bash install.sh [--uninstall] [--service NAME]
-#   --service NAME   Install only the named service (embry-agent, embry-scillm)
+#   --service NAME   Install only the named service (embry-agent, embry-scillm, embry-inbox)
 #   --uninstall      Remove services instead of installing
 set -euo pipefail
 
@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 UNIT_DIR="${HOME}/.config/systemd/user"
 
 # All managed services
-ALL_SERVICES=("embry-agent.service" "embry-scillm.service")
+ALL_SERVICES=("embry-agent.service" "embry-scillm.service" "embry-inbox.service")
 
 # Parse arguments
 UNINSTALL=false

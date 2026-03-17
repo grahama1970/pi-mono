@@ -1,6 +1,11 @@
 import type { Model } from "@mariozechner/pi-ai";
 import { describe, expect, test } from "vitest";
-import { defaultModelPerProvider, findInitialModel, parseModelPattern } from "../src/core/model-resolver.js";
+import {
+	defaultModelPerProvider,
+	findInitialModel,
+	parseModelPattern,
+	resolveCliModel,
+} from "../src/core/model-resolver.js";
 
 // Mock models for testing
 const mockModels: Model<"anthropic-messages">[] = [
@@ -201,9 +206,197 @@ describe("parseModelPattern", () => {
 	});
 });
 
+describe("resolveCliModel", () => {
+	test("resolves --model provider/id without --provider", () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliModel: "openai/gpt-4o",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.provider).toBe("openai");
+		expect(result.model?.id).toBe("gpt-4o");
+	});
+
+	test("resolves fuzzy patterns within an explicit provider", () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliProvider: "openai",
+			cliModel: "4o",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.provider).toBe("openai");
+		expect(result.model?.id).toBe("gpt-4o");
+	});
+
+	test("supports --model <pattern>:<thinking> (without explicit --thinking)", () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliModel: "sonnet:high",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.id).toBe("claude-sonnet-4-5");
+		expect(result.thinkingLevel).toBe("high");
+	});
+
+	test("prefers exact model id match over provider inference (OpenRouter-style ids)", () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliModel: "openai/gpt-4o:extended",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.provider).toBe("openrouter");
+		expect(result.model?.id).toBe("openai/gpt-4o:extended");
+	});
+
+	test("does not strip invalid :suffix as thinking level in --model (treat as raw id)", () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliProvider: "openai",
+			cliModel: "gpt-4o:extended",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.provider).toBe("openai");
+		expect(result.model?.id).toBe("gpt-4o:extended");
+	});
+
+	test("allows custom model ids for explicit providers without double prefixing", () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliProvider: "openrouter",
+			cliModel: "openrouter/openai/ghost-model",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.provider).toBe("openrouter");
+		expect(result.model?.id).toBe("openai/ghost-model");
+	});
+
+	test("returns a clear error when there are no models", () => {
+		const registry = {
+			getAll: () => [],
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliProvider: "openai",
+			cliModel: "gpt-4o",
+			modelRegistry: registry,
+		});
+
+		expect(result.model).toBeUndefined();
+		expect(result.error).toContain("No models available");
+	});
+
+	test("prefers provider/model split over gateway model with matching id", () => {
+		// When a user writes "zai/glm-5", and both a zai provider model (id: "glm-5")
+		// and a gateway model (id: "zai/glm-5") exist, prefer the zai provider model.
+		const zaiModel: Model<"anthropic-messages"> = {
+			id: "glm-5",
+			name: "GLM-5",
+			api: "anthropic-messages",
+			provider: "zai",
+			baseUrl: "https://open.bigmodel.cn/api/paas/v4",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 1, output: 2, cacheRead: 0.1, cacheWrite: 1 },
+			contextWindow: 128000,
+			maxTokens: 8192,
+		};
+		const gatewayModel: Model<"anthropic-messages"> = {
+			id: "zai/glm-5",
+			name: "GLM-5",
+			api: "anthropic-messages",
+			provider: "vercel-ai-gateway",
+			baseUrl: "https://ai-gateway.vercel.sh",
+			reasoning: true,
+			input: ["text"],
+			cost: { input: 1, output: 2, cacheRead: 0.1, cacheWrite: 1 },
+			contextWindow: 128000,
+			maxTokens: 8192,
+		};
+		const registry = {
+			getAll: () => [...allModels, zaiModel, gatewayModel],
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliModel: "zai/glm-5",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.provider).toBe("zai");
+		expect(result.model?.id).toBe("glm-5");
+	});
+
+	test("resolves provider-prefixed fuzzy patterns (openrouter/qwen -> openrouter model)", () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof resolveCliModel>[0]["modelRegistry"];
+
+		const result = resolveCliModel({
+			cliModel: "openrouter/qwen",
+			modelRegistry: registry,
+		});
+
+		expect(result.error).toBeUndefined();
+		expect(result.model?.provider).toBe("openrouter");
+		expect(result.model?.id).toBe("qwen/qwen3-coder:exacto");
+	});
+});
+
 describe("default model selection", () => {
+	test("openai defaults are gpt-5.4", () => {
+		expect(defaultModelPerProvider.openai).toBe("gpt-5.4");
+		expect(defaultModelPerProvider["openai-codex"]).toBe("gpt-5.4");
+	});
+
 	test("ai-gateway default is opus 4.6", () => {
 		expect(defaultModelPerProvider["vercel-ai-gateway"]).toBe("anthropic/claude-opus-4-6");
+	});
+
+	test("findInitialModel accepts explicit provider custom model ids", async () => {
+		const registry = {
+			getAll: () => allModels,
+		} as unknown as Parameters<typeof findInitialModel>[0]["modelRegistry"];
+
+		const result = await findInitialModel({
+			cliProvider: "openrouter",
+			cliModel: "openrouter/openai/ghost-model",
+			scopedModels: [],
+			isContinuing: false,
+			modelRegistry: registry,
+		});
+
+		expect(result.model?.provider).toBe("openrouter");
+		expect(result.model?.id).toBe("openai/ghost-model");
 	});
 
 	test("findInitialModel selects ai-gateway default when available", async () => {

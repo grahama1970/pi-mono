@@ -966,7 +966,7 @@
           default: {
             // Check for pre-rendered custom tool HTML
             const rendered = renderedTools?.[call.id];
-            if (rendered?.callHtml || rendered?.resultHtml) {
+            if (rendered?.callHtml || rendered?.resultHtmlCollapsed || rendered?.resultHtmlExpanded) {
               // Custom tool with pre-rendered HTML from TUI renderer
               if (rendered.callHtml) {
                 html += `<div class="tool-header ansi-rendered">${rendered.callHtml}</div>`;
@@ -974,20 +974,17 @@
                 html += `<div class="tool-header"><span class="tool-name">${escapeHtml(name)}</span></div>`;
               }
               
-              if (rendered.resultHtml) {
-                // Apply same truncation as built-in tools (10 lines)
-                const lines = rendered.resultHtml.split('\n');
-                if (lines.length > 10) {
-                  const preview = lines.slice(0, 10).join('\n');
-                  html += `<div class="tool-output expandable ansi-rendered" onclick="this.classList.toggle('expanded')">
-                    <div class="output-preview">${preview}<div class="expand-hint">... (${lines.length - 10} more lines)</div></div>
-                    <div class="output-full">${rendered.resultHtml}</div>
-                  </div>`;
-                } else {
-                  html += `<div class="tool-output ansi-rendered">${rendered.resultHtml}</div>`;
-                }
+              if (rendered.resultHtmlCollapsed && rendered.resultHtmlExpanded && rendered.resultHtmlCollapsed !== rendered.resultHtmlExpanded) {
+                // Both collapsed and expanded differ - render expandable section
+                html += `<div class="tool-output expandable ansi-rendered" onclick="this.classList.toggle('expanded')">
+                  <div class="output-preview">${rendered.resultHtmlCollapsed}</div>
+                  <div class="output-full">${rendered.resultHtmlExpanded}</div>
+                </div>`;
+              } else if (rendered.resultHtmlExpanded) {
+                // Only expanded exists (or collapsed is identical) - show directly
+                html += `<div class="tool-output ansi-rendered">${rendered.resultHtmlExpanded}</div>`;
               } else if (result) {
-                // Fallback to JSON for result if no pre-rendered HTML
+                // No pre-rendered result HTML - fallback to JSON
                 const output = getResultText();
                 if (output) html += formatExpandableOutput(output, 10);
               }
@@ -1331,7 +1328,27 @@
           html += `<div class="tools-list">
             <div class="tools-header">Available Tools</div>
             <div class="tools-content">
-              ${tools.map(t => `<div class="tool-item"><span class="tool-item-name">${escapeHtml(t.name)}</span> - <span class="tool-item-desc">${escapeHtml(t.description)}</span></div>`).join('')}
+              ${tools.map(t => {
+                const hasParams = t.parameters && typeof t.parameters === 'object' && t.parameters.properties && Object.keys(t.parameters.properties).length > 0;
+                if (!hasParams) {
+                  return `<div class="tool-item"><span class="tool-item-name">${escapeHtml(t.name)}</span> - <span class="tool-item-desc">${escapeHtml(t.description)}</span></div>`;
+                }
+                const params = t.parameters;
+                const properties = params.properties;
+                const required = params.required || [];
+                let paramsHtml = '';
+                for (const [name, prop] of Object.entries(properties)) {
+                  const isRequired = required.includes(name);
+                  const typeStr = prop.type || 'any';
+                  const reqLabel = isRequired ? '<span class="tool-param-required">required</span>' : '<span class="tool-param-optional">optional</span>';
+                  paramsHtml += `<div class="tool-param"><span class="tool-param-name">${escapeHtml(name)}</span> <span class="tool-param-type">${escapeHtml(typeStr)}</span> ${reqLabel}`;
+                  if (prop.description) {
+                    paramsHtml += `<div class="tool-param-desc">${escapeHtml(prop.description)}</div>`;
+                  }
+                  paramsHtml += `</div>`;
+                }
+                return `<div class="tool-item" onclick="this.classList.toggle('params-expanded')"><span class="tool-item-name">${escapeHtml(t.name)}</span> - <span class="tool-item-desc">${escapeHtml(t.description)}</span> <span class="tool-params-hint"></span><div class="tool-params-content">${paramsHtml}</div></div>`;
+              }).join('')}
             </div>
           </div>`;
         }

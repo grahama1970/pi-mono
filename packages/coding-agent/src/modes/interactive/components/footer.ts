@@ -1,4 +1,3 @@
-import type { AssistantMessage } from "@mariozechner/pi-ai";
 import { type Component, truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
 import type { AgentSession } from "../../../core/agent-session.js";
 import type { ReadonlyFooterDataProvider } from "../../../core/footer-data-provider.js";
@@ -79,22 +78,12 @@ export class FooterComponent implements Component {
 			}
 		}
 
-		// Get last assistant message for context percentage calculation (skip aborted messages)
-		const lastAssistantMessage = state.messages
-			.slice()
-			.reverse()
-			.find((m) => m.role === "assistant" && m.stopReason !== "aborted") as AssistantMessage | undefined;
-
-		// Calculate context percentage from last message (input + output + cacheRead + cacheWrite)
-		const contextTokens = lastAssistantMessage
-			? lastAssistantMessage.usage.input +
-				lastAssistantMessage.usage.output +
-				lastAssistantMessage.usage.cacheRead +
-				lastAssistantMessage.usage.cacheWrite
-			: 0;
-		const contextWindow = state.model?.contextWindow || 0;
-		const contextPercentValue = contextWindow > 0 ? (contextTokens / contextWindow) * 100 : 0;
-		const contextPercent = contextPercentValue.toFixed(1);
+		// Calculate context usage from session (handles compaction correctly).
+		// After compaction, tokens are unknown until the next LLM response.
+		const contextUsage = this.session.getContextUsage();
+		const contextWindow = contextUsage?.contextWindow ?? state.model?.contextWindow ?? 0;
+		const contextPercentValue = contextUsage?.percent ?? 0;
+		const contextPercent = contextUsage?.percent !== null ? contextPercentValue.toFixed(1) : "?";
 
 		// Replace home directory with ~
 		let pwd = process.cwd();
@@ -115,18 +104,6 @@ export class FooterComponent implements Component {
 			pwd = `${pwd} • ${sessionName}`;
 		}
 
-		// Truncate path if too long to fit width
-		if (pwd.length > width) {
-			const half = Math.floor(width / 2) - 2;
-			if (half > 1) {
-				const start = pwd.slice(0, half);
-				const end = pwd.slice(-(half - 1));
-				pwd = `${start}...${end}`;
-			} else {
-				pwd = pwd.slice(0, Math.max(1, width));
-			}
-		}
-
 		// Build stats line
 		const statsParts = [];
 		if (totalInput) statsParts.push(`↑${formatTokens(totalInput)}`);
@@ -144,7 +121,10 @@ export class FooterComponent implements Component {
 		// Colorize context percentage based on usage
 		let contextPercentStr: string;
 		const autoIndicator = this.autoCompactEnabled ? " (auto)" : "";
-		const contextPercentDisplay = `${contextPercent}%/${formatTokens(contextWindow)}${autoIndicator}`;
+		const contextPercentDisplay =
+			contextPercent === "?"
+				? `?/${formatTokens(contextWindow)}${autoIndicator}`
+				: `${contextPercent}%/${formatTokens(contextWindow)}${autoIndicator}`;
 		if (contextPercentValue > 90) {
 			contextPercentStr = theme.fg("error", contextPercentDisplay);
 		} else if (contextPercentValue > 70) {
@@ -163,9 +143,7 @@ export class FooterComponent implements Component {
 
 		// If statsLeft is too wide, truncate it
 		if (statsLeftWidth > width) {
-			// Truncate statsLeft to fit width (no room for right side)
-			const plainStatsLeft = statsLeft.replace(/\x1b\[[0-9;]*m/g, "");
-			statsLeft = `${plainStatsLeft.substring(0, width - 3)}...`;
+			statsLeft = truncateToWidth(statsLeft, width, "...");
 			statsLeftWidth = visibleWidth(statsLeft);
 		}
 
@@ -201,13 +179,11 @@ export class FooterComponent implements Component {
 		} else {
 			// Need to truncate right side
 			const availableForRight = width - statsLeftWidth - minPadding;
-			if (availableForRight > 3) {
-				// Truncate to fit (strip ANSI codes for length calculation, then truncate raw string)
-				const plainRightSide = rightSide.replace(/\x1b\[[0-9;]*m/g, "");
-				const truncatedPlain = plainRightSide.substring(0, availableForRight);
-				// For simplicity, just use plain truncated version (loses color, but fits)
-				const padding = " ".repeat(width - statsLeftWidth - truncatedPlain.length);
-				statsLine = statsLeft + padding + truncatedPlain;
+			if (availableForRight > 0) {
+				const truncatedRight = truncateToWidth(rightSide, availableForRight, "");
+				const truncatedRightWidth = visibleWidth(truncatedRight);
+				const padding = " ".repeat(Math.max(0, width - statsLeftWidth - truncatedRightWidth));
+				statsLine = statsLeft + padding + truncatedRight;
 			} else {
 				// Not enough space for right side at all
 				statsLine = statsLeft;
@@ -221,7 +197,8 @@ export class FooterComponent implements Component {
 		const remainder = statsLine.slice(statsLeft.length); // padding + rightSide
 		const dimRemainder = theme.fg("dim", remainder);
 
-		const lines = [theme.fg("dim", pwd), dimStatsLeft + dimRemainder];
+		const pwdLine = truncateToWidth(theme.fg("dim", pwd), width, theme.fg("dim", "..."));
+		const lines = [pwdLine, dimStatsLeft + dimRemainder];
 
 		// Add extension statuses on a single line, sorted by key alphabetically
 		const extensionStatuses = this.footerData.getExtensionStatuses();
