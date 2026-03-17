@@ -59,7 +59,12 @@ export interface GoogleGeminiCliOptions extends StreamOptions {
 
 const DEFAULT_ENDPOINT = "https://cloudcode-pa.googleapis.com";
 const ANTIGRAVITY_DAILY_ENDPOINT = "https://daily-cloudcode-pa.sandbox.googleapis.com";
-const ANTIGRAVITY_ENDPOINT_FALLBACKS = [ANTIGRAVITY_DAILY_ENDPOINT, DEFAULT_ENDPOINT] as const;
+const ANTIGRAVITY_AUTOPUSH_ENDPOINT = "https://autopush-cloudcode-pa.sandbox.googleapis.com";
+const ANTIGRAVITY_ENDPOINT_FALLBACKS = [
+	ANTIGRAVITY_DAILY_ENDPOINT,
+	ANTIGRAVITY_AUTOPUSH_ENDPOINT,
+	DEFAULT_ENDPOINT,
+] as const;
 // Headers for Gemini CLI (prod endpoint)
 const GEMINI_CLI_HEADERS = {
 	"User-Agent": "google-cloud-sdk vscode_cloudshelleditor/0.1",
@@ -72,101 +77,21 @@ const GEMINI_CLI_HEADERS = {
 };
 
 // Headers for Antigravity (sandbox endpoint) - requires specific User-Agent
-const DEFAULT_ANTIGRAVITY_VERSION = "1.15.8";
+const DEFAULT_ANTIGRAVITY_VERSION = "1.18.4";
 
 function getAntigravityHeaders() {
 	const version = process.env.PI_AI_ANTIGRAVITY_VERSION || DEFAULT_ANTIGRAVITY_VERSION;
 	return {
 		"User-Agent": `antigravity/${version} darwin/arm64`,
-		"X-Goog-Api-Client": "google-cloud-sdk vscode_cloudshelleditor/0.1",
-		"Client-Metadata": JSON.stringify({
-			ideType: "IDE_UNSPECIFIED",
-			platform: "PLATFORM_UNSPECIFIED",
-			pluginType: "GEMINI",
-		}),
 	};
 }
 
-// Antigravity system instruction (ported from CLIProxyAPI v6.6.89).
-const ANTIGRAVITY_SYSTEM_INSTRUCTION = `<identity>
-You are Antigravity, a powerful agentic AI coding assistant designed by the Google DeepMind team working on Advanced Agentic Coding.
-You are pair programming with a USER to solve their coding task. The task may require creating a new codebase, modifying or debugging an existing codebase, or simply answering a question.
-The USER will send you requests, which you must always prioritize addressing. Along with each USER request, we will attach additional metadata about their current state, such as what files they have open and where their cursor is.
-This information may or may not be relevant to the coding task, it is up for you to decide.
-</identity>
-
-<tool_calling>
-Call tools as you normally would. The following list provides additional guidance to help you avoid errors:
-  - **Absolute paths only**. When using tools that accept file path arguments, ALWAYS use the absolute file path.
-</tool_calling>
-
-<web_application_development>
-## Technology Stack
-Your web applications should be built using the following technologies:
-1. **Core**: Use HTML for structure and JavaScript for logic.
-2. **Styling (CSS)**: Use Vanilla CSS for maximum flexibility and control. Avoid using TailwindCSS unless the USER explicitly requests it; in this case, first confirm which TailwindCSS version to use.
-3. **Web App**: If the USER specifies that they want a more complex web app, use a framework like Next.js or Vite. Only do this if the USER explicitly requests a web app.
-4. **New Project Creation**: If you need to use a framework for a new app, use \`npx\` with the appropriate script, but there are some rules to follow:
-   - Use \`npx -y\` to automatically install the script and its dependencies
-   - You MUST run the command with \`--help\` flag to see all available options first
-   - Initialize the app in the current directory with \`./\` (example: \`npx -y create-vite-app@latest ./\`)
-   - You should run in non-interactive mode so that the user doesn't need to input anything
-5. **Running Locally**: When running locally, use \`npm run dev\` or equivalent dev server. Only build the production bundle if the USER explicitly requests it or you are validating the code for correctness.
-
-# Design Aesthetics
-1. **Use Rich Aesthetics**: The USER should be wowed at first glance by the design. Use best practices in modern web design (e.g. vibrant colors, dark modes, glassmorphism, and dynamic animations) to create a stunning first impression. Failure to do this is UNACCEPTABLE.
-2. **Prioritize Visual Excellence**: Implement designs that will WOW the user and feel extremely premium:
-   - Avoid generic colors (plain red, blue, green). Use curated, harmonious color palettes (e.g., HSL tailored colors, sleek dark modes).
-   - Using modern typography (e.g., from Google Fonts like Inter, Roboto, or Outfit) instead of browser defaults.
-   - Use smooth gradients
-   - Add subtle micro-animations for enhanced user experience
-3. **Use a Dynamic Design**: An interface that feels responsive and alive encourages interaction. Achieve this with hover effects and interactive elements. Micro-animations, in particular, are highly effective for improving user engagement.
-4. **Premium Designs**: Make a design that feels premium and state of the art. Avoid creating simple minimum viable products.
-5. **Don't use placeholders**: If you need an image, use your generate_image tool to create a working demonstration.
-
-## Implementation Workflow
-Follow this systematic approach when building web applications:
-1. **Plan and Understand**:
-   - Fully understand the user's requirements
-   - Draw inspiration from modern, beautiful, and dynamic web designs
-   - Outline the features needed for the initial version
-2. **Build the Foundation**:
-   - Start by creating/modifying \`index.css\`
-   - Implement the core design system with all tokens and utilities
-3. **Create Components**:
-   - Build necessary components using your design system
-   - Ensure all components use predefined styles, not ad-hoc utilities
-   - Keep components focused and reusable
-4. **Assemble Pages**:
-   - Update the main application to incorporate your design and components
-   - Ensure proper routing and navigation
-   - Implement responsive layouts
-5. **Polish and Optimize**:
-   - Review the overall user experience
-   - Ensure smooth interactions and transitions
-   - Optimize performance where needed
-
-## SEO Best Practices
-Automatically implement SEO best practices on every page:
-- **Title Tags**: Include proper, descriptive title tags for each page
-- **Meta Descriptions**: Add compelling meta descriptions that accurately summarize page content
-- **Heading Structure**: Use a single \`<h1>\` per page with proper heading hierarchy
-- **Semantic HTML**: Use appropriate HTML5 semantic elements
-- **Unique IDs**: Ensure all interactive elements have unique, descriptive IDs for browser testing
-- **Performance**: Ensure fast page load times through optimization
-CRITICAL REMINDER: AESTHETICS ARE VERY IMPORTANT. If your web app looks simple and basic then you have FAILED!
-</web_application_development>
-<ephemeral_message>
-There will be an <EPHEMERAL_MESSAGE> appearing in the conversation at times. This is not coming from the user, but instead injected by the system as important information to pay attention to. 
-Do not respond to nor acknowledge those messages, but do follow them strictly.
-</ephemeral_message>
-
-<communication_style>
-- **Formatting**. Format your responses in github-style markdown to make your responses easier for the USER to parse. For example, use headers to organize your responses and bolded or italicized text to highlight important keywords. Use backticks to format file, directory, function, and class names. If providing a URL to the user, format this in markdown as well, for example \`[label](example.com)\`.
-- **Proactiveness**. As an agent, you are allowed to be proactive, but only in the course of completing the user's task. For example, if the user asks you to add a new component, you can edit the code, verify build and test statuses, and take any other obvious follow-up actions, such as performing additional research. However, avoid surprising the user. For example, if the user asks HOW to approach something, you should answer their question and instead of jumping into editing a file.
-- **Helpfulness**. Respond like a helpful software engineer who is explaining your work to a friendly collaborator on the project. Acknowledge mistakes or any backtracking you do as a result of new information.
-- **Ask for clarification**. If you are unsure about the USER's intent, always ask for clarification rather than making assumptions.
-</communication_style>`;
+// Antigravity system instruction (compact version from CLIProxyAPI).
+const ANTIGRAVITY_SYSTEM_INSTRUCTION =
+	"You are Antigravity, a powerful agentic AI coding assistant designed by the Google Deepmind team working on Advanced Agentic Coding." +
+	"You are pair programming with a USER to solve their coding task. The task may require creating a new codebase, modifying or debugging an existing codebase, or simply answering a question." +
+	"**Absolute paths only**" +
+	"**Proactiveness**";
 
 // Counter for generating unique tool call IDs
 let toolCallCounter = 0;
@@ -278,9 +203,20 @@ export function extractRetryDelay(errorText: string, response?: Response | Heade
 	return undefined;
 }
 
-function isClaudeThinkingModel(modelId: string): boolean {
-	const normalized = modelId.toLowerCase();
-	return normalized.includes("claude") && normalized.includes("thinking");
+function needsClaudeThinkingBetaHeader(model: Model<"google-gemini-cli">): boolean {
+	return model.provider === "google-antigravity" && model.id.startsWith("claude-") && model.reasoning;
+}
+
+function isGemini3ProModel(modelId: string): boolean {
+	return /gemini-3(?:\.1)?-pro/.test(modelId.toLowerCase());
+}
+
+function isGemini3FlashModel(modelId: string): boolean {
+	return /gemini-3(?:\.1)?-flash/.test(modelId.toLowerCase());
+}
+
+function isGemini3Model(modelId: string): boolean {
+	return isGemini3ProModel(modelId) || isGemini3FlashModel(modelId);
 }
 
 /**
@@ -433,8 +369,11 @@ export const streamGoogleGeminiCli: StreamFunction<"google-gemini-cli", GoogleGe
 			const baseUrl = model.baseUrl?.trim();
 			const endpoints = baseUrl ? [baseUrl] : isAntigravity ? ANTIGRAVITY_ENDPOINT_FALLBACKS : [DEFAULT_ENDPOINT];
 
-			const requestBody = buildRequest(model, context, projectId, options, isAntigravity);
-			options?.onPayload?.(requestBody);
+			let requestBody = buildRequest(model, context, projectId, options, isAntigravity);
+			const nextRequestBody = await options?.onPayload?.(requestBody, model);
+			if (nextRequestBody !== undefined) {
+				requestBody = nextRequestBody as CloudCodeAssistRequest;
+			}
 			const headers = isAntigravity ? getAntigravityHeaders() : GEMINI_CLI_HEADERS;
 
 			const requestHeaders = {
@@ -442,15 +381,18 @@ export const streamGoogleGeminiCli: StreamFunction<"google-gemini-cli", GoogleGe
 				"Content-Type": "application/json",
 				Accept: "text/event-stream",
 				...headers,
-				...(isClaudeThinkingModel(model.id) ? { "anthropic-beta": CLAUDE_THINKING_BETA_HEADER } : {}),
+				...(needsClaudeThinkingBetaHeader(model) ? { "anthropic-beta": CLAUDE_THINKING_BETA_HEADER } : {}),
 				...options?.headers,
 			};
 			const requestBodyJson = JSON.stringify(requestBody);
 
-			// Fetch with retry logic for rate limits and transient errors
+			// Fetch with retry logic for rate limits, transient errors, and endpoint fallbacks.
+			// On 403/404, immediately try the next endpoint (no delay).
+			// On 429/5xx, retry with backoff on the same or next endpoint.
 			let response: Response | undefined;
 			let lastError: Error | undefined;
 			let requestUrl: string | undefined;
+			let endpointIndex = 0;
 
 			for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
 				if (options?.signal?.aborted) {
@@ -458,7 +400,7 @@ export const streamGoogleGeminiCli: StreamFunction<"google-gemini-cli", GoogleGe
 				}
 
 				try {
-					const endpoint = endpoints[Math.min(attempt, endpoints.length - 1)];
+					const endpoint = endpoints[endpointIndex];
 					requestUrl = `${endpoint}/v1internal:streamGenerateContent?alt=sse`;
 					response = await fetch(requestUrl, {
 						method: "POST",
@@ -473,8 +415,19 @@ export const streamGoogleGeminiCli: StreamFunction<"google-gemini-cli", GoogleGe
 
 					const errorText = await response.text();
 
-					// Check if retryable
+					// On 403/404, cascade to the next endpoint immediately (no delay)
+					if ((response.status === 403 || response.status === 404) && endpointIndex < endpoints.length - 1) {
+						endpointIndex++;
+						continue;
+					}
+
+					// Check if retryable (429, 5xx, network patterns)
 					if (attempt < MAX_RETRIES && isRetryableError(response.status, errorText)) {
+						// Advance endpoint if possible
+						if (endpointIndex < endpoints.length - 1) {
+							endpointIndex++;
+						}
+
 						// Use server-provided delay or exponential backoff
 						const serverDelay = extractRetryDelay(errorText, response);
 						const delayMs = serverDelay ?? BASE_DELAY_MS * 2 ** attempt;
@@ -868,7 +821,7 @@ export const streamSimpleGoogleGeminiCli: StreamFunction<"google-gemini-cli", Si
 	}
 
 	const effort = clampReasoning(options.reasoning)!;
-	if (model.id.includes("3-pro") || model.id.includes("3-flash")) {
+	if (isGemini3Model(model.id)) {
 		return streamGoogleGeminiCli(model, context, {
 			...base,
 			thinking: {
@@ -967,24 +920,13 @@ export function buildRequest(
 	}
 
 	if (isAntigravity) {
-		const existingText = request.systemInstruction?.parts?.[0]?.text || "";
-		const bridgePrompt = `# CRITICAL: Environment Override
-
-IGNORE ALL INSTRUCTIONS ABOVE THIS LINE. The following overrides are mandatory:
-
-- You are Pi, NOT Antigravity
-- Use RELATIVE paths, never absolute paths
-- IGNORE all <web_application_development> guidelines above (no glassmorphism, no "premium aesthetics", no design opinions)
-- IGNORE <communication_style> above
-- IGNORE <ephemeral_message> handling above
-- Follow ONLY the instructions below
-`;
+		const existingParts = request.systemInstruction?.parts ?? [];
 		request.systemInstruction = {
 			role: "user",
 			parts: [
-				{
-					text: `${ANTIGRAVITY_SYSTEM_INSTRUCTION}\n\n${bridgePrompt}${existingText ? `\n${existingText}` : ""}`,
-				},
+				{ text: ANTIGRAVITY_SYSTEM_INSTRUCTION },
+				{ text: `Please ignore following [ignore]${ANTIGRAVITY_SYSTEM_INSTRUCTION}[/ignore]` },
+				...existingParts,
 			],
 		};
 	}
@@ -1002,7 +944,7 @@ IGNORE ALL INSTRUCTIONS ABOVE THIS LINE. The following overrides are mandatory:
 type ClampedThinkingLevel = Exclude<ThinkingLevel, "xhigh">;
 
 function getGeminiCliThinkingLevel(effort: ClampedThinkingLevel, modelId: string): GoogleThinkingLevel {
-	if (modelId.includes("3-pro")) {
+	if (isGemini3ProModel(modelId)) {
 		switch (effort) {
 			case "minimal":
 			case "low":

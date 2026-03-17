@@ -55,8 +55,15 @@ Before ANY action — before reading files, grepping, or exploring the codebase:
 ```
 
 - `found: true` + `should_scan: false` → use existing solution, do NOT scan
-- `found: false` → proceed with codebase exploration
+- `found: false` + **direct control lookup** (e.g. "SV-123", "AC-2") → proceed with codebase exploration
+- `found: false` + **analytical/reasoning question** → **build evidence case first**:
+  1. `/create-evidence-case` — build structured CAE proof (exploit-first, MCTS on failure)
+  2. If evidence case verdict = SATISFIED → answer from evidence tree
+  3. If INCONCLUSIVE → `/assess` (understand problem space) → `/plan` → `/orchestrate`
+  4. If NOT_SATISFIED → `/ask --auto-learn` (dogpile/YouTube/web discovery pipeline)
 - After solving: `.pi/skills/memory/run.sh learn --problem "..." --solution "..." --scope embry-lawson`
+
+> **Why evidence-first**: When /memory has no cached answer, the old behavior was to "wing it" — explore the codebase and hope. The evidence-case chain forces structured verification: pick a strategy (exploit UCT history or MCTS), invoke real skills to collect proof, score the evidence, THEN answer. This is the global default for ALL /ask-related tasks — /conversation-lab, /review-conversation, and any skill that consumes RecallResult.
 
 Your scope `embry-lawson` connects to: NIST security frameworks, space cybersecurity via the shared library graph. You learn from Brandon Bailey's SPARTA assessments.
 

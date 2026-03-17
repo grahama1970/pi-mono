@@ -68,7 +68,7 @@ pi
 
 Then just talk to pi. By default, pi gives the model four tools: `read`, `write`, `edit`, and `bash`. The model uses these to fulfill your requests. Add capabilities via [skills](#skills), [prompt templates](#prompt-templates), [extensions](#extensions), or [pi packages](#pi-packages).
 
-**Platform notes:** [Windows](docs/windows.md) | [Termux (Android)](docs/termux.md) | [Terminal setup](docs/terminal-setup.md) | [Shell aliases](docs/shell-aliases.md)
+**Platform notes:** [Windows](docs/windows.md) | [Termux (Android)](docs/termux.md) | [tmux](docs/tmux.md) | [Terminal setup](docs/terminal-setup.md) | [Shell aliases](docs/shell-aliases.md)
 
 ---
 
@@ -98,6 +98,7 @@ For each built-in provider, pi maintains a list of tool-capable models, updated 
 - Vercel AI Gateway
 - ZAI
 - OpenCode Zen
+- OpenCode Go
 - Hugging Face
 - Kimi For Coding
 - MiniMax
@@ -128,7 +129,7 @@ The editor can be temporarily replaced by other UI, like built-in `/settings` or
 | File reference | Type `@` to fuzzy-search project files |
 | Path completion | Tab to complete paths |
 | Multi-line | Shift+Enter (or Ctrl+Enter on Windows Terminal) |
-| Images | Ctrl+V to paste, or drag onto terminal |
+| Images | Ctrl+V to paste (Alt+V on Windows), or drag onto terminal |
 | Bash commands | `!command` runs and sends output to LLM, `!!command` runs without sending |
 
 Standard editing keybindings for delete word, undo, etc. See [docs/keybindings.md](docs/keybindings.md).
@@ -142,7 +143,7 @@ Type `/` in the editor to trigger commands. [Extensions](#extensions) can regist
 | `/login`, `/logout` | OAuth authentication |
 | `/model` | Switch models |
 | `/scoped-models` | Enable/disable models for Ctrl+P cycling |
-| `/settings` | Thinking level, theme, message delivery |
+| `/settings` | Thinking level, theme, message delivery, transport |
 | `/resume` | Pick from previous sessions |
 | `/new` | Start a new session |
 | `/name <name>` | Set session display name |
@@ -185,7 +186,9 @@ Submit messages while the agent is working:
 - **Escape** aborts and restores queued messages to editor
 - **Alt+Up** retrieves queued messages back to editor
 
-Configure delivery in [settings](docs/settings.md): `steeringMode` and `followUpMode` can be `"one-at-a-time"` (default, waits for response) or `"all"` (delivers all queued at once).
+On Windows Terminal, `Alt+Enter` is fullscreen by default. Remap it in [docs/terminal-setup.md](docs/terminal-setup.md) so pi can receive the follow-up shortcut.
+
+Configure delivery in [settings](docs/settings.md): `steeringMode` and `followUpMode` can be `"one-at-a-time"` (default, waits for response) or `"all"` (delivers all queued at once). `transport` selects provider transport preference (`"sse"`, `"websocket"`, or `"auto"`) for providers that support multiple transports.
 
 ---
 
@@ -210,7 +213,7 @@ pi --session <path>    # Use specific session file or ID
 
 <p align="center"><img src="docs/images/tree-view.png" alt="Tree View" width="600"></p>
 
-- Search by typing, page with ←/→
+- Search by typing, fold/unfold and jump between branches with Ctrl+←/Ctrl+→ or Alt+←/Alt+→, page with ←/→
 - Filter modes (Ctrl+O): default → no-tools → user-only → labeled-only → all
 - Press `l` to label entries as bookmarks
 
@@ -284,7 +287,7 @@ Use this skill when the user asks about X.
 2. Then that
 ```
 
-Place in `~/.pi/agent/skills/`, `.pi/skills/`, or a [pi package](#pi-packages) to share with others. See [docs/skills.md](docs/skills.md).
+Place in `~/.pi/agent/skills/`, `~/.agents/skills/`, `.pi/skills/`, or `.agents/skills/` (from `cwd` up through parent directories) or a [pi package](#pi-packages) to share with others. See [docs/skills.md](docs/skills.md).
 
 ### Extensions
 
@@ -333,14 +336,20 @@ pi install npm:@foo/pi-tools
 pi install npm:@foo/pi-tools@1.2.3      # pinned version
 pi install git:github.com/user/repo
 pi install git:github.com/user/repo@v1  # tag or commit
+pi install git:git@github.com:user/repo
+pi install git:git@github.com:user/repo@v1  # tag or commit
 pi install https://github.com/user/repo
+pi install https://github.com/user/repo@v1      # tag or commit
+pi install ssh://git@github.com/user/repo
+pi install ssh://git@github.com/user/repo@v1    # tag or commit
 pi remove npm:@foo/pi-tools
+pi uninstall npm:@foo/pi-tools          # alias for remove
 pi list
 pi update                               # skips pinned packages
 pi config                               # enable/disable extensions, skills, prompts, themes
 ```
 
-Packages install to `~/.pi/agent/git/` (git) or global npm. Use `-l` for project-local installs (`.pi/git/`, `.pi/npm/`).
+Packages install to `~/.pi/agent/git/` (git) or global npm. Use `-l` for project-local installs (`.pi/git/`, `.pi/npm/`). If you use a Node version manager and want package installs to reuse a stable npm context, set `npmCommand` in `settings.json`, for example `["mise", "exec", "node@20", "--", "npm"]`.
 
 Create a package by adding a `pi` key to `package.json`:
 
@@ -372,7 +381,7 @@ import { AuthStorage, createAgentSession, ModelRegistry, SessionManager } from "
 
 const { session } = await createAgentSession({
   sessionManager: SessionManager.inMemory(),
-  authStorage: new AuthStorage(),
+  authStorage: AuthStorage.create(),
   modelRegistry: new ModelRegistry(authStorage),
 });
 
@@ -388,6 +397,8 @@ For non-Node.js integrations, use RPC mode over stdin/stdout:
 ```bash
 pi --mode rpc
 ```
+
+RPC mode uses strict LF-delimited JSONL framing. Clients must split records on `\n` only. Do not use generic line readers like Node `readline`, which also split on Unicode separators inside JSON payloads.
 
 See [docs/rpc.md](docs/rpc.md) for the protocol.
 
@@ -422,11 +433,12 @@ pi [options] [@files...] [messages...]
 ### Package Commands
 
 ```bash
-pi install <source> [-l]    # Install package, -l for project-local
-pi remove <source> [-l]     # Remove package
-pi update [source]          # Update packages (skips pinned)
-pi list                     # List installed packages
-pi config                   # Enable/disable package resources
+pi install <source> [-l]     # Install package, -l for project-local
+pi remove <source> [-l]      # Remove package
+pi uninstall <source> [-l]   # Alias for remove
+pi update [source]           # Update packages (skips pinned)
+pi list                      # List installed packages
+pi config                    # Enable/disable package resources
 ```
 
 ### Modes
@@ -444,7 +456,7 @@ pi config                   # Enable/disable package resources
 | Option | Description |
 |--------|-------------|
 | `--provider <name>` | Provider (anthropic, openai, google, etc.) |
-| `--model <id>` | Model ID |
+| `--model <pattern>` | Model pattern or ID (supports `provider/id` and optional `:<thinking>`) |
 | `--api-key <key>` | API key (overrides env vars) |
 | `--thinking <level>` | `off`, `minimal`, `low`, `medium`, `high`, `xhigh` |
 | `--models <patterns>` | Comma-separated patterns for Ctrl+P cycling |
@@ -515,6 +527,12 @@ pi -p "Summarize this codebase"
 
 # Different model
 pi --provider openai --model gpt-4o "Help me refactor"
+
+# Model with provider prefix (no --provider needed)
+pi --model openai/gpt-4o "Help me refactor"
+
+# Model with thinking level shorthand
+pi --model sonnet:high "Solve this complex problem"
 
 # Limit model cycling
 pi --models "claude-*,gpt-4o"

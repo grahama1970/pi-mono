@@ -27,6 +27,10 @@ local function build_palette_choices()
 		{ id = "agent_ask", label = "Ask Agent                        CTRL+SHIFT+a" },
 		{ id = "agent_steer", label = "Steer Agent                      CTRL+SHIFT+s" },
 		{ id = "agent_abort", label = "Abort Agent                      CTRL+SHIFT+q" },
+		{ id = "reopen_tab", label = "Reopen Closed Tab              LEADER+SHIFT+T" },
+		{ id = "browser_split_right", label = "Browser Split Right              LEADER+SHIFT+B" },
+		{ id = "browser_cookies", label = "Browser: Get Cookies" },
+		{ id = "browser_clear_storage", label = "Browser: Clear Storage" },
 		{ id = "save_session", label = "Save Session" },
 		{ id = "save_session_as", label = "Save Session As..." },
 		{ id = "restore_session", label = "Restore Session..." },
@@ -137,6 +141,18 @@ local function execute_action(window, pane, action_id)
 			}),
 			pane
 		)
+	elseif action_id == "reopen_tab" then
+		local session = require("embry.session")
+		session.reopen_tab(window, pane)
+	elseif action_id == "browser_split_right" then
+		local browser = require("embry.browser")
+		browser.open_split(window, "right")
+	elseif action_id == "browser_cookies" then
+		local browser = require("embry.browser")
+		browser.get_cookies(window)
+	elseif action_id == "browser_clear_storage" then
+		local browser = require("embry.browser")
+		browser.clear_storage(window)
 	elseif action_id == "agent_abort" then
 		wezterm.run_child_process({ "embry-wezterm-bridge", "abort" })
 	elseif action_id == "save_session" then

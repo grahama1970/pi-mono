@@ -32,6 +32,8 @@ export type {
 	BashToolResultEvent,
 	BeforeAgentStartEvent,
 	BeforeAgentStartEventResult,
+	BeforeProviderRequestEvent,
+	BeforeProviderRequestEventResult,
 	// Context
 	CompactOptions,
 	// Events - Agent
@@ -81,9 +83,13 @@ export type {
 	LoadExtensionsResult,
 	LsToolCallEvent,
 	LsToolResultEvent,
+	// Events - Message
+	MessageEndEvent,
 	// Message Rendering
 	MessageRenderer,
 	MessageRenderOptions,
+	MessageStartEvent,
+	MessageUpdateEvent,
 	ModelSelectEvent,
 	ModelSelectSource,
 	// Provider Registration
@@ -108,6 +114,9 @@ export type {
 	SessionBeforeTreeEvent,
 	SessionBeforeTreeResult,
 	SessionCompactEvent,
+	SessionDirectoryEvent,
+	SessionDirectoryHandler,
+	SessionDirectoryResult,
 	SessionEvent,
 	SessionForkEvent,
 	SessionShutdownEvent,
@@ -119,11 +128,16 @@ export type {
 	SetLabelHandler,
 	SetModelHandler,
 	SetThinkingLevelHandler,
+	TerminalInputHandler,
 	// Events - Tool
 	ToolCallEvent,
 	ToolCallEventResult,
 	// Tools
 	ToolDefinition,
+	// Events - Tool Execution
+	ToolExecutionEndEvent,
+	ToolExecutionStartEvent,
+	ToolExecutionUpdateEvent,
 	ToolInfo,
 	ToolRenderResultOptions,
 	ToolResultEvent,
@@ -149,9 +163,4 @@ export {
 	isToolCallEventType,
 	isWriteToolResult,
 } from "./types.js";
-export {
-	wrapRegisteredTool,
-	wrapRegisteredTools,
-	wrapToolsWithExtensions,
-	wrapToolWithExtensions,
-} from "./wrapper.js";
+export { wrapRegisteredTool, wrapRegisteredTools } from "./wrapper.js";

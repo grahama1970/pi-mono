@@ -13,7 +13,6 @@ import { calculateCost, supportsXhigh } from "../models.js";
 import type {
 	AssistantMessage,
 	Context,
-	ImageContent,
 	Message,
 	Model,
 	OpenAICompletionsCompat,
@@ -30,26 +29,9 @@ import type {
 import { AssistantMessageEventStream } from "../utils/event-stream.js";
 import { parseStreamingJson } from "../utils/json-parse.js";
 import { sanitizeSurrogates } from "../utils/sanitize-unicode.js";
+import { buildCopilotDynamicHeaders, hasCopilotVisionInput } from "./github-copilot-headers.js";
 import { buildBaseOptions, clampReasoning } from "./simple-options.js";
 import { transformMessages } from "./transform-messages.js";
-
-/**
- * Normalize tool call ID for Mistral.
- * Mistral requires tool IDs to be exactly 9 alphanumeric characters (a-z, A-Z, 0-9).
- */
-function normalizeMistralToolId(id: string): string {
-	// Remove non-alphanumeric characters
-	let normalized = id.replace(/[^a-zA-Z0-9]/g, "");
-	// Mistral requires exactly 9 characters
-	if (normalized.length < 9) {
-		// Pad with deterministic characters based on original ID to ensure matching
-		const padding = "ABCDEFGHI";
-		normalized = normalized + padding.slice(0, 9 - normalized.length);
-	} else if (normalized.length > 9) {
-		normalized = normalized.slice(0, 9);
-	}
-	return normalized;
-}
 
 /**
  * Check if conversation messages contain tool calls or tool results.
@@ -104,8 +86,11 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 		try {
 			const apiKey = options?.apiKey || getEnvApiKey(model.provider) || "";
 			const client = createClient(model, context, apiKey, options?.headers);
-			const params = buildParams(model, context, options);
-			options?.onPayload?.(params);
+			let params = buildParams(model, context, options);
+			const nextParams = await options?.onPayload?.(params, model);
+			if (nextParams !== undefined) {
+				params = nextParams as OpenAI.Chat.Completions.ChatCompletionCreateParamsStreaming;
+			}
 			const openaiStream = await client.chat.completions.create(params, { signal: options?.signal });
 			stream.push({ type: "start", partial: output });
 
@@ -129,7 +114,7 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 							partial: output,
 						});
 					} else if (block.type === "toolCall") {
-						block.arguments = JSON.parse(block.partialArgs || "{}");
+						block.arguments = parseStreamingJson(block.partialArgs);
 						delete block.partialArgs;
 						stream.push({
 							type: "toolcall_end",
@@ -143,32 +128,17 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 
 			for await (const chunk of openaiStream) {
 				if (chunk.usage) {
-					const cachedTokens = chunk.usage.prompt_tokens_details?.cached_tokens || 0;
-					const reasoningTokens = chunk.usage.completion_tokens_details?.reasoning_tokens || 0;
-					const input = (chunk.usage.prompt_tokens || 0) - cachedTokens;
-					const outputTokens = (chunk.usage.completion_tokens || 0) + reasoningTokens;
-					output.usage = {
-						// OpenAI includes cached tokens in prompt_tokens, so subtract to get non-cached input
-						input,
-						output: outputTokens,
-						cacheRead: cachedTokens,
-						cacheWrite: 0,
-						// Compute totalTokens ourselves since we add reasoning_tokens to output
-						// and some providers (e.g., Groq) don't include them in total_tokens
-						totalTokens: input + outputTokens + cachedTokens,
-						cost: {
-							input: 0,
-							output: 0,
-							cacheRead: 0,
-							cacheWrite: 0,
-							total: 0,
-						},
-					};
-					calculateCost(model, output.usage);
+					output.usage = parseChunkUsage(chunk.usage, model);
 				}
 
-				const choice = chunk.choices[0];
+				const choice = chunk.choices?.[0];
 				if (!choice) continue;
+
+				// Fallback: some providers (e.g., Moonshot) return usage
+				// in choice.usage instead of the standard chunk.usage
+				if (!chunk.usage && (choice as any).usage) {
+					output.usage = parseChunkUsage((choice as any).usage, model);
+				}
 
 				if (choice.finish_reason) {
 					output.stopReason = mapStopReason(choice.finish_reason);
@@ -204,14 +174,11 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 					// (e.g., chutes.ai returns both reasoning_content and reasoning with same content)
 					const reasoningFields = ["reasoning_content", "reasoning", "reasoning_text"];
 					let foundReasoningField: string | null = null;
-					const deltaRecord = choice.delta as Record<string, unknown>;
 					for (const field of reasoningFields) {
-						const fieldValue = deltaRecord[field];
 						if (
-							fieldValue !== null &&
-							fieldValue !== undefined &&
-							typeof fieldValue === "string" &&
-							fieldValue.length > 0
+							(choice.delta as any)[field] !== null &&
+							(choice.delta as any)[field] !== undefined &&
+							(choice.delta as any)[field].length > 0
 						) {
 							if (!foundReasoningField) {
 								foundReasoningField = field;
@@ -233,7 +200,7 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 						}
 
 						if (currentBlock.type === "thinking") {
-							const delta = deltaRecord[foundReasoningField] as string;
+							const delta = (choice.delta as any)[foundReasoningField];
 							currentBlock.thinking += delta;
 							stream.push({
 								type: "thinking_delta",
@@ -282,9 +249,9 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 						}
 					}
 
-					const reasoningDetails = deltaRecord.reasoning_details;
+					const reasoningDetails = (choice.delta as any).reasoning_details;
 					if (reasoningDetails && Array.isArray(reasoningDetails)) {
-						for (const detail of reasoningDetails as Array<{ type?: string; id?: string; data?: string }>) {
+						for (const detail of reasoningDetails) {
 							if (detail.type === "reasoning.encrypted" && detail.id && detail.data) {
 								const matchingToolCall = output.content.find(
 									(b) => b.type === "toolCall" && b.id === detail.id,
@@ -299,7 +266,6 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 			}
 
 			finishCurrentBlock(currentBlock);
-
 			if (options?.signal?.aborted) {
 				throw new Error("Request was aborted");
 			}
@@ -311,11 +277,11 @@ export const streamOpenAICompletions: StreamFunction<"openai-completions", OpenA
 			stream.push({ type: "done", reason: output.stopReason, message: output });
 			stream.end();
 		} catch (error) {
-			for (const block of output.content) delete (block as unknown as Record<string, unknown>).index;
+			for (const block of output.content) delete (block as any).index;
 			output.stopReason = options?.signal?.aborted ? "aborted" : "error";
 			output.errorMessage = error instanceof Error ? error.message : JSON.stringify(error);
 			// Some providers via OpenRouter give additional information in this field.
-			const rawMetadata = (error as { error?: { metadata?: { raw?: string } } })?.error?.metadata?.raw;
+			const rawMetadata = (error as any)?.error?.metadata?.raw;
 			if (rawMetadata) output.errorMessage += `\n${rawMetadata}`;
 			stream.push({ type: "error", reason: output.stopReason, error: output });
 			stream.end();
@@ -363,28 +329,12 @@ function createClient(
 
 	const headers = { ...model.headers };
 	if (model.provider === "github-copilot") {
-		// Copilot expects X-Initiator to indicate whether the request is user-initiated
-		// or agent-initiated (e.g. follow-up after assistant/tool messages). If there is
-		// no prior message, default to user-initiated.
-		const messages = context.messages || [];
-		const lastMessage = messages[messages.length - 1];
-		const isAgentCall = lastMessage ? lastMessage.role !== "user" : false;
-		headers["X-Initiator"] = isAgentCall ? "agent" : "user";
-		headers["Openai-Intent"] = "conversation-edits";
-
-		// Copilot requires this header when sending images
-		const hasImages = messages.some((msg) => {
-			if (msg.role === "user" && Array.isArray(msg.content)) {
-				return msg.content.some((c) => c.type === "image");
-			}
-			if (msg.role === "toolResult" && Array.isArray(msg.content)) {
-				return msg.content.some((c) => c.type === "image");
-			}
-			return false;
+		const hasImages = hasCopilotVisionInput(context.messages);
+		const copilotHeaders = buildCopilotDynamicHeaders({
+			messages: context.messages,
+			hasImages,
 		});
-		if (hasImages) {
-			headers["Copilot-Vision-Request"] = "true";
-		}
+		Object.assign(headers, copilotHeaders);
 	}
 
 	// Merge options headers last so they can override defaults
@@ -412,7 +362,7 @@ function buildParams(model: Model<"openai-completions">, context: Context, optio
 	};
 
 	if (compat.supportsUsageInStreaming !== false) {
-		(params as unknown as Record<string, unknown>).stream_options = { include_usage: true };
+		(params as any).stream_options = { include_usage: true };
 	}
 
 	if (compat.supportsStore) {
@@ -421,7 +371,7 @@ function buildParams(model: Model<"openai-completions">, context: Context, optio
 
 	if (options?.maxTokens) {
 		if (compat.maxTokensField === "max_tokens") {
-			(params as unknown as Record<string, unknown>).max_tokens = options.maxTokens;
+			(params as any).max_tokens = options.maxTokens;
 		} else {
 			params.max_completion_tokens = options.maxTokens;
 		}
@@ -442,22 +392,20 @@ function buildParams(model: Model<"openai-completions">, context: Context, optio
 		params.tool_choice = options.toolChoice;
 	}
 
-	const paramsExt = params as unknown as Record<string, unknown>;
 	if (compat.thinkingFormat === "zai" && model.reasoning) {
-		// Z.ai uses binary thinking: { type: "enabled" | "disabled" }
-		// Must explicitly disable since z.ai defaults to thinking enabled
-		paramsExt.thinking = { type: options?.reasoningEffort ? "enabled" : "disabled" };
+		(params as any).enable_thinking = !!options?.reasoningEffort;
 	} else if (compat.thinkingFormat === "qwen" && model.reasoning) {
-		// Qwen uses enable_thinking: boolean
-		paramsExt.enable_thinking = !!options?.reasoningEffort;
+		(params as any).enable_thinking = !!options?.reasoningEffort;
+	} else if (compat.thinkingFormat === "qwen-chat-template" && model.reasoning) {
+		(params as any).chat_template_kwargs = { enable_thinking: !!options?.reasoningEffort };
 	} else if (options?.reasoningEffort && model.reasoning && compat.supportsReasoningEffort) {
 		// OpenAI-style reasoning_effort
-		params.reasoning_effort = options.reasoningEffort;
+		(params as any).reasoning_effort = mapReasoningEffort(options.reasoningEffort, compat.reasoningEffortMap);
 	}
 
 	// OpenRouter provider routing preferences
 	if (model.baseUrl.includes("openrouter.ai") && model.compat?.openRouterRouting) {
-		paramsExt.provider = model.compat.openRouterRouting;
+		(params as any).provider = model.compat.openRouterRouting;
 	}
 
 	// Vercel AI Gateway provider routing preferences
@@ -467,11 +415,18 @@ function buildParams(model: Model<"openai-completions">, context: Context, optio
 			const gatewayOptions: Record<string, string[]> = {};
 			if (routing.only) gatewayOptions.only = routing.only;
 			if (routing.order) gatewayOptions.order = routing.order;
-			paramsExt.providerOptions = { gateway: gatewayOptions };
+			(params as any).providerOptions = { gateway: gatewayOptions };
 		}
 	}
 
 	return params;
+}
+
+function mapReasoningEffort(
+	effort: NonNullable<OpenAICompletionsOptions["reasoningEffort"]>,
+	reasoningEffortMap: Partial<Record<NonNullable<OpenAICompletionsOptions["reasoningEffort"]>, string>>,
+): string {
+	return reasoningEffortMap[effort] ?? effort;
 }
 
 function maybeAddOpenRouterAnthropicCacheControl(
@@ -515,8 +470,6 @@ export function convertMessages(
 	const params: ChatCompletionMessageParam[] = [];
 
 	const normalizeToolCallId = (id: string): string => {
-		if (compat.requiresMistralToolIds) return normalizeMistralToolId(id);
-
 		// Handle pipe-separated IDs from OpenAI Responses API
 		// Format: {call_id}|{id} where {id} can be 400+ chars with special chars (+, /, =)
 		// These come from providers like github-copilot, openai-codex, opencode
@@ -528,10 +481,6 @@ export function convertMessages(
 		}
 
 		if (model.provider === "openai") return id.length > 40 ? id.slice(0, 40) : id;
-		// Copilot Claude models route to Claude backend which requires Anthropic ID format
-		if (model.provider === "github-copilot" && model.id.toLowerCase().includes("claude")) {
-			return id.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 64);
-		}
 		return id;
 	};
 
@@ -547,7 +496,7 @@ export function convertMessages(
 
 	for (let i = 0; i < transformedMessages.length; i++) {
 		const msg = transformedMessages[i];
-		// Some providers (e.g. Mistral/Devstral) don't allow user messages directly after tool results
+		// Some providers don't allow user messages directly after tool results
 		// Insert a synthetic assistant message to bridge the gap
 		if (compat.requiresAssistantAfterToolResult && lastRole === "toolResult" && msg.role === "user") {
 			params.push({
@@ -588,7 +537,7 @@ export function convertMessages(
 				});
 			}
 		} else if (msg.role === "assistant") {
-			// Some providers (e.g. Mistral) don't accept null content, use empty string instead
+			// Some providers don't accept null content, use empty string instead
 			const assistantMsg: ChatCompletionAssistantMessageParam = {
 				role: "assistant",
 				content: compat.requiresAssistantAfterToolResult ? "" : null,
@@ -598,15 +547,12 @@ export function convertMessages(
 			// Filter out empty text blocks to avoid API validation errors
 			const nonEmptyTextBlocks = textBlocks.filter((b) => b.text && b.text.trim().length > 0);
 			if (nonEmptyTextBlocks.length > 0) {
-				// GitHub Copilot requires assistant content as a string, not an array.
-				// Sending as array causes Claude models to re-answer all previous prompts.
-				if (model.provider === "github-copilot") {
-					assistantMsg.content = nonEmptyTextBlocks.map((b) => sanitizeSurrogates(b.text)).join("");
-				} else {
-					assistantMsg.content = nonEmptyTextBlocks.map((b) => {
-						return { type: "text", text: sanitizeSurrogates(b.text) };
-					});
-				}
+				// Always send assistant content as a plain string (OpenAI Chat Completions
+				// API standard format). Sending as an array of {type:"text", text:"..."}
+				// objects is non-standard and causes some models (e.g. DeepSeek V3.2 via
+				// NVIDIA NIM) to mirror the content-block structure literally in their
+				// output, producing recursive nesting like [{'type':'text','text':'[{...}]'}].
+				assistantMsg.content = nonEmptyTextBlocks.map((b) => sanitizeSurrogates(b.text)).join("");
 			}
 
 			// Handle thinking blocks
@@ -627,9 +573,7 @@ export function convertMessages(
 					// Use the signature from the first thinking block if available (for llama.cpp server + gpt-oss)
 					const signature = nonEmptyThinkingBlocks[0].thinkingSignature;
 					if (signature && signature.length > 0) {
-						(assistantMsg as unknown as Record<string, unknown>)[signature] = nonEmptyThinkingBlocks
-							.map((b) => b.thinking)
-							.join("\n");
+						(assistantMsg as any)[signature] = nonEmptyThinkingBlocks.map((b) => b.thinking).join("\n");
 					}
 				}
 			}
@@ -655,11 +599,11 @@ export function convertMessages(
 					})
 					.filter(Boolean);
 				if (reasoningDetails.length > 0) {
-					(assistantMsg as unknown as Record<string, unknown>).reasoning_details = reasoningDetails;
+					(assistantMsg as any).reasoning_details = reasoningDetails;
 				}
 			}
 			// Skip assistant messages that have no content and no tool calls.
-			// Mistral explicitly requires "either content or tool_calls, but not none".
+			// Some providers require "either content or tool_calls, but not none".
 			// Other providers also don't accept empty assistant messages.
 			// This handles aborted assistant responses that got no content.
 			const content = assistantMsg.content;
@@ -680,32 +624,31 @@ export function convertMessages(
 
 				// Extract text and image content
 				const textResult = toolMsg.content
-					.filter((c): c is TextContent => c.type === "text")
-					.map((c) => c.text)
+					.filter((c) => c.type === "text")
+					.map((c) => (c as any).text)
 					.join("\n");
 				const hasImages = toolMsg.content.some((c) => c.type === "image");
 
 				// Always send tool result with text (or placeholder if only images)
 				const hasText = textResult.length > 0;
-				// Some providers (e.g. Mistral) require the 'name' field in tool results
+				// Some providers require the 'name' field in tool results
 				const toolResultMsg: ChatCompletionToolMessageParam = {
 					role: "tool",
 					content: sanitizeSurrogates(hasText ? textResult : "(see attached image)"),
 					tool_call_id: toolMsg.toolCallId,
 				};
 				if (compat.requiresToolResultName && toolMsg.toolName) {
-					(toolResultMsg as unknown as Record<string, unknown>).name = toolMsg.toolName;
+					(toolResultMsg as any).name = toolMsg.toolName;
 				}
 				params.push(toolResultMsg);
 
 				if (hasImages && model.input.includes("image")) {
 					for (const block of toolMsg.content) {
 						if (block.type === "image") {
-							const imgBlock = block as ImageContent;
 							imageBlocks.push({
 								type: "image_url",
 								image_url: {
-									url: `data:${imgBlock.mimeType};base64,${imgBlock.data}`,
+									url: `data:${(block as any).mimeType};base64,${(block as any).data}`,
 								},
 							});
 						}
@@ -755,17 +698,46 @@ function convertTools(
 		function: {
 			name: tool.name,
 			description: tool.description,
-			parameters: tool.parameters as Record<string, unknown>, // TypeBox already generates JSON Schema
+			parameters: tool.parameters as any, // TypeBox already generates JSON Schema
 			// Only include strict if provider supports it. Some reject unknown fields.
 			...(compat.supportsStrictMode !== false && { strict: false }),
 		},
 	}));
 }
 
-function mapStopReason(reason: ChatCompletionChunk.Choice["finish_reason"]): StopReason {
+function parseChunkUsage(
+	rawUsage: {
+		prompt_tokens?: number;
+		completion_tokens?: number;
+		prompt_tokens_details?: { cached_tokens?: number };
+		completion_tokens_details?: { reasoning_tokens?: number };
+	},
+	model: Model<"openai-completions">,
+): AssistantMessage["usage"] {
+	const cachedTokens = rawUsage.prompt_tokens_details?.cached_tokens || 0;
+	const reasoningTokens = rawUsage.completion_tokens_details?.reasoning_tokens || 0;
+	// OpenAI includes cached tokens in prompt_tokens, so subtract to get non-cached input
+	const input = (rawUsage.prompt_tokens || 0) - cachedTokens;
+	// Compute totalTokens ourselves since we add reasoning_tokens to output
+	// and some providers (e.g., Groq) don't include them in total_tokens
+	const outputTokens = (rawUsage.completion_tokens || 0) + reasoningTokens;
+	const usage: AssistantMessage["usage"] = {
+		input,
+		output: outputTokens,
+		cacheRead: cachedTokens,
+		cacheWrite: 0,
+		totalTokens: input + outputTokens + cachedTokens,
+		cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
+	};
+	calculateCost(model, usage);
+	return usage;
+}
+
+function mapStopReason(reason: ChatCompletionChunk.Choice["finish_reason"] | string): StopReason {
 	if (reason === null) return "stop";
 	switch (reason) {
 		case "stop":
+		case "end":
 			return "stop";
 		case "length":
 			return "length";
@@ -775,7 +747,7 @@ function mapStopReason(reason: ChatCompletionChunk.Choice["finish_reason"]): Sto
 		case "content_filter":
 			return "error";
 		default: {
-			const _exhaustive: never = reason;
+			const _exhaustive: never = reason as never;
 			throw new Error(`Unhandled stop reason: ${_exhaustive}`);
 		}
 	}
@@ -797,30 +769,37 @@ function detectCompat(model: Model<"openai-completions">): Required<OpenAIComple
 		baseUrl.includes("cerebras.ai") ||
 		provider === "xai" ||
 		baseUrl.includes("api.x.ai") ||
-		provider === "mistral" ||
-		baseUrl.includes("mistral.ai") ||
 		baseUrl.includes("chutes.ai") ||
 		baseUrl.includes("deepseek.com") ||
 		isZai ||
 		provider === "opencode" ||
 		baseUrl.includes("opencode.ai");
 
-	const useMaxTokens = provider === "mistral" || baseUrl.includes("mistral.ai") || baseUrl.includes("chutes.ai");
+	const useMaxTokens = baseUrl.includes("chutes.ai");
 
 	const isGrok = provider === "xai" || baseUrl.includes("api.x.ai");
+	const isGroq = provider === "groq" || baseUrl.includes("groq.com");
 
-	const isMistral = provider === "mistral" || baseUrl.includes("mistral.ai");
-
+	const reasoningEffortMap =
+		isGroq && model.id === "qwen/qwen3-32b"
+			? {
+					minimal: "default",
+					low: "default",
+					medium: "default",
+					high: "default",
+					xhigh: "default",
+				}
+			: {};
 	return {
 		supportsStore: !isNonStandard,
 		supportsDeveloperRole: !isNonStandard,
 		supportsReasoningEffort: !isGrok && !isZai,
+		reasoningEffortMap,
 		supportsUsageInStreaming: true,
 		maxTokensField: useMaxTokens ? "max_tokens" : "max_completion_tokens",
-		requiresToolResultName: isMistral,
-		requiresAssistantAfterToolResult: false, // Mistral no longer requires this as of Dec 2024
-		requiresThinkingAsText: isMistral,
-		requiresMistralToolIds: isMistral,
+		requiresToolResultName: false,
+		requiresAssistantAfterToolResult: false,
+		requiresThinkingAsText: false,
 		thinkingFormat: isZai ? "zai" : "openai",
 		openRouterRouting: {},
 		vercelGatewayRouting: {},
@@ -840,13 +819,13 @@ function getCompat(model: Model<"openai-completions">): Required<OpenAICompletio
 		supportsStore: model.compat.supportsStore ?? detected.supportsStore,
 		supportsDeveloperRole: model.compat.supportsDeveloperRole ?? detected.supportsDeveloperRole,
 		supportsReasoningEffort: model.compat.supportsReasoningEffort ?? detected.supportsReasoningEffort,
+		reasoningEffortMap: model.compat.reasoningEffortMap ?? detected.reasoningEffortMap,
 		supportsUsageInStreaming: model.compat.supportsUsageInStreaming ?? detected.supportsUsageInStreaming,
 		maxTokensField: model.compat.maxTokensField ?? detected.maxTokensField,
 		requiresToolResultName: model.compat.requiresToolResultName ?? detected.requiresToolResultName,
 		requiresAssistantAfterToolResult:
 			model.compat.requiresAssistantAfterToolResult ?? detected.requiresAssistantAfterToolResult,
 		requiresThinkingAsText: model.compat.requiresThinkingAsText ?? detected.requiresThinkingAsText,
-		requiresMistralToolIds: model.compat.requiresMistralToolIds ?? detected.requiresMistralToolIds,
 		thinkingFormat: model.compat.thinkingFormat ?? detected.thinkingFormat,
 		openRouterRouting: model.compat.openRouterRouting ?? {},
 		vercelGatewayRouting: model.compat.vercelGatewayRouting ?? detected.vercelGatewayRouting,

@@ -36,7 +36,7 @@ local function send_desktop_notification(title, body, urgency)
 	urgency = urgency or "normal"
 	local args = {
 		"notify-send",
-		"--app-name=WezMux",
+		"--app-name=Pi Term",
 		"--urgency=" .. urgency,
 		title,
 		body or "",
@@ -50,9 +50,9 @@ local function send_custom_notification(title, body, workspace)
 		return
 	end
 	local env = {
-		WEZMUX_NOTIFICATION_TITLE = title,
-		WEZMUX_NOTIFICATION_BODY = body or "",
-		WEZMUX_NOTIFICATION_WORKSPACE = workspace or "",
+		PI_TERM_NOTIFICATION_TITLE = title,
+		PI_TERM_NOTIFICATION_BODY = body or "",
+		PI_TERM_NOTIFICATION_WORKSPACE = workspace or "",
 	}
 	-- Build env prefix for the shell command
 	local env_str = ""
@@ -65,7 +65,7 @@ end
 -- Public API: send a notification
 -- Handles suppression, dedup, desktop toast, and custom command
 function M.notify(opts)
-	local title = opts.title or "WezMux"
+	local title = opts.title or "Pi Term"
 	local body = opts.body or ""
 	local workspace = opts.workspace
 	local urgency = opts.urgency or "normal"

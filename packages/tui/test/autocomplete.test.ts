@@ -107,14 +107,20 @@ describe("CombinedAutocompleteProvider", () => {
 	});
 
 	describe("fd @ file suggestions", { skip: !isFdInstalled }, () => {
+		let rootDir = "";
 		let baseDir = "";
+		let outsideDir = "";
 
 		beforeEach(() => {
-			baseDir = mkdtempSync(join(tmpdir(), "pi-autocomplete-"));
+			rootDir = mkdtempSync(join(tmpdir(), "pi-autocomplete-root-"));
+			baseDir = join(rootDir, "cwd");
+			outsideDir = join(rootDir, "outside");
+			mkdirSync(baseDir, { recursive: true });
+			mkdirSync(outsideDir, { recursive: true });
 		});
 
 		afterEach(() => {
-			rmSync(baseDir, { recursive: true, force: true });
+			rmSync(rootDir, { recursive: true, force: true });
 		});
 
 		test("returns all files and folders for empty @ query", () => {
@@ -231,6 +237,25 @@ describe("CombinedAutocompleteProvider", () => {
 			assert.ok(!values?.includes("@src/utils/helpers.ts"));
 		});
 
+		test("scopes fuzzy search to relative directories and searches recursively", () => {
+			setupFolder(outsideDir, {
+				files: {
+					"nested/alpha.ts": "export {};",
+					"nested/deeper/also-alpha.ts": "export {};",
+					"nested/deeper/zzz.ts": "export {};",
+				},
+			});
+
+			const provider = new CombinedAutocompleteProvider([], baseDir, requireFdPath());
+			const line = "@../outside/a";
+			const result = provider.getSuggestions([line], 0, line.length);
+
+			const values = result?.items.map((item) => item.value);
+			assert.ok(values?.includes("@../outside/nested/alpha.ts"));
+			assert.ok(values?.includes("@../outside/nested/deeper/also-alpha.ts"));
+			assert.ok(!values?.includes("@../outside/nested/deeper/zzz.ts"));
+		});
+
 		test("quotes paths with spaces for @ suggestions", () => {
 			setupFolder(baseDir, {
 				dirs: ["my folder"],
@@ -303,6 +328,52 @@ describe("CombinedAutocompleteProvider", () => {
 
 			const applied = provider.applyCompletion([line], 0, cursorCol, item!, result!.prefix);
 			assert.strictEqual(applied.lines[0], '@"my folder/test.txt" ');
+		});
+	});
+
+	describe("dot-slash path completion", () => {
+		let baseDir = "";
+
+		beforeEach(() => {
+			baseDir = mkdtempSync(join(tmpdir(), "pi-autocomplete-"));
+		});
+
+		afterEach(() => {
+			rmSync(baseDir, { recursive: true, force: true });
+		});
+
+		test("preserves ./ prefix when completing paths", () => {
+			setupFolder(baseDir, {
+				files: {
+					"update.sh": "#!/bin/bash",
+					"utils.ts": "export {};",
+				},
+			});
+
+			const provider = new CombinedAutocompleteProvider([], baseDir);
+			const line = "./up";
+			const result = provider.getForceFileSuggestions([line], 0, line.length);
+
+			assert.notEqual(result, null, "Should return suggestions for ./ path");
+			const values = result?.items.map((item) => item.value);
+			assert.ok(values?.includes("./update.sh"), `Expected ./update.sh in ${JSON.stringify(values)}`);
+		});
+
+		test("preserves ./ prefix for directory completions", () => {
+			setupFolder(baseDir, {
+				dirs: ["src"],
+				files: {
+					"src/index.ts": "export {};",
+				},
+			});
+
+			const provider = new CombinedAutocompleteProvider([], baseDir);
+			const line = "./sr";
+			const result = provider.getForceFileSuggestions([line], 0, line.length);
+
+			assert.notEqual(result, null, "Should return suggestions for ./ directory path");
+			const values = result?.items.map((item) => item.value);
+			assert.ok(values?.includes("./src/"), `Expected ./src/ in ${JSON.stringify(values)}`);
 		});
 	});
 

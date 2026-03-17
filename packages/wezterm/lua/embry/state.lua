@@ -90,7 +90,10 @@ local function spawn_monitor()
 
 	-- Find the signal-monitor.sh script relative to this lua file
 	-- It's in the same directory as state.lua
-	local script_dir = debug.getinfo(1, "S").source:match("@(.*/)")
+	local script_dir = nil
+	local has_debug, d = pcall(function() return debug.getinfo(1, "S").source:match("@(.*/)") end)
+	if has_debug and d then script_dir = d else script_dir = wezterm.config_dir .. "/embry/" end
+	
 	if not script_dir then
 		return
 	end

@@ -16,7 +16,7 @@ import { existsSync, readFileSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { homedir } from "os";
 import { join } from "path";
-import { MomSettingsManager, syncLogToSessionManager } from "./context.js";
+import { createMomSettingsManager, syncLogToSessionManager } from "./context.js";
 import * as log from "./log.js";
 import { createExecutor, type SandboxConfig } from "./sandbox.js";
 import type { ChannelInfo, SlackContext, UserInfo } from "./slack.js";
@@ -424,11 +424,11 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 	// Use a fixed context.jsonl file per channel (not timestamped like coding-agent)
 	const contextFile = join(channelDir, "context.jsonl");
 	const sessionManager = SessionManager.open(contextFile, channelDir);
-	const settingsManager = new MomSettingsManager(join(channelDir, ".."));
+	const settingsManager = createMomSettingsManager(join(channelDir, ".."));
 
 	// Create AuthStorage and ModelRegistry
 	// Auth stored outside workspace so agent can't access it
-	const authStorage = new AuthStorage(join(homedir(), ".pi", "mom", "auth.json"));
+	const authStorage = AuthStorage.create(join(homedir(), ".pi", "mom", "auth.json"));
 	const modelRegistry = new ModelRegistry(authStorage);
 
 	// Create agent
@@ -469,8 +469,7 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 	const session = new AgentSession({
 		agent,
 		sessionManager,
-		// MomSettingsManager is a subset-compatible implementation of SettingsManager
-		settingsManager: settingsManager as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- cross-package type mismatch
+		settingsManager,
 		cwd: process.cwd(),
 		modelRegistry,
 		resourceLoader,
@@ -556,19 +555,7 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 		} else if (event.type === "message_end") {
 			const agentEvent = event as AgentEvent & { type: "message_end" };
 			if (agentEvent.message.role === "assistant") {
-				const assistantMsg = agentEvent.message as {
-					role: string;
-					content: Array<{ type: string; thinking?: string; text?: string }>;
-					stopReason?: string;
-					errorMessage?: string;
-					usage?: {
-						input: number;
-						output: number;
-						cacheRead: number;
-						cacheWrite: number;
-						cost: { input: number; output: number; cacheRead: number; cacheWrite: number; total: number };
-					};
-				};
+				const assistantMsg = agentEvent.message as any;
 
 				if (assistantMsg.stopReason) {
 					runState.stopReason = assistantMsg.stopReason;
@@ -589,13 +576,14 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 					runState.totalUsage.cost.total += assistantMsg.usage.cost.total;
 				}
 
+				const content = agentEvent.message.content;
 				const thinkingParts: string[] = [];
 				const textParts: string[] = [];
-				for (const part of assistantMsg.content) {
-					if (part.type === "thinking" && part.thinking) {
-						thinkingParts.push(part.thinking);
-					} else if (part.type === "text" && part.text) {
-						textParts.push(part.text);
+				for (const part of content) {
+					if (part.type === "thinking") {
+						thinkingParts.push((part as any).thinking);
+					} else if (part.type === "text") {
+						textParts.push((part as any).text);
 					}
 				}
 
@@ -614,27 +602,17 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 				}
 			}
 		} else if (event.type === "auto_compaction_start") {
-			const compStartEvent = event as { type: "auto_compaction_start"; reason?: string };
-			log.logInfo(`Auto-compaction started (reason: ${compStartEvent.reason})`);
+			log.logInfo(`Auto-compaction started (reason: ${(event as any).reason})`);
 			queue.enqueue(() => ctx.respond("_Compacting context..._", false), "compaction start");
 		} else if (event.type === "auto_compaction_end") {
-			const compEvent = event as {
-				type: "auto_compaction_end";
-				result?: { tokensBefore: number };
-				aborted?: boolean;
-			};
+			const compEvent = event as any;
 			if (compEvent.result) {
 				log.logInfo(`Auto-compaction complete: ${compEvent.result.tokensBefore} tokens compacted`);
 			} else if (compEvent.aborted) {
 				log.logInfo("Auto-compaction aborted");
 			}
 		} else if (event.type === "auto_retry_start") {
-			const retryEvent = event as {
-				type: "auto_retry_start";
-				attempt: number;
-				maxAttempts: number;
-				errorMessage: string;
-			};
+			const retryEvent = event as any;
 			log.logWarning(`Retrying (${retryEvent.attempt}/${retryEvent.maxAttempts})`, retryEvent.errorMessage);
 			queue.enqueue(
 				() => ctx.respond(`_Retrying (${retryEvent.attempt}/${retryEvent.maxAttempts})..._`, false),
@@ -852,17 +830,10 @@ function createRunner(sandboxConfig: SandboxConfig, channelId: string, channelDi
 			if (runState.totalUsage.cost.total > 0) {
 				// Get last non-aborted assistant message for context calculation
 				const messages = session.messages;
-				type AssistantWithUsage = {
-					role: string;
-					stopReason?: string;
-					usage: { input: number; output: number; cacheRead: number; cacheWrite: number };
-				};
 				const lastAssistantMessage = messages
 					.slice()
 					.reverse()
-					.find((m) => m.role === "assistant" && (m as AssistantWithUsage).stopReason !== "aborted") as
-					| AssistantWithUsage
-					| undefined;
+					.find((m) => m.role === "assistant" && (m as any).stopReason !== "aborted") as any;
 
 				const contextTokens = lastAssistantMessage
 					? lastAssistantMessage.usage.input +

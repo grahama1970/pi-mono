@@ -14,7 +14,15 @@ export {
 	type SessionStats,
 } from "./core/agent-session.js";
 // Auth and model registry
-export { type ApiKeyCredential, type AuthCredential, AuthStorage, type OAuthCredential } from "./core/auth-storage.js";
+export {
+	type ApiKeyCredential,
+	type AuthCredential,
+	AuthStorage,
+	type AuthStorageBackend,
+	FileAuthStorageBackend,
+	InMemoryAuthStorageBackend,
+	type OAuthCredential,
+} from "./core/auth-storage.js";
 // Compaction
 export {
 	type BranchPreparation,
@@ -48,6 +56,8 @@ export type {
 	AppAction,
 	BashToolCallEvent,
 	BeforeAgentStartEvent,
+	BeforeProviderRequestEvent,
+	BeforeProviderRequestEventResult,
 	CompactOptions,
 	ContextEvent,
 	ContextUsage,
@@ -100,6 +110,7 @@ export type {
 	SlashCommandInfo,
 	SlashCommandLocation,
 	SlashCommandSource,
+	TerminalInputHandler,
 	ToolCallEvent,
 	ToolDefinition,
 	ToolInfo,
@@ -126,8 +137,6 @@ export {
 	isWriteToolResult,
 	wrapRegisteredTool,
 	wrapRegisteredTools,
-	wrapToolsWithExtensions,
-	wrapToolWithExtensions,
 } from "./core/extensions/index.js";
 // Footer data provider (git branch + extension statuses - data not otherwise available to extensions)
 export type { ReadonlyFooterDataProvider } from "./core/footer-data-provider.js";

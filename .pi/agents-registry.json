@@ -105,7 +105,7 @@
       "collaborators": [
         {
           "id": "brandon-bailey",
-          "role": "peer"
+          "role": "works_under"
         },
         {
           "id": "margaret-chen",
@@ -135,7 +135,7 @@
         "loyalty"
       ],
       "voice": {
-        "enabled": false
+        "enabled": true
       },
       "inference": {},
       "paths": {

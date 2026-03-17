@@ -1,5 +1,5 @@
 /**
- * Pi extension — 14 WezTerm tools + /panes command.
+ * Pi extension — 18 WezTerm tools + /panes command.
  *
  * Control flow: Embry OS → Pi (D-Bus) → WezTerm (CLI)
  *
@@ -483,6 +483,197 @@ export default function weztermExtension(pi: ExtensionAPI) {
 			return {
 				content: [{ type: "text", text: `Created workspace "${workspace}" with pane ${paneId}` }],
 				details: { paneId, workspace },
+			};
+		},
+	});
+
+	// --- G1: Auto-diagnosis — read last error + pane context ---
+
+	pi.registerTool({
+		name: "wezterm_diagnose_error",
+		label: "Diagnose Last Error",
+		description:
+			"Read the last failed command's context (exit code, command, cwd) and the recent terminal output. Use this to diagnose errors proactively. Returns error metadata plus the last 30 lines of the active pane.",
+		parameters: Type.Object({
+			pane_id: Type.Optional(Type.Number({ description: "Pane to read output from. Defaults to active pane." })),
+			lines: Type.Optional(Type.Number({ description: "Number of scrollback lines to capture (default: 30)" })),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { pane_id, lines } = params as { pane_id?: number; lines?: number };
+			const numLines = lines ?? 30;
+
+			const lastError = await cli.getLastError();
+
+			let output = "";
+			try {
+				const panes = await cli.listPanes(_signal);
+				const targetId = pane_id ?? panes.find((p) => p.is_active)?.pane_id;
+				if (targetId !== undefined) {
+					output = await cli.getText(targetId, -numLines, undefined, _signal);
+				}
+			} catch {
+				// Terminal output unavailable; error context alone is still useful
+			}
+
+			if (!lastError && !output) {
+				return {
+					content: [{ type: "text", text: "No error context available. The last command may have succeeded." }],
+					details: { error: false },
+				};
+			}
+
+			const parts: string[] = [];
+			if (lastError) {
+				parts.push(
+					`Exit code: ${lastError.exit_code}`,
+					`Command: ${lastError.command}`,
+					`Directory: ${lastError.cwd}`,
+					`Time: ${new Date(lastError.timestamp * 1000).toISOString()}`,
+					"",
+				);
+			}
+			if (output) {
+				parts.push("Terminal output (last lines):", "---", output);
+			}
+
+			return {
+				content: [{ type: "text", text: parts.join("\n") }],
+				details: {
+					exit_code: lastError?.exit_code,
+					command: lastError?.command,
+					has_output: output.length > 0,
+				},
+			};
+		},
+	});
+
+	// --- G2: Block context — capture terminal output as agent context ---
+
+	pi.registerTool({
+		name: "wezterm_get_last_output",
+		label: "Get Last Output",
+		description:
+			"Capture the last N lines of terminal output from a pane. Use this to provide context about what happened in the terminal — command results, errors, logs, etc.",
+		parameters: Type.Object({
+			pane_id: Type.Optional(Type.Number({ description: "Pane to read from. Defaults to active pane." })),
+			lines: Type.Optional(Type.Number({ description: "Number of lines to capture (default: 50, max: 200)" })),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { pane_id, lines } = params as { pane_id?: number; lines?: number };
+			const numLines = Math.min(lines ?? 50, 200);
+
+			let targetId = pane_id;
+			if (targetId === undefined) {
+				const panes = await cli.listPanes(_signal);
+				targetId = panes.find((p) => p.is_active)?.pane_id;
+			}
+			if (targetId === undefined) {
+				return {
+					content: [{ type: "text", text: "No active pane found" }],
+					details: { error: true },
+				};
+			}
+
+			let text: string;
+			try {
+				text = await cli.getText(targetId, -numLines, undefined, _signal);
+			} catch (e) {
+				return {
+					content: [{ type: "text", text: `Failed to get output: ${e instanceof Error ? e.message : String(e)}` }],
+					details: { error: true, paneId: targetId },
+				};
+			}
+
+			return {
+				content: [{ type: "text", text }],
+				details: { paneId: targetId, lines: text.split("\n").length },
+			};
+		},
+	});
+
+	// --- G4: Structured interactive control ---
+
+	pi.registerTool({
+		name: "wezterm_interact",
+		label: "Run and Capture",
+		description:
+			"Send a command to a pane, wait for the output to stabilize, and return the new output. Use this for interactive sessions (REPLs, debuggers, database shells) where you need to see the result before deciding the next action.",
+		parameters: Type.Object({
+			pane_id: Type.Number({ description: "Pane to interact with" }),
+			command: Type.String({ description: "Command to send (Enter is appended automatically)" }),
+			timeout_ms: Type.Optional(Type.Number({ description: "Max wait time in milliseconds (default: 10000)" })),
+			settle_ms: Type.Optional(
+				Type.Number({
+					description: "Time with no new output before considering output stable (default: 500)",
+				}),
+			),
+		}),
+		async execute(_toolCallId, params, _signal, _onUpdate, _ctx) {
+			const { pane_id, command, timeout_ms, settle_ms } = params as {
+				pane_id: number;
+				command: string;
+				timeout_ms?: number;
+				settle_ms?: number;
+			};
+
+			let output: string;
+			try {
+				output = await cli.interact(pane_id, command, { timeoutMs: timeout_ms, settlMs: settle_ms }, _signal);
+			} catch (e) {
+				return {
+					content: [{ type: "text", text: `Interact failed: ${e instanceof Error ? e.message : String(e)}` }],
+					details: { error: true, paneId: pane_id },
+				};
+			}
+
+			return {
+				content: [{ type: "text", text: output || "(no output)" }],
+				details: { paneId: pane_id, outputLines: output.split("\n").length },
+			};
+		},
+	});
+
+	// --- G5: Proactive error check — read shell hook error file ---
+
+	pi.registerTool({
+		name: "wezterm_check_error",
+		label: "Check for Errors",
+		description:
+			"Check if the user's last shell command failed. Reads the error context file written by the embry-agentic.zsh shell hook. Returns null if no recent error. Use this proactively to offer help when errors occur.",
+		parameters: Type.Object({}),
+		async execute(_toolCallId, _params, _signal, _onUpdate, _ctx) {
+			const lastError = await cli.getLastError();
+
+			if (!lastError) {
+				return {
+					content: [{ type: "text", text: "No recent errors detected." }],
+					details: { has_error: false },
+				};
+			}
+
+			// Check if the error is stale (>60 seconds old)
+			const age = Math.floor(Date.now() / 1000) - lastError.timestamp;
+			if (age > 60) {
+				return {
+					content: [{ type: "text", text: `Last error was ${age}s ago (stale). No recent errors.` }],
+					details: { has_error: false, stale: true, age },
+				};
+			}
+
+			return {
+				content: [
+					{
+						type: "text",
+						text: `Error detected ${age}s ago:\n  Command: ${lastError.command}\n  Exit code: ${lastError.exit_code}\n  Directory: ${lastError.cwd}`,
+					},
+				],
+				details: {
+					has_error: true,
+					exit_code: lastError.exit_code,
+					command: lastError.command,
+					cwd: lastError.cwd,
+					age,
+				},
 			};
 		},
 	});

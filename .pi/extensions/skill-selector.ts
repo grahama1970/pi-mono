@@ -411,10 +411,23 @@ function parseSkillsXml(systemPrompt: string): {
 		const location = extractTag(block, "location");
 
 		if (name) {
+			// Parse triggers from XML if present, otherwise fall back to
+			// reading SKILL.md frontmatter directly. This survives upstream
+			// Pi updates that may remove <triggers> from the XML output.
+			let triggers: string[] = [];
+			if (triggersRaw) {
+				triggers = triggersRaw.split(",").map((t) => t.trim().toLowerCase());
+			} else if (location) {
+				const fm = parseFrontmatterFromFile(location);
+				if (Array.isArray(fm.triggers)) {
+					triggers = (fm.triggers as string[]).map((t) => t.toLowerCase());
+				}
+			}
+
 			skills.push({
 				name,
 				description: description || "",
-				triggers: triggersRaw ? triggersRaw.split(",").map((t) => t.trim().toLowerCase()) : [],
+				triggers,
 				location: location || "",
 			});
 		}
