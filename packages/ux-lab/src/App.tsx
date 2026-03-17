@@ -1,6 +1,14 @@
-import { UnifiedLab } from './components/unified-lab/UnifiedLab'
-import { ChatFab } from './components/ChatFab'
 import { EMBRY } from './components/sparta/common/EmbryStyle'
+import { SpartaExplorer } from './components/sparta/explorer/SpartaExplorer'
+import { OverviewView } from './components/sparta/explorer/OverviewView'
+import { SourcesView } from './components/sparta/explorer/SourcesView'
+import { ControlsView } from './components/sparta/explorer/ControlsView'
+import { URLsView } from './components/sparta/explorer/URLsView'
+import { KnowledgeView } from './components/sparta/explorer/KnowledgeView'
+import { QRAsView } from './components/sparta/explorer/QRAsView'
+import { RelationshipsView } from './components/sparta/explorer/RelationshipsView'
+import { PipelineView } from './components/sparta/explorer/PipelineView'
+import { ChatWell } from './components/ChatWell'
 
 const styles = {
   app: {
@@ -18,8 +26,19 @@ const styles = {
 function App() {
   return (
     <div style={styles.app}>
-      <UnifiedLab />
-      <ChatFab />
+      <SpartaExplorer
+        views={{
+          Overview: <OverviewView />,
+          Sources: <SourcesView />,
+          Controls: <ControlsView />,
+          URLs: <URLsView />,
+          Knowledge: <KnowledgeView />,
+          QRAs: <QRAsView />,
+          Relationships: <RelationshipsView />,
+          Pipeline: <PipelineView />,
+        }}
+      />
+      <ChatWell />
     </div>
   )
 }

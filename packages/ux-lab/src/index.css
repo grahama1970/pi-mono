@@ -35,6 +35,18 @@ input, select, textarea {
   font-family: inherit;
 }
 
+/* Accessibility: visible focus rings for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default outline on mouse click */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* Scrollbar styling for dark theme */
 ::-webkit-scrollbar {
   width: 6px;
