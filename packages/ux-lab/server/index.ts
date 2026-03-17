@@ -30,7 +30,7 @@ app.get('/api/health', async (_req, res) => {
   // Also check memory daemon reachability
   let memoryOk = false
   try {
-    const health = await proxyPost('/health', {})
+    const health = await proxyPost('/health', null)
     memoryOk = health?.status === 'ok'
   } catch { /* daemon down */ }
 
@@ -161,15 +161,18 @@ app.get('/api/models', async (_req, res) => {
 
 // ── Internal helper ─────────────────────────────────────────────────────────
 
-function proxyPost(path: string, body: object): Promise<any> {
+function proxyPost(path: string, body: object | null = null): Promise<any> {
   return new Promise((resolve, reject) => {
-    const data = JSON.stringify(body)
+    const method = body ? 'POST' : 'GET'
+    const data = body ? JSON.stringify(body) : undefined
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    if (data) headers['Content-Length'] = String(Buffer.byteLength(data))
     const req = httpRequest(
       {
         socketPath: MEMORY_SOCKET,
         path,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data) },
+        method,
+        headers,
       },
       (res) => {
         const chunks: Buffer[] = []
@@ -181,7 +184,7 @@ function proxyPost(path: string, body: object): Promise<any> {
       }
     )
     req.on('error', reject)
-    req.write(data)
+    if (data) req.write(data)
     req.end()
   })
 }
