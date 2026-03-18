@@ -48,7 +48,7 @@ function nrsColor(score: number | undefined): string {
 
 /* ── Detail pane for selected control ────────────────────────────────────── */
 
-function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClose: () => void }) {
+function ControlDetailPane({ control, onClose, onNavigate }: { control: SpartaControl; onClose: () => void; onNavigate?: (ctrl: SpartaControl) => void }) {
   const [qras, setQras] = useState<Array<Record<string, unknown>>>([])
   const [rels, setRels] = useState<Array<{ source_control_id?: string; target_control_id?: string; relationship_type?: string }>>([])
   const [loadingDetail, setLoadingDetail] = useState(false)
@@ -241,8 +241,19 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
             {rels.map((rel, i) => {
               const other = rel.source_control_id === control.control_id ? rel.target_control_id : rel.source_control_id
               return (
-                <div key={`rel-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, backgroundColor: EMBRY.bgDeep }}>
-                  <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, color: EMBRY.white }}>{other}</span>
+                <div key={`rel-${i}`} onClick={() => {
+                    if (!onNavigate || !other) return
+                    fetch(`http://localhost:3001/api/memory/list`, {
+                      method: 'POST', headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { control_id: other } }),
+                    }).then((r) => r.json()).then((d) => {
+                      const ctrl = (d.documents ?? [])[0] as SpartaControl | undefined
+                      if (ctrl) onNavigate(ctrl)
+                    }).catch(() => {})
+                  }} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', borderRadius: 6, backgroundColor: EMBRY.bgDeep, cursor: onNavigate ? 'pointer' : 'default' }}
+                  onMouseEnter={(e) => { if (onNavigate) (e.currentTarget as HTMLElement).style.backgroundColor = `${EMBRY.blue}15` }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = EMBRY.bgDeep }}>
+                  <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, color: EMBRY.blue }}>{other}</span>
                   {rel.relationship_type && (
                     <span style={{ fontSize: 10, color: EMBRY.dim, marginLeft: 'auto', padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.muted}22` }}>
                       {rel.relationship_type}
@@ -572,7 +583,7 @@ export function ControlsView() {
       {/* Detail slide-over */}
       {selected && (
         <div style={slideOverStyle}>
-          <ControlDetailPane control={selected} onClose={() => setSelected(null)} />
+          <ControlDetailPane control={selected} onClose={() => setSelected(null)} onNavigate={(ctrl) => setSelected(ctrl)} />
         </div>
       )}
     </div>
