@@ -4,6 +4,7 @@ import { useURLsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaURL } from '../../../hooks/useSpartaCollections'
 
 const API = '/api/memory'
+const DAEMON = 'http://127.0.0.1:8601'
 const PAGE_SIZE = 100
 
 /** Pipeline status for a single URL, enriched client-side. */
@@ -15,53 +16,54 @@ interface URLPipelineRow extends SpartaURL {
   knowledge_chunks: number
 }
 
-/** Batch-enrich a page of URLs with pipeline status from related collections. */
+/** Batch-enrich a page of URLs with 3 batch API calls instead of N per-URL calls. */
 async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
   if (urls.length === 0) return []
 
-  // For each URL, fetch control mappings, content status, and knowledge count
-  // Use /recall for control mappings (BM25 on url), /list for content+knowledge
-  const enriched: URLPipelineRow[] = []
-
-  // Batch: fetch all control_urls for these url_ids
   const urlIds = urls.map((u) => u.url_id)
+  const post = (path: string, body: Record<string, unknown>) =>
+    fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then((r) => r.json())
+      .catch(() => ({ documents: [] }))
 
-  // We'll do parallel fetches per URL (limited batch)
-  const results = await Promise.all(
-    urls.map(async (url) => {
-      const [ctrlRes, contentRes, knowRes] = await Promise.all([
-        // Control mappings — search control_urls
-        fetch(`${API}/list`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ collection: 'sparta_control_urls', limit: 10, filters: { url_id: String(url.url_id) } }),
-        }).then((r) => r.json()).catch(() => ({ documents: [], total: 0 })),
-        // Fetch status
-        fetch(`${API}/list`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ collection: 'sparta_url_content', limit: 1, filters: { url_id: String(url.url_id) }, return_fields: ['status_code', 'error_message'] }),
-        }).then((r) => r.json()).catch(() => ({ documents: [], total: 0 })),
-        // Knowledge chunks count
-        fetch(`${API}/list`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ collection: 'sparta_url_knowledge', limit: 1, filters: { url_id: String(url.url_id) } }),
-        }).then((r) => r.json()).catch(() => ({ documents: [], total: 0 })),
-      ])
+  // 3 batch calls (not 100+ per-URL calls)
+  const [ctrlRes, contentRes, knowRes] = await Promise.all([
+    post('/recall/by-keys', { collection: 'sparta_control_urls', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'control_id'] }),
+    post('/recall/by-keys', { collection: 'sparta_url_content', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'status_code', 'error_message'] }),
+    post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: urlIds, key_field: 'url_id', return_fields: ['url_id'] }),
+  ])
 
-      const content = contentRes.documents?.[0]
-      return {
-        ...url,
-        control_ids: (ctrlRes.documents ?? []).map((d: Record<string, unknown>) => d.control_id as string).filter(Boolean),
-        fetched: contentRes.total > 0,
-        fetch_status: content?.status_code ?? null,
-        fetch_error: content?.error_message ?? null,
-        knowledge_chunks: knowRes.total ?? 0,
-      } satisfies URLPipelineRow
-    }),
-  )
-  return results
+  // Client-side join
+  const ctrlMap = new Map<number, string[]>()
+  for (const d of ctrlRes.documents ?? []) {
+    const uid = d.url_id as number
+    if (!ctrlMap.has(uid)) ctrlMap.set(uid, [])
+    if (d.control_id) ctrlMap.get(uid)!.push(d.control_id as string)
+  }
+
+  const contentMap = new Map<number, { status: number | null; error: string | null }>()
+  for (const d of contentRes.documents ?? []) {
+    contentMap.set(d.url_id as number, { status: d.status_code as number | null, error: d.error_message as string | null })
+  }
+
+  const chunkCounts = new Map<number, number>()
+  for (const d of knowRes.documents ?? []) {
+    const uid = d.url_id as number
+    chunkCounts.set(uid, (chunkCounts.get(uid) ?? 0) + 1)
+  }
+
+  return urls.map((url) => {
+    const uid = url.url_id
+    const content = contentMap.get(uid)
+    return {
+      ...url,
+      control_ids: ctrlMap.get(uid) ?? [],
+      fetched: contentMap.has(uid),
+      fetch_status: content?.status ?? null,
+      fetch_error: content?.error ?? null,
+      knowledge_chunks: chunkCounts.get(uid) ?? 0,
+    }
+  })
 }
 
 export function URLsView() {
@@ -224,12 +226,12 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
   useEffect(() => {
     let cancelled = false
     setLoadingK(true)
-    fetch(`${API}/recall`, {
+    fetch(`${DAEMON}/recall/by-keys`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ q: `url_id:${url.url_id}`, collections: ['sparta_url_knowledge'], k: 10 }),
+      body: JSON.stringify({ collection: 'sparta_url_knowledge', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'text', 'topic'] }),
     }).then((r) => r.json()).then((data) => {
-      if (!cancelled) { setKnowledge(data.items ?? []); setLoadingK(false) }
+      if (!cancelled) { setKnowledge(data.documents ?? data.items ?? []); setLoadingK(false) }
     }).catch(() => { if (!cancelled) setLoadingK(false) })
     return () => { cancelled = true }
   }, [url.url_id])

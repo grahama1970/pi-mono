@@ -63,7 +63,7 @@ app.get('/api/health', async (_req, res) => {
 //   POST /learn     — store new lessons
 //   GET  /health    — daemon health check
 
-app.all('/api/memory/{*path}', (req, res) => {
+app.all('/api/memory/:path(*)', (req, res) => {
   const memoryPath = '/' + req.params.path
   const body = ['POST', 'PUT', 'PATCH'].includes(req.method) ? JSON.stringify(req.body) : undefined
 
