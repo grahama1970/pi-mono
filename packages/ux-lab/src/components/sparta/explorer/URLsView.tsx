@@ -166,14 +166,12 @@ export function URLsView() {
                   <th style={{ ...thStyle, width: '30%' }}>URL</th>
                   <th style={{ ...thStyle, width: '25%' }}>Summary</th>
                   <th style={thStyle}>HTTP</th>
-                  <th style={thStyle}>Chunks</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((u) => {
-                  const allGood = u.fetched && u.knowledge_chunks > 0 && u.control_ids.length > 0
-                  const partial = u.fetched && u.knowledge_chunks === 0
-                  const rowColor = allGood ? EMBRY.green : partial ? EMBRY.amber : u.fetched ? EMBRY.amber : EMBRY.red
+                  const allGood = u.fetched && u.control_ids.length > 0
+                  const rowColor = allGood ? EMBRY.green : u.fetched ? EMBRY.amber : EMBRY.red
                   const isSelected = selected?._key === u._key
                   return (
                     <tr
@@ -209,9 +207,6 @@ export function URLsView() {
                           <span style={{ fontSize: 10, color: EMBRY.red }}>{u.fetch_error ? u.fetch_error.slice(0, 15) : 'no'}</span>
                         )}
                       </td>
-                      <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, color: u.knowledge_chunks > 0 ? EMBRY.green : EMBRY.dim }}>
-                        {u.knowledge_chunks}
-                      </td>
                     </tr>
                   )
                 })}
@@ -240,10 +235,10 @@ export function URLsView() {
 /* ── URL Detail Pane ─────────────────────────────────────────────────────── */
 
 function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => void }) {
-  const [knowledge, setKnowledge] = useState<Array<{ text?: string; topic?: string }>>([])
   const [qras, setQras] = useState<Array<{ question?: string; reasoning?: string; answer?: string; control_id?: string }>>([])
   const [cleanText, setCleanText] = useState<string | null>(null)
   const [textLength, setTextLength] = useState<number>(0)
+  const [mindTags, setMindTags] = useState<string[]>([])
   const [loadingK, setLoadingK] = useState(true)
 
   useEffect(() => {
@@ -251,28 +246,38 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
     setLoadingK(true)
     setCleanText(null)
     setQras([])
+    setMindTags([])
     const post = (path: string, body: Record<string, unknown>) =>
       fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then((r) => r.json()).catch(() => ({ documents: [], items: [] }))
 
-    // Fetch knowledge, content, and QRAs for linked controls
+    // Fetch knowledge, content, QRAs, and control mind tags
     const qraFetch = url.control_ids.length > 0
       ? post('/recall', { q: url.control_ids.join(' '), collections: ['sparta_qra'], k: 15, entities: url.control_ids })
       : Promise.resolve({ items: [] })
 
+    const controlFetch = url.control_ids.length > 0
+      ? post('/recall/by-keys', { collection: 'sparta_controls', keys: url.control_ids, key_field: 'control_id', return_fields: ['control_id', 'mind'] })
+      : Promise.resolve({ documents: [] })
+
     Promise.all([
-      post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'text', 'topic'] }),
       post('/recall/by-keys', { collection: 'sparta_url_content', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'clean_text', 'text_length', 'status_code'] }),
       qraFetch,
-    ]).then(([knowRes, contentRes, qraRes]) => {
+      controlFetch,
+    ]).then(([contentRes, qraRes, ctrlRes]) => {
       if (cancelled) return
-      setKnowledge(knowRes.documents ?? [])
       const content = (contentRes.documents ?? [])[0]
       if (content?.clean_text) {
         setCleanText(content.clean_text as string)
         setTextLength(content.text_length as number ?? 0)
       }
       setQras(qraRes.items ?? qraRes.documents ?? [])
+      // Collect unique mind tags from linked controls
+      const tags = new Set<string>()
+      for (const ctrl of (ctrlRes.documents ?? [])) {
+        if (Array.isArray(ctrl.mind)) ctrl.mind.forEach((t: string) => tags.add(t))
+      }
+      setMindTags([...tags].sort())
       setLoadingK(false)
     })
     return () => { cancelled = true }
@@ -304,8 +309,31 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
         <StatusRow label="Control Mapping" value={`${url.control_ids.length} controls`} ok={url.control_ids.length > 0} />
         <StatusRow label="Content Fetched" value={url.fetched ? `HTTP ${url.fetch_status}` : url.fetch_error || 'Not fetched'} ok={url.fetched && url.fetch_status === 200} />
         <StatusRow label="Clean Text" value={cleanText ? `${textLength.toLocaleString()} chars` : 'Not extracted'} ok={!!cleanText} />
-        <StatusRow label="Knowledge Chunks" value={`${url.knowledge_chunks} extracted`} ok={url.knowledge_chunks > 0} />
         <StatusRow label="QRAs Generated" value={loadingK ? '...' : `${qras.length} QRAs`} ok={qras.length > 0} />
+        <StatusRow label="Taxonomy" value={loadingK ? '...' : mindTags.length > 0 ? `${mindTags.length} mind tags` : 'Not tagged'} ok={mindTags.length > 0} />
+      </div>
+
+      {/* Mind / Taxonomy tags (from linked controls) */}
+      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+        <div style={{ ...label, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+          Mind Tags
+          <div style={glowDot(mindTags.length > 0 ? EMBRY.green : EMBRY.red, 6)} />
+        </div>
+        {loadingK ? (
+          <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
+        ) : mindTags.length > 0 ? (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {mindTags.map((tag) => (
+              <span key={tag} style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4, backgroundColor: `${EMBRY.accent}18`, color: EMBRY.accent, border: `1px solid ${EMBRY.accent}33` }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div style={{ fontSize: 11, color: EMBRY.red, padding: '4px 8px', borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
+            No taxonomy tags on linked controls
+          </div>
+        )}
       </div>
 
       {/* Clean extracted text */}
@@ -336,26 +364,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
         </div>
       )}
 
-      {/* Knowledge content */}
-      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-        <div style={{ ...label, marginBottom: 6 }}>Knowledge Chunks ({url.knowledge_chunks})</div>
-        {loadingK ? (
-          <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
-        ) : knowledge.length === 0 ? (
-          <div style={{ fontSize: 11, color: EMBRY.red, padding: 8, borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
-            No content extracted from this URL
-          </div>
-        ) : (
-          knowledge.map((k, i) => (
-            <div key={`k-${i}`} style={{ padding: '8px 10px', borderRadius: 6, border: `1px solid ${EMBRY.border}`, marginBottom: 6, fontSize: 12, lineHeight: 1.5 }}>
-              {k.topic && <div style={{ fontSize: 10, color: EMBRY.accent, marginBottom: 3 }}>{k.topic}</div>}
-              <div style={{ color: EMBRY.dim }}>{(k.text ?? '').slice(0, 300)}{(k.text ?? '').length > 300 ? '...' : ''}</div>
-            </div>
-          ))
-        )}
-      </div>
-
-      {/* QRAs generated from this URL's controls */}
+      {/* QRAs — the primary output from this URL's content */}
       <div style={{ padding: '12px 20px' }}>
         <div style={{ ...label, marginBottom: 6 }}>QRAs ({qras.length})</div>
         {loadingK ? (
