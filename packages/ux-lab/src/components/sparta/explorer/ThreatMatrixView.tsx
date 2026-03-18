@@ -61,7 +61,7 @@ export function ThreatMatrixView() {
   const [selectedDetail, setSelectedDetail] = useState<TechniqueDetail | null>(null)
   const [loadingDetail, setLoadingDetail] = useState(false)
   const [activeDatalake, setActiveDatalake] = useState<string>('')
-  const [evidenceMap, setEvidenceMap] = useState<Map<string, number>>(new Map())
+  const [evidenceMap, setEvidenceMap] = useState<Map<string, { verdict: string; grade: string; count: number }>>(new Map())
 
   // Fetch all SPARTA techniques from daemon
   useEffect(() => {
@@ -76,52 +76,54 @@ export function ThreatMatrixView() {
     })
   }, [])
 
-  // When datalake is selected, fetch coverage from two sources:
-  // 1. sparta_relationships: combined_score per control (learn-datalake pattern)
-  // 2. Evidence cases from /recall: /create-evidence-case verdicts stored in lessons
+  // When datalake is selected, fetch /create-evidence-case verdicts from /recall.
+  // Evidence cases are stored as lessons with evidence_case tag.
+  // Each case has control_ids and a verdict (satisfied/inconclusive/not_satisfied).
+  // The Threat Matrix ONLY shows what /create-evidence-case has determined.
   useEffect(() => {
     if (!activeDatalake) {
       setEvidenceMap(new Map())
       return
     }
 
-    Promise.all([
-      post('/list', { collection: 'sparta_relationships', limit: 2000 }),
-      post('/recall', { q: 'evidence case SPARTA requirement compliance', collections: ['lessons'], k: 200 }),
-    ]).then(([relRes, evidenceRes]) => {
-      const rels = (relRes.documents ?? []) as Array<Record<string, unknown>>
-      const evidenceItems = (evidenceRes.items ?? []) as Array<Record<string, unknown>>
+    post('/recall', {
+      q: 'evidence case SPARTA requirement compliance verdict',
+      collections: ['lessons'],
+      k: 300,
+    }).then((res) => {
+      const items = (res.items ?? []) as Array<Record<string, unknown>>
+      const verdictMap = new Map<string, { verdict: string; grade: string; count: number }>()
 
-      // Coverage from relationships (combined_score thresholds)
-      const counts = new Map<string, number>()
-      for (const rel of rels) {
-        const tgt = (rel.target_control_id as string) ?? ''
-        const src = (rel.source_control_id as string) ?? ''
-        const score = (rel.combined_score as number) ?? 0
-        if (!tgt) continue
-        // Count relationships where this technique is involved
-        for (const cid of [src, tgt]) {
-          if (SPARTA_TACTICS.some((t) => cid.startsWith(t.prefix + '-'))) {
-            counts.set(cid, (counts.get(cid) ?? 0) + (score >= 0.5 ? 2 : score >= 0.1 ? 1 : 0))
-          }
-        }
-      }
-
-      // Boost from evidence cases — /create-evidence-case verdicts
-      for (const item of evidenceItems) {
+      for (const item of items) {
         const tags = (item.tags as string[]) ?? []
         if (!tags.includes('evidence_case')) continue
+
         const controlIds = (item.control_ids as string[]) ?? []
-        const verdict = (item.verdict as string) ?? ''
-        if (verdict !== 'satisfied') continue
+        const verdict = (item.verdict as string) ?? 'not_satisfied'
+        const grade = (item.grade as string) ?? 'F'
+
         for (const cid of controlIds) {
-          if (SPARTA_TACTICS.some((t) => cid.startsWith(t.prefix + '-'))) {
-            counts.set(cid, (counts.get(cid) ?? 0) + 5) // Strong signal from evidence case
+          // Only map to SPARTA techniques
+          if (!SPARTA_TACTICS.some((t) => cid.startsWith(t.prefix + '-'))) continue
+
+          const existing = verdictMap.get(cid)
+          if (!existing) {
+            verdictMap.set(cid, { verdict, grade, count: 1 })
+          } else {
+            existing.count++
+            // Best verdict wins: satisfied > inconclusive > not_satisfied
+            if (verdict === 'satisfied' && existing.verdict !== 'satisfied') {
+              existing.verdict = verdict
+              existing.grade = grade
+            } else if (verdict === 'inconclusive' && existing.verdict === 'not_satisfied') {
+              existing.verdict = verdict
+              existing.grade = grade
+            }
           }
         }
       }
 
-      setEvidenceMap(counts)
+      setEvidenceMap(verdictMap)
     })
   }, [activeDatalake])
 
@@ -133,20 +135,21 @@ export function ThreatMatrixView() {
       return true
     })
     .map((t) => {
-      const hasQras = (t.nrs_score ?? 0) > 0
-      const hasMind = (t.mind?.length ?? 0) > 0
-      const evCount = evidenceMap.get(t.control_id) ?? 0
-      const hasEvidence = activeDatalake ? evCount > 0 : hasQras
-      const catalogHas = hasQras || hasMind
+      const ev = evidenceMap.get(t.control_id)
+      const verdict = activeDatalake && ev ? ev.verdict : 'none'
+      const coverage = verdict === 'satisfied' ? 'full'
+        : verdict === 'inconclusive' ? 'partial'
+        : verdict === 'not_satisfied' ? 'none'
+        : 'unknown' as const
       return {
         id: t.control_id,
         name: t.name,
         description: t.description,
         tactic: tacticForTechnique(t.control_id) ?? 'Unknown',
-        coverage: hasEvidence ? 'full' : catalogHas ? 'partial' : 'none' as const,
-        catalogCoverage: catalogHas,
-        evidenceCoverage: hasEvidence,
-        evidenceCount: activeDatalake ? evCount : 0,
+        coverage,
+        evidenceVerdict: (verdict as 'satisfied' | 'inconclusive' | 'not_satisfied' | 'none'),
+        evidenceCaseCount: ev?.count ?? 0,
+        evidenceGrade: ev?.grade,
         issueCount: t.weaknesses?.length ?? 0,
         frameworks: ['SPARTA'],
         mind: t.mind,

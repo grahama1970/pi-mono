@@ -25,14 +25,14 @@ export interface ThreatTechnique {
   name: string
   tactic: string
   description?: string
-  /** Overall coverage combining catalog + evidence */
+  /** Coverage status — derived ONLY from /create-evidence-case verdicts */
   coverage: 'full' | 'partial' | 'none' | 'unknown'
-  /** Catalog says countermeasure exists */
-  catalogCoverage: boolean
-  /** Project datalake has actual evidence (QRAs, docs, URLs) */
-  evidenceCoverage: boolean
-  /** Count of evidence artifacts (QRAs, docs) from datalake */
-  evidenceCount: number
+  /** Evidence case verdict: satisfied / inconclusive / not_satisfied / none */
+  evidenceVerdict: 'satisfied' | 'inconclusive' | 'not_satisfied' | 'none'
+  /** Number of evidence cases that reference this technique */
+  evidenceCaseCount: number
+  /** Grade from evidence case (A+, A, B, C, F) */
+  evidenceGrade?: string
   issueCount: number
   frameworks: string[]
   mind?: string[]
@@ -130,11 +130,10 @@ function Header() {
   const { state, actions, meta } = useThreatMatrix()
   const { techniques, showSubtechniques } = state
 
-  const covered = techniques.filter((t) => t.coverage === 'full').length
-  const partial = techniques.filter((t) => t.coverage === 'partial').length
-  const gaps = techniques.filter((t) => t.coverage === 'none').length
-  const withEvidence = techniques.filter((t) => t.evidenceCoverage).length
-  const catalogOnly = techniques.filter((t) => t.catalogCoverage && !t.evidenceCoverage).length
+  const satisfied = techniques.filter((t) => t.evidenceVerdict === 'satisfied').length
+  const inconclusive = techniques.filter((t) => t.evidenceVerdict === 'inconclusive').length
+  const notSatisfied = techniques.filter((t) => t.evidenceVerdict === 'not_satisfied').length
+  const noCase = techniques.filter((t) => t.evidenceVerdict === 'none').length
 
   return (
     <div style={{
@@ -153,10 +152,10 @@ function Header() {
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           {[
-            { color: EMBRY.green, count: withEvidence, text: 'evidence' },
-            { color: EMBRY.blue, count: catalogOnly, text: 'catalog only' },
-            { color: EMBRY.amber, count: partial, text: 'partial' },
-            { color: EMBRY.red, count: gaps, text: 'gaps' },
+            { color: EMBRY.green, count: satisfied, text: 'satisfied' },
+            { color: EMBRY.amber, count: inconclusive, text: 'inconclusive' },
+            { color: EMBRY.red, count: notSatisfied, text: 'not satisfied' },
+            { color: EMBRY.dim, count: noCase, text: 'no case' },
           ].map(({ color, count, text }) => (
             <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <div style={glowDot(color, 6)} />
@@ -211,8 +210,8 @@ function TacticStrip() {
       const bucket = s[t.tactic]
       if (!bucket) continue
       bucket.total++
-      if (t.coverage === 'full') bucket.covered++
-      else if (t.coverage === 'partial') bucket.partial++
+      if (t.evidenceVerdict === 'satisfied') bucket.covered++
+      else if (t.evidenceVerdict === 'inconclusive') bucket.partial++
       else bucket.gap++
     }
     return s
@@ -301,23 +300,28 @@ function Grid() {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.white, fontFamily: 'monospace' }}>{tech.id}</span>
-                  {/* Evidence vs catalog indicator */}
-                  {tech.evidenceCoverage && <div style={glowDot(EMBRY.green, 5)} title="Has evidence" />}
-                  {tech.catalogCoverage && !tech.evidenceCoverage && <div style={glowDot(EMBRY.blue, 5)} title="Catalog only" />}
+                  {/* Evidence case verdict indicator */}
+                  {tech.evidenceVerdict === 'satisfied' && <div style={glowDot(EMBRY.green, 5)} title="SATISFIED" />}
+                  {tech.evidenceVerdict === 'inconclusive' && <div style={glowDot(EMBRY.amber, 5)} title="INCONCLUSIVE" />}
+                  {tech.evidenceVerdict === 'not_satisfied' && <div style={glowDot(EMBRY.red, 5)} title="NOT_SATISFIED" />}
                 </div>
                 <div style={{ fontSize: 11, color: EMBRY.dim, lineHeight: 1.3, marginBottom: 4 }}>{tech.name}</div>
                 <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                   {tech.frameworks.map((fw) => (
                     <span key={fw} style={fwBadge(fw)}>{fw}</span>
                   ))}
-                  {tech.evidenceCount > 0 && (
-                    <span style={{ fontSize: 9, fontWeight: 600, color: EMBRY.green, backgroundColor: `${EMBRY.green}12`, padding: '1px 5px', borderRadius: 3 }}>
-                      {tech.evidenceCount} QRAs
+                  {tech.evidenceGrade && (
+                    <span style={{
+                      fontSize: 9, fontWeight: 700, padding: '1px 5px', borderRadius: 3,
+                      color: tech.evidenceGrade.startsWith('A') ? EMBRY.green : tech.evidenceGrade === 'B' ? EMBRY.amber : EMBRY.red,
+                      backgroundColor: `${tech.evidenceGrade.startsWith('A') ? EMBRY.green : tech.evidenceGrade === 'B' ? EMBRY.amber : EMBRY.red}12`,
+                    }}>
+                      {tech.evidenceGrade}
                     </span>
                   )}
-                  {tech.issueCount > 0 && (
-                    <span style={{ fontSize: 9, fontWeight: 700, color: EMBRY.red, backgroundColor: `${EMBRY.red}18`, padding: '1px 5px', borderRadius: 3 }}>
-                      {tech.issueCount}
+                  {tech.evidenceCaseCount > 0 && (
+                    <span style={{ fontSize: 9, fontWeight: 600, color: EMBRY.dim, backgroundColor: `${EMBRY.muted}12`, padding: '1px 5px', borderRadius: 3 }}>
+                      {tech.evidenceCaseCount} case{tech.evidenceCaseCount !== 1 ? 's' : ''}
                     </span>
                   )}
                 </div>
