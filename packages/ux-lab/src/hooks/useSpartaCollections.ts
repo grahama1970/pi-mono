@@ -15,12 +15,15 @@ const API = "http://localhost:3001/api/memory";
 
 async function listPost(
 	collection: string,
-	opts: { limit?: number; offset?: number; return_fields?: string[] } = {},
+	opts: { limit?: number; offset?: number; return_fields?: string[]; filters?: Record<string, string> } = {},
 ): Promise<{ documents: Record<string, unknown>[]; total: number; count: number }> {
+	const { filters, ...rest } = opts;
+	const body: Record<string, unknown> = { collection, limit: rest.limit ?? 50, offset: rest.offset ?? 0, ...rest };
+	if (filters) body.filters = filters;
 	const res = await fetch(`${API}/list`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ collection, limit: opts.limit ?? 50, offset: opts.offset ?? 0, ...opts }),
+		body: JSON.stringify(body),
 	});
 	if (!res.ok) throw new Error(`/list ${res.status}: ${await res.text()}`);
 	return res.json();
@@ -459,6 +462,145 @@ export function useFrameworkCounts(): { data: FrameworkCount[]; loading: boolean
 	}, []);
 
 	return { data, loading };
+}
+
+// ── useRawFrameworkCounts ────────────────────────────────────────────────────
+// Exact per-framework counts via server-side filters.
+// One /list call per known framework value — returns exact total, not sampled estimate.
+
+const ALL_RAW_FRAMEWORKS = [
+	"SPARTA",
+	"sparta",
+	"NIST",
+	"nist",
+	"CWE",
+	"cwe",
+	"nvd",
+	"NVD",
+	"D3FEND",
+	"d3fend",
+	"ATT_CK_Enterprise",
+	"attack",
+	"ATT_CK_Mobile",
+	"ATT_CK_ICS",
+	"ESA",
+	"ISO",
+	"iso",
+	"NASA",
+];
+
+export function useRawFrameworkCounts(): { data: FrameworkCount[]; loading: boolean } {
+	const [data, setData] = useState<FrameworkCount[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		async function fetchExact() {
+			try {
+				const results = await Promise.all(
+					ALL_RAW_FRAMEWORKS.map(async (fw) => {
+						const r = await listPost("sparta_controls", {
+							limit: 1,
+							filters: { source_framework: fw },
+						});
+						return { name: fw, total: r.total };
+					}),
+				);
+
+				const totalAll = results.reduce((sum, r) => sum + r.total, 0);
+				const fwData: FrameworkCount[] = results
+					.filter((r) => r.total > 0)
+					.map((r) => ({ name: r.name, count: r.total, pct: totalAll > 0 ? (r.total / totalAll) * 100 : 0 }))
+					.sort((a, b) => b.count - a.count);
+
+				setData(fwData);
+			} catch {
+				setData([]);
+			} finally {
+				setLoading(false);
+			}
+		}
+		fetchExact();
+	}, []);
+
+	return { data, loading };
+}
+
+// ── useControlsByFramework ──────────────────────────────────────────────────
+// Loads ALL controls for given frameworks via server-side filter.
+// For small-to-medium frameworks (<5000), fetches all docs so client-side
+// type filtering works correctly. Paginates display, not fetch.
+
+export function useControlsByFramework(
+	rawFrameworks: string[],
+	_page = 0,
+	_pageSize = 100,
+): { data: SpartaControl[]; total: number; loading: boolean; error: string | null } {
+	const [data, setData] = useState<SpartaControl[]>([]);
+	const [total, setTotal] = useState(0);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
+	const fetchData = useCallback(async () => {
+		if (rawFrameworks.length === 0) {
+			setData([]);
+			setTotal(0);
+			return;
+		}
+		setLoading(true);
+		setError(null);
+		try {
+			// Fetch all docs for each raw framework (most are <2000)
+			const results = await Promise.all(
+				rawFrameworks.map(async (fw) => {
+					// First get total
+					const meta = await listPost("sparta_controls", {
+						limit: 1,
+						filters: { source_framework: fw },
+					});
+					const fwTotal = meta.total;
+					if (fwTotal === 0) return [];
+
+					// Fetch all in batches of 500
+					const all: SpartaControl[] = [];
+					for (let offset = 0; offset < fwTotal; offset += 500) {
+						const batch = await listPost("sparta_controls", {
+							limit: 500,
+							offset,
+							return_fields: [
+								"control_id",
+								"name",
+								"description",
+								"source_framework",
+								"control_type",
+								"domain",
+								"scope",
+								"parent_id",
+								"weaknesses",
+								"mind",
+							],
+							filters: { source_framework: fw },
+						});
+						all.push(...(batch.documents as unknown as SpartaControl[]));
+					}
+					return all;
+				}),
+			);
+
+			const merged = results.flat();
+			setData(merged);
+			setTotal(merged.length);
+		} catch (err) {
+			setError(err instanceof Error ? err.message : String(err));
+		} finally {
+			setLoading(false);
+		}
+	}, [rawFrameworks.length, rawFrameworks.map]);
+
+	useEffect(() => {
+		fetchData();
+	}, [fetchData]);
+
+	return { data, total, loading, error };
 }
 
 // ── Shared utility ──────────────────────────────────────────────────────────
