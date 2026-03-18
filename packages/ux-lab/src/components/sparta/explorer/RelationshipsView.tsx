@@ -88,6 +88,7 @@ export function RelationshipsView() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr>
+                    <th style={{ ...thStyle, width: 28 }}></th>
                     <th style={thStyle}>Source</th>
                     <th style={thStyle}>Target</th>
                     <th style={thStyle}>Method</th>
@@ -95,7 +96,10 @@ export function RelationshipsView() {
                   </tr>
                 </thead>
                 <tbody>
-                  {relationships.map((r) => (
+                  {relationships.map((r) => {
+                    const score = r.combined_score
+                    const rowColor = score == null ? EMBRY.dim : score >= 0.80 ? EMBRY.green : score >= 0.60 ? EMBRY.amber : EMBRY.red
+                    return (
                     <tr
                       key={r._key}
                       onClick={() => setSelected(r)}
@@ -103,16 +107,18 @@ export function RelationshipsView() {
                       onMouseEnter={(e) => { if (selected?._key !== r._key) e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
                       onMouseLeave={(e) => { if (selected?._key !== r._key) e.currentTarget.style.backgroundColor = 'transparent' }}
                     >
+                      <td style={{ ...tdStyle, textAlign: 'center' }}><div style={glowDot(rowColor, 6)} /></td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, color: EMBRY.blue }}>{r.source_control_id}</td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, color: EMBRY.blue }}>{r.target_control_id}</td>
                       <td style={{ ...tdStyle, fontSize: 11, color: EMBRY.dim }}>{r.method ?? '—'}</td>
                       <td style={tdStyle}>
-                        <span style={{ fontSize: 12, fontWeight: 700, color: nrsColor(r.combined_score) }}>
-                          {r.combined_score != null ? r.combined_score.toFixed(3) : '—'}
+                        <span style={{ fontSize: 12, fontWeight: 700, color: nrsColor(score) }}>
+                          {score != null ? score.toFixed(3) : '—'}
                         </span>
                       </td>
                     </tr>
-                  ))}
+                    )
+                  })}
                 </tbody>
               </table>
             )}

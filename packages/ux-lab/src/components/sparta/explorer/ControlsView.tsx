@@ -313,11 +313,11 @@ export function ControlsView() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
+                  <th style={{ ...thStyle, width: 28 }}></th>
                   <th style={thStyle}>FW</th>
                   <th style={thStyle}>ID</th>
                   <th style={{ ...thStyle, width: '35%' }}>Name</th>
                   <th style={thStyle}>Type</th>
-                  <th style={thStyle}>Desc</th>
                   <th style={thStyle}>Issues</th>
                 </tr>
               </thead>
@@ -325,6 +325,10 @@ export function ControlsView() {
                 {filtered.map((ctrl) => {
                   const fw = normalizeFramework(ctrl.source_framework)
                   const placeholder = isPlaceholder(ctrl.description)
+                  const hasIssues = (ctrl.weaknesses?.length ?? 0) > 0
+                  const noDesc = !ctrl.description || ctrl.description.length < 10
+                  const rowOk = !placeholder && !hasIssues && !noDesc
+                  const rowColor = rowOk ? EMBRY.green : placeholder || noDesc ? EMBRY.amber : EMBRY.red
                   const isSelected = selected?.control_id === ctrl.control_id
                   return (
                     <tr
@@ -337,26 +341,17 @@ export function ControlsView() {
                       onMouseEnter={(e) => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = `${EMBRY.blue}08` }}
                       onMouseLeave={(e) => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent' }}
                     >
+                      <td style={{ ...tdStyle, textAlign: 'center' }}><div style={glowDot(rowColor, 6)} /></td>
                       <td style={tdStyle}><span style={fwBadge(fw)}>{fw}</span></td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, fontWeight: 700 }}>{ctrl.control_id}</td>
                       <td style={{ ...tdStyle, color: EMBRY.dim }}>{ctrl.name}</td>
                       <td style={{ ...tdStyle, fontSize: 10, color: EMBRY.dim }}>{ctrl.control_type}</td>
                       <td style={tdStyle}>
                         {placeholder ? (
-                          <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.amber}18`, color: EMBRY.amber }}>PLACEHOLDER</span>
-                        ) : (
-                          <div style={glowDot(EMBRY.green, 6)} />
-                        )}
-                      </td>
-                      <td style={tdStyle}>
-                        {(ctrl.weaknesses?.length ?? 0) > 0 ? (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                            <div style={glowDot(EMBRY.red, 6)} />
-                            <span style={{ color: EMBRY.red, fontSize: 11, fontWeight: 700 }}>{ctrl.weaknesses?.length}</span>
-                          </div>
-                        ) : (
-                          <div style={glowDot(EMBRY.green, 6)} />
-                        )}
+                          <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.amber}18`, color: EMBRY.amber }}>NO DESC</span>
+                        ) : hasIssues ? (
+                          <span style={{ fontSize: 10, color: EMBRY.red }}>{ctrl.weaknesses?.length} weaknesses</span>
+                        ) : null}
                       </td>
                     </tr>
                   )

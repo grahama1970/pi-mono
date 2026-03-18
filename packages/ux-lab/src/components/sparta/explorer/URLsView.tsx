@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { EMBRY, label, glowDot } from '../common/EmbryStyle'
+import { EMBRY, label, glowDot, fwBadge } from '../common/EmbryStyle'
 import { useURLsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaURL } from '../../../hooks/useSpartaCollections'
 
@@ -81,13 +81,17 @@ export function URLsView() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
+                  <th style={{ ...thStyle, width: 28 }}></th>
                   <th style={thStyle}>ID</th>
                   <th style={{ ...thStyle, width: '55%' }}>URL</th>
                   <th style={thStyle}>Domain</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((u) => (
+                {filtered.map((u) => {
+                  const urlOk = u.url && u.url.startsWith('http') && u.domain
+                  const rowColor = urlOk ? EMBRY.green : EMBRY.red
+                  return (
                   <tr
                     key={u._key}
                     onClick={() => setSelected(u)}
@@ -95,13 +99,15 @@ export function URLsView() {
                     onMouseEnter={(e) => { if (selected?._key !== u._key) e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
                     onMouseLeave={(e) => { if (selected?._key !== u._key) e.currentTarget.style.backgroundColor = 'transparent' }}
                   >
+                    <td style={{ ...tdStyle, textAlign: 'center' }}><div style={glowDot(rowColor, 6)} /></td>
                     <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 10, color: EMBRY.dim }}>{u.url_id}</td>
                     <td style={{ ...tdStyle, color: '#6cb4ff', fontSize: 11, maxWidth: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {u.url}
                     </td>
                     <td style={{ ...tdStyle, fontSize: 11, color: EMBRY.dim }}>{u.domain}</td>
                   </tr>
-                ))}
+                  )
+                })}
               </tbody>
             </table>
           )}
