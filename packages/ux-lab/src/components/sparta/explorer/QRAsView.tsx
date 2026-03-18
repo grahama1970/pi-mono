@@ -50,6 +50,25 @@ export function QRAsView() {
     const key = current._key
     setDecisions((prev) => new Map(prev).set(key, decision))
 
+    // Persist grade to ArangoDB via /learn
+    const grade = decision === 'accept' ? 'PASS' : 'FAIL'
+    fetch('http://localhost:3001/api/memory/learn', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        collection: 'sparta_qra',
+        problem: current.question,
+        solution: current.answer,
+        metadata: {
+          _key: key,
+          control_id: current.control_id,
+          grade,
+          reviewed_by: 'brandon',
+          reviewed_at: new Date().toISOString(),
+        },
+      }),
+    }).catch(() => {/* silent — undo handles recovery */})
+
     // Undo-based: 10s reversal window
     if (undoTimer) clearTimeout(undoTimer.timer)
     const timer = window.setTimeout(() => setUndoTimer(null), 10_000)
@@ -160,19 +179,29 @@ export function QRAsView() {
               </div>
 
               {/* Mind tags */}
-              {current.mind && current.mind.length > 0 && (
-                <div style={{ display: 'flex', gap: 4, marginTop: 12, flexWrap: 'wrap' }}>
-                  {current.mind.map((tag) => (
-                    <span key={tag} style={{
-                      fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4,
-                      backgroundColor: `${EMBRY.accent}18`, color: EMBRY.accent,
-                      border: `1px solid ${EMBRY.accent}33`,
-                    }}>
-                      {tag}
-                    </span>
-                  ))}
+              <div style={{ marginTop: 12 }}>
+                <div style={{ ...label, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  Mind Tags
+                  <div style={glowDot(current.mind && current.mind.length > 0 ? EMBRY.green : EMBRY.red, 6)} />
                 </div>
-              )}
+                {current.mind && current.mind.length > 0 ? (
+                  <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                    {current.mind.map((tag) => (
+                      <span key={tag} style={{
+                        fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4,
+                        backgroundColor: `${EMBRY.accent}18`, color: EMBRY.accent,
+                        border: `1px solid ${EMBRY.accent}33`,
+                      }}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 11, color: EMBRY.red, padding: '4px 8px', borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
+                    No taxonomy tags — /taxonomy not run
+                  </div>
+                )}
+              </div>
 
               {/* Decision indicator */}
               {decisions.has(current._key) && (

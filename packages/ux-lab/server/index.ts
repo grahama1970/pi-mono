@@ -189,6 +189,64 @@ function proxyPost(path: string, body: object | null = null): Promise<any> {
   })
 }
 
+// ── Prompt Lab file API ─────────────────────────────────────────────────────
+// Serves and edits prompt files from the /prompt-lab skill directory.
+
+import { readdir, readFile, writeFile } from 'fs/promises'
+
+const PROMPT_DIR = resolve(__dirname, '../../.pi/skills/prompt-lab/prompts')
+const RESULTS_DIR = resolve(__dirname, '../../.pi/skills/prompt-lab/results')
+
+app.get('/api/prompt-lab/prompts', async (_req, res) => {
+  try {
+    const files = await readdir(PROMPT_DIR)
+    const prompts = await Promise.all(
+      files.filter((f: string) => f.endsWith('.txt')).map(async (f: string) => {
+        const content = await readFile(resolve(PROMPT_DIR, f), 'utf-8')
+        return { name: f.replace('.txt', ''), filename: f, size: content.length }
+      }),
+    )
+    res.json({ prompts })
+  } catch (e) {
+    res.status(500).json({ error: String(e) })
+  }
+})
+
+app.get('/api/prompt-lab/prompts/:name', async (req, res) => {
+  try {
+    const content = await readFile(resolve(PROMPT_DIR, `${req.params.name}.txt`), 'utf-8')
+    res.json({ name: req.params.name, content, size: content.length })
+  } catch {
+    res.status(404).json({ error: 'Prompt not found' })
+  }
+})
+
+app.put('/api/prompt-lab/prompts/:name', async (req, res) => {
+  try {
+    const { content } = req.body as { content: string }
+    if (!content) return res.status(400).json({ error: 'content required' })
+    await writeFile(resolve(PROMPT_DIR, `${req.params.name}.txt`), content, 'utf-8')
+    res.json({ ok: true, name: req.params.name, size: content.length })
+  } catch (e) {
+    res.status(500).json({ error: String(e) })
+  }
+})
+
+app.get('/api/prompt-lab/results', async (_req, res) => {
+  try {
+    const files = await readdir(RESULTS_DIR)
+    const results = await Promise.all(
+      files.filter((f: string) => f.endsWith('.json')).map(async (f: string) => {
+        const content = await readFile(resolve(RESULTS_DIR, f), 'utf-8')
+        return JSON.parse(content)
+      }),
+    )
+    res.json({ results })
+  } catch (e) {
+    res.status(500).json({ error: String(e) })
+  }
+})
+
 // ── Start ───────────────────────────────────────────────────────────────────
 
 const httpServer = createServer(app)
