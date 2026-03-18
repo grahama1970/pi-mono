@@ -14,9 +14,10 @@ interface URLPipelineRow extends SpartaURL {
   fetch_status: number | null
   fetch_error: string | null
   knowledge_chunks: number
+  summary: string
 }
 
-/** Batch-enrich a page of URLs with 3 batch API calls instead of N per-URL calls. */
+/** Batch-enrich a page of URLs with 4 batch API calls instead of N per-URL calls. */
 async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
   if (urls.length === 0) return []
 
@@ -26,11 +27,11 @@ async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
       .then((r) => r.json())
       .catch(() => ({ documents: [] }))
 
-  // 3 batch calls (not 100+ per-URL calls)
+  // 4 batch calls
   const [ctrlRes, contentRes, knowRes] = await Promise.all([
     post('/recall/by-keys', { collection: 'sparta_control_urls', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'control_id'] }),
-    post('/recall/by-keys', { collection: 'sparta_url_content', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'status_code', 'error_message'] }),
-    post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: urlIds, key_field: 'url_id', return_fields: ['url_id'] }),
+    post('/recall/by-keys', { collection: 'sparta_url_content', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'status_code', 'error_message', 'clean_text'] }),
+    post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: urlIds, key_field: 'url_id', return_fields: ['url_id', 'topic'] }),
   ])
 
   // Client-side join
@@ -41,20 +42,34 @@ async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
     if (d.control_id) ctrlMap.get(uid)!.push(d.control_id as string)
   }
 
-  const contentMap = new Map<number, { status: number | null; error: string | null }>()
+  const contentMap = new Map<number, { status: number | null; error: string | null; summary: string }>()
   for (const d of contentRes.documents ?? []) {
-    contentMap.set(d.url_id as number, { status: d.status_code as number | null, error: d.error_message as string | null })
+    const text = (d.clean_text as string) ?? ''
+    // First meaningful sentence as summary
+    const firstLine = text.split('\n').find((l: string) => l.trim().length > 20)?.trim() ?? ''
+    const summary = firstLine.length > 80 ? `${firstLine.slice(0, 80)}...` : firstLine
+    contentMap.set(d.url_id as number, { status: d.status_code as number | null, error: d.error_message as string | null, summary })
   }
 
+  // Knowledge: count + first topic as fallback summary
   const chunkCounts = new Map<number, number>()
+  const topicMap = new Map<number, string>()
   for (const d of knowRes.documents ?? []) {
     const uid = d.url_id as number
     chunkCounts.set(uid, (chunkCounts.get(uid) ?? 0) + 1)
+    if (!topicMap.has(uid) && d.topic) {
+      const t = (d.topic as string).trim()
+      if (t.length > 3 && t.length < 100 && !t.includes('requires QRA generation')) {
+        topicMap.set(uid, t)
+      }
+    }
   }
 
   return urls.map((url) => {
     const uid = url.url_id
     const content = contentMap.get(uid)
+    // Summary priority: clean_text first sentence > first topic > empty
+    const summary = content?.summary || topicMap.get(uid) || ''
     return {
       ...url,
       control_ids: ctrlMap.get(uid) ?? [],
@@ -62,6 +77,7 @@ async function enrichURLs(urls: SpartaURL[]): Promise<URLPipelineRow[]> {
       fetch_status: content?.status ?? null,
       fetch_error: content?.error ?? null,
       knowledge_chunks: chunkCounts.get(uid) ?? 0,
+      summary,
     }
   })
 }
@@ -147,8 +163,9 @@ export function URLsView() {
                 <tr>
                   <th style={{ ...thStyle, width: 28 }}></th>
                   <th style={thStyle}>Controls</th>
-                  <th style={{ ...thStyle, width: '45%' }}>URL</th>
-                  <th style={thStyle}>Fetched</th>
+                  <th style={{ ...thStyle, width: '30%' }}>URL</th>
+                  <th style={{ ...thStyle, width: '25%' }}>Summary</th>
+                  <th style={thStyle}>HTTP</th>
                   <th style={thStyle}>Chunks</th>
                 </tr>
               </thead>
@@ -179,8 +196,11 @@ export function URLsView() {
                           <span style={{ fontSize: 10, color: EMBRY.red }}>orphan</span>
                         )}
                       </td>
-                      <td style={{ ...tdStyle, color: '#6cb4ff', fontSize: 11, maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <td style={{ ...tdStyle, color: '#6cb4ff', fontSize: 11, maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {u.url}
+                      </td>
+                      <td style={{ ...tdStyle, fontSize: 11, color: EMBRY.dim, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {u.summary || <span style={{ color: EMBRY.muted, fontStyle: 'italic' }}>no summary</span>}
                       </td>
                       <td style={tdStyle}>
                         {u.fetched ? (
