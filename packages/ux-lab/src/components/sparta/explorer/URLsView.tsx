@@ -1,13 +1,18 @@
 import { useState, useMemo } from 'react'
 import { EMBRY, label, glowDot } from '../common/EmbryStyle'
-import { useURLs } from '../../../hooks/useSpartaCollections'
+import { useURLsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaURL } from '../../../hooks/useSpartaCollections'
 
+const PAGE_SIZE = 100
+
 export function URLsView() {
-  const { data: urls, total, loading, error } = useURLs()
-  const [domainFilter, setDomainFilter] = useState<string | null>(null)
+  const [page, setPage] = useState(0)
   const [search, setSearch] = useState('')
+  const [domainFilter, setDomainFilter] = useState<string | null>(null)
   const [selected, setSelected] = useState<SpartaURL | null>(null)
+
+  const { data: urls, total, loading, error } = useURLsPaginated(page, PAGE_SIZE)
+  const totalPages = Math.ceil(total / PAGE_SIZE)
 
   const domains = useMemo(() => {
     const d = new Map<string, number>()
@@ -37,14 +42,11 @@ export function URLsView() {
             <span style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white }}>{total.toLocaleString()}</span>
             <span style={{ fontSize: 11, color: EMBRY.dim }}>total URLs</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: 11, color: EMBRY.dim }}>{domains.length} domains</span>
-          </div>
           <div style={{ flex: 1 }} />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search URLs..."
+            placeholder="Search this page..."
             style={{
               backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`,
               borderRadius: 6, padding: '5px 10px', fontSize: 12, color: EMBRY.white, outline: 'none', width: 200,
@@ -58,7 +60,7 @@ export function URLsView() {
             onClick={() => setDomainFilter(null)}
             style={{ ...pillStyle, color: !domainFilter ? EMBRY.white : EMBRY.dim, backgroundColor: !domainFilter ? EMBRY.muted : 'transparent' }}
           >
-            ALL ({urls.length})
+            ALL
           </button>
           {domains.map(([domain, count]) => (
             <button
@@ -74,7 +76,7 @@ export function URLsView() {
         {/* Table */}
         <div style={{ flex: 1, overflow: 'auto' }}>
           {loading ? (
-            <div style={{ padding: 20, color: EMBRY.dim }}>Loading URLs...</div>
+            <div style={{ padding: 20, color: EMBRY.dim }}>Loading page {page + 1}...</div>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
@@ -89,9 +91,9 @@ export function URLsView() {
                   <tr
                     key={u._key}
                     onClick={() => setSelected(u)}
-                    style={{ cursor: 'pointer' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                    style={{ cursor: 'pointer', backgroundColor: selected?._key === u._key ? `${EMBRY.accent}12` : 'transparent' }}
+                    onMouseEnter={(e) => { if (selected?._key !== u._key) e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
+                    onMouseLeave={(e) => { if (selected?._key !== u._key) e.currentTarget.style.backgroundColor = 'transparent' }}
                   >
                     <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 10, color: EMBRY.dim }}>{u.url_id}</td>
                     <td style={{ ...tdStyle, color: '#6cb4ff', fontSize: 11, maxWidth: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -103,6 +105,16 @@ export function URLsView() {
               </tbody>
             </table>
           )}
+        </div>
+
+        {/* Pagination */}
+        <div style={{ padding: '8px 16px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+          <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} style={paginationBtn(page > 0)}>Prev</button>
+          <span style={{ fontSize: 12, color: EMBRY.dim }}>Page {page + 1} of {totalPages || 1}</span>
+          <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} style={paginationBtn(page < totalPages - 1)}>Next</button>
+          <span style={{ fontSize: 11, color: EMBRY.muted, marginLeft: 'auto' }}>
+            {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, total)} of {total.toLocaleString()}
+          </span>
         </div>
       </div>
 
@@ -150,10 +162,18 @@ const thStyle: React.CSSProperties = {
   fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em',
   color: EMBRY.dim, padding: '8px 10px', textAlign: 'left',
   borderBottom: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep, whiteSpace: 'nowrap',
+  position: 'sticky', top: 0, zIndex: 1,
 }
 const tdStyle: React.CSSProperties = {
   padding: '6px 10px', fontSize: 12, borderBottom: `1px solid ${EMBRY.border}`, color: EMBRY.white,
 }
 const slideOverStyle: React.CSSProperties = {
   width: 420, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', flexShrink: 0,
+}
+function paginationBtn(enabled: boolean): React.CSSProperties {
+  return {
+    fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 4,
+    border: `1px solid ${EMBRY.border}`, backgroundColor: enabled ? EMBRY.bgDeep : 'transparent',
+    color: enabled ? EMBRY.white : EMBRY.muted, cursor: enabled ? 'pointer' : 'default', opacity: enabled ? 1 : 0.5,
+  }
 }
