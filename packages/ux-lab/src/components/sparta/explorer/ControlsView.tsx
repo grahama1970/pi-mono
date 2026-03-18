@@ -3,7 +3,7 @@ import { EMBRY, label, glowDot, card, heading, body, fwBadge } from '../common/E
 import { useControlsPaginated, normalizeFramework } from '../../../hooks/useSpartaCollections'
 import type { SpartaControl } from '../../../hooks/useSpartaCollections'
 
-const API = '/api/memory'
+const API = 'http://localhost:3001/api/memory'
 const PAGE_SIZE = 100
 
 const FRAMEWORKS = ['ALL', 'SPARTA', 'NIST', 'CWE', 'D3FEND', 'ATT&CK', 'ISO', 'ESA', 'NASA'] as const
