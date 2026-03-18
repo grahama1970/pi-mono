@@ -154,8 +154,8 @@ export function KnowledgeView() {
             <div style={{ ...heading, marginBottom: 4 }}>
               {selectedChunks.length} chunks from {selectedUrl}
             </div>
-            {selectedChunks.map((chunk, i) => (
-              <div key={chunk._key ?? i} style={{ ...card }}>
+            {selectedChunks.map((chunk) => (
+              <div key={chunk._key} style={{ ...card }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                   {chunk.topic && (
                     <span style={{ fontSize: 11, fontWeight: 700, color: EMBRY.accent }}>
