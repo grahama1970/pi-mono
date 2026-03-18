@@ -363,6 +363,76 @@ export function useURLs(query = "", domain?: string): HookResult<SpartaURL> {
 	return { data, total, loading, error, refresh: fetchData };
 }
 
+// ── useURLsPaginated ─────────────────────────────────────────────────────────
+
+export function useURLsPaginated(
+	page: number,
+	pageSize: number,
+): { data: SpartaURL[]; total: number; loading: boolean; error: string | null } {
+	const [data, setData] = useState<SpartaURL[]>([]);
+	const [total, setTotal] = useState(0);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	const fetchPage = useCallback(async () => {
+		setLoading(true);
+		setError(null);
+		try {
+			const result = await listPost("sparta_urls", {
+				limit: pageSize,
+				offset: page * pageSize,
+			});
+			setData(result.documents as unknown as SpartaURL[]);
+			setTotal(result.total);
+		} catch (err) {
+			setError(err instanceof Error ? err.message : String(err));
+		} finally {
+			setLoading(false);
+		}
+	}, [page, pageSize]);
+
+	useEffect(() => {
+		fetchPage();
+	}, [fetchPage]);
+
+	return { data, total, loading, error };
+}
+
+// ── useRelationshipsPaginated ────────────────────────────────────────────────
+
+export function useRelationshipsPaginated(
+	page: number,
+	pageSize: number,
+): { data: SpartaRelationship[]; total: number; loading: boolean; error: string | null } {
+	const [data, setData] = useState<SpartaRelationship[]>([]);
+	const [total, setTotal] = useState(0);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	const fetchPage = useCallback(async () => {
+		setLoading(true);
+		setError(null);
+		try {
+			const result = await listPost("sparta_relationships", {
+				limit: pageSize,
+				offset: page * pageSize,
+			});
+			setData(result.documents as unknown as SpartaRelationship[]);
+			setTotal(result.total);
+		} catch (err) {
+			setError(err instanceof Error ? err.message : String(err));
+		} finally {
+			setLoading(false);
+		}
+	}, [page, pageSize]);
+
+	useEffect(() => {
+		fetchPage();
+	}, [fetchPage]);
+
+	return { data, total, loading, error };
+}
+
 // ── useKnowledge ────────────────────────────────────────────────────────────
 
 export function useKnowledge(query = "", urlId?: string): HookResult<SpartaURLKnowledge> {

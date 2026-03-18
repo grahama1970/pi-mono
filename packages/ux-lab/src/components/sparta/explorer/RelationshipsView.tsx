@@ -1,7 +1,9 @@
 import { useState, useMemo } from 'react'
-import { EMBRY, card, label, heading, glowDot, fwBadge } from '../common/EmbryStyle'
-import { useRelationships } from '../../../hooks/useSpartaCollections'
+import { EMBRY, label, heading, glowDot } from '../common/EmbryStyle'
+import { useRelationshipsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaRelationship } from '../../../hooks/useSpartaCollections'
+
+const PAGE_SIZE = 100
 
 function nrsColor(score: number | undefined): string {
   if (score == null) return EMBRY.dim
@@ -11,10 +13,13 @@ function nrsColor(score: number | undefined): string {
 }
 
 export function RelationshipsView() {
-  const { data: relationships, total, loading, error } = useRelationships()
+  const [page, setPage] = useState(0)
   const [selected, setSelected] = useState<SpartaRelationship | null>(null)
 
-  // Build unique node list from relationship endpoints
+  const { data: relationships, total, loading, error } = useRelationshipsPaginated(page, PAGE_SIZE)
+  const totalPages = Math.ceil(total / PAGE_SIZE)
+
+  // Build unique node list from this page's relationships
   const nodes = useMemo(() => {
     const seen = new Map<string, number>()
     for (const r of relationships) {
@@ -26,7 +31,7 @@ export function RelationshipsView() {
       .sort((a, b) => b.edgeCount - a.edgeCount)
   }, [relationships])
 
-  // Score histogram
+  // Score histogram for this page
   const histogram = useMemo(() => {
     const bins = { accept: 0, uncertain: 0, reject: 0 }
     for (const r of relationships) {
@@ -47,7 +52,6 @@ export function RelationshipsView() {
   return (
     <div style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        {/* Edge table (replaces empty graph for now — real LemmaGraph needs proper node positions) */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {/* Stats header */}
           <div style={{ display: 'flex', gap: 16, padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
@@ -57,13 +61,13 @@ export function RelationshipsView() {
             </div>
             <div>
               <span style={{ fontSize: 20, fontWeight: 900, color: EMBRY.white }}>{nodes.length}</span>
-              <span style={{ fontSize: 11, color: EMBRY.dim, marginLeft: 6 }}>unique controls</span>
+              <span style={{ fontSize: 11, color: EMBRY.dim, marginLeft: 6 }}>controls on this page</span>
             </div>
           </div>
 
-          {/* Top connected nodes */}
+          {/* Top connected nodes on this page */}
           <div style={{ padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
-            <div style={{ ...label, marginBottom: 6 }}>Most Connected</div>
+            <div style={{ ...label, marginBottom: 6 }}>Most Connected (this page)</div>
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
               {nodes.slice(0, 20).map((n) => (
                 <span key={n.id} style={{
@@ -79,7 +83,7 @@ export function RelationshipsView() {
           {/* Relationship table */}
           <div style={{ flex: 1, overflow: 'auto' }}>
             {loading ? (
-              <div style={{ padding: 20, color: EMBRY.dim }}>Loading relationships...</div>
+              <div style={{ padding: 20, color: EMBRY.dim }}>Loading page {page + 1}...</div>
             ) : (
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
@@ -95,9 +99,9 @@ export function RelationshipsView() {
                     <tr
                       key={r._key}
                       onClick={() => setSelected(r)}
-                      style={{ cursor: 'pointer' }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                      style={{ cursor: 'pointer', backgroundColor: selected?._key === r._key ? `${EMBRY.accent}12` : 'transparent' }}
+                      onMouseEnter={(e) => { if (selected?._key !== r._key) e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
+                      onMouseLeave={(e) => { if (selected?._key !== r._key) e.currentTarget.style.backgroundColor = 'transparent' }}
                     >
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, color: EMBRY.blue }}>{r.source_control_id}</td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, color: EMBRY.blue }}>{r.target_control_id}</td>
@@ -112,6 +116,16 @@ export function RelationshipsView() {
                 </tbody>
               </table>
             )}
+          </div>
+
+          {/* Pagination */}
+          <div style={{ padding: '8px 16px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+            <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} style={paginationBtn(page > 0)}>Prev</button>
+            <span style={{ fontSize: 12, color: EMBRY.dim }}>Page {page + 1} of {totalPages || 1}</span>
+            <button onClick={() => setPage(Math.min(totalPages - 1, page + 1))} disabled={page >= totalPages - 1} style={paginationBtn(page < totalPages - 1)}>Next</button>
+            <span style={{ fontSize: 11, color: EMBRY.muted, marginLeft: 'auto' }}>
+              {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, total)} of {total.toLocaleString()}
+            </span>
           </div>
         </div>
 
@@ -147,7 +161,7 @@ export function RelationshipsView() {
 
       {/* Score histogram bar */}
       <div style={{ padding: '8px 16px', borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0, backgroundColor: EMBRY.bgHeader }}>
-        <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: EMBRY.dim }}>Score Distribution</span>
+        <span style={{ fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: EMBRY.dim }}>Score Distribution (this page)</span>
         <div style={{ flex: 1, display: 'flex', height: 8, borderRadius: 4, overflow: 'hidden' }}>
           <div style={{ width: `${(histogram.accept / histTotal) * 100}%`, backgroundColor: EMBRY.green }} />
           <div style={{ width: `${(histogram.uncertain / histTotal) * 100}%`, backgroundColor: EMBRY.amber }} />
@@ -167,7 +181,15 @@ const thStyle: React.CSSProperties = {
   fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em',
   color: EMBRY.dim, padding: '8px 10px', textAlign: 'left',
   borderBottom: `1px solid ${EMBRY.border}`, backgroundColor: EMBRY.bgDeep, whiteSpace: 'nowrap',
+  position: 'sticky', top: 0, zIndex: 1,
 }
 const tdStyle: React.CSSProperties = {
   padding: '6px 10px', fontSize: 12, borderBottom: `1px solid ${EMBRY.border}`, color: EMBRY.white,
+}
+function paginationBtn(enabled: boolean): React.CSSProperties {
+  return {
+    fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 4,
+    border: `1px solid ${EMBRY.border}`, backgroundColor: enabled ? EMBRY.bgDeep : 'transparent',
+    color: enabled ? EMBRY.white : EMBRY.muted, cursor: enabled ? 'pointer' : 'default', opacity: enabled ? 1 : 0.5,
+  }
 }
