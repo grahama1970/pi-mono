@@ -76,47 +76,48 @@ export function ThreatMatrixView() {
     })
   }, [])
 
-  // When datalake is selected, build evidence map via relationship graph:
-  // SPARTA technique → sparta_relationships → NIST/CWE controls → datalake QRAs
+  // When datalake is selected, fetch coverage from two sources:
+  // 1. sparta_relationships: combined_score per control (learn-datalake pattern)
+  // 2. Evidence cases from /recall: /create-evidence-case verdicts stored in lessons
   useEffect(() => {
     if (!activeDatalake) {
       setEvidenceMap(new Map())
       return
     }
 
-    // Step 1: Get all relationships (SPARTA ↔ NIST/CWE/ATT&CK)
-    // Step 2: Get all QRAs to see which controls have evidence
     Promise.all([
       post('/list', { collection: 'sparta_relationships', limit: 2000 }),
-      post('/list', { collection: 'sparta_qra', limit: 3000 }),
-    ]).then(([relRes, qraRes]) => {
+      post('/recall', { q: 'evidence case SPARTA requirement compliance', collections: ['lessons'], k: 200 }),
+    ]).then(([relRes, evidenceRes]) => {
       const rels = (relRes.documents ?? []) as Array<Record<string, unknown>>
-      const qras = (qraRes.documents ?? []) as Array<Record<string, unknown>>
+      const evidenceItems = (evidenceRes.items ?? []) as Array<Record<string, unknown>>
 
-      // Build set of controls that have QRA evidence
-      const controlsWithEvidence = new Set<string>()
-      for (const qra of qras) {
-        const cid = (qra.control_id as string) ?? ''
-        if (cid) controlsWithEvidence.add(cid)
-      }
-
-      // For each SPARTA technique, check if any related control has evidence
+      // Coverage from relationships (combined_score thresholds)
       const counts = new Map<string, number>()
       for (const rel of rels) {
-        const src = (rel.source_control_id as string) ?? ''
         const tgt = (rel.target_control_id as string) ?? ''
-
-        // Find SPARTA technique ↔ external control pairs
-        const isSpartaTech = (id: string) => SPARTA_TACTICS.some((t) => id.startsWith(t.prefix + '-') || id.startsWith('CM') || id.startsWith('SV-') || id.startsWith('ST'))
-        const spartaId = isSpartaTech(src) ? src : isSpartaTech(tgt) ? tgt : null
-        const externalId = spartaId === src ? tgt : src
-
-        if (spartaId && controlsWithEvidence.has(externalId)) {
-          counts.set(spartaId, (counts.get(spartaId) ?? 0) + 1)
+        const src = (rel.source_control_id as string) ?? ''
+        const score = (rel.combined_score as number) ?? 0
+        if (!tgt) continue
+        // Count relationships where this technique is involved
+        for (const cid of [src, tgt]) {
+          if (SPARTA_TACTICS.some((t) => cid.startsWith(t.prefix + '-'))) {
+            counts.set(cid, (counts.get(cid) ?? 0) + (score >= 0.5 ? 2 : score >= 0.1 ? 1 : 0))
+          }
         }
-        // Also count direct QRA evidence on the SPARTA technique itself
-        if (spartaId && controlsWithEvidence.has(spartaId)) {
-          counts.set(spartaId, (counts.get(spartaId) ?? 0) + 1)
+      }
+
+      // Boost from evidence cases — /create-evidence-case verdicts
+      for (const item of evidenceItems) {
+        const tags = (item.tags as string[]) ?? []
+        if (!tags.includes('evidence_case')) continue
+        const controlIds = (item.control_ids as string[]) ?? []
+        const verdict = (item.verdict as string) ?? ''
+        if (verdict !== 'satisfied') continue
+        for (const cid of controlIds) {
+          if (SPARTA_TACTICS.some((t) => cid.startsWith(t.prefix + '-'))) {
+            counts.set(cid, (counts.get(cid) ?? 0) + 5) // Strong signal from evidence case
+          }
         }
       }
 
