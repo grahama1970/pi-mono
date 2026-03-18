@@ -221,18 +221,31 @@ export function URLsView() {
 
 function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => void }) {
   const [knowledge, setKnowledge] = useState<Array<{ text?: string; topic?: string }>>([])
+  const [cleanText, setCleanText] = useState<string | null>(null)
+  const [textLength, setTextLength] = useState<number>(0)
   const [loadingK, setLoadingK] = useState(true)
 
   useEffect(() => {
     let cancelled = false
     setLoadingK(true)
-    fetch(`${DAEMON}/recall/by-keys`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ collection: 'sparta_url_knowledge', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'text', 'topic'] }),
-    }).then((r) => r.json()).then((data) => {
-      if (!cancelled) { setKnowledge(data.documents ?? data.items ?? []); setLoadingK(false) }
-    }).catch(() => { if (!cancelled) setLoadingK(false) })
+    setCleanText(null)
+    const post = (path: string, body: Record<string, unknown>) =>
+      fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then((r) => r.json()).catch(() => ({ documents: [] }))
+
+    Promise.all([
+      post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'text', 'topic'] }),
+      post('/recall/by-keys', { collection: 'sparta_url_content', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'clean_text', 'text_length', 'status_code'] }),
+    ]).then(([knowRes, contentRes]) => {
+      if (cancelled) return
+      setKnowledge(knowRes.documents ?? [])
+      const content = (contentRes.documents ?? [])[0]
+      if (content?.clean_text) {
+        setCleanText(content.clean_text as string)
+        setTextLength(content.text_length as number ?? 0)
+      }
+      setLoadingK(false)
+    })
     return () => { cancelled = true }
   }, [url.url_id])
 
@@ -261,8 +274,25 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
         <div style={{ ...label, marginBottom: 8 }}>Pipeline Stages</div>
         <StatusRow label="Control Mapping" value={`${url.control_ids.length} controls`} ok={url.control_ids.length > 0} />
         <StatusRow label="Content Fetched" value={url.fetched ? `HTTP ${url.fetch_status}` : url.fetch_error || 'Not fetched'} ok={url.fetched && url.fetch_status === 200} />
+        <StatusRow label="Clean Text" value={cleanText ? `${textLength.toLocaleString()} chars` : 'Not extracted'} ok={!!cleanText} />
         <StatusRow label="Knowledge Chunks" value={`${url.knowledge_chunks} extracted`} ok={url.knowledge_chunks > 0} />
       </div>
+
+      {/* Clean extracted text */}
+      {cleanText && (
+        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+          <div style={{ ...label, marginBottom: 6 }}>Clean Content ({textLength.toLocaleString()} chars)</div>
+          <div style={{
+            fontSize: 12, lineHeight: 1.6, color: EMBRY.dim,
+            maxHeight: 300, overflow: 'auto',
+            padding: 12, borderRadius: 6,
+            backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}`,
+            whiteSpace: 'pre-wrap', fontFamily: 'inherit',
+          }}>
+            {cleanText.slice(0, 3000)}{cleanText.length > 3000 ? '\n\n... (truncated)' : ''}
+          </div>
+        </div>
+      )}
 
       {/* Linked controls */}
       {url.control_ids.length > 0 && (
@@ -278,7 +308,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
 
       {/* Knowledge content */}
       <div style={{ padding: '12px 20px' }}>
-        <div style={{ ...label, marginBottom: 6 }}>Extracted Content ({url.knowledge_chunks})</div>
+        <div style={{ ...label, marginBottom: 6 }}>Knowledge Chunks ({url.knowledge_chunks})</div>
         {loadingK ? (
           <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
         ) : knowledge.length === 0 ? (
