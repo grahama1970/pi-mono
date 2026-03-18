@@ -394,16 +394,8 @@ export function SourcesView() {
         </>
       )}
       {selectedUrl && (
-        <div style={{ width: 380, flexShrink: 0, overflow: 'auto', padding: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-            <span style={{ fontSize: 12, fontWeight: 700, color: EMBRY.white }}>URL Detail</span>
-            <button onClick={() => setSelectedUrl(null)} style={{ ...btn, fontSize: 14 }}>×</button>
-          </div>
-          <DetailRow label="Domain" value={selectedUrl.domain} />
-          <div style={{ marginTop: 8 }}>
-            <div style={{ ...label, marginBottom: 4 }}>URL</div>
-            <div style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.blue, wordBreak: 'break-all', lineHeight: 1.5 }}>{selectedUrl.url}</div>
-          </div>
+        <div style={{ width: 380, flexShrink: 0, overflow: 'auto' }}>
+          <UrlPipelineDetail url={selectedUrl} onClose={() => setSelectedUrl(null)} />
         </div>
       )}
     </div>
@@ -591,6 +583,112 @@ function SourceRow({ name, tooltip, health, count, loading, isSelected, onClick,
         </span>
         <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.accent, flexShrink: 0 }}>{loading ? '...' : count.toLocaleString()}</span>
       </div>
+    </div>
+  )
+}
+
+// ── URL Pipeline Detail (shared between Sources + URLs tabs) ─────────────
+
+function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => void }) {
+  const [controls, setControls] = useState<Array<{ control_id?: string; name?: string }>>([])
+  const [knowledge, setKnowledge] = useState<Array<{ text?: string; topic?: string }>>([])
+  const [fetched, setFetched] = useState<boolean | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    const API = 'http://localhost:3001/api/memory'
+
+    Promise.all([
+      fetch(`${API}/recall`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: url.url, collections: ['sparta_controls'], k: 10 }),
+      }).then((r) => r.json()).catch(() => ({ items: [] })),
+      fetch(`${API}/recall`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: `url_id:${url.url_id}`, collections: ['sparta_url_knowledge'], k: 10 }),
+      }).then((r) => r.json()).catch(() => ({ items: [] })),
+      fetch(`${API}/list`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ collection: 'sparta_url_content', limit: 1, filters: { url_id: String(url.url_id) } }),
+      }).then((r) => r.json()).catch(() => ({ total: 0 })),
+    ]).then(([ctrlRes, knowRes, contentRes]) => {
+      if (cancelled) return
+      setControls(ctrlRes.items ?? [])
+      setKnowledge(knowRes.items ?? [])
+      setFetched(contentRes.total > 0)
+      setLoading(false)
+    })
+    return () => { cancelled = true }
+  }, [url.url_id, url.url])
+
+  return (
+    <div style={{ padding: 16 }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+        <span style={{ fontSize: 12, fontWeight: 700, color: EMBRY.white }}>URL Pipeline Status</span>
+        <button onClick={onClose} style={{ ...btn, fontSize: 14 }}>×</button>
+      </div>
+
+      {/* URL */}
+      <a href={url.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: EMBRY.blue, wordBreak: 'break-all', textDecoration: 'none', lineHeight: 1.5, display: 'block', marginBottom: 12 }}>
+        {url.url}
+      </a>
+
+      {/* Status indicators */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16 }}>
+        <PipelineStatusRow label="Domain" value={url.domain} ok={!!url.domain} />
+        <PipelineStatusRow label="Content Fetched" value={fetched === null ? '...' : fetched ? 'Yes' : 'Not fetched'} ok={fetched === true} />
+        <PipelineStatusRow label="Knowledge Extracted" value={loading ? '...' : `${knowledge.length} chunks`} ok={knowledge.length > 0} />
+        <PipelineStatusRow label="Linked Controls" value={loading ? '...' : `${controls.length}`} ok={controls.length > 0} />
+      </div>
+
+      {/* Linked Controls */}
+      {controls.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ ...label, marginBottom: 6 }}>Linked Controls</div>
+          {controls.map((c, i) => (
+            <div key={`uc-${i}`} style={{ display: 'flex', gap: 6, padding: '3px 6px', borderRadius: 4, backgroundColor: EMBRY.bgDeep, marginBottom: 3 }}>
+              <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 700, color: EMBRY.blue }}>{c.control_id}</span>
+              <span style={{ fontSize: 10, color: EMBRY.dim, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Knowledge preview */}
+      {knowledge.length > 0 && (
+        <div>
+          <div style={{ ...label, marginBottom: 6 }}>Knowledge Chunks</div>
+          {knowledge.slice(0, 3).map((k, i) => (
+            <div key={`uk-${i}`} style={{ padding: '6px 8px', borderRadius: 4, border: `1px solid ${EMBRY.border}`, marginBottom: 4, fontSize: 11, color: EMBRY.dim, lineHeight: 1.4 }}>
+              {k.topic && <div style={{ fontSize: 9, color: EMBRY.accent, marginBottom: 2 }}>{k.topic}</div>}
+              {(k.text ?? '').slice(0, 150)}{(k.text ?? '').length > 150 ? '...' : ''}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!loading && controls.length === 0 && knowledge.length === 0 && !fetched && (
+        <div style={{ fontSize: 11, color: EMBRY.red, padding: 8, borderRadius: 4, backgroundColor: `${EMBRY.red}12` }}>
+          No pipeline data found — URL not fetched, no knowledge extracted, no linked controls
+        </div>
+      )}
+    </div>
+  )
+}
+
+function PipelineStatusRow({ label: l, value, ok }: { label: string; value: string; ok: boolean | null }) {
+  const color = ok === null ? EMBRY.dim : ok ? EMBRY.green : EMBRY.red
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={glowDot(color, 6)} />
+      <span style={{ fontSize: 10, color: EMBRY.muted, width: 110, flexShrink: 0 }}>{l}</span>
+      <span style={{ fontSize: 11, color: EMBRY.white }}>{value}</span>
     </div>
   )
 }
