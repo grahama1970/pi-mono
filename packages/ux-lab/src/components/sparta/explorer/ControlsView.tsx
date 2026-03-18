@@ -115,10 +115,13 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
         )}
       </div>
 
-      {/* Mind tags */}
-      {control.mind && control.mind.length > 0 && (
-        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-          <div style={{ ...label, marginBottom: 6 }}>Mind Tags</div>
+      {/* Mind/Taxonomy tags */}
+      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+        <div style={{ ...label, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+          Mind Tags
+          <div style={glowDot(control.mind && control.mind.length > 0 ? EMBRY.green : EMBRY.red, 6)} />
+        </div>
+        {control.mind && control.mind.length > 0 ? (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {control.mind.map((tag) => (
               <span key={tag} style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4, backgroundColor: `${EMBRY.accent}18`, color: EMBRY.accent, border: `1px solid ${EMBRY.accent}33` }}>
@@ -126,7 +129,12 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
               </span>
             ))}
           </div>
-        </div>
+        ) : (
+          <div style={{ fontSize: 11, color: EMBRY.red, padding: '4px 8px', borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
+            No taxonomy tags — /taxonomy not run for this control
+          </div>
+        )}
+      </div>
       )}
 
       {/* Weaknesses */}
