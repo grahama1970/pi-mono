@@ -1,7 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { EMBRY, label, glowDot, fwBadge } from '../common/EmbryStyle'
 import { useURLsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaURL } from '../../../hooks/useSpartaCollections'
+
+const API = '/api/memory'
 
 const PAGE_SIZE = 100
 
@@ -125,37 +127,135 @@ export function URLsView() {
       </div>
 
       {/* Detail slide-over */}
-      {selected && (
-        <div style={slideOverStyle}>
-          <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div>
-              <div style={{ ...label, marginBottom: 4 }}>URL Details</div>
-              <div style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.blue }}>#{selected.url_id}</div>
-            </div>
-            <button onClick={() => setSelected(null)} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
-              Close
-            </button>
-          </div>
-          <div style={{ padding: '12px 20px' }}>
-            <div style={{ ...label, marginBottom: 4 }}>URL</div>
-            <a href={selected.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#6cb4ff', wordBreak: 'break-all', textDecoration: 'none' }}>
-              {selected.url}
-            </a>
-          </div>
-          <div style={{ padding: '12px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div>
-              <div style={label}>Domain</div>
-              <div style={{ fontSize: 12, color: EMBRY.white, marginTop: 4 }}>{selected.domain}</div>
-            </div>
-            {selected.updated_at && (
-              <div>
-                <div style={label}>Last Updated</div>
-                <div style={{ fontSize: 12, color: EMBRY.dim, marginTop: 4 }}>{new Date(selected.updated_at * 1000).toLocaleDateString()}</div>
+      {selected && <URLDetail url={selected} onClose={() => setSelected(null)} />}
+    </div>
+  )
+}
+
+/* ── URL Detail Pane ─────────────────────────────────────────────────────── */
+
+function URLDetail({ url, onClose }: { url: SpartaURL; onClose: () => void }) {
+  const [controls, setControls] = useState<Array<{ control_id: string; name?: string }>>([])
+  const [knowledge, setKnowledge] = useState<Array<{ text: string; topic?: string }>>([])
+  const [fetched, setFetched] = useState<boolean | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+
+    // Fetch related data in parallel
+    Promise.all([
+      // Controls linked to this URL via recall
+      fetch(`${API}/recall`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: url.url, collections: ['sparta_controls'], k: 10 }),
+      }).then((r) => r.json()).catch(() => ({ items: [] })),
+      // Knowledge chunks extracted from this URL
+      fetch(`${API}/recall`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ q: `url_id:${url.url_id}`, collections: ['sparta_url_knowledge'], k: 10 }),
+      }).then((r) => r.json()).catch(() => ({ items: [] })),
+      // Check if URL content was fetched
+      fetch(`${API}/list`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ collection: 'sparta_url_content', limit: 1, filters: { url_id: String(url.url_id) } }),
+      }).then((r) => r.json()).catch(() => ({ total: 0 })),
+    ]).then(([ctrlRes, knowRes, contentRes]) => {
+      if (cancelled) return
+      setControls(ctrlRes.items ?? [])
+      setKnowledge(knowRes.items ?? [])
+      setFetched(contentRes.total > 0)
+      setLoading(false)
+    })
+
+    return () => { cancelled = true }
+  }, [url.url_id, url.url])
+
+  const hasKnowledge = knowledge.length > 0
+
+  return (
+    <div style={slideOverStyle}>
+      {/* Header */}
+      <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <div style={{ ...label, marginBottom: 4 }}>URL Detail</div>
+          <div style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.dim }}>#{url.url_id}</div>
+        </div>
+        <button onClick={onClose} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+          Close
+        </button>
+      </div>
+
+      {/* URL */}
+      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+        <div style={{ ...label, marginBottom: 4 }}>URL</div>
+        <a href={url.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#6cb4ff', wordBreak: 'break-all', textDecoration: 'none' }}>
+          {url.url}
+        </a>
+      </div>
+
+      {/* Pipeline Status */}
+      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+        <div style={{ ...label, marginBottom: 8 }}>Pipeline Status</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <StatusRow label="Domain" value={url.domain} ok={!!url.domain} />
+          <StatusRow label="Content Fetched" value={fetched === null ? '...' : fetched ? 'Yes' : 'Not fetched'} ok={fetched === true} />
+          <StatusRow label="Knowledge Extracted" value={loading ? '...' : `${knowledge.length} chunks`} ok={hasKnowledge} />
+          <StatusRow label="Linked Controls" value={loading ? '...' : `${controls.length} controls`} ok={controls.length > 0} />
+        </div>
+      </div>
+
+      {/* Linked Controls */}
+      {controls.length > 0 && (
+        <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+          <div style={{ ...label, marginBottom: 8 }}>Linked Controls ({controls.length})</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {controls.map((c, i) => (
+              <div key={`ctrl-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 8px', borderRadius: 4, backgroundColor: EMBRY.bgDeep }}>
+                <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 700, color: EMBRY.blue }}>{c.control_id}</span>
+                {c.name && <span style={{ fontSize: 11, color: EMBRY.dim, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.name}</span>}
               </div>
-            )}
+            ))}
           </div>
         </div>
       )}
+
+      {/* Knowledge Chunks */}
+      {knowledge.length > 0 && (
+        <div style={{ padding: '12px 20px' }}>
+          <div style={{ ...label, marginBottom: 8 }}>Extracted Knowledge ({knowledge.length})</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {knowledge.map((k, i) => (
+              <div key={`know-${i}`} style={{ padding: '8px 10px', borderRadius: 6, border: `1px solid ${EMBRY.border}`, fontSize: 12, lineHeight: 1.5 }}>
+                {k.topic && <div style={{ fontSize: 10, color: EMBRY.accent, marginBottom: 4 }}>{k.topic}</div>}
+                <div style={{ color: EMBRY.dim }}>{(k.text ?? '').slice(0, 300)}{(k.text ?? '').length > 300 ? '...' : ''}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Empty states */}
+      {!loading && controls.length === 0 && knowledge.length === 0 && (
+        <div style={{ padding: '20px', textAlign: 'center', color: EMBRY.dim, fontSize: 12 }}>
+          No linked controls or extracted knowledge found for this URL.
+        </div>
+      )}
+    </div>
+  )
+}
+
+function StatusRow({ label: l, value, ok }: { label: string; value: string; ok: boolean | null }) {
+  const color = ok === null ? EMBRY.dim : ok ? EMBRY.green : EMBRY.red
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={glowDot(color, 6)} />
+      <span style={{ fontSize: 11, color: EMBRY.dim, width: 130 }}>{l}</span>
+      <span style={{ fontSize: 11, color: EMBRY.white }}>{value}</span>
     </div>
   )
 }
