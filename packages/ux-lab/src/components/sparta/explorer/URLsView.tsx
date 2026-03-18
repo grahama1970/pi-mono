@@ -4,7 +4,7 @@ import { useURLsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaURL } from '../../../hooks/useSpartaCollections'
 
 const API = '/api/memory'
-const DAEMON = '/api/memory'
+const DAEMON = 'http://localhost:3001/api/memory'
 const PAGE_SIZE = 100
 
 /** Pipeline status for a single URL, enriched client-side. */
