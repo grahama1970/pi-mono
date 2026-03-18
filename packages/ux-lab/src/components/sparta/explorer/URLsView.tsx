@@ -221,6 +221,7 @@ export function URLsView() {
 
 function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => void }) {
   const [knowledge, setKnowledge] = useState<Array<{ text?: string; topic?: string }>>([])
+  const [qras, setQras] = useState<Array<{ question?: string; reasoning?: string; answer?: string; control_id?: string }>>([])
   const [cleanText, setCleanText] = useState<string | null>(null)
   const [textLength, setTextLength] = useState<number>(0)
   const [loadingK, setLoadingK] = useState(true)
@@ -229,14 +230,21 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
     let cancelled = false
     setLoadingK(true)
     setCleanText(null)
+    setQras([])
     const post = (path: string, body: Record<string, unknown>) =>
       fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-        .then((r) => r.json()).catch(() => ({ documents: [] }))
+        .then((r) => r.json()).catch(() => ({ documents: [], items: [] }))
+
+    // Fetch knowledge, content, and QRAs for linked controls
+    const qraFetch = url.control_ids.length > 0
+      ? post('/recall', { q: url.control_ids.join(' '), collections: ['sparta_qra'], k: 15, entities: url.control_ids })
+      : Promise.resolve({ items: [] })
 
     Promise.all([
       post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'text', 'topic'] }),
       post('/recall/by-keys', { collection: 'sparta_url_content', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'clean_text', 'text_length', 'status_code'] }),
-    ]).then(([knowRes, contentRes]) => {
+      qraFetch,
+    ]).then(([knowRes, contentRes, qraRes]) => {
       if (cancelled) return
       setKnowledge(knowRes.documents ?? [])
       const content = (contentRes.documents ?? [])[0]
@@ -244,10 +252,11 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
         setCleanText(content.clean_text as string)
         setTextLength(content.text_length as number ?? 0)
       }
+      setQras(qraRes.items ?? qraRes.documents ?? [])
       setLoadingK(false)
     })
     return () => { cancelled = true }
-  }, [url.url_id])
+  }, [url.url_id, url.control_ids])
 
   const allGood = url.fetched && url.knowledge_chunks > 0 && url.control_ids.length > 0
 
@@ -276,6 +285,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
         <StatusRow label="Content Fetched" value={url.fetched ? `HTTP ${url.fetch_status}` : url.fetch_error || 'Not fetched'} ok={url.fetched && url.fetch_status === 200} />
         <StatusRow label="Clean Text" value={cleanText ? `${textLength.toLocaleString()} chars` : 'Not extracted'} ok={!!cleanText} />
         <StatusRow label="Knowledge Chunks" value={`${url.knowledge_chunks} extracted`} ok={url.knowledge_chunks > 0} />
+        <StatusRow label="QRAs Generated" value={loadingK ? '...' : `${qras.length} QRAs`} ok={qras.length > 0} />
       </div>
 
       {/* Clean extracted text */}
@@ -307,7 +317,7 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
       )}
 
       {/* Knowledge content */}
-      <div style={{ padding: '12px 20px' }}>
+      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
         <div style={{ ...label, marginBottom: 6 }}>Knowledge Chunks ({url.knowledge_chunks})</div>
         {loadingK ? (
           <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
@@ -323,6 +333,37 @@ function URLDetailPane({ url, onClose }: { url: URLPipelineRow; onClose: () => v
             </div>
           ))
         )}
+      </div>
+
+      {/* QRAs generated from this URL's controls */}
+      <div style={{ padding: '12px 20px' }}>
+        <div style={{ ...label, marginBottom: 6 }}>QRAs ({qras.length})</div>
+        {loadingK ? (
+          <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
+        ) : qras.length === 0 ? (
+          <div style={{ fontSize: 11, color: EMBRY.amber, padding: 8, borderRadius: 4, backgroundColor: `${EMBRY.amber}08` }}>
+            No QRAs generated for linked controls
+          </div>
+        ) : (
+          qras.slice(0, 10).map((qra, i) => (
+            <div key={`qra-${i}`} style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden', marginBottom: 8 }}>
+              {qra.control_id && (
+                <div style={{ padding: '4px 10px', backgroundColor: EMBRY.bgDeep, fontSize: 10, color: EMBRY.blue, fontFamily: 'monospace', fontWeight: 700 }}>{qra.control_id}</div>
+              )}
+              <div style={{ padding: '8px 10px', fontSize: 12, lineHeight: 1.5 }}>
+                <span style={{ color: EMBRY.accent }}>Q: </span>
+                <span style={{ color: EMBRY.white }}>{qra.question}</span>
+              </div>
+              {qra.answer && (
+                <div style={{ padding: '8px 10px', borderTop: `1px solid ${EMBRY.border}`, fontSize: 12, lineHeight: 1.5 }}>
+                  <span style={{ color: EMBRY.green }}>A: </span>
+                  <span style={{ color: EMBRY.dim }}>{(qra.answer ?? '').slice(0, 200)}{(qra.answer ?? '').length > 200 ? '...' : ''}</span>
+                </div>
+              )}
+            </div>
+          ))
+        )}
+        {qras.length > 10 && <div style={{ fontSize: 10, color: EMBRY.dim, textAlign: 'center' }}>... and {qras.length - 10} more</div>}
       </div>
     </div>
   )
