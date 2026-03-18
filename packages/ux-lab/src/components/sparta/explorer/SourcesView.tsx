@@ -181,7 +181,7 @@ export function SourcesView() {
   const [enrichedUrls, setEnrichedUrls] = useState<Map<number, { control_ids: string[]; fetched: boolean; status: number | null; chunks: number }>>(new Map())
   useEffect(() => {
     if (urls.length === 0) return
-    const DAEMON = 'http://127.0.0.1:8601'
+    const DAEMON = '/api/memory'
     const post = (path: string, body: Record<string, unknown>) =>
       fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then((r) => r.json()).catch(() => ({ documents: [] }))
@@ -668,7 +668,7 @@ function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => vo
   useEffect(() => {
     let cancelled = false
     setLoading(true)
-    const DAEMON = 'http://127.0.0.1:8601'
+    const DAEMON = '/api/memory'
     const post = (path: string, body: Record<string, unknown>) =>
       fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
         .then((r) => r.json()).catch(() => ({ documents: [] }))
