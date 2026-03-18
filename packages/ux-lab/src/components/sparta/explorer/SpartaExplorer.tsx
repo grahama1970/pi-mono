@@ -24,18 +24,36 @@ export interface SpartaExplorerProps {
   loadingTabs?: Partial<Record<TabName, boolean>>
 }
 
+function tabFromHash(): TabName {
+  const hash = window.location.hash.slice(1).toLowerCase()
+  const match = TABS.find((t) => t.toLowerCase() === hash)
+  return match ?? 'Overview'
+}
+
 export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerProps) {
-  const [activeTab, setActiveTab] = useState<TabName>('Overview')
+  const [activeTab, setActiveTab] = useState<TabName>(tabFromHash)
   const [daemonHealth, setDaemonHealth] = useState<{ ok: boolean; counts?: Record<string, number> }>({ ok: false })
+
+  // Sync tab to URL hash
+  function switchTab(tab: TabName) {
+    setActiveTab(tab)
+    window.location.hash = tab.toLowerCase()
+  }
+
+  // Listen for browser back/forward
+  useEffect(() => {
+    function onHashChange() { setActiveTab(tabFromHash()) }
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
 
   // Keyboard: number keys 1-8 for direct tab access
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      // Don't capture when user is typing in an input
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
-      const num = parseInt(e.key)
+      const num = Number.parseInt(e.key)
       if (num >= 1 && num <= 8) {
-        setActiveTab(TABS[num - 1])
+        switchTab(TABS[num - 1])
       }
     }
     window.addEventListener('keydown', onKeyDown)
@@ -60,7 +78,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
   }, [checkHealth])
 
   // Navigate to a tab (used by child views for cross-tab linking)
-  const navigateToTab = useCallback((tab: TabName) => setActiveTab(tab), [])
+  const navigateToTab = useCallback((tab: TabName) => switchTab(tab), [])
 
   return (
     <div style={styles.container}>
@@ -74,7 +92,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
           {TABS.map((tab, i) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => switchTab(tab)}
               style={{
                 ...styles.tabButton,
                 color: activeTab === tab ? EMBRY.white : EMBRY.dim,
