@@ -64,9 +64,9 @@ export function OverviewView({ onNavigate }: OverviewProps) {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {issues.map((issue, i) => (
+              {issues.map((issue) => (
                 <div
-                  key={i}
+                  key={`${issue.severity}-${issue.tab}`}
                   onClick={() => onNavigate?.(issue.tab)}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 8,

@@ -465,24 +465,15 @@ export function useFrameworkCounts(): { data: FrameworkCount[]; loading: boolean
 
 export function normalizeFramework(fw: string): string {
 	const map: Record<string, string> = {
-		SPARTA: "SPARTA",
 		sparta: "SPARTA",
-		NIST: "NIST",
 		nist: "NIST",
-		CWE: "CWE",
 		cwe: "CWE",
-		NVD: "CWE",
 		nvd: "CWE",
 		iso: "ISO",
-		ISO: "ISO",
-		ATT_CK_Enterprise: "ATT&CK",
-		ATT_CK_Mobile: "ATT&CK",
-		ATT_CK_ICS: "ATT&CK",
 		att_ck_enterprise: "ATT&CK",
 		att_ck_mobile: "ATT&CK",
 		att_ck_ics: "ATT&CK",
-		D3FEND: "D3FEND",
 		d3fend: "D3FEND",
 	};
-	return map[fw] ?? fw;
+	return map[fw.toLowerCase()] ?? fw;
 }

@@ -8,21 +8,23 @@ const TABS = [
 
 export type TabName = (typeof TABS)[number]
 
-interface TabPlaceholderProps { name: TabName }
-function TabPlaceholder({ name }: TabPlaceholderProps) {
+interface TabPlaceholderProps { name: TabName; message?: string }
+function TabPlaceholder({ name, message }: TabPlaceholderProps) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, color: EMBRY.dim }}>
       <span style={{ fontSize: 18, fontWeight: 700 }}>{name}</span>
-      <span style={{ fontSize: 13, marginLeft: 8, opacity: 0.5 }}>— coming soon</span>
+      <span style={{ fontSize: 13, marginLeft: 8, opacity: 0.5 }}>— {message ?? 'no data available'}</span>
     </div>
   )
 }
 
 export interface SpartaExplorerProps {
   views?: Partial<Record<TabName, ReactNode>>
+  /** Per-tab loading state — when true, shows a subtle loading indicator on the tab */
+  loadingTabs?: Partial<Record<TabName, boolean>>
 }
 
-export function SpartaExplorer({ views = {} }: SpartaExplorerProps) {
+export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerProps) {
   const [activeTab, setActiveTab] = useState<TabName>('Overview')
   const [daemonHealth, setDaemonHealth] = useState<{ ok: boolean; counts?: Record<string, number> }>({ ok: false })
 
@@ -83,6 +85,9 @@ export function SpartaExplorer({ views = {} }: SpartaExplorerProps) {
             >
               <span style={{ fontSize: 9, color: EMBRY.muted, marginRight: 3 }}>{i + 1}</span>
               {tab}
+              {loadingTabs[tab] && (
+                <span style={{ display: 'inline-block', width: 4, height: 4, borderRadius: '50%', backgroundColor: EMBRY.accent, marginLeft: 4, animation: 'pulse 1s infinite' }} />
+              )}
             </button>
           ))}
         </div>
