@@ -177,6 +177,38 @@ export function SourcesView() {
   // URLs for domain view
   const { data: urls, loading: urlLoading } = useURLs('', domainFilter ?? undefined)
 
+  // Enrich URLs with pipeline status via batch /recall/by-keys
+  const [enrichedUrls, setEnrichedUrls] = useState<Map<number, { control_ids: string[]; fetched: boolean; status: number | null; chunks: number }>>(new Map())
+  useEffect(() => {
+    if (urls.length === 0) return
+    const DAEMON = 'http://127.0.0.1:8601'
+    const post = (path: string, body: Record<string, unknown>) =>
+      fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then((r) => r.json()).catch(() => ({ documents: [] }))
+    const ids = urls.map((u) => u.url_id)
+    Promise.all([
+      post('/recall/by-keys', { collection: 'sparta_control_urls', keys: ids, key_field: 'url_id', return_fields: ['url_id', 'control_id'] }),
+      post('/recall/by-keys', { collection: 'sparta_url_content', keys: ids, key_field: 'url_id', return_fields: ['url_id', 'status_code'] }),
+      post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: ids, key_field: 'url_id', return_fields: ['url_id'] }),
+    ]).then(([ctrlRes, contentRes, knowRes]) => {
+      const m = new Map<number, { control_ids: string[]; fetched: boolean; status: number | null; chunks: number }>()
+      const cmap = new Map<number, string[]>()
+      for (const d of ctrlRes.documents ?? []) {
+        const uid = d.url_id as number
+        if (!cmap.has(uid)) cmap.set(uid, [])
+        if (d.control_id) cmap.get(uid)!.push(d.control_id as string)
+      }
+      const smap = new Map<number, number>()
+      for (const d of contentRes.documents ?? []) smap.set(d.url_id as number, d.status_code as number)
+      const kmap = new Map<number, number>()
+      for (const d of knowRes.documents ?? []) kmap.set(d.url_id as number, (kmap.get(d.url_id as number) ?? 0) + 1)
+      for (const uid of ids) {
+        m.set(uid, { control_ids: cmap.get(uid) ?? [], fetched: smap.has(uid), status: smap.get(uid) ?? null, chunks: kmap.get(uid) ?? 0 })
+      }
+      setEnrichedUrls(m)
+    })
+  }, [urls])
+
   // Apply search to controls
   const filteredControls = useMemo(() => {
     if (!search) return controls
@@ -363,17 +395,55 @@ export function SourcesView() {
             </div>
             {urlLoading ? <div style={{ padding: 16, color: EMBRY.dim }}>Loading...</div> : (
               <div style={{ flex: 1, overflow: 'auto' }}>
-                {filteredUrls.map((u) => {
-                  const isActive = selectedUrl?._key === u._key
-                  return (
-                    <div key={u._key} onClick={() => { setSelectedUrl(isActive ? null : u); setSelectedControl(null) }}
-                      style={{ padding: '6px 12px', borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', backgroundColor: isActive ? `${EMBRY.blue}12` : 'transparent', display: 'flex', alignItems: 'center', gap: 8 }}
-                      onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = `${EMBRY.blue}06` }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = isActive ? `${EMBRY.blue}12` : 'transparent' }}>
-                      <div style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.blue, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{u.url}</div>
-                    </div>
-                  )
-                })}
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ ...th, width: 24 }}></th>
+                      <th style={th}>Controls</th>
+                      <th style={{ ...th, width: '50%' }}>URL</th>
+                      <th style={th}>Status</th>
+                      <th style={th}>Chunks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUrls.map((u) => {
+                      const isActive = selectedUrl?._key === u._key
+                      const info = enrichedUrls.get(u.url_id)
+                      const ok = info ? info.fetched && info.chunks > 0 : false
+                      const partial = info ? info.fetched && info.chunks === 0 : false
+                      const dotColor = !info ? EMBRY.dim : ok ? EMBRY.green : partial ? EMBRY.amber : EMBRY.red
+                      return (
+                        <tr key={u._key} onClick={() => { setSelectedUrl(isActive ? null : u); setSelectedControl(null) }}
+                          style={{ cursor: 'pointer', backgroundColor: isActive ? `${EMBRY.blue}12` : 'transparent' }}
+                          onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = `${EMBRY.blue}06` }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = isActive ? `${EMBRY.blue}12` : 'transparent' }}>
+                          <td style={{ ...td, textAlign: 'center' }}><div style={glowDot(dotColor, 6)} /></td>
+                          <td style={td}>
+                            {info && info.control_ids.length > 0 ? (
+                              <div style={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                                {info.control_ids.slice(0, 2).map((cid) => (
+                                  <span key={cid} style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: EMBRY.blue, padding: '0 3px', borderRadius: 2, backgroundColor: `${EMBRY.blue}12` }}>{cid}</span>
+                                ))}
+                                {info.control_ids.length > 2 && <span style={{ fontSize: 8, color: EMBRY.dim }}>+{info.control_ids.length - 2}</span>}
+                              </div>
+                            ) : <span style={{ fontSize: 9, color: EMBRY.muted }}>—</span>}
+                          </td>
+                          <td style={{ ...td, fontFamily: 'monospace', fontSize: 10, color: EMBRY.blue, maxWidth: 350, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.url}</td>
+                          <td style={td}>
+                            {info ? (
+                              <span style={{ fontSize: 9, color: info.fetched ? (info.status === 200 ? EMBRY.green : EMBRY.amber) : EMBRY.red }}>
+                                {info.fetched ? info.status : 'no'}
+                              </span>
+                            ) : <span style={{ fontSize: 9, color: EMBRY.dim }}>...</span>}
+                          </td>
+                          <td style={{ ...td, fontFamily: 'monospace', fontSize: 10, color: info && info.chunks > 0 ? EMBRY.green : EMBRY.dim }}>
+                            {info ? info.chunks : '...'}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
                 {filteredUrls.length === 0 && <div style={{ padding: 20, color: EMBRY.muted, textAlign: 'center' }}>No URLs found</div>}
               </div>
             )}
