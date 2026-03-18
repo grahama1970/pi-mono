@@ -49,9 +49,10 @@ function nrsColor(score: number | undefined): string {
 /* ── Detail pane for selected control ────────────────────────────────────── */
 
 function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClose: () => void }) {
-  const [qras, setQras] = useState<Array<{ question?: string; reasoning?: string; answer?: string; grade?: string }>>([])
+  const [qras, setQras] = useState<Array<Record<string, unknown>>>([])
   const [rels, setRels] = useState<Array<{ source_control_id?: string; target_control_id?: string; relationship_type?: string }>>([])
   const [loadingDetail, setLoadingDetail] = useState(false)
+  const [modalQra, setModalQra] = useState<Record<string, unknown> | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -79,7 +80,8 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
 
   const fw = normalizeFramework(control.source_framework)
   const fwColor = EMBRY.fw[fw] ?? EMBRY.dim
-  const placeholder = isPlaceholder(control.description)
+  const deprecated = control.status === 'deprecated' || (control.description ?? '').startsWith('[Deprecated]') || (control.description ?? '').startsWith('[Withdrawn')
+  const placeholder = !deprecated && isPlaceholder(control.description)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'auto' }}>
@@ -93,6 +95,11 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
               {control.control_type && (
                 <span style={{ fontSize: 10, color: EMBRY.dim, padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.muted}22` }}>
                   {control.control_type}
+                </span>
+              )}
+              {deprecated && (
+                <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.muted}22`, color: EMBRY.muted }}>
+                  DEPRECATED
                 </span>
               )}
             </div>
@@ -117,7 +124,11 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
       {/* Description */}
       <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
         <div style={{ ...label, marginBottom: 4 }}>Description</div>
-        {placeholder ? (
+        {deprecated ? (
+          <div style={{ fontSize: 12, color: EMBRY.muted, padding: '6px 10px', borderRadius: 6, backgroundColor: `${EMBRY.muted}08`, border: `1px solid ${EMBRY.muted}22`, fontStyle: 'italic' }}>
+            {control.description || 'This control has been deprecated or withdrawn.'}
+          </div>
+        ) : placeholder ? (
           <div style={{ fontSize: 12, color: EMBRY.amber, padding: '6px 10px', borderRadius: 6, backgroundColor: `${EMBRY.amber}12`, border: `1px solid ${EMBRY.amber}22` }}>
             NEEDS DESCRIPTION — placeholder text detected
           </div>
@@ -186,10 +197,12 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {qras.map((qra, i) => (
-              <div key={`qra-${control.control_id}-${i}`} style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden' }}>
+              <div key={`qra-${control.control_id}-${i}`} onClick={() => setModalQra(qra)} style={{ borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden', cursor: 'pointer' }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = EMBRY.accent }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = EMBRY.border }}>
                 <div style={{ padding: '8px 10px', fontSize: 12, lineHeight: 1.5 }}>
                   <span style={{ color: EMBRY.accent }}>Q: </span>
-                  <span style={{ color: EMBRY.white }}>{qra.question}</span>
+                  <span style={{ color: EMBRY.white }}>{qra.question as string}</span>
                 </div>
                 {qra.reasoning && !PLACEHOLDER_PATTERN.test(qra.reasoning) && (
                   <div style={{ padding: '8px 10px', borderTop: `1px solid ${EMBRY.border}`, fontSize: 12, lineHeight: 1.5 }}>
@@ -241,8 +254,102 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
           </div>
         )}
       </div>
+
+      {/* QRA full-screen modal */}
+      {modalQra && <QRAModal qra={modalQra} controlId={control.control_id} onClose={() => setModalQra(null)} />}
     </div>
   )
+}
+
+/** Full-screen QRA modal for reading + grading. */
+function QRAModal({ qra, controlId, onClose }: { qra: Record<string, unknown>; controlId: string; onClose: () => void }) {
+  const [grading, setGrading] = useState(false)
+
+  function grade(decision: 'PASS' | 'FAIL') {
+    setGrading(true)
+    fetch('http://localhost:3001/api/memory/learn', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        collection: 'sparta_qra',
+        problem: qra.question as string,
+        solution: qra.answer as string,
+        metadata: { _key: qra._key, control_id: controlId, grade: decision, reviewed_by: 'brandon', reviewed_at: new Date().toISOString() },
+      }),
+    }).then(() => { setGrading(false); onClose() }).catch(() => setGrading(false))
+  }
+
+  // Close on Escape
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'a' || e.key === 'A') grade('PASS')
+      if (e.key === 'r' || e.key === 'R') grade('FAIL')
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
+
+  const source = (qra.source as string) ?? ''
+  const parts = source.split(':')
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose}>
+      <div style={{ width: '80%', maxWidth: 900, maxHeight: '90vh', overflow: 'auto', backgroundColor: EMBRY.bgPanel, borderRadius: 12, border: `1px solid ${EMBRY.border}` }} onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <span style={{ fontFamily: 'monospace', fontSize: 13, fontWeight: 700, color: EMBRY.accent }}>{controlId}</span>
+            <span style={{ fontSize: 11, color: EMBRY.dim, marginLeft: 12 }}>
+              {parts[1] ?? 'unknown prompt'} · {parts[2] ?? 'unknown model'}
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <button onClick={() => grade('PASS')} disabled={grading} style={{ ...modalBtn, color: EMBRY.green, borderColor: `${EMBRY.green}44` }}>Accept (A)</button>
+            <button onClick={() => grade('FAIL')} disabled={grading} style={{ ...modalBtn, color: EMBRY.red, borderColor: `${EMBRY.red}44` }}>Reject (R)</button>
+            <button onClick={onClose} style={{ ...modalBtn, color: EMBRY.dim }}>Close (Esc)</button>
+          </div>
+        </div>
+
+        {/* Question */}
+        <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}` }}>
+          <div style={{ ...label, marginBottom: 8, color: EMBRY.accent }}>QUESTION</div>
+          <div style={{ fontSize: 15, lineHeight: 1.7, color: EMBRY.white }}>{qra.question as string}</div>
+        </div>
+
+        {/* Reasoning */}
+        {qra.reasoning && (
+          <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}` }}>
+            <div style={{ ...label, marginBottom: 8, color: EMBRY.amber }}>REASONING</div>
+            <div style={{ fontSize: 14, lineHeight: 1.7, color: EMBRY.dim }}>{qra.reasoning as string}</div>
+          </div>
+        )}
+
+        {/* Answer */}
+        {qra.answer && (
+          <div style={{ padding: '20px 24px', borderBottom: `1px solid ${EMBRY.border}` }}>
+            <div style={{ ...label, marginBottom: 8, color: EMBRY.green }}>ANSWER</div>
+            <div style={{ fontSize: 14, lineHeight: 1.7, color: EMBRY.dim }}>{qra.answer as string}</div>
+          </div>
+        )}
+
+        {/* Metadata */}
+        <div style={{ padding: '16px 24px', display: 'flex', gap: 16, fontSize: 11, color: EMBRY.muted }}>
+          {qra.grade && <span>Grade: <span style={{ color: qra.grade === 'PASS' ? EMBRY.green : EMBRY.red, fontWeight: 700 }}>{qra.grade as string}</span></span>}
+          {qra.confidence && <span>Confidence: {qra.confidence as string}</span>}
+          {qra.question_type && <span>Type: {qra.question_type as string}</span>}
+          <span>Prompt: {parts[1] ?? 'legacy'}</span>
+          <span>Model: {parts[2] ?? 'unknown'}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const modalBtn: React.CSSProperties = {
+  fontSize: 12, fontWeight: 600, padding: '6px 16px', borderRadius: 6,
+  border: `1px solid ${EMBRY.border}`, backgroundColor: 'transparent',
+  cursor: 'pointer', color: EMBRY.white,
 }
 
 /** Collapsible source info showing which prompt/model generated this QRA. */
@@ -396,11 +503,12 @@ export function ControlsView() {
               <tbody>
                 {filtered.map((ctrl) => {
                   const fw = normalizeFramework(ctrl.source_framework)
-                  const placeholder = isPlaceholder(ctrl.description)
+                  const deprecated = ctrl.status === 'deprecated' || (ctrl.description ?? '').startsWith('[Deprecated]') || (ctrl.description ?? '').startsWith('[Withdrawn')
+                  const placeholder = !deprecated && isPlaceholder(ctrl.description)
                   const hasIssues = (ctrl.weaknesses?.length ?? 0) > 0
-                  const noDesc = !ctrl.description || ctrl.description.length < 10
-                  const rowOk = !placeholder && !hasIssues && !noDesc
-                  const rowColor = rowOk ? EMBRY.green : placeholder || noDesc ? EMBRY.amber : EMBRY.red
+                  const noDesc = !deprecated && (!ctrl.description || ctrl.description.length < 10)
+                  const rowOk = !deprecated && !placeholder && !hasIssues && !noDesc
+                  const rowColor = deprecated ? EMBRY.muted : rowOk ? EMBRY.green : placeholder || noDesc ? EMBRY.amber : EMBRY.red
                   const isSelected = selected?.control_id === ctrl.control_id
                   return (
                     <tr
@@ -409,6 +517,7 @@ export function ControlsView() {
                       style={{
                         cursor: 'pointer',
                         backgroundColor: isSelected ? `${EMBRY.accent}12` : 'transparent',
+                        opacity: deprecated ? 0.5 : 1,
                       }}
                       onMouseEnter={(e) => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = `${EMBRY.blue}08` }}
                       onMouseLeave={(e) => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent' }}
@@ -416,10 +525,12 @@ export function ControlsView() {
                       <td style={{ ...tdStyle, textAlign: 'center' }}><div style={glowDot(rowColor, 6)} /></td>
                       <td style={tdStyle}><span style={fwBadge(fw)}>{fw}</span></td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, fontWeight: 700 }}>{ctrl.control_id}</td>
-                      <td style={{ ...tdStyle, color: EMBRY.dim }}>{ctrl.name}</td>
+                      <td style={{ ...tdStyle, color: deprecated ? EMBRY.muted : EMBRY.dim }}>{ctrl.name}</td>
                       <td style={{ ...tdStyle, fontSize: 10, color: EMBRY.dim }}>{ctrl.control_type}</td>
                       <td style={tdStyle}>
-                        {placeholder ? (
+                        {deprecated ? (
+                          <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.muted}18`, color: EMBRY.muted }}>DEPRECATED</span>
+                        ) : placeholder ? (
                           <span style={{ fontSize: 10, padding: '2px 6px', borderRadius: 4, backgroundColor: `${EMBRY.amber}18`, color: EMBRY.amber }}>NO DESC</span>
                         ) : hasIssues ? (
                           <span style={{ fontSize: 10, color: EMBRY.red }}>{ctrl.weaknesses?.length} weaknesses</span>
