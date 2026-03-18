@@ -367,10 +367,10 @@ export function SourcesView() {
                   const isActive = selectedUrl?._key === u._key
                   return (
                     <div key={u._key} onClick={() => { setSelectedUrl(isActive ? null : u); setSelectedControl(null) }}
-                      style={{ padding: '6px 12px', borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', backgroundColor: isActive ? `${EMBRY.blue}12` : 'transparent' }}
+                      style={{ padding: '6px 12px', borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', backgroundColor: isActive ? `${EMBRY.blue}12` : 'transparent', display: 'flex', alignItems: 'center', gap: 8 }}
                       onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = `${EMBRY.blue}06` }}
                       onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = isActive ? `${EMBRY.blue}12` : 'transparent' }}>
-                      <div style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.blue, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.url}</div>
+                      <div style={{ fontSize: 11, fontFamily: 'monospace', color: EMBRY.blue, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{u.url}</div>
                     </div>
                   )
                 })}
@@ -598,29 +598,20 @@ function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => vo
   useEffect(() => {
     let cancelled = false
     setLoading(true)
-    const API = 'http://localhost:3001/api/memory'
+    const DAEMON = 'http://127.0.0.1:8601'
+    const post = (path: string, body: Record<string, unknown>) =>
+      fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then((r) => r.json()).catch(() => ({ documents: [] }))
 
     Promise.all([
-      fetch(`${API}/recall`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: url.url, collections: ['sparta_controls'], k: 10 }),
-      }).then((r) => r.json()).catch(() => ({ items: [] })),
-      fetch(`${API}/recall`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: `url_id:${url.url_id}`, collections: ['sparta_url_knowledge'], k: 10 }),
-      }).then((r) => r.json()).catch(() => ({ items: [] })),
-      fetch(`${API}/list`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ collection: 'sparta_url_content', limit: 1, filters: { url_id: String(url.url_id) } }),
-      }).then((r) => r.json()).catch(() => ({ total: 0 })),
+      post('/recall/by-keys', { collection: 'sparta_control_urls', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'control_id'] }),
+      post('/recall/by-keys', { collection: 'sparta_url_knowledge', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'text', 'topic'] }),
+      post('/recall/by-keys', { collection: 'sparta_url_content', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'status_code', 'error_message'] }),
     ]).then(([ctrlRes, knowRes, contentRes]) => {
       if (cancelled) return
-      setControls(ctrlRes.items ?? [])
-      setKnowledge(knowRes.items ?? [])
-      setFetched(contentRes.total > 0)
+      setControls((ctrlRes.documents ?? []).map((d: Record<string, unknown>) => ({ control_id: d.control_id as string, name: d.control_id as string })))
+      setKnowledge(knowRes.documents ?? [])
+      setFetched((contentRes.documents ?? []).length > 0)
       setLoading(false)
     })
     return () => { cancelled = true }
