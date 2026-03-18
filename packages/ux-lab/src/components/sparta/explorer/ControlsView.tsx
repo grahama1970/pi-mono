@@ -18,6 +18,22 @@ const FW_TO_RAW: Record<string, string | undefined> = {
   NASA: 'NASA',
 }
 
+/** Generate a reference URL for a control based on its framework. */
+function controlUrl(controlId: string, framework?: string): string | null {
+  const fw = (framework ?? '').toUpperCase()
+  const id = controlId
+  if (fw.startsWith('ATT') || fw === 'ATTACK') {
+    if (id.startsWith('T')) return `https://attack.mitre.org/techniques/${id.replace('.', '/')}`
+    if (id.startsWith('S')) return `https://attack.mitre.org/software/${id}`
+    if (id.startsWith('G')) return `https://attack.mitre.org/groups/${id}`
+  }
+  if (fw === 'CWE' || id.startsWith('CWE-')) return `https://cwe.mitre.org/data/definitions/${id.replace('CWE-', '')}.html`
+  if (fw === 'NIST') return `https://csf.tools/reference/sp800-53/rev5/${id.split('(')[0].split('-')[0]}/${id}`
+  if (fw === 'D3FEND' || id.startsWith('d3f:')) return `https://d3fend.mitre.org/technique/d3f:${id.replace('d3f:', '')}`
+  if (fw === 'SPARTA') return `https://sparta.aerospace.org`
+  return null
+}
+
 const PLACEHOLDER_PATTERN = /This control requires QRA generation/i
 function isPlaceholder(desc?: string): boolean {
   return !desc || PLACEHOLDER_PATTERN.test(desc)
@@ -81,6 +97,16 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
               )}
             </div>
             <div style={{ fontSize: 16, fontWeight: 600, color: EMBRY.white }}>{control.name}</div>
+            {controlUrl(control.control_id, control.source_framework) && (
+              <a
+                href={controlUrl(control.control_id, control.source_framework)!}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: 10, color: EMBRY.blue, textDecoration: 'none', marginTop: 4, display: 'block' }}
+              >
+                {controlUrl(control.control_id, control.source_framework)}
+              </a>
+            )}
           </div>
           <button onClick={onClose} style={{ backgroundColor: 'transparent', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
             Close
@@ -135,7 +161,6 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
           </div>
         )}
       </div>
-      )}
 
       {/* Weaknesses */}
       {control.weaknesses && control.weaknesses.length > 0 && (
