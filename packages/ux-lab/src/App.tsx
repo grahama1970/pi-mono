@@ -4,10 +4,10 @@ import { OverviewView } from './components/sparta/explorer/OverviewView'
 import { SourcesView } from './components/sparta/explorer/SourcesView'
 import { ControlsView } from './components/sparta/explorer/ControlsView'
 import { URLsView } from './components/sparta/explorer/URLsView'
-import { KnowledgeView } from './components/sparta/explorer/KnowledgeView'
 import { QRAsView } from './components/sparta/explorer/QRAsView'
 import { RelationshipsView } from './components/sparta/explorer/RelationshipsView'
 import { PipelineView } from './components/sparta/explorer/PipelineView'
+import { PromptLabView } from './components/sparta/explorer/PromptLabView'
 import { ChatWell } from './components/ChatWell'
 
 const styles = {
@@ -32,10 +32,10 @@ function App() {
           Sources: <SourcesView />,
           Controls: <ControlsView />,
           URLs: <URLsView />,
-          Knowledge: <KnowledgeView />,
           QRAs: <QRAsView />,
           Relationships: <RelationshipsView />,
           Pipeline: <PipelineView />,
+          'Prompt Lab': <PromptLabView />,
         }}
       />
       <ChatWell />

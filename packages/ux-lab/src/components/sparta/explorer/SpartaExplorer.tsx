@@ -3,7 +3,7 @@ import { EMBRY, glowDot } from '../common/EmbryStyle'
 
 const TABS = [
   'Overview', 'Sources', 'Controls', 'URLs',
-  'Knowledge', 'QRAs', 'Relationships', 'Pipeline',
+  'QRAs', 'Relationships', 'Pipeline', 'Prompt Lab',
 ] as const
 
 export type TabName = (typeof TABS)[number]
