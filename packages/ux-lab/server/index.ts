@@ -143,10 +143,29 @@ app.post('/api/scillm', (req, res) => {
 app.get('/api/models', async (_req, res) => {
   const groups: { label: string; models: string[] }[] = []
 
-  // scillm aliases (always available)
+  // scillm — fetch actual model list from Docker service
+  try {
+    const scillmRes = await fetch(`${SCILLM_URL}/v1/models`, {
+      headers: { Authorization: 'Bearer sk-dev-proxy-123' },
+    })
+    const scillmData = await scillmRes.json() as { data?: { id: string }[] }
+    const allModels = (scillmData.data ?? []).map((m: { id: string }) => m.id)
+
+    // Split into aliases vs direct models
+    const aliases = allModels.filter((m: string) => !m.includes('/') && m !== 'embedding')
+    const chutesModels = allModels.filter((m: string) => m.includes('/'))
+
+    if (aliases.length > 0) groups.push({ label: 'scillm aliases (auto-cascade)', models: aliases })
+    if (chutesModels.length > 0) groups.push({ label: 'Chutes / direct models', models: chutesModels })
+  } catch {
+    // Fallback if scillm unreachable
+    groups.push({ label: 'scillm aliases', models: ['text', 'vlm', 'local-text', 'moonshot-text'] })
+  }
+
+  // subagent-service backends (Docker agents with full skill access)
   groups.push({
-    label: 'scillm aliases',
-    models: ['text', 'vlm', 'local-text', 'moonshot-text'],
+    label: 'subagent-service (agent loops)',
+    models: ['claude-sonnet', 'claude-opus', 'codex', 'gemini'],
   })
 
   // Ollama local models (dynamic)
