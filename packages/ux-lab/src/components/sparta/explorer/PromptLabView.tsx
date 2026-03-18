@@ -16,9 +16,9 @@ export function PromptLabView() {
   const [editedContent, setEditedContent] = useState('')
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [selectedModel, setSelectedModel] = useState('text')
+  const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set(['text', 'text-gemini']))
   const [testInput, setTestInput] = useState('{"control_id": "CWE-79", "framework": "CWE", "type": "weakness", "name": "Cross-site Scripting (XSS)", "description": "The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.", "knowledge_excerpts": []}')
-  const [testResult, setTestResult] = useState<string | null>(null)
+  const [testResults, setTestResults] = useState<Map<string, { content: string; elapsed: number; items: number }>>(new Map())
   const [testing, setTesting] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -60,28 +60,39 @@ export function PromptLabView() {
 
   const runTest = useCallback(async () => {
     setTesting(true)
-    setTestResult(null)
-    try {
-      const prompt = editing ? editedContent : promptContent
-      const resp = await fetch(`${API}/scillm`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: selectedModel,
-          messages: [
-            { role: 'system', content: prompt },
-            { role: 'user', content: `Generate factual questions about this control.\n\nControl:\n${testInput}\n\nJSON:` },
-          ],
-          response_format: { type: 'json_object' },
-          max_tokens: 2048, temperature: 0,
-        }),
-      })
-      const data = await resp.json()
-      const content = data.choices?.[0]?.message?.content ?? 'No response'
-      try { setTestResult(JSON.stringify(JSON.parse(content), null, 2)) }
-      catch { setTestResult(content) }
-    } catch (e) { setTestResult(`Error: ${e}`) }
+    setTestResults(new Map())
+    const prompt = editing ? editedContent : promptContent
+    const modelsToTest = [...selectedModels]
+
+    // Run all selected models in parallel
+    await Promise.all(modelsToTest.map(async (model) => {
+      const t0 = Date.now()
+      try {
+        const resp = await fetch(`${API}/scillm`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: 'system', content: prompt },
+              { role: 'user', content: `Generate factual questions about this control.\n\nControl:\n${testInput}\n\nJSON:` },
+            ],
+            response_format: { type: 'json_object' },
+            max_tokens: 2048, temperature: 0,
+          }),
+        })
+        const data = await resp.json()
+        const content = data.choices?.[0]?.message?.content ?? 'No response'
+        const elapsed = (Date.now() - t0) / 1000
+        let items = 0
+        try { items = JSON.parse(content).items?.length ?? 0 } catch {}
+        const formatted = (() => { try { return JSON.stringify(JSON.parse(content), null, 2) } catch { return content } })()
+        setTestResults((prev) => new Map(prev).set(model, { content: formatted, elapsed, items }))
+      } catch (e) {
+        setTestResults((prev) => new Map(prev).set(model, { content: `Error: ${e}`, elapsed: (Date.now() - t0) / 1000, items: 0 }))
+      }
+    }))
     setTesting(false)
-  }, [promptContent, editedContent, editing, selectedModel, testInput])
+  }, [promptContent, editedContent, editing, selectedModels, testInput])
 
   const activePrompt = 'qra_generation_sparta_context_v1'
 
@@ -94,20 +105,23 @@ export function PromptLabView() {
           <div style={{ ...label, marginTop: 2 }}>Edit prompts · test models · compare results</div>
         </div>
 
-        {/* Model selector */}
+        {/* Model selector — multi-select */}
         <div style={{ padding: '10px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
-          <div style={{ ...label, marginBottom: 6 }}>Model</div>
-          <select
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            style={{ width: '100%', backgroundColor: EMBRY.bgDeep, color: EMBRY.white, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: '4px 8px', fontSize: 11 }}
-          >
-            {models.map((g) => (
-              <optgroup key={g.label} label={g.label}>
-                {g.models.map((m) => <option key={m} value={m}>{m}</option>)}
-              </optgroup>
+          <div style={{ ...label, marginBottom: 6 }}>Models ({selectedModels.size} selected)</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, maxHeight: 120, overflow: 'auto' }}>
+            {models.flatMap((g) => g.models).map((m) => (
+              <label key={m} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, color: EMBRY.white, cursor: 'pointer', padding: '2px 4px', borderRadius: 3, backgroundColor: selectedModels.has(m) ? `${EMBRY.accent}12` : 'transparent' }}>
+                <input type="checkbox" checked={selectedModels.has(m)} onChange={() => {
+                  setSelectedModels((prev) => {
+                    const next = new Set(prev)
+                    if (next.has(m)) next.delete(m); else next.add(m)
+                    return next
+                  })
+                }} style={{ accentColor: EMBRY.accent }} />
+                {m}
+              </label>
             ))}
-          </select>
+          </div>
         </div>
 
         {/* Prompt list */}
@@ -164,8 +178,8 @@ export function PromptLabView() {
                   <button onClick={() => { setEditing(false); setEditedContent(promptContent) }} style={btnStyle}>Cancel</button>
                 </>
               )}
-              <button onClick={runTest} disabled={testing} style={{ ...btnStyle, color: EMBRY.accent, borderColor: `${EMBRY.accent}44` }}>
-                {testing ? 'Running...' : `Test with ${selectedModel}`}
+              <button onClick={runTest} disabled={testing || selectedModels.size === 0} style={{ ...btnStyle, color: EMBRY.accent, borderColor: `${EMBRY.accent}44` }}>
+                {testing ? `Testing ${selectedModels.size} models...` : `Test ${selectedModels.size} models`}
               </button>
             </div>
 
@@ -191,13 +205,32 @@ export function PromptLabView() {
                   style={{ width: '100%', resize: 'vertical', backgroundColor: EMBRY.bgDeep, color: EMBRY.white, border: `1px solid ${EMBRY.border}`, borderRadius: 4, padding: 8, fontSize: 11, fontFamily: 'monospace', lineHeight: 1.4 }} />
               </div>
 
-              {/* Test result */}
-              {testResult && (
-                <div style={{ maxHeight: 300, overflow: 'auto', borderTop: `1px solid ${EMBRY.border}`, padding: 16, flexShrink: 0 }}>
-                  <div style={{ ...label, marginBottom: 6 }}>Result ({selectedModel})</div>
-                  <pre style={{ margin: 0, fontSize: 11, lineHeight: 1.5, color: EMBRY.green, fontFamily: 'monospace', whiteSpace: 'pre-wrap', padding: 12, borderRadius: 6, backgroundColor: EMBRY.bgDeep, border: `1px solid ${EMBRY.border}` }}>
-                    {testResult}
-                  </pre>
+              {/* Multi-model comparison results */}
+              {testResults.size > 0 && (
+                <div style={{ borderTop: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
+                  {/* Summary bar */}
+                  <div style={{ padding: '8px 16px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', gap: 12, alignItems: 'center' }}>
+                    <div style={{ ...label }}>Results ({testResults.size}/{selectedModels.size})</div>
+                    {[...testResults.entries()].map(([model, r]) => (
+                      <span key={model} style={{ fontSize: 10, color: r.items > 0 ? EMBRY.green : EMBRY.red }}>
+                        {model}: {r.items} items · {r.elapsed.toFixed(1)}s
+                      </span>
+                    ))}
+                  </div>
+                  {/* Side-by-side results */}
+                  <div style={{ display: 'flex', overflow: 'auto', maxHeight: 400 }}>
+                    {[...testResults.entries()].map(([model, r]) => (
+                      <div key={model} style={{ flex: 1, minWidth: 300, borderRight: `1px solid ${EMBRY.border}`, overflow: 'auto' }}>
+                        <div style={{ padding: '6px 12px', backgroundColor: EMBRY.bgDeep, borderBottom: `1px solid ${EMBRY.border}`, fontSize: 10, fontWeight: 700, color: EMBRY.white, position: 'sticky', top: 0 }}>
+                          {model}
+                          <span style={{ color: r.items > 0 ? EMBRY.green : EMBRY.red, marginLeft: 8 }}>{r.items} items · {r.elapsed.toFixed(1)}s</span>
+                        </div>
+                        <pre style={{ margin: 0, padding: 12, fontSize: 10, lineHeight: 1.4, color: EMBRY.dim, fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>
+                          {r.content}
+                        </pre>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
