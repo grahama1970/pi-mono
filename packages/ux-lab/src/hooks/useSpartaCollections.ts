@@ -197,6 +197,59 @@ export function useControls(query = "", framework?: string): HookResult<SpartaCo
 	return { data, total, loading, error, refresh: fetchData };
 }
 
+// ── useControlsPaginated ─────────────────────────────────────────────────────
+// Server-side pagination with optional framework filter. Returns one page at a time.
+
+export function useControlsPaginated(
+	page: number,
+	pageSize: number,
+	framework?: string,
+): { data: SpartaControl[]; total: number; loading: boolean; error: string | null } {
+	const [data, setData] = useState<SpartaControl[]>([]);
+	const [total, setTotal] = useState(0);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+
+	const fetchPage = useCallback(async () => {
+		setLoading(true);
+		setError(null);
+		try {
+			const filters: Record<string, string> = {};
+			if (framework) filters.source_framework = framework;
+			const result = await listPost("sparta_controls", {
+				limit: pageSize,
+				offset: page * pageSize,
+				return_fields: [
+					"control_id",
+					"name",
+					"description",
+					"source_framework",
+					"control_type",
+					"parent_id",
+					"domain",
+					"scope",
+					"weaknesses",
+					"mind",
+					"nrs_score",
+				],
+				filters: Object.keys(filters).length > 0 ? filters : undefined,
+			});
+			setData(result.documents as unknown as SpartaControl[]);
+			setTotal(result.total);
+		} catch (err) {
+			setError(err instanceof Error ? err.message : String(err));
+		} finally {
+			setLoading(false);
+		}
+	}, [page, pageSize, framework]);
+
+	useEffect(() => {
+		fetchPage();
+	}, [fetchPage]);
+
+	return { data, total, loading, error };
+}
+
 // ── useQRAs ─────────────────────────────────────────────────────────────────
 
 export function useQRAs(query = "", controlId?: string): HookResult<SpartaQRA> {
