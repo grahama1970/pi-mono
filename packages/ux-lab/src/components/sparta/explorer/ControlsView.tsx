@@ -208,6 +208,8 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
                     Grade: {qra.grade}
                   </div>
                 )}
+                {/* Source/prompt info — collapsible */}
+                <QRASourceInfo qra={qra} />
               </div>
             ))}
           </div>
@@ -239,6 +241,43 @@ function ControlDetailPane({ control, onClose }: { control: SpartaControl; onClo
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+/** Collapsible source info showing which prompt/model generated this QRA. */
+function QRASourceInfo({ qra }: { qra: Record<string, unknown> }) {
+  const [expanded, setExpanded] = useState(false)
+  const source = (qra.source as string) ?? ''
+  const method = (qra.generation_method as string) ?? ''
+  const confidence = (qra.confidence as string) ?? ''
+
+  if (!source && !method) return null
+
+  // Parse source field: "prompt-lab:sparta_context_v1:DeepSeek-V3"
+  const parts = source.split(':')
+  const promptName = parts[1] ?? ''
+  const modelName = parts[2] ?? ''
+
+  return (
+    <div style={{ borderTop: `1px solid ${EMBRY.border}` }}>
+      <div
+        onClick={() => setExpanded(!expanded)}
+        style={{ padding: '4px 10px', fontSize: 10, color: EMBRY.muted, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+      >
+        <span style={{ transform: expanded ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.1s' }}>▸</span>
+        Source: {promptName || source || 'unknown'}
+        {modelName && <span style={{ color: EMBRY.dim }}> · {modelName}</span>}
+        {confidence && <span style={{ color: EMBRY.dim }}> · {confidence}</span>}
+      </div>
+      {expanded && (
+        <div style={{ padding: '6px 10px', fontSize: 10, color: EMBRY.dim, backgroundColor: EMBRY.bgDeep }}>
+          <div>Prompt: <span style={{ color: EMBRY.blue }}>{promptName || 'legacy (pre-prompt-lab)'}</span></div>
+          <div>Model: <span style={{ color: EMBRY.white }}>{modelName || 'unknown'}</span></div>
+          <div>Method: <span style={{ color: EMBRY.white }}>{method || 'relationship_grounded'}</span></div>
+          {confidence && <div>Confidence: <span style={{ color: EMBRY.white }}>{confidence}</span></div>}
+        </div>
+      )}
     </div>
   )
 }
