@@ -15,6 +15,11 @@ import express from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
 import { request as httpRequest } from 'http'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+import { readdir, readFile, writeFile } from 'fs/promises'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const app = express()
 app.use(cors({ origin: /http:\/\/localhost:\d+/ }))
@@ -192,10 +197,9 @@ function proxyPost(path: string, body: object | null = null): Promise<any> {
 // ── Prompt Lab file API ─────────────────────────────────────────────────────
 // Serves and edits prompt files from the /prompt-lab skill directory.
 
-import { readdir, readFile, writeFile } from 'fs/promises'
-
-const PROMPT_DIR = resolve(__dirname, '../../.pi/skills/prompt-lab/prompts')
-const RESULTS_DIR = resolve(__dirname, '../../.pi/skills/prompt-lab/results')
+const PI_MONO = resolve(__dirname, '../../../')
+const PROMPT_DIR = resolve(PI_MONO, '.pi/skills/prompt-lab/prompts')
+const RESULTS_DIR = resolve(PI_MONO, '.pi/skills/prompt-lab/results')
 
 app.get('/api/prompt-lab/prompts', async (_req, res) => {
   try {
