@@ -243,23 +243,28 @@ def _run_subagent(task: TaskRuntime, session_dir: Path) -> str:
     # Try SSE streaming first, fall back to blocking /chat
     content_chunks: list[str] = []
     events_log = session_dir / f"{task.task_id}.events.jsonl"
+    request_body = {
+        "prompt": task.prompt,
+        "model": task.backend or _subagent_backend_name(task.backend or "codex"),
+        "max_turns": 8 if task.mode == "iterative" else 3,
+    }
+    # Use idle-based timeout (read=120s per chunk, not total duration)
+    stream_timeout = httpx.Timeout(connect=10.0, read=120.0, write=10.0, pool=10.0)
     try:
-        with httpx.Client(timeout=600.0) as client:
-            with client.stream(
-                "POST",
-                f"http://localhost:{port}/chat/stream",
-                json={
-                    "prompt": task.prompt,
-                    "model": task.backend or _subagent_backend_name(task.backend or "codex"),
-                    "max_turns": 8 if task.mode == "iterative" else 3,
-                },
-            ) as response:
+        with httpx.Client(timeout=stream_timeout) as client:
+            with client.stream("POST", f"http://localhost:{port}/chat/stream", json=request_body) as response:
                 response.raise_for_status()
                 with events_log.open("a") as log_f:
                     for line in response.iter_lines():
-                        if not line or not line.startswith("data: "):
+                        if not line:
                             continue
-                        data_str = line[6:]
+                        # SSE format: "data: {json}" or "event: type"
+                        if line.startswith("data: "):
+                            data_str = line[6:]
+                        elif line.startswith("data:"):
+                            data_str = line[5:]
+                        else:
+                            continue
                         log_f.write(data_str + "\n")
                         try:
                             event = json.loads(data_str)
@@ -272,26 +277,14 @@ def _run_subagent(task: TaskRuntime, session_dir: Path) -> str:
                                 text = event.get("result", event.get("response", ""))
                                 if text:
                                     content_chunks.append(text)
-                            # Check for pause file between events
-                            pause_file = session_dir / "PAUSE"
-                            if pause_file.exists():
-                                logger.warning("PAUSE file detected — task {} will complete, then orchestrator pauses", task.task_id)
                         except json.JSONDecodeError:
                             content_chunks.append(data_str)
     except (httpx.ReadTimeout, httpx.ConnectError) as exc:
         logger.warning("SSE stream failed for task {}, falling back to /chat: {}", task.task_id, exc)
-        # Fallback to blocking /chat
         with httpx.Client(timeout=300.0) as client:
-            response = client.post(
-                f"http://localhost:{port}/chat",
-                json={
-                    "prompt": task.prompt,
-                    "model": task.backend or _subagent_backend_name(task.backend or "codex"),
-                    "max_turns": 8 if task.mode == "iterative" else 3,
-                },
-            )
-            response.raise_for_status()
-            data = response.json()
+            resp = client.post(f"http://localhost:{port}/chat", json=request_body)
+            resp.raise_for_status()
+            data = resp.json()
         content_chunks.append(str(data.get("response") or ""))
 
     content = "\n".join(content_chunks)

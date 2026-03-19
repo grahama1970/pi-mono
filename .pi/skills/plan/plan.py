@@ -506,7 +506,10 @@ def print_validation_report(result: dict[str, Any], filepath: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
-from interviews import run_pre_plan_interview, run_post_plan_interview  # noqa: E402
+# Interview gates are SKILL.md instructions, not embedded in plan.py.
+# The agent calls /interview before writing YAML and after for review.
+# interviews.py provides the question definitions for programmatic use.
+# from interviews import run_pre_plan_interview, run_post_plan_interview
 
 app = typer.Typer(help="Create orchestration-ready YAML task files")
 
@@ -702,21 +705,13 @@ def main(
         print(template.to_yaml())
         raise typer.Exit(0)
 
-    # Goal provided — run collaborative planning pipeline
+    # Goal provided — print planning guidance for the agent
+    # NOTE: The /interview gates are SKILL.md instructions, not embedded here.
+    # The agent reads SKILL.md and calls /interview before writing YAML.
+    # plan.py is a CLI utility — it doesn't drive the conversation.
     plan_type = detect_plan_type(goal)
     print(f"Goal: {goal}")
     print(f"Detected plan type: {plan_type}")
-
-    # ── Interview 1: Pre-Plan Discovery (BLOCKING) ────────────────────────
-    # Forces the agent to read skill code, run real examples, and ask
-    # questions BEFORE writing any YAML. This prevents the agent from
-    # guessing at skill contracts and writing bespoke code.
-    pre_plan_result = run_pre_plan_interview(goal, plan_type)
-    if pre_plan_result and not pre_plan_result.get("completed"):
-        print("\nPre-plan interview incomplete. Cannot proceed.")
-        raise typer.Exit(1)
-
-    # Print planning guidance for the agent
     print(f"\nOutput YAML using the structured plan schema.")
     print(f"Required fields per task: id, title, lane, runner, backend, mode, depends_on, definition_of_done")
     print(f"\nRunner types:")
@@ -728,12 +723,6 @@ def main(
     print(f"  opus    — architecture, novel design, cross-skill composition (high cost)")
     print(f"  codex   — code review, refactoring (medium cost)")
     print(f"  gemini  — long content, large context (medium cost)")
-
-    if pre_plan_result:
-        responses = pre_plan_result.get("responses", {})
-        print(f"\n── Pre-Plan Discovery Results ──")
-        for qid, resp in responses.items():
-            print(f"  {qid}: {resp.get('value', '(no answer)')}")
 
 
 if __name__ == "__main__":
