@@ -97,6 +97,7 @@ interface SkillEntry {
 	model?: string;
 	tags?: string[];
 	taxonomy?: string[];
+	read_before_use?: string[];
 }
 
 /** Full frontmatter parsed from SKILL.md files, keyed by skill name */
@@ -192,6 +193,7 @@ function buildFrontmatterMaps(skills: SkillEntry[]): {
 
 	for (const skill of skills) {
 		const fm = parseFrontmatterFromFile(skill.location);
+		fm._location = skill.location; // Preserve for read_before_use gate
 		frontmatter[skill.name] = fm;
 
 		// Extract typed fields into the SkillEntry for other code to use
@@ -203,6 +205,7 @@ function buildFrontmatterMaps(skills: SkillEntry[]): {
 		if (typeof fm.model === "string") skill.model = fm.model;
 		if (Array.isArray(fm.tags)) skill.tags = fm.tags as string[];
 		if (Array.isArray(fm.taxonomy)) skill.taxonomy = fm.taxonomy as string[];
+		if (Array.isArray(fm.read_before_use)) skill.read_before_use = fm.read_before_use as string[];
 	}
 
 	return { composes, frontmatter };
@@ -632,13 +635,85 @@ export default function skillSelector(pi: ExtensionAPI) {
 				// Logging should never block
 			}
 
+			// ── Inject read_before_use steer for selected skills ──
+			const readWarnings: string[] = [];
+			for (const name of finalNames) {
+				const skill = skills.find((s) => s.name === name);
+				if (skill?.read_before_use && skill.read_before_use.length > 0 && skill.location) {
+					const skillDir = skill.location.replace(/\/SKILL\.md$/, "");
+					const files = skill.read_before_use.map((f) => `${skillDir}/${f}`).join(", ");
+					readWarnings.push(`  /${name}: READ ${files} before using or modifying`);
+				}
+			}
+			let readBeforeUseBlock = "";
+			if (readWarnings.length > 0) {
+				readBeforeUseBlock = "\n\n## Required Reading (read_before_use)\n" +
+					"These skills declare files you MUST read before calling or modifying them.\n" +
+					"Do NOT guess how they work from the description alone.\n\n" +
+					readWarnings.join("\n") + "\n";
+			}
+
 			// ── Rebuild system prompt with filtered skills ──
 			const filteredXml = rebuildSkillsXml(skills, finalNames);
 			return {
-				systemPrompt: before + filteredXml + after,
+				systemPrompt: before + filteredXml + readBeforeUseBlock + after,
 			};
 		} catch {
 			// Skill Selector should NEVER block. Fail silently → full prompt used.
+		}
+	});
+
+	// ── Hard gate: block skill invocation until read_before_use files are read ──
+	// Tracks files the agent has read via Read tool. When the agent tries to
+	// invoke a skill (via Bash run.sh), checks if all read_before_use files
+	// for that skill have been read this session. Blocks if not.
+	const filesRead = new Set<string>();
+
+	pi.on("tool_result", async (event) => {
+		if (event.toolName === "read") {
+			const filePath = (event.input as any)?.file_path;
+			if (typeof filePath === "string") filesRead.add(filePath);
+		}
+	});
+
+	pi.on("tool_call", async (event) => {
+		if (event.toolName !== "bash") return;
+		const cmd = typeof (event.input as any)?.command === "string"
+			? (event.input as any).command : "";
+		if (!cmd) return;
+
+		// Check if this command invokes a skill with read_before_use
+		if (!frontmatterMap) return; // Not built yet (no skills parsed)
+
+		for (const [skillName, fm] of Object.entries(frontmatterMap)) {
+			const rbu = fm.read_before_use;
+			if (!Array.isArray(rbu) || rbu.length === 0) continue;
+
+			// Does this command invoke this skill?
+			const runShPattern = new RegExp(`/${skillName}/run\\.sh\\b`);
+			if (!runShPattern.test(cmd)) continue;
+
+			// Find the skill's directory from cached entries
+			const skillLocation = fm._location as string | undefined;
+			if (!skillLocation) continue;
+			const skillDir = skillLocation.replace(/\/SKILL\.md$/, "");
+
+			// Check which required files haven't been read
+			const missing: string[] = [];
+			for (const file of rbu as string[]) {
+				const fullPath = `${skillDir}/${file}`;
+				if (!filesRead.has(fullPath)) missing.push(fullPath);
+			}
+
+			if (missing.length > 0) {
+				return {
+					block: true,
+					reason:
+						`BLOCKED [read_before_use]: /${skillName} requires you to read its implementation before use.\n` +
+						`Unread files:\n${missing.map((f) => `  - ${f}`).join("\n")}\n\n` +
+						`Read these files first, then retry the command.`,
+				};
+			}
 		}
 	});
 }

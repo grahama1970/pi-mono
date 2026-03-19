@@ -1,0 +1,38 @@
+# Dockerized Claude Code with FastAPI endpoint
+#
+#   docker compose up -d
+#   docker compose --env-file .env up -d
+#
+# Optional: CLAUDE_PORT (default 8620), WITH_SKILLS=true to mount skills
+
+services:
+  create-claude:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: create-claude:latest
+    container_name: create-claude
+    restart: unless-stopped
+
+    ports:
+      - "${CLAUDE_PORT:-8620}:8620"
+
+    volumes:
+      # Claude OAuth credentials (required)
+      - ${HOME}/.claude:/home/node/.claude
+
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8620/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # Profile: mount skills read-only (activate with --profile skills)
+  create-claude-with-skills:
+    extends:
+      service: create-claude
+    profiles: ["skills"]
+    volumes:
+      - ${HOME}/.claude:/home/node/.claude
+      - ${SKILLS_DIR:-/home/graham/workspace/experiments/pi-mono/.pi/skills}:/home/node/skills:ro
