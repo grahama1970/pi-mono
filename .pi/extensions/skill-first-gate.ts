@@ -63,6 +63,10 @@ const EXEMPT_PATTERNS = [
 	/\.pi\/skills\/memory\//,
 	/\.pi\/skills\/assess\//,
 	/\.pi\/skills\/plan\//,
+	/\.pi\/skills\/orchestrate\//,
+	/\.pi\/skills\/review-plan\//,
+	/\.pi\/skills\/subagent-service\//,
+	/\bstructured_execute\.py\b/,
 ];
 
 /** Grace period: allow first N tool calls without blocking (agent warm-up) */
