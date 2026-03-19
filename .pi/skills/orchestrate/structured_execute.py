@@ -44,7 +44,7 @@ SCILLM_URL = os.environ.get("SCILLM_API_BASE", "http://localhost:4001/v1/chat/co
 SCILLM_KEY = os.environ.get("SCILLM_PROXY_KEY", "sk-dev-proxy-123")
 SKILLS_DIR = Path(os.environ.get("SKILLS_DIR", str(Path(__file__).resolve().parents[1])))
 SUBAGENT_RUN = SKILLS_DIR / "subagent-service" / "run.sh"
-STATE_ROOT = Path(os.environ.get("ORCHESTRATE_HOME", str(Path.home() / ".pi" / "skills" / "orchestrate")))
+STATE_ROOT = Path(os.environ.get("ORCHESTRATE_HOME", str(Path(__file__).resolve().parent)))
 WATCHDOG_POLL_S = 2
 
 
