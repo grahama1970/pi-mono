@@ -1763,6 +1763,21 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       placeholder="Filter by CWE, ATT&CK, feature..."
                       style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, fontSize: 9, padding: '3px 8px', outline: 'none', borderRadius: 2, width: 200 }}
                     />
+                    <button onClick={() => {
+                      // Export CSV
+                      const rows = data.graphNodes.filter(n => taxonomyMap.has(n.id)).map(n => {
+                        const tax = taxonomyMap.get(n.id)!
+                        return `"${n.label}","${n.nodeType}","${Math.round(n.confidence * 100)}%","${(tax.cwe || []).join(';')}","${(tax.attack || []).join(';')}","${(tax.d3fend || []).join(';')}","${(tax.mind || []).join(';')}"`
+                      })
+                      const csv = `"Feature","Type","Confidence","CWE","ATT&CK","D3FEND","MIND"\n${rows.join('\n')}`
+                      const blob = new Blob([csv], { type: 'text/csv' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a'); a.href = url; a.download = `${binaryName}-vulnmap.csv`; a.click()
+                      URL.revokeObjectURL(url)
+                    }} style={{
+                      fontSize: 8, padding: '3px 8px', background: 'transparent', border: `1px solid ${EMBRY.border}`,
+                      color: EMBRY.dim, borderRadius: 2, cursor: 'pointer', fontWeight: 700,
+                    }}>EXPORT CSV</button>
                   </div>
                   <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                     <thead>
@@ -1820,40 +1835,66 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 </div>
               )}
 
-              {/* Empty scene prompt — only in graph mode */}
+              {/* Empty scene card — actionable, not confusing */}
               {sceneNodeIds.size === 0 && !data.loading && viewMode === 'graph' && (
                 <div style={{
                   position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                  textAlign: 'center', zIndex: 5, pointerEvents: 'auto',
+                  zIndex: 5, pointerEvents: 'auto', width: 380,
+                  background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 6,
+                  padding: '24px 28px', boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
                 }}>
-                  <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, marginBottom: 8 }}>START EXPLORING</div>
-                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 16, maxWidth: 300, lineHeight: 1.6 }}>
-                    The graph auto-loads namespaces on start. Use the buttons below to add more nodes, or ask a question in the chat.
+                  <div style={{ fontSize: 16, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>No nodes in scene</div>
+                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 16, lineHeight: 1.6 }}>
+                    Select a namespace or symbol from the left pane, or use one of these quick actions:
                   </div>
-                  <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    {/* Seed buttons: add namespaces (entry points) */}
+
+                  {/* Quick actions */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <button onClick={() => {
                       const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
-                      addToScene(namespaces.map(n => n.id))
-                    }} style={{
-                      fontSize: 10, padding: '6px 14px', background: `${EMBRY.accent}15`,
-                      border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent,
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 600,
-                    }}>Show Namespaces</button>
-                    <button onClick={() => {
-                      // Top 8 most-connected nodes (no neighbors — expand manually)
-                      const withDeg = data.graphNodes
-                        .filter(n => n.nodeType !== 'parameter')
+                      const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
                         .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
-                        .sort((a, b) => b.deg - a.deg)
-                        .slice(0, 8)
-                      addToScene(withDeg.map(n => n.id))
+                        .sort((a, b) => b.deg - a.deg).slice(0, 5)
+                      addToScene([...namespaces.map(n => n.id), ...topHubs.map(n => n.id)])
                     }} style={{
-                      fontSize: 10, padding: '6px 14px', background: `${EMBRY.accent}15`,
-                      border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent,
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 600,
-                    }}>Show Top Hubs</button>
-                    {/* No "Show All" — progressive disclosure only */}
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: `${EMBRY.accent}10`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent,
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>⚡</span>
+                      <div>
+                        <div>Load Sample Graph</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>Namespaces + top 5 connected features</div>
+                      </div>
+                    </button>
+
+                    <button onClick={() => setViewMode('vulns')} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>🛡</span>
+                      <div>
+                        <div>View Vulnerability Map</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND mapping table</div>
+                      </div>
+                    </button>
+
+                    <button onClick={() => setViewMode('code')} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>📄</span>
+                      <div>
+                        <div>Browse Source Patterns</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM / decompiled C / Python pseudocode</div>
+                      </div>
+                    </button>
+                  </div>
+
+                  <div style={{ fontSize: 8, color: EMBRY.muted, marginTop: 12, textAlign: 'center' }}>
+                    {data.stats.totalNodes} features · {data.stats.totalEdges} edges · {data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces
                   </div>
                 </div>
               )}
@@ -2175,7 +2216,60 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 5: Source pattern (if available) */}
+                      {/* Row 5: RPC/Event interface details */}
+                      {(selectedNode.nodeType === 'rpc' || selectedNode.nodeType === 'event' || selectedNode.nodeType === 'cli_command') && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          {/* Interface section */}
+                          <div>
+                            <div style={{ fontSize: 8, color: '#2196F3', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>INTERFACE</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '2px 8px', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
+                              <span style={{ color: EMBRY.muted }}>Type</span>
+                              <span style={{ color: EMBRY.white }}>{selectedNode.nodeType.toUpperCase()}</span>
+                              <span style={{ color: EMBRY.muted }}>Namespace</span>
+                              <span style={{ color: '#22d3ee' }}>{selectedNode.cluster}</span>
+                              {selectedNode.fields && selectedNode.fields.length > 0 && <>
+                                <span style={{ color: EMBRY.muted }}>Params</span>
+                                <span style={{ color: EMBRY.white }}>{selectedNode.fields.length} ({selectedNode.fields.slice(0, 3).join(', ')}{selectedNode.fields.length > 3 ? '...' : ''})</span>
+                              </>}
+                              <span style={{ color: EMBRY.muted }}>Tier</span>
+                              <span style={{ color: selectedNode.tier === 'T0' ? EMBRY.green : selectedNode.tier === 'T1' ? EMBRY.amber : EMBRY.red }}>{selectedNode.tier}</span>
+                            </div>
+                          </div>
+
+                          {/* Security section */}
+                          <div>
+                            <div style={{ fontSize: 8, color: '#FF5722', fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>SECURITY</div>
+                            {(() => {
+                              const tax = taxonomyMap.get(selectedNode.id)
+                              const hasAuth = allSelectedEdges.some(e => {
+                                const otherNode = data.graphNodes.find(n => n.id === (e._from === selectedNode.id ? e._to : e._from))
+                                return otherNode && (otherNode.label.includes('auth') || otherNode.label.includes('permission') || otherNode.label.includes('token'))
+                              })
+                              return (
+                                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                                  <span style={{
+                                    fontSize: 8, padding: '2px 6px', borderRadius: 2, fontWeight: 700,
+                                    background: hasAuth ? '#1a272120' : '#2a151520',
+                                    border: `1px solid ${hasAuth ? EMBRY.green + '44' : '#FF572244'}`,
+                                    color: hasAuth ? EMBRY.green : '#FF5722',
+                                  }}>{hasAuth ? 'AUTH REQUIRED' : 'NO AUTH DETECTED'}</span>
+                                  {tax?.cwe?.map(c => (
+                                    <span key={c} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#FF572210', border: '1px solid #FF572233', color: '#FF5722' }}>{c}</span>
+                                  ))}
+                                  {tax?.attack?.map(a => (
+                                    <span key={a} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#FF980010', border: '1px solid #FF980033', color: '#FF9800' }}>{a}</span>
+                                  ))}
+                                  {tax?.mind?.map(m => (
+                                    <span key={m} style={{ fontSize: 8, padding: '2px 6px', borderRadius: 2, background: '#9C27B010', border: '1px solid #9C27B033', color: '#9C27B0' }}>{m}</span>
+                                  ))}
+                                </div>
+                              )
+                            })()}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Row 6: Source pattern (if available) */}
                       {selectedNode.source_pattern && (
                         <div>
                           <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>SOURCE</div>
