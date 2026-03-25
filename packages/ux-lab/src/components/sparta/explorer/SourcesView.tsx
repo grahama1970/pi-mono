@@ -3,6 +3,10 @@ import { EMBRY, label, heading, glowDot } from '../common/EmbryStyle'
 import { useControlsByFramework, useRawFrameworkCounts, useURLs } from '../../../hooks/useSpartaCollections'
 import type { SpartaControl, SpartaURL } from '../../../hooks/useSpartaCollections'
 import { ControlIdPills } from '../common/ControlIdPills'
+import { useSpartaNav } from './SpartaExplorer'
+import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelected } from '../common/TableStyles'
+import { UtilityBar } from '../common/UtilityBar'
+import { useToast } from '../common/Toast'
 
 // ── Source definitions ──────────────────────────────────────────────────────
 
@@ -154,6 +158,7 @@ export function SourcesView() {
   const [selectedUrl, setSelectedUrl] = useState<SpartaURL | null>(null)
   const [page, setPage] = useState(0)
   const [search, setSearch] = useState('')
+  const [toast, showToast] = useToast()
 
   // Server-side per-type counts for accurate sidebar numbers
   const [typeCounts, setTypeCounts] = useState<Map<string, number>>(new Map())
@@ -415,9 +420,9 @@ export function SourcesView() {
                       const isActive = selectedControl?._key === ctrl._key
                       return (
                         <tr key={ctrl._key} onClick={() => { setSelectedControl(isActive ? null : ctrl); setSelectedUrl(null) }}
-                          style={{ borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', backgroundColor: isActive ? `${EMBRY.blue}12` : 'transparent' }}
-                          onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = `${EMBRY.blue}06` }}
-                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = isActive ? `${EMBRY.blue}12` : 'transparent' }}>
+                          style={{ borderBottom: `1px solid ${EMBRY.border}`, ...magneticRow, ...(isActive ? magneticRowSelected : {}) }}
+                          onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isActive)}
+                          onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isActive)}>
                           <td style={{ ...td, fontFamily: 'monospace', color: EMBRY.blue, whiteSpace: 'nowrap' }}>{ctrl.control_id}</td>
                           <td style={{ ...td, fontWeight: 600, color: EMBRY.white }}>{ctrl.name}</td>
                           <td style={td}>
@@ -527,6 +532,7 @@ export function SourcesView() {
 // ── Control Detail with QRAs + Relationships ────────────────────────────────
 
 function ControlDetail({ control, onClose, width = 380 }: { control: SpartaControl; onClose: () => void; width?: number }) {
+  const nav = useSpartaNav()
   const [qras, setQras] = useState<Record<string, unknown>[]>([])
   const [rels, setRels] = useState<Record<string, unknown>[]>([])
   const [qraLoading, setQraLoading] = useState(true)
@@ -665,66 +671,34 @@ function ControlDetail({ control, onClose, width = 380 }: { control: SpartaContr
 
       {/* QRAs */}
       <div style={{ marginTop: 16, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
-        <div style={{ ...label, marginBottom: 8 }}>QRAs {qraLoading ? '...' : `(${qras.length})`}</div>
-        {!qraLoading && qras.length === 0 && <div style={{ fontSize: 11, color: EMBRY.muted }}>No QRAs for this control</div>}
-        {qras.map((qra, i) => {
-          const reasoning = String(qra.reasoning ?? '')
-          const reasoningIsPlaceholder = isPlaceholder(reasoning)
-          const grade = String(qra.reasoning_grade ?? '')
-          const gradeColor = grade === 'PASS' && !reasoningIsPlaceholder ? EMBRY.green : grade === 'WARN' ? EMBRY.amber : EMBRY.red
-          return (
-            <div key={`qra-${i}`} style={{ marginBottom: 12, backgroundColor: EMBRY.bgDeep, borderRadius: 6, border: `1px solid ${EMBRY.border}`, overflow: 'hidden' }}>
-              {/* Question */}
-              <div style={{ padding: '8px 10px', borderBottom: `1px solid ${EMBRY.border}` }}>
-                <div style={{ fontSize: 9, color: EMBRY.blue, marginBottom: 2 }}>QUESTION</div>
-                <div style={{ fontSize: 11, color: EMBRY.white, lineHeight: 1.5 }}>{String(qra.question ?? '').slice(0, 300)}</div>
-              </div>
-              {/* Reasoning */}
-              <div style={{ padding: '8px 10px', borderBottom: `1px solid ${EMBRY.border}`, backgroundColor: reasoningIsPlaceholder ? `${EMBRY.amber}08` : 'transparent' }}>
-                <div style={{ fontSize: 9, color: EMBRY.accent, marginBottom: 2 }}>REASONING</div>
-                {reasoningIsPlaceholder ? (
-                  <div style={{ fontSize: 10, color: EMBRY.amber }}>Missing — pipeline wrote placeholder</div>
-                ) : (
-                  <div style={{ fontSize: 11, color: EMBRY.white, lineHeight: 1.5 }}>{reasoning.slice(0, 400)}{reasoning.length > 400 ? '...' : ''}</div>
-                )}
-              </div>
-              {/* Answer */}
-              <div style={{ padding: '8px 10px' }}>
-                <div style={{ fontSize: 9, color: EMBRY.green, marginBottom: 2 }}>ANSWER</div>
-                <div style={{ fontSize: 11, color: EMBRY.white, lineHeight: 1.5 }}>{String(qra.answer ?? '').slice(0, 500)}</div>
-              </div>
-              {/* Score bar */}
-              <div style={{ display: 'flex', gap: 8, padding: '4px 10px 6px', borderTop: `1px solid ${EMBRY.border}` }}>
-                {qra.grounding_score != null && (
-                  <span style={{ fontSize: 9, color: EMBRY.muted }}>grounding: {Number(qra.grounding_score).toFixed(2)}</span>
-                )}
-                {grade && (
-                  <span style={{ fontSize: 9, color: reasoningIsPlaceholder ? EMBRY.red : gradeColor }}>{reasoningIsPlaceholder ? 'PLACEHOLDER' : grade}</span>
-                )}
-              </div>
-            </div>
-          )
-        })}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ ...label }}>QRAs {qraLoading ? '...' : `(${qras.length})`}</div>
+          {!qraLoading && qras.length > 0 && (
+            <button onClick={() => nav.navigateToTabWithFilter('QRAs', { controlId: control.control_id })} style={{
+              background: 'none', border: `1px solid ${EMBRY.green}33`, borderRadius: 4,
+              padding: '2px 8px', fontSize: 10, color: EMBRY.green, cursor: 'pointer',
+            }}>
+              View in QRAs tab →
+            </button>
+          )}
+        </div>
+        {!qraLoading && qras.length === 0 && <div style={{ fontSize: 11, color: EMBRY.muted }}>No QRAs generated for this control</div>}
       </div>
 
       {/* Relationships */}
       <div style={{ marginTop: 12, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 12 }}>
-        <div style={{ ...label, marginBottom: 8 }}>Relationships {relLoading ? '...' : `(${rels.length})`}</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ ...label }}>Relationships {relLoading ? '...' : `(${rels.length})`}</div>
+          {!relLoading && rels.length > 0 && (
+            <button onClick={() => nav.navigateToTabWithFilter('Relationships', { controlId: control.control_id })} style={{
+              background: 'none', border: `1px solid ${EMBRY.green}33`, borderRadius: 4,
+              padding: '2px 8px', fontSize: 10, color: EMBRY.green, cursor: 'pointer',
+            }}>
+              View in Relationships tab →
+            </button>
+          )}
+        </div>
         {!relLoading && rels.length === 0 && <div style={{ fontSize: 11, color: EMBRY.muted }}>No relationships found</div>}
-        {rels.map((rel, i) => {
-          const src = String(rel.source_control_id ?? '')
-          const tgt = String(rel.target_control_id ?? '')
-          const other = src === control.control_id ? tgt : src
-          const method = String(rel.method ?? '')
-          const score = Number(rel.combined_score ?? 0)
-          return (
-            <div key={`rel-${i}`} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4, padding: '4px 8px', backgroundColor: EMBRY.bgDeep, borderRadius: 4 }}>
-              <span style={{ fontSize: 10, fontFamily: 'monospace', color: EMBRY.blue }}>{other}</span>
-              <span style={{ fontSize: 9, color: EMBRY.muted }}>{method}</span>
-              <span style={{ fontSize: 9, color: score > 0.7 ? EMBRY.green : score > 0.4 ? EMBRY.amber : EMBRY.dim, marginLeft: 'auto' }}>{score.toFixed(2)}</span>
-            </div>
-          )
-        })}
       </div>
     </div>
   )
