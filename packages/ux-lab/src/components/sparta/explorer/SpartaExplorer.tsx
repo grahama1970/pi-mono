@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, type ReactNode } from 'react'
+import { createContext, useState, useEffect, useCallback, useRef, useContext, type ReactNode } from 'react'
 import { EMBRY, fwBadge } from '../common/EmbryStyle'
 import { StatusBar } from '../../common/StatusBar'
 import { ChatWell } from '../query/ChatWell'
@@ -18,6 +18,26 @@ const TABS = [
 ] as const
 
 export type TabName = (typeof TABS)[number]
+export interface SpartaTabFilter {
+  controlId?: string
+}
+
+interface SpartaNavContextValue {
+  navigateToTab: (tab: TabName) => void
+  navigateToTabWithFilter: (tab: TabName, filter: SpartaTabFilter) => void
+  tabFilters: Partial<Record<TabName, SpartaTabFilter>>
+  clearTabFilter: (tab: TabName) => void
+}
+
+const SpartaNavContext = createContext<SpartaNavContextValue | undefined>(undefined)
+
+export function useSpartaNav(): SpartaNavContextValue {
+  const context = useContext(SpartaNavContext)
+  if (!context) {
+    throw new Error('useSpartaNav must be used within SpartaExplorer')
+  }
+  return context
+}
 
 // Lucide icons for the global nav strip
 const TAB_ICON_COMPONENTS: Record<TabName, typeof Zap> = {
@@ -48,6 +68,7 @@ export interface SpartaExplorerProps {
 
 export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerProps) {
   const [activeTab, setActiveTab] = useState<TabName>('Overview')
+  const [tabFilters, setTabFilters] = useState<Partial<Record<TabName, SpartaTabFilter>>>({})
   const [daemonHealth, setDaemonHealth] = useState<{ ok: boolean; counts?: Record<string, number> }>({ ok: false })
 
   // Query settings
@@ -72,19 +93,42 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
     setFrameworkFilters(prev => ({ ...prev, [fw]: !prev[fw] }))
   }, [])
 
-  function switchTab(tab: TabName) { setActiveTab(tab) }
+  const navigateToTab = useCallback((tab: TabName) => {
+    setActiveTab(tab)
+  }, [])
+
+  const navigateToTabWithFilter = useCallback((tab: TabName, filter: SpartaTabFilter) => {
+    setTabFilters(prev => ({ ...prev, [tab]: filter }))
+    setActiveTab(tab)
+  }, [])
+
+  const clearTabFilter = useCallback((tab: TabName) => {
+    setTabFilters(prev => {
+      if (!(tab in prev)) return prev
+      const next = { ...prev }
+      delete next[tab]
+      return next
+    })
+  }, [])
+
+  const navContextValue: SpartaNavContextValue = {
+    navigateToTab,
+    navigateToTabWithFilter,
+    tabFilters,
+    clearTabFilter,
+  }
 
   // Keyboard: 1-8 tabs, Escape close flyouts
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
-      if (e.key === 'Escape') { setRightOpen(false); setSettingsOpen(false); setLeftOpen(false); return }
-      const num = Number.parseInt(e.key)
-      if (num >= 1 && num <= TABS.length) switchTab(TABS[num - 1])
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+        if (e.key === 'Escape') { setRightOpen(false); setSettingsOpen(false); setLeftOpen(false); return }
+        const num = Number.parseInt(e.key)
+        if (num >= 1 && num <= TABS.length) navigateToTab(TABS[num - 1])
+      }
+      window.addEventListener('keydown', onKeyDown)
+      return () => window.removeEventListener('keydown', onKeyDown)
+    }, [navigateToTab])
 
   // Health check
   const checkHealth = useCallback(async () => {
@@ -287,12 +331,12 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
         {/* PANE 1: Icon-only global nav (always visible) */}
         <nav style={S.iconNav}>
           {TABS.map((tab, i) => (
-            <button
-              key={tab}
-              onClick={() => switchTab(tab)}
-              title={`${tab} (${i + 1})`}
-              style={{
-                ...S.navBtn,
+              <button
+                key={tab}
+                onClick={() => navigateToTab(tab)}
+                title={`${tab} (${i + 1})`}
+                style={{
+                  ...S.navBtn,
                 ...(activeTab === tab ? S.navBtnActive : {}),
               }}
             >
@@ -323,11 +367,11 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
               <button onClick={() => setLeftOpen(false)} style={S.paneClose}>{'\u00D7'}</button>
             </div>
             {/* View navigation with counts */}
-            {TABS.map((tab) => (
-              <button key={tab} onClick={() => { switchTab(tab); setLeftOpen(false) }} style={{
-                ...S.sourceItem,
-                ...(activeTab === tab ? S.sourceItemActive : {}),
-              }}>
+              {TABS.map((tab) => (
+                <button key={tab} onClick={() => { navigateToTab(tab); setLeftOpen(false) }} style={{
+                  ...S.sourceItem,
+                  ...(activeTab === tab ? S.sourceItemActive : {}),
+                }}>
                 <span>{tab}</span>
                 {loadingTabs[tab] && <span style={{ width: 4, height: 4, borderRadius: '50%', backgroundColor: EMBRY.accent, animation: 'pulse 1s infinite' }} />}
               </button>
@@ -350,14 +394,16 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
           </aside>
         )}
 
-        {/* PANE 3: Main data table (always fills remaining space) */}
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', minWidth: 0 }}>
-          {TABS.map((tab) => (
-            <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-              {views[tab] ?? <TabPlaceholder name={tab} />}
+          {/* PANE 3: Main data table (always fills remaining space) */}
+          <SpartaNavContext.Provider value={navContextValue}>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', minWidth: 0 }}>
+              {TABS.map((tab) => (
+                <div key={tab} style={{ display: activeTab === tab ? 'flex' : 'none', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+                  {views[tab] ?? <TabPlaceholder name={tab} />}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </SpartaNavContext.Provider>
       </div>
 
       {/* PANE 4: Query flyout drawer (overlays from right) */}
