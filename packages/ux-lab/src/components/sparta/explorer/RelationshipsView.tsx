@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { EMBRY, label, heading, glowDot } from '../common/EmbryStyle'
+import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelected } from '../common/TableStyles'
+import { useToast } from '../common/Toast'
 import { useRelationshipsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaRelationship } from '../../../hooks/useSpartaCollections'
 
@@ -15,6 +17,7 @@ function nrsColor(score: number | undefined): string {
 export function RelationshipsView() {
   const [page, setPage] = useState(0)
   const [selected, setSelected] = useState<SpartaRelationship | null>(null)
+  const [toast, showToast] = useToast()
 
   const { data: relationships, total, loading, error } = useRelationshipsPaginated(page, PAGE_SIZE)
   const totalPages = Math.ceil(total / PAGE_SIZE)
@@ -51,7 +54,7 @@ export function RelationshipsView() {
 
   return (
     <div style={{ display: 'flex', flex: 1, overflow: 'hidden', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {/* Stats header */}
           <div style={{ display: 'flex', gap: 16, padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
@@ -99,13 +102,14 @@ export function RelationshipsView() {
                   {relationships.map((r) => {
                     const score = r.combined_score
                     const rowColor = score == null ? EMBRY.dim : score >= 0.80 ? EMBRY.green : score >= 0.60 ? EMBRY.amber : EMBRY.red
+                    const isSelected = selected?._key === r._key
                     return (
                     <tr
                       key={r._key}
                       onClick={() => setSelected(r)}
-                      style={{ cursor: 'pointer', backgroundColor: selected?._key === r._key ? `${EMBRY.accent}12` : 'transparent' }}
-                      onMouseEnter={(e) => { if (selected?._key !== r._key) e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
-                      onMouseLeave={(e) => { if (selected?._key !== r._key) e.currentTarget.style.backgroundColor = 'transparent' }}
+                      style={{ cursor: 'pointer', ...magneticRow, ...(isSelected ? magneticRowSelected : {}) }}
+                      onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isSelected)}
+                      onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isSelected)}
                     >
                       <td style={{ ...tdStyle, textAlign: 'center' }}><div style={glowDot(rowColor, 6)} /></td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, color: EMBRY.blue }}>{r.source_control_id}</td>
@@ -153,6 +157,7 @@ export function RelationshipsView() {
           <span style={{ color: EMBRY.red }}>Reject: {histogram.reject}</span>
         </div>
       </div>
+      {toast}
     </div>
   )
 }
@@ -192,7 +197,7 @@ function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: 
   const allTags = [...new Set([...sourceMind, ...targetMind])].sort()
 
   return (
-    <div style={{ width: 360, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', flexShrink: 0 }}>
+    <div style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: 360, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', zIndex: 100, boxShadow: '-20px 0 50px rgba(0,0,0,0.8)' }}>
       <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={heading}>Edge Detail</div>
         <button onClick={onClose} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>

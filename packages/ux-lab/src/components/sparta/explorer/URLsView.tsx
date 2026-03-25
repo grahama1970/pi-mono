@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { EMBRY, label, glowDot } from '../common/EmbryStyle'
+import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelected } from '../common/TableStyles'
+import { useToast } from '../common/Toast'
 import { useURLsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaURL } from '../../../hooks/useSpartaCollections'
 
@@ -89,6 +91,7 @@ export function URLsView() {
   const [selected, setSelected] = useState<URLPipelineRow | null>(null)
   const [enrichedUrls, setEnrichedUrls] = useState<URLPipelineRow[]>([])
   const [enriching, setEnriching] = useState(false)
+  const [toast, showToast] = useToast()
 
   const { data: urls, total, loading, error } = useURLsPaginated(page, PAGE_SIZE)
   const totalPages = Math.ceil(total / PAGE_SIZE)
@@ -124,7 +127,7 @@ export function URLsView() {
   }
 
   return (
-    <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Header */}
         <div style={{ display: 'flex', gap: 16, padding: '12px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0, alignItems: 'center' }}>
@@ -177,9 +180,9 @@ export function URLsView() {
                     <tr
                       key={u._key}
                       onClick={() => setSelected(u)}
-                      style={{ cursor: 'pointer', backgroundColor: isSelected ? `${EMBRY.accent}12` : 'transparent' }}
-                      onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.backgroundColor = `${EMBRY.blue}08` }}
-                      onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent' }}
+                      style={{ cursor: 'pointer', ...magneticRow, ...(isSelected ? magneticRowSelected : {}) }}
+                      onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isSelected)}
+                      onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isSelected)}
                     >
                       <td style={{ ...tdStyle, textAlign: 'center' }}><div style={glowDot(rowColor, 6)} /></td>
                       <td style={tdStyle}>
@@ -228,6 +231,7 @@ export function URLsView() {
 
       {/* Detail slide-over */}
       {selected && <URLDetailPane url={selected} onClose={() => setSelected(null)} />}
+      {toast}
     </div>
   )
 }
@@ -425,7 +429,8 @@ const tdStyle: React.CSSProperties = {
   padding: '6px 10px', fontSize: 12, borderBottom: `1px solid ${EMBRY.border}`, color: EMBRY.white,
 }
 const slideOverStyle: React.CSSProperties = {
-  width: 440, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', flexShrink: 0,
+  width: 440, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto',
+  position: 'absolute', right: 0, top: 0, height: '100%', zIndex: 100, boxShadow: '-20px 0 50px rgba(0,0,0,0.8)',
 }
 function paginationBtn(enabled: boolean): React.CSSProperties {
   return {

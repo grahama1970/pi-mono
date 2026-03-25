@@ -1,7 +1,21 @@
-import { useState } from 'react'
-import { EMBRY, card, label, heading } from '../common/EmbryStyle'
+import { useState, type ReactNode } from 'react'
+import { EMBRY, card, label, heading, glowDot, fwBadge } from '../common/EmbryStyle'
 
 /** Chat well for natural language + direct AQL queries through /memory */
+
+export interface EntityRef {
+  id: string
+  label: string
+  exists: boolean
+}
+
+export interface EvidenceGate {
+  gate: string
+  passed: boolean
+  detail: string
+}
+
+export type CascadeLayer = 'recall' | 'intent' | 'llm' | 'aql'
 
 export interface ChatMessage {
   id: string
@@ -10,14 +24,30 @@ export interface ChatMessage {
   type: 'natural' | 'aql'
   timestamp: number
   resultCount?: number
+  _querySpec?: Record<string, unknown>
+  feedback?: 'up' | 'down' | null
+  cascadeLayer?: CascadeLayer
+  entities?: EntityRef[]
+  verdict?: { state: string; gates: EvidenceGate[] }
+  clarifyOptions?: Array<{ question: string }>
 }
 
 export interface ChatWellProps {
   messages: ChatMessage[]
   onSend?: (query: string, type: 'natural' | 'aql') => void
+  renderExtras?: (msg: ChatMessage) => ReactNode
+  onClarifyClick?: (question: string) => void
+  onFeedback?: (msgId: string, feedback: 'up' | 'down') => void
 }
 
-export function ChatWell({ messages, onSend }: ChatWellProps) {
+const LAYER_COLORS: Record<CascadeLayer, string> = {
+  recall: EMBRY.green,
+  intent: EMBRY.blue,
+  llm: EMBRY.amber,
+  aql: EMBRY.accent,
+}
+
+export function ChatWell({ messages, onSend, renderExtras, onClarifyClick, onFeedback }: ChatWellProps) {
   const [input, setInput] = useState('')
   const [mode, setMode] = useState<'natural' | 'aql'>('natural')
 
@@ -133,6 +163,97 @@ export function ChatWell({ messages, onSend }: ChatWellProps) {
             }}>
               {msg.content}
             </div>
+
+            {/* Cascade layer indicator */}
+            {msg.role === 'system' && msg.cascadeLayer && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+                <div style={glowDot(LAYER_COLORS[msg.cascadeLayer], 6)} />
+                <span style={{ fontSize: 9, color: LAYER_COLORS[msg.cascadeLayer], fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                  {msg.cascadeLayer}
+                </span>
+                {msg.resultCount !== undefined && (
+                  <span style={{ fontSize: 9, color: EMBRY.dim }}>
+                    {msg.resultCount} results{msg.cascadeLayer === 'recall' ? ' (free)' : ''}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Entity pills */}
+            {msg.entities && msg.entities.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
+                {msg.entities.map((e, i) => (
+                  <span key={i} style={{
+                    ...fwBadge(e.exists ? 'SPARTA' : 'CWE'),
+                    opacity: e.exists ? 1 : 0.5,
+                    cursor: 'pointer',
+                  }} title={`${e.id} — ${e.exists ? 'found' : 'not found'}`}>
+                    {e.label}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Evidence gate summary */}
+            {msg.verdict && (
+              <div style={{ marginTop: 6, padding: '4px 8px', borderRadius: 4, backgroundColor: `${msg.verdict.state === 'SATISFIED' ? EMBRY.green : msg.verdict.state === 'INCONCLUSIVE' ? EMBRY.amber : EMBRY.red}12`, border: `1px solid ${msg.verdict.state === 'SATISFIED' ? EMBRY.green : msg.verdict.state === 'INCONCLUSIVE' ? EMBRY.amber : EMBRY.red}33` }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: msg.verdict.state === 'SATISFIED' ? EMBRY.green : msg.verdict.state === 'INCONCLUSIVE' ? EMBRY.amber : EMBRY.red, marginBottom: 2 }}>
+                  GATE: {msg.verdict.state}
+                </div>
+                {msg.verdict.gates.map((g, i) => (
+                  <div key={i} style={{ fontSize: 9, color: EMBRY.dim }}>
+                    {g.passed ? '\u2713' : '\u2717'} {g.gate}: {g.detail}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Clarify chips */}
+            {msg.clarifyOptions && msg.clarifyOptions.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
+                {msg.clarifyOptions.map((c, i) => (
+                  <button key={i} onClick={() => onClarifyClick?.(c.question)} style={{
+                    fontSize: 10, padding: '3px 8px', borderRadius: 12,
+                    border: `1px solid ${EMBRY.accent}44`, backgroundColor: `${EMBRY.accent}12`,
+                    color: EMBRY.accent, cursor: 'pointer',
+                  }}>
+                    {c.question}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* QuerySpec collapsible */}
+            {msg._querySpec && (
+              <details style={{ marginTop: 6, fontSize: 10 }}>
+                <summary style={{ color: EMBRY.dim, cursor: 'pointer' }}>QuerySpec</summary>
+                <pre style={{ color: EMBRY.dim, fontSize: 9, whiteSpace: 'pre-wrap', marginTop: 4, padding: 6, backgroundColor: EMBRY.bgDeep, borderRadius: 4, overflow: 'auto', maxHeight: 150 }}>
+                  {JSON.stringify(msg._querySpec, null, 2)}
+                </pre>
+              </details>
+            )}
+
+            {/* Thumbs + extras */}
+            {msg.role === 'system' && onFeedback && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+                <button onClick={() => onFeedback(msg.id, 'up')} style={{
+                  background: 'none', border: 'none', cursor: 'pointer', fontSize: 12,
+                  opacity: msg.feedback === 'up' ? 1 : 0.4,
+                  filter: msg.feedback === 'up' ? `drop-shadow(0 0 4px ${EMBRY.green})` : 'none',
+                }}>
+                  {'\u{1F44D}'}
+                </button>
+                <button onClick={() => onFeedback(msg.id, 'down')} style={{
+                  background: 'none', border: 'none', cursor: 'pointer', fontSize: 12,
+                  opacity: msg.feedback === 'down' ? 1 : 0.4,
+                  filter: msg.feedback === 'down' ? `drop-shadow(0 0 4px ${EMBRY.red})` : 'none',
+                }}>
+                  {'\u{1F44E}'}
+                </button>
+              </div>
+            )}
+
+            {renderExtras?.(msg)}
           </div>
         ))}
       </div>

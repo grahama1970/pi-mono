@@ -3,6 +3,7 @@ import { Shield, Workflow, Trash2, Code, Layers, MessageSquare, Network, Search,
 import { EMBRY } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle, useLeftPaneSearch } from '../common/LeftPane'
 import { ContextMenu } from '../common/ContextMenu'
+import { StatusBar } from '../common/StatusBar'
 import { BinaryGraph } from './BinaryGraph'
 import { SymbolTree } from './SymbolTree'
 import { useBinaryData, NODE_TYPE_COLORS } from '../../hooks/useBinaryData'
@@ -587,6 +588,17 @@ export function BinaryExplorerView() {
     if (!data.loading && data.graphNodes.length > 0) loadSavedScenes()
   }, [data.loading, data.graphNodes.length, loadSavedScenes])
 
+  // Auto-seed namespaces on first load (fixes "EMPTY SCENE" dead end)
+  const [autoSeeded, setAutoSeeded] = useState(false)
+  useEffect(() => {
+    if (autoSeeded || data.loading || data.graphNodes.length === 0 || sceneNodeIds.size > 0) return
+    const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
+    if (namespaces.length > 0) {
+      addToScene(namespaces.map(n => n.id))
+      setAutoSeeded(true)
+    }
+  }, [data.loading, data.graphNodes.length, sceneNodeIds.size, autoSeeded])
+
   // --- Graph Helpers ---
   const onNodeClick = useCallback((node: BinaryGraphNode) => {
     setSelectedNode(node)
@@ -953,9 +965,10 @@ export function BinaryExplorerView() {
   }
 
   // ── Unified send: routes to graph filter, node select, or LLM chat ──
-  async function sendChat() {
-    const text = chatInput.trim()
+  async function sendChat(overrideText?: string) {
+    const text = (overrideText || chatInput).trim()
     if (!text || chatLoading) return
+    if (!overrideText) setChatInput('')
 
     // Conversation steering: if previous assistant message was thumbed-down,
     // this message is a correction — store the pair for intent retraining
@@ -1609,9 +1622,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                   textAlign: 'center', zIndex: 5, pointerEvents: 'auto',
                 }}>
-                  <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, marginBottom: 8 }}>EMPTY SCENE</div>
-                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 16, maxWidth: 280, lineHeight: 1.6 }}>
-                    Ask a question, search for a feature, or seed the graph to begin exploring.
+                  <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, marginBottom: 8 }}>START EXPLORING</div>
+                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 16, maxWidth: 300, lineHeight: 1.6 }}>
+                    The graph auto-loads namespaces on start. Use the buttons below to add more nodes, or ask a question in the chat.
                   </div>
                   <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
                     {/* Seed buttons: add namespaces (entry points) */}
@@ -1622,7 +1635,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       fontSize: 10, padding: '6px 14px', background: `${EMBRY.accent}15`,
                       border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent,
                       borderRadius: 4, cursor: 'pointer', fontWeight: 600,
-                    }}>Seed: Namespaces</button>
+                    }}>Show Namespaces</button>
                     <button onClick={() => {
                       // Top 8 most-connected nodes (no neighbors — expand manually)
                       const withDeg = data.graphNodes
@@ -1635,7 +1648,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       fontSize: 10, padding: '6px 14px', background: `${EMBRY.accent}15`,
                       border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent,
                       borderRadius: 4, cursor: 'pointer', fontWeight: 600,
-                    }}>Seed: Top 8 Hubs</button>
+                    }}>Show Top Hubs</button>
                     {/* No "Show All" — progressive disclosure only */}
                   </div>
                 </div>
@@ -1644,18 +1657,20 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               {/* Scene node count badge */}
               {sceneNodeIds.size > 0 && (
                 <div style={{
-                  position: 'absolute', top: 12, right: 12, zIndex: 5,
+                  position: 'absolute', top: 8, right: 8, zIndex: 10,
                   display: 'flex', gap: 6, alignItems: 'center',
+                  background: 'rgba(5,5,5,0.9)', backdropFilter: 'blur(4px)',
+                  padding: '4px 8px', borderRadius: 4,
+                  border: `1px solid ${EMBRY.border}`,
                 }}>
                   <span style={{ fontSize: 9, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace' }}>
                     {sceneNodeIds.size}/{data.graphNodes.length} in scene
                   </span>
                   <button onClick={clearScene} style={{
-                    fontSize: 8, padding: '2px 6px', background: 'rgba(5,5,5,0.8)',
+                    fontSize: 8, padding: '2px 6px', background: 'transparent',
                     border: `1px solid ${EMBRY.border}`, color: EMBRY.dim,
                     borderRadius: 2, cursor: 'pointer',
                   }}>CLEAR</button>
-                  {/* No ALL button — use search/expand to add nodes */}
                 </div>
               )}
             </div>
@@ -1715,7 +1730,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
             {!selectedNode ? (
               <div style={{ padding: '10px 16px', overflow: 'auto' }}>
                 {/* Binary overview header */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 6 }}>
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, letterSpacing: '-0.02em' }}>{binaryName.toUpperCase()}</div>
                     <div style={{ fontSize: 9, color: EMBRY.dim }}>ELF binary · extracted via /analyze-elf + /treesitter</div>
@@ -1723,6 +1738,30 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   <div style={{ marginLeft: 'auto', fontSize: 9, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>
                     {data.stats.totalNodes} features · {data.stats.totalEdges} edges
                   </div>
+                </div>
+                {/* Metadata chips */}
+                <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 8 }}>
+                  {(() => {
+                    const tiers = { T0: 0, T1: 0, T2: 0 }
+                    data.graphNodes.forEach(n => { if (n.tier in tiers) tiers[n.tier as keyof typeof tiers]++ })
+                    const namespaceCount = data.graphNodes.filter(n => n.nodeType === 'namespace').length
+                    const avgConfidence = data.graphNodes.length > 0
+                      ? (data.graphNodes.reduce((s, n) => s + (n.confidence || 0), 0) / data.graphNodes.length * 100).toFixed(0)
+                      : '0'
+                    const chipStyle = (color: string) => ({
+                      fontSize: 8, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace',
+                      padding: '2px 6px', borderRadius: 3,
+                      background: `${color}15`, border: `1px solid ${color}33`, color,
+                    })
+                    return <>
+                      <span style={chipStyle(EMBRY.green)}>T0: {tiers.T0}</span>
+                      <span style={chipStyle(EMBRY.amber)}>T1: {tiers.T1}</span>
+                      <span style={chipStyle(EMBRY.red)}>T2: {tiers.T2}</span>
+                      <span style={chipStyle('#94a3b8')}>{namespaceCount} ns</span>
+                      <span style={chipStyle('#22d3ee')}>conf: {avgConfidence}%</span>
+                      <span style={chipStyle(EMBRY.muted)}>ELF</span>
+                    </>
+                  })()}
                 </div>
 
                 {/* Type breakdown as compact bar */}
@@ -2302,7 +2341,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       </div>
                       <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES</div>
                       {suggestions.map((s, si) => (
-                        <div key={si} onClick={() => setChatInput(s.raw)} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4 }}>
+                        <div key={si} onClick={() => { setChatInput(s.raw); setTimeout(() => { setChatInput(''); sendChat(s.raw) }, 50) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
                           {s.segments.map((seg, j) => seg.entity
                             ? <code key={j} style={{ color: '#22d3ee', background: '#0a1628', padding: '1px 4px', borderRadius: 3, fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fontWeight: 600 }}>{seg.text}</code>
                             : <span key={j} style={{ color: EMBRY.accent }}>{seg.text}</span>
@@ -2418,6 +2457,26 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
           {/* Old inspector + activity bar removed */}
         </div>
       )}
+
+      {/* ═══ BOTTOM STATUS BAR (shared component) ═══ */}
+      <StatusBar
+        projectId="binary-explorer"
+        connected={!data.error}
+        loading={data.loading}
+        error={data.error}
+        items={[
+          { label: binaryName.toUpperCase() },
+          ...(!data.loading && !data.error ? [
+            { label: `${data.stats.totalNodes} features` },
+            { label: `${data.stats.totalEdges} edges` },
+            ...(sceneNodeIds.size > 0 ? [{ label: `${sceneNodeIds.size} in scene`, color: EMBRY.accent }] : []),
+            ...(selectedNode ? [{ label: `${selectedNode.label} [${selectedNode.nodeType}]`, color: EMBRY.white }] : []),
+          ] : []),
+        ]}
+        rightItems={[
+          { label: `${viewMode} · ${perspective} · ${layoutMode}` },
+        ]}
+      />
     </div>
   )
 }

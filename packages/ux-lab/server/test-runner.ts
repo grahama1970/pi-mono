@@ -344,24 +344,19 @@ async function executeTestRun(runId: string, tests: TestDefinition[], baseUrl: s
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--window-size=1920,1080']
     });
 
-    const page = await activeBrowser.newPage();
-    await page.setViewport({ width: 1920, height: 1080 });
-
     for (const test of tests) {
       if (!activeBrowser) break; // Aborted
 
+      // Fresh page per test — prevents frame detach on long runs
+      const page = await activeBrowser.newPage();
+      await page.setViewport({ width: 1920, height: 1080 });
+
       const testStart = Date.now();
       const testResult = { testId: test.id, status: 'RUNNING', steps: [] as any[], durationMs: 0 };
-      
+
       broadcast({ type: 'test-step', payload: { runId, testId: test.id, action: 'START', status: 'RUNNING' } });
 
       try {
-        // Navigate to base URL before each test to ensure fresh state if needed, 
-        // or rely on sequential flow as per design
-        if (page.url() === 'about:blank') {
-            await page.goto(baseUrl, { waitUntil: 'networkidle2' });
-        }
-
         for (const step of test.steps) {
           const stepResult = await executeStep(page, step, runId);
           testResult.steps.push({ ...step, ...stepResult });
@@ -397,6 +392,9 @@ async function executeTestRun(runId: string, tests: TestDefinition[], baseUrl: s
         else run.summary.failed++;
 
         broadcast({ type: 'test-result', payload: { runId, testId: test.id, status: testResult.status, durationMs: testResult.durationMs } });
+
+        // Close page after each test to prevent frame detach
+        await page.close().catch(() => {});
       }
     }
   } catch (err) {
@@ -639,9 +637,9 @@ Respond with:
 5. What you would change (1-2 specific suggestions)`;
 
         try {
-          const prRes = await fetch('http://localhost:4001/v1/chat/completions', {
+          const prRes = await fetch(`${process.env.SCILLM_URL || 'http://localhost:4001'}/v1/chat/completions`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sk-dev-proxy-123' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}` },
             body: JSON.stringify({
               model: 'vlm',
               messages: [{
