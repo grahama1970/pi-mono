@@ -1,14 +1,20 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  esbuild: {
+    target: 'node20',
+  },
   test: {
     globals: true,
     environment: 'node',
-    testTimeout: 30000, // 30 seconds for API calls
+    testTimeout: 30000,
+    hookTimeout: 10000,
+    teardownTimeout: 5000,
     pool: 'forks',
+    fileParallelism: false,
     poolOptions: {
       forks: {
-        maxForks: 8, // cap parallelism — 50 test files on 48 cores causes OOM/hang
+        maxForks: 1,
       },
     },
     server: {

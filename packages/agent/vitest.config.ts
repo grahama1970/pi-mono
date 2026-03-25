@@ -4,6 +4,15 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: "node",
-		testTimeout: 30000, // 30 seconds for API calls
+		testTimeout: 30000,
+		hookTimeout: 10000,
+		teardownTimeout: 5000,
+		pool: "forks",
+		fileParallelism: false,
+		poolOptions: {
+			forks: {
+				maxForks: 1,
+			},
+		},
 	},
 });

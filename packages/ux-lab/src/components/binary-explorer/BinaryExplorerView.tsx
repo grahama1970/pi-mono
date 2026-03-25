@@ -311,9 +311,9 @@ export function BinaryExplorerView() {
     setPseudocode(null)
     const nodeInfo = `Feature: ${selectedNode.label}\nType: ${selectedNode.nodeType}\nDescription: ${selectedNode.description || 'N/A'}\n${selectedNode.source_pattern ? `Source pattern:\n${selectedNode.source_pattern}` : ''}${selectedNode.fields?.length ? `\nFields: ${selectedNode.fields.map((f: any) => f.name || f).join(', ')}` : ''}${selectedNode.states?.length ? `\nStates: ${selectedNode.states.map((s: any) => s.name || s).join(', ')}` : ''}`
 
-    fetch('http://localhost:4001/v1/chat/completions', {
+    fetch('/api/scillm', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer sk-dev-proxy-123' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'text',
         messages: [

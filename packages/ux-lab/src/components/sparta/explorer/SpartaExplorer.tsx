@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import { EMBRY, glowDot } from '../common/EmbryStyle'
+import { AgentControl } from '../common/AgentControl'
+import { ChatFab } from '../../ChatFab'
 
 const TABS = [
   'Overview', 'Sources', 'Controls', 'URLs',
-  'QRAs', 'Relationships', 'Pipeline', 'Prompt Lab',
+  'QRAs', 'Relationships', 'Threat Matrix', 'Pipeline',
 ] as const
 
 export type TabName = (typeof TABS)[number]
@@ -25,7 +27,8 @@ export interface SpartaExplorerProps {
 }
 
 function tabFromHash(): TabName {
-  const hash = window.location.hash.slice(1).toLowerCase()
+  const raw = window.location.hash.slice(1)
+  const hash = decodeURIComponent(raw).toLowerCase()
   const match = TABS.find((t) => t.toLowerCase() === hash)
   return match ?? 'Overview'
 }
@@ -52,7 +55,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
     function onKeyDown(e: KeyboardEvent) {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
       const num = Number.parseInt(e.key)
-      if (num >= 1 && num <= 8) {
+      if (num >= 1 && num <= TABS.length) {
         switchTab(TABS[num - 1])
       }
     }
@@ -109,6 +112,7 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
             </button>
           ))}
         </div>
+        <AgentControl projectId="sparta-explorer" />
       </nav>
 
       {/* Content area — each tab is kept mounted to preserve state */}
@@ -135,11 +139,19 @@ export function SpartaExplorer({ views = {}, loadingTabs = {} }: SpartaExplorerP
           <span style={{ fontSize: 10, color: EMBRY.dim }}>
             Memory daemon: {daemonHealth.ok ? 'connected' : 'unreachable'}
           </span>
+          {daemonHealth.counts && (
+            <span style={{ fontSize: 10, color: EMBRY.muted }}>
+              {Object.entries(daemonHealth.counts).filter(([k]) => k.startsWith('sparta_')).map(([k, v]) => `${k.replace('sparta_', '')}:${v}`).join(' · ')}
+            </span>
+          )}
         </div>
         <span style={{ fontSize: 10, color: EMBRY.muted }}>
-          {activeTab} · Press 1-8 to switch tabs
+          {activeTab} · Press 1-{TABS.length} to switch tabs
         </span>
       </div>
+
+      {/* Chat overlay for natural language SPARTA queries */}
+      <ChatFab />
     </div>
   )
 }

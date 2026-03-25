@@ -4,8 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SPARTA Explorer</title>
+    <title>UX Lab — Embry OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
       @keyframes slideInRight {
         from { transform: translateX(30px); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
@@ -14,6 +19,26 @@
   </head>
   <body>
     <div id="root"></div>
+    <div id="crash-log" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#1a0000;color:#ff4444;font:12px/1.4 'JetBrains Mono',monospace;padding:12px;max-height:200px;overflow:auto;border-bottom:2px solid #ff4444"></div>
+    <script>
+      window.__crashes = [];
+      window.onerror = function(msg, src, line, col, err) {
+        var text = msg + ' @ ' + (src||'').split('/').pop() + ':' + line;
+        if (err && err.stack) text += '\n' + err.stack.split('\n').slice(0,3).join('\n');
+        window.__crashes.push(text);
+        var el = document.getElementById('crash-log');
+        el.style.display = 'block';
+        el.innerHTML = '<b>CRASH LOG</b><br>' + window.__crashes.join('<br><br>');
+      };
+      window.addEventListener('unhandledrejection', function(e) {
+        var text = 'Unhandled Promise: ' + (e.reason?.message || e.reason || 'unknown');
+        if (e.reason?.stack) text += '\n' + e.reason.stack.split('\n').slice(0,3).join('\n');
+        window.__crashes.push(text);
+        var el = document.getElementById('crash-log');
+        el.style.display = 'block';
+        el.innerHTML = '<b>CRASH LOG</b><br>' + window.__crashes.join('<br><br>');
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

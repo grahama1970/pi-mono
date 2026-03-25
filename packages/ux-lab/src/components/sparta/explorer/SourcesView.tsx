@@ -663,11 +663,13 @@ function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => vo
   const [controls, setControls] = useState<Array<{ control_id?: string; name?: string }>>([])
   const [knowledge, setKnowledge] = useState<Array<{ text?: string; topic?: string }>>([])
   const [fetched, setFetched] = useState<boolean | null>(null)
+  const [mindTags, setMindTags] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let cancelled = false
     setLoading(true)
+    setMindTags([])
     const DAEMON = 'http://localhost:3001/api/memory'
     const post = (path: string, body: Record<string, unknown>) =>
       fetch(`${DAEMON}${path}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
@@ -679,9 +681,23 @@ function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => vo
       post('/recall/by-keys', { collection: 'sparta_url_content', keys: [url.url_id], key_field: 'url_id', return_fields: ['url_id', 'status_code', 'error_message'] }),
     ]).then(([ctrlRes, knowRes, contentRes]) => {
       if (cancelled) return
-      setControls((ctrlRes.documents ?? []).map((d: Record<string, unknown>) => ({ control_id: d.control_id as string, name: d.control_id as string })))
+      const ctrlIds = (ctrlRes.documents ?? []).map((d: Record<string, unknown>) => d.control_id as string)
+      setControls(ctrlIds.map((cid: string) => ({ control_id: cid, name: cid })))
       setKnowledge(knowRes.documents ?? [])
       setFetched((contentRes.documents ?? []).length > 0)
+
+      // Fetch mind tags from linked controls
+      if (ctrlIds.length > 0) {
+        post('/recall/by-keys', { collection: 'sparta_controls', keys: ctrlIds, key_field: 'control_id', return_fields: ['control_id', 'mind'] })
+          .then((res: { documents?: Array<{ mind?: string[] }> }) => {
+            if (cancelled) return
+            const tags = new Set<string>()
+            for (const ctrl of (res.documents ?? [])) {
+              if (Array.isArray(ctrl.mind)) ctrl.mind.forEach((t) => tags.add(t))
+            }
+            setMindTags([...tags].sort())
+          })
+      }
       setLoading(false)
     })
     return () => { cancelled = true }
@@ -706,6 +722,28 @@ function UrlPipelineDetail({ url, onClose }: { url: SpartaURL; onClose: () => vo
         <PipelineStatusRow label="Content Fetched" value={fetched === null ? '...' : fetched ? 'Yes' : 'Not fetched'} ok={fetched === true} />
         <PipelineStatusRow label="Knowledge Extracted" value={loading ? '...' : `${knowledge.length} chunks`} ok={knowledge.length > 0} />
         <PipelineStatusRow label="Linked Controls" value={loading ? '...' : `${controls.length}`} ok={controls.length > 0} />
+        <PipelineStatusRow label="Taxonomy" value={loading ? '...' : mindTags.length > 0 ? `${mindTags.length} mind tags` : 'Not tagged'} ok={mindTags.length > 0} />
+      </div>
+
+      {/* Mind / Taxonomy tags */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ ...label, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+          Mind Tags
+          <div style={glowDot(mindTags.length > 0 ? EMBRY.green : EMBRY.red, 6)} />
+        </div>
+        {loading ? (
+          <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
+        ) : mindTags.length > 0 ? (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            {mindTags.map((tag) => (
+              <span key={tag} style={{ fontSize: 9, padding: '1px 5px', borderRadius: 3, color: EMBRY.accent, backgroundColor: `${EMBRY.accent}12`, border: `1px solid ${EMBRY.accent}22` }}>{tag}</span>
+            ))}
+          </div>
+        ) : (
+          <div style={{ fontSize: 11, color: EMBRY.red, padding: '4px 8px', borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
+            No taxonomy tags on linked controls
+          </div>
+        )}
       </div>
 
       {/* Linked Controls */}

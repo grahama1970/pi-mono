@@ -8,7 +8,8 @@
  *   GET  /api/health           — server health check
  *   ALL  /api/memory/*         — proxy to memory daemon (recall, learn, list, etc.)
  *   POST /api/scillm           — proxy to scillm LLM gateway
- *   GET  /api/models           — discover available LLM models
+ *   GET  /api/models           — discover available LLM models (grouped)
+ *   GET  /api/projects/:id/models — ModelPicker-format model registry
  */
 
 import express from 'express'
@@ -134,7 +135,11 @@ app.post('/api/scillm', (req, res) => {
       port: url.port,
       path: url.pathname,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+        'Authorization': `Bearer ${process.env.SCILLM_API_KEY || 'sk-dev-proxy-123'}`,
+      },
     },
     (proxyRes) => {
       res.status(proxyRes.statusCode ?? 500)
@@ -200,6 +205,88 @@ app.get('/api/models', async (_req, res) => {
   } catch { /* ollama not running */ }
 
   res.json({ groups })
+})
+
+// ── Project model registry (ModelPicker format) ─────────────────────────────
+
+interface ModelConfig {
+  provider: string; model: string; params_b?: number; local?: boolean
+  json_mode?: boolean; quantization?: string; reasoning?: boolean
+  thinking_mode?: boolean; coding?: boolean; agentic?: boolean
+}
+
+function inferModelConfig(modelId: string, groupLabel: string): ModelConfig {
+  const isLocal = groupLabel.toLowerCase().includes('ollama')
+  const isChutes = groupLabel.toLowerCase().includes('chutes')
+  const isSubagent = groupLabel.toLowerCase().includes('subagent')
+  const isScillm = groupLabel.toLowerCase().includes('scillm')
+
+  const provider = isLocal ? 'ollama' : isChutes ? 'chutes' : isSubagent ? 'subagent' : isScillm ? 'scillm' : 'scillm'
+
+  const lc = modelId.toLowerCase()
+  const reasoning = lc.includes('r1') || lc.includes('reasoning') || lc.includes('thinking')
+  const coding = lc.includes('coder') || lc.includes('codex') || lc.includes('code')
+  const agentic = isSubagent || lc.includes('opus') || lc.includes('codex')
+
+  // Infer params from model name
+  let params_b: number | undefined
+  const paramMatch = lc.match(/(\d+(?:\.\d+)?)b/i)
+  if (paramMatch) params_b = parseFloat(paramMatch[1])
+
+  return { provider, model: modelId, local: isLocal, params_b, reasoning, coding, agentic }
+}
+
+app.get('/api/projects/:projectId/models', async (_req, res) => {
+  // Reuse /api/models discovery logic, reshape into Record<string, ModelConfig>
+  const result: Record<string, ModelConfig> = {}
+
+  // scillm models
+  try {
+    const scillmRes = await fetch(`${SCILLM_URL}/v1/models`, {
+      headers: { Authorization: 'Bearer sk-dev-proxy-123' },
+    })
+    const scillmData = await scillmRes.json() as { data?: { id: string }[] }
+    const allModels = (scillmData.data ?? []).map((m: { id: string }) => m.id).filter((m: string) => m !== 'embedding')
+    const aliases = allModels.filter((m: string) => !m.includes('/'))
+    const chutesModels = allModels.filter((m: string) => m.includes('/'))
+    for (const m of aliases) result[m] = inferModelConfig(m, 'scillm aliases')
+    for (const m of chutesModels) {
+      const alias = m.split('/').pop() ?? m
+      result[alias] = inferModelConfig(m, 'Chutes')
+    }
+  } catch {
+    for (const m of ['text', 'vlm', 'local-text', 'moonshot-text']) {
+      result[m] = inferModelConfig(m, 'scillm aliases')
+    }
+  }
+
+  // subagent-service
+  for (const m of ['claude-sonnet', 'claude-opus', 'codex', 'gemini']) {
+    result[m] = inferModelConfig(m, 'subagent-service')
+  }
+
+  // Ollama local models
+  try {
+    const ollamaRes = await fetch('http://localhost:11434/api/tags')
+    const ollamaData = await ollamaRes.json() as { models?: { name: string; size?: number }[] }
+    for (const m of (ollamaData.models || [])) {
+      if (m.name.startsWith('embry/')) continue
+      result[m.name] = inferModelConfig(m.name, 'Ollama')
+    }
+  } catch { /* ollama not running */ }
+
+  res.json(result)
+})
+
+// POST variant for adding models (ModelPicker ADD form)
+app.post('/api/projects/:projectId/models', async (req, res) => {
+  // For now, return the submitted model back — persistence can come later
+  const body = req.body as ModelConfig & { alias?: string }
+  if (!body.alias || !body.model) {
+    res.status(400).json({ error: 'alias and model required' })
+    return
+  }
+  res.json({ ok: true, alias: body.alias })
 })
 
 // ── Architecture API ────────────────────────────────────────────────────────

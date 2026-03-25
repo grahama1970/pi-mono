@@ -307,11 +307,25 @@ async def _run_scillm(task: TaskRuntime, session_dir: Path) -> str:
     return content
 
 
+# Track workspace per lane to detect cwd mismatches within a single run.
+_lane_workspace: dict[str, Path] = {}
+
+
 async def _run_subagent(task: TaskRuntime, session_dir: Path) -> str:
     """Stream SSE from a subagent container with per-line cancel checks."""
     if not task.prompt:
         raise RuntimeError("subagent task has no prompt")
     instance = f"orchestrate-{task.lane}"
+
+    # Warn (and restart) if this lane's container was started with a different workspace.
+    prev_cwd = _lane_workspace.get(task.lane)
+    if prev_cwd is not None and prev_cwd != task.cwd:
+        logger.warning(
+            "Lane '{}' workspace changed ({} → {}); subagent container will restart",
+            task.lane, prev_cwd, task.cwd,
+        )
+    _lane_workspace[task.lane] = task.cwd
+
     port = await _ensure_subagent_instance(instance, task.cwd)
     task._subagent_port = port
 
@@ -321,10 +335,11 @@ async def _run_subagent(task: TaskRuntime, session_dir: Path) -> str:
     request_body: dict[str, Any] = {
         "prompt": task.prompt,
         "model": task.backend or "sonnet",
-        "max_turns": 8 if task.mode == "iterative" else 3,
+        "max_turns": {"iterative": 15, "one_shot": 8, "review": 5}.get(task.mode, 8),
         "system_prompt": system_prompt,
+        "idle_timeout": 300,  # Claude may go silent 2-3 min while thinking on complex tasks
     }
-    stream_timeout = httpx.Timeout(connect=10.0, read=120.0, write=10.0, pool=10.0)
+    stream_timeout = httpx.Timeout(connect=10.0, read=300.0, write=10.0, pool=10.0)
     try:
         async with httpx.AsyncClient(timeout=stream_timeout) as client:
             async with client.stream("POST", f"http://localhost:{port}/chat/stream",
@@ -522,13 +537,21 @@ def _load_completed_tasks(session_dir: Path) -> set[str]:
 # Main executor
 # ---------------------------------------------------------------------------
 
-async def _execute_plan_async(path: Path, repo_root: Path, resume: bool = False) -> int:
+async def _execute_plan_async(path: Path, repo_root: Path | None = None, resume: bool = False) -> int:
     plan = load_structured_plan(path)
     validation = validate_structured_plan(plan)
     if not validation["valid"]:
         for issue in validation["issues"]:
             logger.error(issue)
         return 1
+
+    # repo_root from plan file takes precedence (required field since schema v1)
+    plan_repo_root = plan.get("repo_root")
+    if plan_repo_root:
+        repo_root = Path(plan_repo_root)
+    elif repo_root is None:
+        repo_root = path.resolve().parent
+        logger.warning("Plan missing repo_root, falling back to plan file parent: {}", repo_root)
 
     completed_prior: set[str] = set()
     if resume:
@@ -700,7 +723,7 @@ async def _execute_loop(
     return 0
 
 
-def execute_plan(path: Path, repo_root: Path, resume: bool = False) -> int:
+def execute_plan(path: Path, repo_root: Path | None = None, resume: bool = False) -> int:
     """Sync entry point — runs the async executor."""
     return asyncio.run(_execute_plan_async(path, repo_root, resume))
 
@@ -715,7 +738,9 @@ def run(
     resume: bool = typer.Option(False, "--resume", help="Resume from last completed task"),
 ) -> None:
     """Execute a structured plan file with explicit runner dispatch."""
-    raise typer.Exit(execute_plan(plan_file.resolve(), Path.cwd(), resume=resume))
+    # repo_root is read from the plan file's repo_root field (required since schema v1).
+    # Falls back to plan file parent if field is missing (legacy plans).
+    raise typer.Exit(execute_plan(plan_file.resolve(), resume=resume))
 
 
 @app.command()

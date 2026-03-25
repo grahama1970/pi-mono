@@ -122,58 +122,29 @@ Auto-detected from goal text. All types use the same YAML schema.
 | Type | Detected When | Pattern |
 |------|---------------|---------|
 | **code** | No UI keywords | `local` for setup, `subagent-service` for implementation |
-| **design** | views, components, TSX, dashboard, UI, React | `/create-design-board` first, then `/ux-lab` → `/review-design` → `/test-interactions` → write |
-| **hybrid** | Both UI and code keywords | Design board for UI views, code tasks in later waves |
+| **design** | views, components, TSX, dashboard, UI, React | `/mockup-lab` (Stitch) → `/ux-lab` (code) → `/mockup-lab review` (VLM verify) → `/test-interactions` |
+| **hybrid** | Both UI and code keywords | Stitch pipeline for UI views, code tasks in later waves |
 
-### Design Plans: Pre-Planning Gate
+### Design Plans
 
-For `design` and `hybrid` plans, run `/create-design-board` BEFORE writing the YAML:
+**Rule: The agent NEVER designs UI.** Stitch designs it. The agent codes it.
 
-```
-1. Detect plan_type: design
-2. Identify primary persona
-3. /create-design-board — generate visual layout mockups for human review
-4. Human approves layout direction (or amends)
-5. THEN decompose into tasks — each view gets the full pipeline:
-     Task N:   /ux-lab draft             (lane X)
-     Task N+1: /review-design --persona  (lane X+1, depends: N)
-     Task N+2: /test-interactions        (lane X+2, depends: N+1)
-     Task N+3: Write production TSX      (lane X+3, depends: N+2)
-6. Write YAML
-```
+Design plans MUST specify **device type** (desktop, mobile, tablet). Pass `--device`
+to every `/mockup-lab` command. Stitch defaults to mobile if not specified.
 
-### NON-NEGOTIABLE: Visual Verification for UX Plans
+For any plan with UI work, each component follows 3 steps:
 
-Design plans MUST include these elements — `/review-plan` Check 14 will FAIL plans without them:
+1. `/mockup-lab` — Stitch generates design, human approves (`--device desktop`)
+2. `/ux-lab` — Agent codes React component from approved screenshots
+3. `/mockup-lab review` — Gemini VLM verifies implementation matches design
 
-1. **Wave 0, Task 0: Launch dev server + browser** — `npm run dev` (both Vite + API proxy) and `xdg-open http://localhost:<port>`. This runs BEFORE any component code is written. The human watches the UI update in real-time via Vite HMR.
+For small changes (colors, spacing, adding a column), skip step 1 and use
+`/ux-lab` + `/review-design` directly.
 
-2. **Interaction manifest (REQUIRED)** — The plan YAML MUST include a `test_manifest` section listing every design element with: tab/view name, data source (collection + minimum expected rows), interactions to perform (click, filter, sort, keyboard shortcuts), and expected visual outcome. `/test-interactions` without a manifest is meaningless — it just screenshots blank pages. Example:
-   ```yaml
-   test_manifest:
-     - tab: Controls
-       collection: sparta_controls
-       min_rows: 10
-       interactions: [click_row, filter_framework, sort_column]
-       visual: "Table shows rows, framework pills colored, detail slide-over opens on click"
-     - tab: QRAs
-       collection: sparta_qra
-       min_rows: 5
-       interactions: [keyboard_A, keyboard_R, navigate_next]
-       visual: "Card shows Q/A/reasoning, tier badges visible, grounding bar colored"
-   ```
+Read `.pi/skills/mockup-lab/design-to-code.yaml` for the detailed checklist.
 
-3. **Per-view data verification** — Before writing a view, verify its data endpoint returns non-zero results. `curl -s -X POST /api/memory/list -d '{"collection":"<name>","limit":1}' | jq .total` must return > 0. If data is empty, fix the data path first — don't write CSS for an empty page.
-
-4. **Per-view `/test-interactions`** — After each view is written, run `/test-interactions` against the manifest entries for that view. This captures a screenshot proving real data renders. Add to each view task's `tests` section.
-
-5. **DoD must be visual** — "npm run build succeeds" is NOT acceptable as DoD for UX tasks. The DoD must reference manifest entries, screenshots, or visual assertions like "table shows N rows" or "chart renders with real data".
-
-**Why:** Without these, the agent generates blind CSS. It writes 12 view components, runs `tsc`, declares success, and every page is empty because (a) the API server wasn't running, (b) the hooks called wrong endpoints, or (c) the data shape didn't match. The manifest is the contract — it defines what "done" looks like for each element before any code is written.
-
-Do NOT write design task YAML without an approved design board. The board is what tells
-you how many views, what layout each view has, and what the persona's workflow looks like.
-Without it, the agent invents UI that nobody reviewed.
+**DoD for UI tasks must be visual** — "tsc compiles" is not done. Done means
+a screenshot shows real data matching the approved design.
 
 ## YAML Schema
 
@@ -305,6 +276,19 @@ plan.py --remove-task 01_TASKS.yaml:3
 /plan → /review-plan → /orchestrate
 ```
 
+For design plans, the execution pipeline inside `/orchestrate` is:
+
+```
+/mockup-lab generate → /interview (human review) → /mockup-lab iterate
+      ↓ approved design
+/ux-lab (code React component)
+      ↓ built component
+/mockup-lab review (Gemini VLM visual diff)
+      ↓ match_score < 90 → fix code → re-review
+      ↓ match_score >= 90 → done
+/test-interactions (verify interactions)
+```
+
 | Skill | Role |
 |-------|------|
 | `/best-practices-plan` | Rules this skill MUST follow (read first) |
@@ -315,3 +299,5 @@ plan.py --remove-task 01_TASKS.yaml:3
 | `/assess` | Phase 0: read the target codebase |
 | `/interview` | Gather requirements when goal is ambiguous |
 | `/dogpile` | Research unfamiliar dependencies |
+| `/mockup-lab` | Design generation (Stitch) + VLM review (scillm) for UI plans |
+| `/ux-lab` | React component development with Vite HMR |

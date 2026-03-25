@@ -245,11 +245,9 @@ export class Worker {
 			env: { PI_STDIN_TIMEOUT_MS: "0" },
 		};
 
-		// D-Bus workers run lean: no skills (220+ tool definitions bloat the
-		// prompt), no extensions (memory-first forces a recall subprocess on
-		// every prompt — 30s+ overhead even for "2+2"). Persona context comes
-		// from AGENTS.md wrapping, not from Pi's extension system.
-		const baseArgs = ["--no-skills", "--no-extensions"];
+		// Skills + extensions enabled. skill-selector.ts filters to only
+		// referenced skills per prompt. Memory recall is <1s via local ArangoDB.
+		const baseArgs: string[] = [];
 
 		// Resume from persisted session if available
 		const sessionArgs = this.loadPersistedSession();
