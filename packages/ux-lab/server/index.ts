@@ -20,6 +20,7 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { readdir, readFile, writeFile, mkdir, unlink, stat, copyFile, rename as fsRename } from 'fs/promises'
 import { existsSync } from 'fs'
+import { load as yamlLoad } from 'js-yaml'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -30,8 +31,13 @@ app.use(express.json())
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
 const SCILLM_URL = process.env.SCILLM_URL ?? 'http://localhost:4001'
 const ARCH_SCOPE = 'architecture'
+const WORKSHEETS_PATH = '/home/graham/workspace/experiments/sparta/config/worksheets.yaml'
+const WORKSHEETS_CACHE_TTL_MS = 60_000
 
 type JsonRecord = Record<string, unknown>
+type WorksheetConfig = { description_source?: string } & Record<string, unknown>
+
+let worksheetsCache: { expiresAt: number; worksheets: Record<string, WorksheetConfig> } | null = null
 
 interface ArchitectureMetadata {
   attachments: string[]
@@ -47,6 +53,26 @@ interface ArchitecturePayload {
   metadata: ArchitectureMetadata
   createdAt: string
   updatedAt: string
+}
+
+function toWorksheetRecord(value: unknown): Record<string, WorksheetConfig> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
+  const out: Record<string, WorksheetConfig> = {}
+  for (const [key, worksheet] of Object.entries(value)) {
+    if (worksheet && typeof worksheet === 'object' && !Array.isArray(worksheet)) {
+      out[key] = worksheet as WorksheetConfig
+    }
+  }
+  return out
+}
+
+function parseWorksheetsYaml(content: string): Record<string, WorksheetConfig> {
+  const parsed = yamlLoad(content)
+  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed) && 'worksheets' in parsed) {
+    const nested = (parsed as { worksheets?: unknown }).worksheets
+    return toWorksheetRecord(nested)
+  }
+  return toWorksheetRecord(parsed)
 }
 
 // ── Health check ────────────────────────────────────────────────────────────
@@ -65,6 +91,29 @@ app.get('/api/health', async (_req, res) => {
     uptime: Math.floor((Date.now() - startTime) / 1000),
     memory_daemon: memoryOk ? 'connected' : 'unreachable',
   })
+})
+
+app.get('/api/worksheets', async (_req, res) => {
+  try {
+    if (worksheetsCache && Date.now() < worksheetsCache.expiresAt) {
+      return res.json({ worksheets: worksheetsCache.worksheets })
+    }
+
+    const content = await readFile(WORKSHEETS_PATH, 'utf-8')
+    const worksheets = parseWorksheetsYaml(content)
+    worksheetsCache = {
+      expiresAt: Date.now() + WORKSHEETS_CACHE_TTL_MS,
+      worksheets,
+    }
+
+    return res.json({ worksheets })
+  } catch (err) {
+    return res.status(502).json({
+      worksheets: {},
+      error: 'Failed to load worksheets',
+      detail: err instanceof Error ? err.message : String(err),
+    })
+  }
 })
 
 // ── Memory daemon proxy ─────────────────────────────────────────────────────
