@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { EMBRY, label, heading, glowDot } from '../common/EmbryStyle'
 import { useControlsByFramework, useRawFrameworkCounts, useURLs } from '../../../hooks/useSpartaCollections'
 import type { SpartaControl, SpartaURL } from '../../../hooks/useSpartaCollections'
@@ -7,41 +7,45 @@ import { useSpartaNav } from './SpartaExplorer'
 import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelected } from '../common/TableStyles'
 import { UtilityBar } from '../common/UtilityBar'
 import { useToast } from '../common/Toast'
+import { useWorksheets, worksheetToSourceDef } from '../../../hooks/useWorksheets'
+import type { SourceDef } from '../../../hooks/useWorksheets'
 
 // ── Source definitions ──────────────────────────────────────────────────────
 
-interface SourceDef {
-  name: string
-  group: 'sparta' | 'external' | 'urls'
-  rawFrameworks: string[]
-  controlType?: string
-  file: string
-  minExpected: number
-  tooltip: string
-}
+// Legacy: replaced by useWorksheets()
+// interface SourceDef {
+//   name: string
+//   group: 'sparta' | 'external' | 'urls'
+//   rawFrameworks: string[]
+//   controlType?: string
+//   file: string
+//   minExpected: number
+//   tooltip: string
+// }
 
-const SOURCES: SourceDef[] = [
-  // SPARTA-Data.xlsx worksheets
-  { name: 'SPARTA Tactics', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'tactic', file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '9 high-level adversary objectives (Reconnaissance, Resource Development, Initial Access, etc.)' },
-  { name: 'SPARTA Techniques', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'technique', file: 'SPARTA-Data.xlsx', minExpected: 100, tooltip: '217 specific attack methods mapped to tactics, with risk scores and cross-framework references' },
-  { name: 'SPARTA Countermeasures', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'countermeasure', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '92 defensive measures with NIST, ISO, D3FEND, and sample requirement mappings' },
-  { name: 'Space Threats', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'space_threat', file: 'SPARTA-Data.xlsx', minExpected: 20, tooltip: '45 space-specific threats organized by Defense-in-Depth layer and threat tier' },
-  { name: 'Indicators of Behavior', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'indicator', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '194 observable indicators with STIX patterns linked to SPARTA TTPs' },
-  { name: 'NIST References', group: 'sparta', rawFrameworks: ['NIST', 'nist'], controlType: 'nist_control', file: 'SPARTA-Data.xlsx', minExpected: 500, tooltip: '1,008 NIST SP 800-53 controls with SPARTA technique/countermeasure mappings and space segment guidance' },
-  { name: 'D3FEND Tactics', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'tactic', file: 'SPARTA-Data.xlsx', minExpected: 3, tooltip: '7 MITRE D3FEND defensive tactic categories' },
-  { name: 'D3FEND Techniques', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'technique', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '178 defensive techniques from the MITRE D3FEND knowledge graph' },
-  { name: 'D3FEND Artifacts', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'artifact', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '242 digital artifacts that D3FEND techniques operate on (files, processes, network objects)' },
-  { name: 'ISO 27001 References', group: 'sparta', rawFrameworks: ['ISO', 'iso'], file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '138 ISO/IEC 27001 control references cross-mapped to SPARTA' },
-  { name: 'NASABPG', group: 'sparta', rawFrameworks: ['NASA'], file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '15 references from NASA\'s Space Security Best Practices Guide' },
-  // External pipeline sources
-  { name: 'ATT&CK Enterprise', group: 'external', rawFrameworks: ['ATT_CK_Enterprise', 'attack'], file: 'enterprise-attack.json', minExpected: 500, tooltip: 'MITRE ATT&CK Enterprise — techniques, malware, tools, and courses of action for IT systems' },
-  { name: 'ATT&CK Mobile', group: 'external', rawFrameworks: ['ATT_CK_Mobile'], file: 'mobile-attack.json', minExpected: 50, tooltip: 'MITRE ATT&CK Mobile — techniques targeting Android and iOS devices' },
-  { name: 'ATT&CK ICS', group: 'external', rawFrameworks: ['ATT_CK_ICS'], file: 'ics-attack.json', minExpected: 50, tooltip: 'MITRE ATT&CK ICS — techniques targeting industrial control systems' },
-  { name: 'CWE', group: 'external', rawFrameworks: ['CWE', 'cwe'], file: 'cwec_v4.19.1.xml', minExpected: 200, tooltip: 'Common Weakness Enumeration v4.19.1 — software/hardware weakness types' },
-  { name: 'NVD', group: 'external', rawFrameworks: ['nvd', 'NVD'], file: 'nvd (via CWE)', minExpected: 1000, tooltip: 'National Vulnerability Database — CVE-linked controls imported via CWE pipeline' },
-  { name: 'ESA', group: 'external', rawFrameworks: ['ESA'], file: 'esa_shield_scraped.json', minExpected: 50, tooltip: 'European Space Agency SPACE-SHIELD — 137 space-specific attack techniques' },
-  { name: 'NIST Controls', group: 'external', rawFrameworks: ['NIST', 'nist'], controlType: 'control', file: 'nist_rev4_controls.csv', minExpected: 500, tooltip: 'NIST SP 800-53 Rev 4/5 full control catalog (separate from SPARTA worksheet cross-references)' },
-]
+// Legacy: replaced by useWorksheets()
+// const SOURCES: SourceDef[] = [
+//   // SPARTA-Data.xlsx worksheets
+//   { name: 'SPARTA Tactics', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'tactic', file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '9 high-level adversary objectives (Reconnaissance, Resource Development, Initial Access, etc.)' },
+//   { name: 'SPARTA Techniques', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'technique', file: 'SPARTA-Data.xlsx', minExpected: 100, tooltip: '217 specific attack methods mapped to tactics, with risk scores and cross-framework references' },
+//   { name: 'SPARTA Countermeasures', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'countermeasure', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '92 defensive measures with NIST, ISO, D3FEND, and sample requirement mappings' },
+//   { name: 'Space Threats', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'space_threat', file: 'SPARTA-Data.xlsx', minExpected: 20, tooltip: '45 space-specific threats organized by Defense-in-Depth layer and threat tier' },
+//   { name: 'Indicators of Behavior', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'indicator', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '194 observable indicators with STIX patterns linked to SPARTA TTPs' },
+//   { name: 'NIST References', group: 'sparta', rawFrameworks: ['NIST', 'nist'], controlType: 'nist_control', file: 'SPARTA-Data.xlsx', minExpected: 500, tooltip: '1,008 NIST SP 800-53 controls with SPARTA technique/countermeasure mappings and space segment guidance' },
+//   { name: 'D3FEND Tactics', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'tactic', file: 'SPARTA-Data.xlsx', minExpected: 3, tooltip: '7 MITRE D3FEND defensive tactic categories' },
+//   { name: 'D3FEND Techniques', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'technique', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '178 defensive techniques from the MITRE D3FEND knowledge graph' },
+//   { name: 'D3FEND Artifacts', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'artifact', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '242 digital artifacts that D3FEND techniques operate on (files, processes, network objects)' },
+//   { name: 'ISO 27001 References', group: 'sparta', rawFrameworks: ['ISO', 'iso'], file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '138 ISO/IEC 27001 control references cross-mapped to SPARTA' },
+//   { name: 'NASABPG', group: 'sparta', rawFrameworks: ['NASA'], file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '15 references from NASA\'s Space Security Best Practices Guide' },
+//   // External pipeline sources
+//   { name: 'ATT&CK Enterprise', group: 'external', rawFrameworks: ['ATT_CK_Enterprise', 'attack'], file: 'enterprise-attack.json', minExpected: 500, tooltip: 'MITRE ATT&CK Enterprise — techniques, malware, tools, and courses of action for IT systems' },
+//   { name: 'ATT&CK Mobile', group: 'external', rawFrameworks: ['ATT_CK_Mobile'], file: 'mobile-attack.json', minExpected: 50, tooltip: 'MITRE ATT&CK Mobile — techniques targeting Android and iOS devices' },
+//   { name: 'ATT&CK ICS', group: 'external', rawFrameworks: ['ATT_CK_ICS'], file: 'ics-attack.json', minExpected: 50, tooltip: 'MITRE ATT&CK ICS — techniques targeting industrial control systems' },
+//   { name: 'CWE', group: 'external', rawFrameworks: ['CWE', 'cwe'], file: 'cwec_v4.19.1.xml', minExpected: 200, tooltip: 'Common Weakness Enumeration v4.19.1 — software/hardware weakness types' },
+//   { name: 'NVD', group: 'external', rawFrameworks: ['nvd', 'NVD'], file: 'nvd (via CWE)', minExpected: 1000, tooltip: 'National Vulnerability Database — CVE-linked controls imported via CWE pipeline' },
+//   { name: 'ESA', group: 'external', rawFrameworks: ['ESA'], file: 'esa_shield_scraped.json', minExpected: 50, tooltip: 'European Space Agency SPACE-SHIELD — 137 space-specific attack techniques' },
+//   { name: 'NIST Controls', group: 'external', rawFrameworks: ['NIST', 'nist'], controlType: 'control', file: 'nist_rev4_controls.csv', minExpected: 500, tooltip: 'NIST SP 800-53 Rev 4/5 full control catalog (separate from SPARTA worksheet cross-references)' },
+// ]
 
 const TYPE_COLORS: Record<string, string> = {
   technique: '#e06c75', attack_technique: '#e06c75', attack_mobile_technique: '#e06c75',
@@ -153,6 +157,11 @@ const API_MEM = 'http://localhost:3001/api/memory'
 export function SourcesView() {
   const { data: fwCounts, loading: fwLoading } = useRawFrameworkCounts()
   const { domains: urlDomains, total: urlTotal, loading: urlsLoading } = useURLDomains()
+  const { worksheets, loading: wsLoading } = useWorksheets()
+  const sources = useMemo(() => {
+    if (!worksheets) return []
+    return Object.entries(worksheets).map(([name, config]) => worksheetToSourceDef(name, config))
+  }, [worksheets])
   const [view, setView] = useState<ViewMode | null>(null)
   const [selectedControl, setSelectedControl] = useState<SpartaControl | null>(null)
   const [selectedUrl, setSelectedUrl] = useState<SpartaURL | null>(null)
@@ -164,7 +173,7 @@ export function SourcesView() {
   const [typeCounts, setTypeCounts] = useState<Map<string, number>>(new Map())
   useEffect(() => {
     // Fetch exact counts for each source that has a controlType
-    const queries = SOURCES.filter(s => s.controlType).map(async (src) => {
+    const queries = sources.filter(s => s.controlType).map(async (src) => {
       for (const fw of src.rawFrameworks) {
         try {
           const res = await fetch(`${API_MEM}/list`, {
@@ -185,24 +194,10 @@ export function SourcesView() {
       }
       setTypeCounts(m)
     })
-  }, [])
+  }, [sources])
   const [urlsExpanded, setUrlsExpanded] = useState(false)
-  const [detailWidth, setDetailWidth] = useState(380)
-  const dragging = useRef(false)
 
-  useEffect(() => {
-    function onMouseMove(e: MouseEvent) {
-      if (!dragging.current) return
-      const newWidth = window.innerWidth - e.clientX
-      setDetailWidth(Math.max(280, Math.min(600, newWidth)))
-    }
-    function onMouseUp() { dragging.current = false; document.body.style.cursor = '' }
-    window.addEventListener('mousemove', onMouseMove)
-    window.addEventListener('mouseup', onMouseUp)
-    return () => { window.removeEventListener('mousemove', onMouseMove); window.removeEventListener('mouseup', onMouseUp) }
-  }, [])
-
-  const source = view?.type === 'source' ? SOURCES[view.idx] : null
+  const source = view?.type === 'source' ? sources[view.idx] : null
   const domainFilter = view?.type === 'domain' ? view.domain : null
 
   // Controls for source view — loads all for the framework
@@ -333,8 +328,10 @@ export function SourcesView() {
         <div style={{ flex: 1, overflow: 'auto' }}>
           {/* SPARTA worksheets */}
           <SectionHeader title="SPARTA-Data.xlsx" />
-          {SOURCES.filter((s) => s.group === 'sparta').map((src) => {
-            const idx = SOURCES.indexOf(src)
+          {wsLoading ? (
+            <div style={{ padding: '8px 12px', fontSize: 10, color: EMBRY.dim }}>Loading worksheets...</div>
+          ) : sources.filter((s) => s.group === 'sparta').map((src) => {
+            const idx = sources.indexOf(src)
             const isSelected = view?.type === 'source' && view.idx === idx
             const count = getSourceCount(src)
             const health = sourceHealth(count, src.minExpected)
@@ -346,8 +343,8 @@ export function SourcesView() {
 
           {/* External */}
           <SectionHeader title="External Pipeline Sources" />
-          {SOURCES.filter((s) => s.group === 'external').map((src) => {
-            const idx = SOURCES.indexOf(src)
+          {wsLoading ? null : sources.filter((s) => s.group === 'external').map((src) => {
+            const idx = sources.indexOf(src)
             const isSelected = view?.type === 'source' && view.idx === idx
             const count = getSourceCount(src)
             const health = sourceHealth(count, src.minExpected)
@@ -381,8 +378,8 @@ export function SourcesView() {
         </div>
       </div>
 
-      {/* Middle: data table */}
-      <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', borderRight: (selectedControl || selectedUrl) ? `1px solid ${EMBRY.border}` : 'none' }}>
+      {/* Middle: data table + flyout overlay */}
+      <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}>
         {!view ? (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, color: EMBRY.dim }}>
             Select a worksheet, source, or domain
@@ -471,9 +468,9 @@ export function SourcesView() {
                       const dotColor = !info ? EMBRY.dim : ok ? EMBRY.green : partial ? EMBRY.amber : EMBRY.red
                       return (
                         <tr key={u._key} onClick={() => { setSelectedUrl(isActive ? null : u); setSelectedControl(null) }}
-                          style={{ cursor: 'pointer', backgroundColor: isActive ? `${EMBRY.blue}12` : 'transparent' }}
-                          onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = `${EMBRY.blue}06` }}
-                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = isActive ? `${EMBRY.blue}12` : 'transparent' }}>
+                          style={{ ...magneticRow, ...(isActive ? magneticRowSelected : {}) }}
+                          onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isActive)}
+                          onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isActive)}>
                           <td style={{ ...td, textAlign: 'center' }}><div style={glowDot(dotColor, 6)} /></td>
                           <td style={td}>
                             {info && info.control_ids.length > 0 ? (
@@ -506,32 +503,28 @@ export function SourcesView() {
             )}
           </>
         ) : null}
-      </div>
 
-      {/* Right: detail pane with resize handle */}
-      {selectedControl && (
-        <>
-          <div
-            onMouseDown={() => { dragging.current = true; document.body.style.cursor = 'col-resize' }}
-            style={{ width: 4, cursor: 'col-resize', backgroundColor: 'transparent', flexShrink: 0 }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = `${EMBRY.accent}40` }}
-            onMouseLeave={(e) => { if (!dragging.current) e.currentTarget.style.backgroundColor = 'transparent' }}
-          />
-          <ControlDetail control={selectedControl} onClose={() => setSelectedControl(null)} width={detailWidth} />
-        </>
-      )}
-      {selectedUrl && (
-        <div style={{ width: 380, flexShrink: 0, overflow: 'auto' }}>
-          <UrlPipelineDetail url={selectedUrl} onClose={() => setSelectedUrl(null)} />
-        </div>
-      )}
+        {/* ControlDetail flyout overlay */}
+        {selectedControl && (
+          <div style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: 500, zIndex: 100, boxShadow: '-20px 0 50px rgba(0,0,0,0.8)', backgroundColor: '#111111', overflow: 'auto' }}>
+            <ControlDetail control={selectedControl} onClose={() => setSelectedControl(null)} onToast={showToast} />
+          </div>
+        )}
+        {/* URL detail flyout overlay */}
+        {selectedUrl && (
+          <div style={{ position: 'absolute', right: 0, top: 0, height: '100%', width: 500, zIndex: 100, boxShadow: '-20px 0 50px rgba(0,0,0,0.8)', backgroundColor: '#111111', overflow: 'auto' }}>
+            <UrlPipelineDetail url={selectedUrl} onClose={() => setSelectedUrl(null)} />
+          </div>
+        )}
+      </div>
+      {toast}
     </div>
   )
 }
 
 // ── Control Detail with QRAs + Relationships ────────────────────────────────
 
-function ControlDetail({ control, onClose, width = 380 }: { control: SpartaControl; onClose: () => void; width?: number }) {
+function ControlDetail({ control, onClose, onToast }: { control: SpartaControl; onClose: () => void; onToast: (msg: string) => void }) {
   const nav = useSpartaNav()
   const [qras, setQras] = useState<Record<string, unknown>[]>([])
   const [rels, setRels] = useState<Record<string, unknown>[]>([])
@@ -562,12 +555,13 @@ function ControlDetail({ control, onClose, width = 380 }: { control: SpartaContr
   }, [control.control_id, control.name])
 
   return (
-    <div style={{ width: width, flexShrink: 0, overflow: 'auto', padding: 16 }}>
+    <div style={{ padding: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
         <span style={{ fontSize: 14, fontWeight: 900, color: EMBRY.blue, fontFamily: 'monospace' }}>{control.control_id}</span>
         <button onClick={onClose} style={{ ...btn, fontSize: 14 }}>×</button>
       </div>
-      <div style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white, marginBottom: 12 }}>{control.name}</div>
+      <div style={{ fontSize: 13, fontWeight: 700, color: EMBRY.white, marginBottom: 6 }}>{control.name}</div>
+      <UtilityBar controlId={control.control_id} name={control.name} framework={control.source_framework} description={control.description ?? ''} onToast={onToast} />
 
       <DetailRow label="Framework" value={control.source_framework} />
       <DetailRow label="Type">

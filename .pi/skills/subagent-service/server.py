@@ -109,7 +109,7 @@ async def load_backends():
             "claude": {
                 "cli": "claude",
                 "prompt_flag": "-p",
-                "output_flags": ["--output-format", "stream-json", "--verbose"],
+                "output_flags": ["--output-format", "stream-json", "--verbose", "--dangerously-skip-permissions"],
                 "max_turns_flag": "--max-turns",
                 "model_flag": "--model",
                 "system_prompt_flag": "--system-prompt",
@@ -207,9 +207,16 @@ def _build_cmd(backend_name: str, model: str, prompt: str,
     cmd.extend(build_image_flags(cfg.get("image_flag"), image_paths or []))
 
     # Allow access to 12TB storage for training data, models, artifacts
-    if backend_name == "claude" and Path("/mnt/storage12tb").is_dir():
-        cmd.extend(["--add-dir", "/mnt/storage12tb"])
+    if backend_name == "claude":
+        storage = Path("/mnt/storage12tb")
+        if storage.is_dir():
+            cmd.extend(["--add-dir", str(storage)])
+        else:
+            import logging
+            logging.warning(f"/mnt/storage12tb not found (exists={storage.exists()}, is_dir={storage.is_dir()})")
 
+    import logging
+    logging.info(f"Built command: {' '.join(str(c) for c in cmd[:10])}...")
     return cmd
 
 
