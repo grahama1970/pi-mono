@@ -48,36 +48,22 @@ function isPlaceholder(desc?: string): boolean {
  * "NIST Controls: PM-9,PM-28; SPARTA Countermeasures: RD-0001,RD-0002; SPARTA Techniques: SV-IT-2"
  * Returns prose (actual description text) and structured sections of control IDs.
  */
-function parseDescriptionSections(desc: string): { prose: string; sections: Array<{ heading: string; ids: string[] }> } {
-  const sectionPattern = /(?:^|;\s*)(NIST Controls|SPARTA Countermeasures|SPARTA Techniques|Sample Requirements|D3FEND Artifacts|ATT&CK Techniques|CWE Weaknesses):\s*/gi
-  const parts = desc.split(sectionPattern)
-  const sections: Array<{ heading: string; ids: string[] }> = []
-  let prose = ''
-
-  // parts[0] is text before any section header
-  // parts[1] is a section name, parts[2] is its content, etc.
-  if (parts.length <= 1) {
-    // No sections found — entire text is prose (or cross-refs without labels)
-    // Check if it looks like a comma-separated ID dump
-    const ids = desc.split(/[,;]\s*/).map(s => s.trim()).filter(s => /^[A-Z]{2,}-?\d/.test(s) || /^d3f:/.test(s) || /^SV-/.test(s) || /^T\d{4}/.test(s))
-    if (ids.length > 3 && ids.length / desc.split(/[,;]/).length > 0.7) {
-      // Mostly IDs — treat as unlabeled cross-references
-      sections.push({ heading: 'Cross-References', ids })
-      return { prose: '', sections }
-    }
-    return { prose: desc, sections: [] }
+/**
+ * Split description into prose and cross-references.
+ * Uses the [Cross-references] marker we control, NOT regex parsing of IDs.
+ * Cross-reference IDs are rendered by ControlIdPills which calls /extract-entities.
+ */
+function splitDescription(desc: string): { prose: string; crossRefs: string } {
+  const marker = '[Cross-references]'
+  const idx = desc.indexOf(marker)
+  if (idx >= 0) {
+    const prose = desc.slice(0, idx).replace(/^\[INFERRED[^\]]*\]\s*/i, '').trim()
+    const crossRefs = desc.slice(idx + marker.length).trim()
+    return { prose, crossRefs }
   }
-
-  prose = parts[0].replace(/;\s*$/, '').trim()
-  for (let i = 1; i < parts.length; i += 2) {
-    const heading = parts[i]
-    const content = (parts[i + 1] ?? '').replace(/;\s*$/, '').trim()
-    if (!content) continue
-    const ids = content.split(/[,\s]+/).map(s => s.trim()).filter(Boolean)
-    if (ids.length > 0) sections.push({ heading, ids })
-  }
-
-  return { prose, sections }
+  // No marker — check if it starts with [INFERRED]
+  const prose = desc.replace(/^\[INFERRED[^\]]*\]\s*/i, '').trim()
+  return { prose, crossRefs: '' }
 }
 
 function nrsColor(score: number | undefined): string {
@@ -165,7 +151,7 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
 
       {/* Description + Related Controls */}
       {(() => {
-        const { prose, sections } = parseDescriptionSections(control.description ?? '')
+        const { prose, crossRefs } = splitDescription(control.description ?? '')
         const navigateToControl = (id: string) => {
           if (!onNavigate) return
           fetch(`http://localhost:3001/api/memory/list`, {
@@ -196,16 +182,11 @@ function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control:
               )}
             </div>
 
-            {/* Related Controls — grouped, color-coded, with hover tooltips */}
-            {sections.length > 0 && (
+            {/* Related Controls — extracted via /extract-entities, color-coded with hover tooltips */}
+            {crossRefs && (
               <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
                 <div style={{ ...label, marginBottom: 8 }}>Related Controls</div>
-                {sections.map(({ heading: h, ids: sectionIds }) => (
-                  <div key={h} style={{ marginBottom: 10 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: EMBRY.dim, marginBottom: 4 }}>{h}</div>
-                    <ControlIdPills ids={sectionIds} onControlClick={navigateToControl} />
-                  </div>
-                ))}
+                <ControlIdPills text={crossRefs} collection="sparta_controls" onControlClick={navigateToControl} />
               </div>
             )}
           </>

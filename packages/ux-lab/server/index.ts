@@ -765,22 +765,63 @@ app.post('/api/projects/:projectId/test-interactions', async (req, res) => {
   })
 })
 
-// ── Entity extraction (proxies to memory daemon /taxonomy/extract) ──────────
+// ── Entity extraction ────────────────────────────────────────────────────────
+// Two modes:
+//   1. delimiter provided: split text on delimiters, look up each ID via /list
+//   2. no delimiter: proxy to memory daemon /taxonomy/extract for NLP extraction
 
 app.post('/api/extract-entities', async (req, res) => {
   try {
-    const { text, collection } = req.body as { text: string; collection?: string }
-    // Use memory daemon's taxonomy extract
-    const result = await proxyPost('/taxonomy/extract', { text, collection: collection || 'binary_features' })
-    // Normalize: the daemon returns { tags: {...} } or { entities: [...] }
-    if (result.entities) {
-      res.json(result)
-    } else {
-      // Convert tags format to entities
-      const entities = (result.tags?.mind || []).map((t: string, i: number) => ({
-        id: `entity_${i}`, name: t, label: t, type: 'taxonomy'
-      }))
-      res.json({ entities })
+    const { text, collection, delimiter } = req.body as { text: string; collection?: string; delimiter?: string }
+    const col = collection || 'sparta_controls'
+
+    // Mode 1: structured ID list — split and look up each
+    if (delimiter) {
+      const delims = delimiter === 'auto' ? /[,;\s]+/ : new RegExp(`[${delimiter.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')}]+`)
+      const ids = text.split(delims).map((s: string) => s.trim()).filter(Boolean)
+
+      // Batch lookup — get names for all IDs in one call
+      const batchResult = await proxyPost('/recall/by-keys', {
+        collection: col,
+        keys: ids.map((id: string) => `ctrl__${id}`),
+        return_fields: ['control_id', 'name', 'source_framework'],
+      }) as { documents?: Array<{ control_id?: string; name?: string; source_framework?: string }> }
+
+      const docMap = new Map<string, { name: string; framework: string }>()
+      for (const doc of (batchResult.documents ?? [])) {
+        if (doc.control_id) docMap.set(doc.control_id, { name: doc.name ?? '', framework: doc.source_framework ?? '' })
+      }
+
+      const entities = ids.map((id: string) => {
+        const found = docMap.get(id)
+        return {
+          id,
+          name: found?.name ?? id,
+          label: id,
+          type: 'control',
+          framework: found?.framework ?? '',
+          exists: !!found,
+        }
+      })
+
+      res.json({ entities, mode: 'delimiter' })
+      return
+    }
+
+    // Mode 2: NLP extraction via daemon
+    try {
+      const result = await proxyPost('/taxonomy/extract', { text, collection: col })
+      if (result.entities) {
+        res.json(result)
+      } else {
+        const entities = (result.tags?.mind || []).map((t: string, i: number) => ({
+          id: `entity_${i}`, name: t, label: t, type: 'taxonomy'
+        }))
+        res.json({ entities })
+      }
+    } catch {
+      // Daemon taxonomy/extract not available — return empty
+      res.json({ entities: [], error: 'taxonomy/extract not available' })
     }
   } catch (e) {
     res.status(502).json({ error: 'Entity extraction failed', detail: String(e) })

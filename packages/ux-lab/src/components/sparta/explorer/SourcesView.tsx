@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import { EMBRY, label, heading, glowDot } from '../common/EmbryStyle'
 import { useControlsByFramework, useRawFrameworkCounts, useURLs } from '../../../hooks/useSpartaCollections'
 import type { SpartaControl, SpartaURL } from '../../../hooks/useSpartaCollections'
+import { ControlIdPills } from '../common/ControlIdPills'
 
 // ── Source definitions ──────────────────────────────────────────────────────
 
@@ -59,17 +60,32 @@ function sourceHealth(count: number, min: number): { color: string; label: strin
 
 const PAGE_SIZE = 100
 
-const PLACEHOLDER_PATTERN = /This control requires QRA generation/i
-
 function isPlaceholder(desc?: string): boolean {
-  return !desc || PLACEHOLDER_PATTERN.test(desc)
+  if (!desc) return false
+  const lower = desc.toLowerCase()
+  return lower.includes('this control requires qra generation')
+}
+
+function cleanDescriptionPreview(desc: string): string {
+  // Strip [INFERRED...] prefix and [Cross-references] section for table preview
+  let text = desc.replace(/^\[INFERRED[^\]]*\]\s*/i, '')
+  const xrefIdx = text.indexOf('[Cross-references]')
+  if (xrefIdx >= 0) text = text.slice(0, xrefIdx).trim()
+  return text
 }
 
 function descriptionCell(desc?: string) {
   if (!desc) return <span style={{ color: EMBRY.red, fontSize: 9 }}>MISSING</span>
   if (isPlaceholder(desc)) return <span style={{ color: EMBRY.amber, fontSize: 9 }}>NEEDS DESCRIPTION</span>
-  const text = desc.length > 120 ? desc.slice(0, 120) + '...' : desc
-  return <span style={{ color: EMBRY.dim }}>{text}</span>
+  const clean = cleanDescriptionPreview(desc)
+  const text = clean.length > 120 ? clean.slice(0, 120) + '...' : clean
+  const isInferred = desc.startsWith('[INFERRED')
+  return (
+    <span style={{ color: EMBRY.dim }}>
+      {isInferred && <span style={{ color: EMBRY.amber, fontSize: 8, marginRight: 4 }}>INFERRED</span>}
+      {text}
+    </span>
+  )
 }
 
 // ── URL domain grouping ─────────────────────────────────────────────────────
@@ -519,18 +535,75 @@ function ControlDetail({ control, onClose, width = 380 }: { control: SpartaContr
       {control.scope && <DetailRow label="Scope" value={control.scope} />}
       {control.parent_id && <DetailRow label="Parent" value={control.parent_id} />}
 
-      <div style={{ marginTop: 12 }}>
-        <div style={{ ...label, marginBottom: 4 }}>Description</div>
-        {isPlaceholder(control.description) ? (
-          <div style={{ fontSize: 11, color: EMBRY.amber, padding: '6px 8px', backgroundColor: `${EMBRY.amber}10`, borderRadius: 4, border: `1px solid ${EMBRY.amber}22` }}>
-            No real description — pipeline wrote placeholder. Original source may not have a description field for this framework.
-          </div>
-        ) : control.description ? (
-          <div style={{ fontSize: 12, color: EMBRY.dim, lineHeight: 1.6 }}>{control.description}</div>
-        ) : (
-          <div style={{ fontSize: 11, color: EMBRY.red }}>Missing</div>
-        )}
-      </div>
+      {(() => {
+        const desc = control.description ?? ''
+        const marker = '[Cross-references]'
+        const idx = desc.indexOf(marker)
+        const prose = idx >= 0
+          ? desc.slice(0, idx).replace(/^\[INFERRED[^\]]*\]\s*/i, '').trim()
+          : desc.replace(/^\[INFERRED[^\]]*\]\s*/i, '').trim()
+        const crossRefs = idx >= 0 ? desc.slice(idx + marker.length).trim() : ''
+        const isInferred = desc.startsWith('[INFERRED')
+
+        // Parse cross-refs into labeled groups by splitting on known section headers
+        const xrefGroups: Array<{ heading: string; ids: string[] }> = []
+        if (crossRefs) {
+          const labels = ['NIST Controls', 'SPARTA Countermeasures', 'SPARTA Techniques', 'Sample Requirements', 'D3FEND Artifacts', 'TOR Threats']
+          let remaining = crossRefs
+          for (const lbl of labels) {
+            const start = remaining.indexOf(lbl + ':')
+            if (start < 0) continue
+            const afterLabel = remaining.slice(start + lbl.length + 1)
+            const nextSemicolon = afterLabel.indexOf(';')
+            const idsStr = nextSemicolon >= 0 ? afterLabel.slice(0, nextSemicolon) : afterLabel
+            const ids = idsStr.split(',').map(s => s.trim()).filter(Boolean)
+            if (ids.length > 0) xrefGroups.push({ heading: lbl, ids })
+          }
+        }
+
+        return (
+          <>
+            {/* Description */}
+            <div style={{ marginTop: 12 }}>
+              <div style={{ ...label, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
+                Description
+                {isInferred && <span style={{ fontSize: 8, color: EMBRY.amber, fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>inferred</span>}
+              </div>
+              {isPlaceholder(desc) ? (
+                <div style={{ fontSize: 11, color: EMBRY.amber, padding: '6px 8px', backgroundColor: `${EMBRY.amber}10`, borderRadius: 4, border: `1px solid ${EMBRY.amber}22` }}>
+                  No real description — pipeline wrote placeholder.
+                </div>
+              ) : prose ? (
+                <div style={{ fontSize: 12, color: EMBRY.dim, lineHeight: 1.6 }}>{prose}</div>
+              ) : xrefGroups.length === 0 ? (
+                <div style={{ fontSize: 11, color: EMBRY.red }}>Missing</div>
+              ) : (
+                <div style={{ fontSize: 12, color: EMBRY.muted, fontStyle: 'italic' }}>No prose description — see related controls below</div>
+              )}
+            </div>
+
+            {/* Divider */}
+            {xrefGroups.length > 0 && <div style={{ height: 1, backgroundColor: EMBRY.border, margin: '12px 0' }} />}
+
+            {/* Related Controls — grouped with labeled pill badges */}
+            {xrefGroups.length > 0 && (
+              <div>
+                <div style={{ ...label, marginBottom: 8 }}>Related Controls</div>
+                {xrefGroups.map(({ heading: h, ids }) => (
+                  <div key={h} style={{ marginBottom: 10 }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: EMBRY.dim, marginBottom: 4 }}>{h}</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+                      <ControlIdPills ids={ids} onControlClick={(id) => {
+                        console.log('Navigate to:', id)
+                      }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )
+      })()}
 
       {control.weaknesses && control.weaknesses.length > 0 && (
         <div style={{ marginTop: 12 }}>
