@@ -341,6 +341,7 @@ export function BinaryExplorerView() {
   // --- Investigation Journal ---
   const [journalSteps, setJournalSteps] = useState<Step[]>([])
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
+  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('investigator')
 
   /** Record an investigation step. Snapshot is attached asynchronously via useEffect. */
   const recordStep = useCallback((action: Step['action'], description: string) => {
@@ -1595,6 +1596,21 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
               </div>
             </div>
 
+            {/* Interaction hints bar */}
+            <div style={{
+              display: 'flex', gap: 16, padding: '3px 16px',
+              fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace',
+              background: '#060606', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0,
+            }}>
+              <span>Click: select node</span>
+              <span>Double-click: expand neighbors</span>
+              <span>Right-click: context menu</span>
+              <span>Scroll: zoom</span>
+              <span>Drag: pan</span>
+              <span style={{ marginLeft: 'auto', color: EMBRY.dim }}>
+                {sceneNodeIds.size} nodes · {viewMode} · {layoutMode === 'organic' ? 'force' : layoutMode}
+              </span>
+            </div>
 
             <div
               style={{ flex: '1 1 0%', display: 'flex', flexDirection: 'column' as const, position: 'relative', overflow: 'hidden', minHeight: 0 }}
