@@ -2272,6 +2272,18 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   )}
                 </button>
                 <div style={{ flex: 1 }} />
+                {/* Beginner / Investigator mode toggle */}
+                <div style={{ display: 'flex', gap: 1, marginRight: 4, alignItems: 'center' }}>
+                  {(['beginner', 'investigator'] as const).map(mode => (
+                    <button key={mode} onClick={() => setAnalysisMode(mode)} style={{
+                      fontSize: 8, fontWeight: analysisMode === mode ? 800 : 400,
+                      padding: '2px 6px', borderRadius: 2, cursor: 'pointer', border: 'none',
+                      background: analysisMode === mode ? `${EMBRY.accent}20` : 'transparent',
+                      color: analysisMode === mode ? EMBRY.accent : EMBRY.dim,
+                      textTransform: 'uppercase',
+                    }}>{mode}</button>
+                  ))}
+                </div>
                 {/* Actions shown for whichever tab is active */}
                 {rightTab === 'chat' && chatMessages.length > 0 && (
                   <>
@@ -2375,6 +2387,26 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 12 }}>
                         {data.stats.totalNodes} features · {namespaces.length} namespaces · {stateMachines.length} state machines
                       </div>
+                      {/* Beginner guided path */}
+                      {analysisMode === 'beginner' && (
+                        <div style={{ marginBottom: 12, padding: '8px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4 }}>
+                          <div style={{ fontSize: 8, fontWeight: 800, color: EMBRY.accent, marginBottom: 6 }}>GUIDED ANALYSIS PATH</div>
+                          {[
+                            { step: 1, label: 'What is this binary made of?', query: `What are the main components of ${binaryName}?` },
+                            { step: 2, label: 'How do the parts communicate?', query: `How do ${namespaces[0] || 'the namespaces'} and ${namespaces[1] || 'other components'} interact?` },
+                            { step: 3, label: 'Where could this break?', query: `What is the attack surface of ${binaryName}?` },
+                          ].map(g => (
+                            <div key={g.step} onClick={() => { setChatInput(''); sendChat(g.query) }}
+                              style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '5px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 2, transition: 'background 0.15s' }}
+                              onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}15`)}
+                              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                            >
+                              <span style={{ fontSize: 16, fontWeight: 900, color: EMBRY.accent, width: 20, textAlign: 'center' }}>{g.step}</span>
+                              <span style={{ fontSize: 10, color: EMBRY.white }}>{g.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES</div>
                       {suggestions.map((s, si) => (
                         <div key={si} onClick={() => { setChatInput(s.raw); setTimeout(() => { setChatInput(''); sendChat(s.raw) }, 50) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
