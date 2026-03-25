@@ -8,6 +8,9 @@
  * TC39 Stage 2 format which is incompatible with TypeScript's legacy decorators.
  */
 
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
 import type { AgentEvent } from "@mariozechner/pi-agent-core";
 import dbus from "dbus-next";
 import type { RpcExtensionUIRequest } from "../modes/rpc/rpc-types.js";
@@ -22,6 +25,31 @@ import {
 import { WorkerPool } from "./worker-pool.js";
 
 const { Interface, ACCESS_READ } = dbus.interface;
+
+// Stream Deck conversation topic file — matches format from
+// streamdeck/src/streamdeck/utils/conversation_topic.py
+const TOPIC_FILE = path.join(os.tmpdir(), "streamdeck_conversation_topic");
+
+/**
+ * Write conversation topic for Stream Deck page anticipation.
+ * The streamdeck-context service polls this file and feeds it to the
+ * page classifier cascade (Tier 0.5 → Tier 1 → Tier 2).
+ * Fire-and-forget: never block the D-Bus request path.
+ */
+function writeConversationTopic(prompt: string, persona?: string): void {
+	const data = {
+		topic: prompt,
+		timestamp: new Date().toISOString(),
+		agent: "embry-agent",
+		persona: persona ?? "",
+		participants: persona ? [persona] : [],
+	};
+	try {
+		fs.writeFileSync(TOPIC_FILE, JSON.stringify(data));
+	} catch {
+		// Non-fatal — deck just won't update this cycle
+	}
+}
 
 // Helper to extract text from agent messages
 export function extractTextFromMessages(messages: unknown[]): string {
@@ -216,6 +244,7 @@ export class AgentDBusBridge {
 	// --- Request submission (all delegate to pool) ---
 
 	enqueueAsk(prompt: string): Promise<string> {
+		writeConversationTopic(prompt);
 		return new Promise((resolve, reject) => {
 			this.pool.submitRequest({
 				id: this.pool.nextRequestId(),
@@ -272,6 +301,7 @@ export class AgentDBusBridge {
 		} catch {
 			// Invalid JSON — proceed without hints
 		}
+		writeConversationTopic(prompt, (hints as any).persona);
 		return new Promise((resolve, reject) => {
 			this.pool.submitRequest({
 				id: this.pool.nextRequestId(),
@@ -286,6 +316,7 @@ export class AgentDBusBridge {
 	}
 
 	enqueueAskAs(persona: string, prompt: string): Promise<string> {
+		writeConversationTopic(prompt, persona);
 		return new Promise((resolve, reject) => {
 			this.pool.submitRequest({
 				id: this.pool.nextRequestId(),
@@ -300,6 +331,7 @@ export class AgentDBusBridge {
 	}
 
 	enqueueAskAsAsync(persona: string, prompt: string): string {
+		writeConversationTopic(prompt, persona);
 		const requestId = this.pool.nextRequestId();
 		this.pool.submitRequest({
 			id: requestId,

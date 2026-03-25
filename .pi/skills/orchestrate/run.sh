@@ -85,7 +85,7 @@ run_in_twin() {
 
 # State directory for session persistence
 STATE_DIR="${ORCHESTRATE_STATE_DIR:-.orchestrate}"
-ORCHESTRATE_DIR="${ORCHESTRATE_HOME:-$HOME/.pi/skills/orchestrate}"
+ORCHESTRATE_DIR="${ORCHESTRATE_HOME:-$SCRIPT_DIR}"
 SCHEDULER_HOME="${SCHEDULER_HOME:-$HOME/.pi/scheduler}"
 SCHEDULER_JOBS_FILE="$SCHEDULER_HOME/jobs.json"
 

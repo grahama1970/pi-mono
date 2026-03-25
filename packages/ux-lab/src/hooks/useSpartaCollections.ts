@@ -72,6 +72,7 @@ export interface SpartaControl {
 	weaknesses?: string[];
 	nrs_score?: number;
 	mind?: string[];
+	status?: string;
 }
 
 export interface SpartaQRA {

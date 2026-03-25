@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { EMBRY, label, heading, glowDot } from '../common/EmbryStyle'
 import { useRelationshipsPaginated } from '../../../hooks/useSpartaCollections'
 import type { SpartaRelationship } from '../../../hooks/useSpartaCollections'
@@ -136,33 +136,7 @@ export function RelationshipsView() {
         </div>
 
         {/* Edge detail panel */}
-        {selected && (
-          <div style={{ width: 360, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', flexShrink: 0 }}>
-            <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div style={heading}>Edge Detail</div>
-              <button onClick={() => setSelected(null)} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
-                Close
-              </button>
-            </div>
-            <div style={{ padding: '12px 20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                <span style={{ fontFamily: 'monospace', fontSize: 12, color: EMBRY.blue }}>{selected.source_control_id}</span>
-                <span style={{ color: EMBRY.dim }}>→</span>
-                <span style={{ fontFamily: 'monospace', fontSize: 12, color: EMBRY.blue }}>{selected.target_control_id}</span>
-              </div>
-              <div style={{ marginBottom: 12 }}>
-                <div style={label}>Method</div>
-                <div style={{ fontSize: 12, color: EMBRY.white, marginTop: 4 }}>{selected.method ?? '—'}</div>
-              </div>
-              <div style={{ marginBottom: 12 }}>
-                <div style={label}>Combined NRS</div>
-                <div style={{ fontSize: 28, fontWeight: 900, color: nrsColor(selected.combined_score), marginTop: 4 }}>
-                  {selected.combined_score != null ? selected.combined_score.toFixed(4) : '—'}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {selected && <EdgeDetailPane edge={selected} onClose={() => setSelected(null)} />}
       </div>
 
       {/* Score histogram bar */}
@@ -177,6 +151,92 @@ export function RelationshipsView() {
           <span style={{ color: EMBRY.green }}>Accept: {histogram.accept}</span>
           <span style={{ color: EMBRY.amber }}>Uncertain: {histogram.uncertain}</span>
           <span style={{ color: EMBRY.red }}>Reject: {histogram.reject}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const DAEMON = 'http://localhost:3001/api/memory'
+
+function EdgeDetailPane({ edge, onClose }: { edge: SpartaRelationship; onClose: () => void }) {
+  const [sourceMind, setSourceMind] = useState<string[]>([])
+  const [targetMind, setTargetMind] = useState<string[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    const ids = [edge.source_control_id, edge.target_control_id].filter(Boolean)
+    if (ids.length === 0) { setLoading(false); return }
+
+    fetch(`${DAEMON}/recall/by-keys`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ collection: 'sparta_controls', keys: ids, key_field: 'control_id', return_fields: ['control_id', 'mind'] }),
+    })
+      .then((r) => r.json())
+      .then((res) => {
+        if (cancelled) return
+        for (const doc of (res.documents ?? [])) {
+          const tags = Array.isArray(doc.mind) ? doc.mind : []
+          if (doc.control_id === edge.source_control_id) setSourceMind(tags)
+          if (doc.control_id === edge.target_control_id) setTargetMind(tags)
+        }
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+    return () => { cancelled = true }
+  }, [edge.source_control_id, edge.target_control_id])
+
+  const allTags = [...new Set([...sourceMind, ...targetMind])].sort()
+
+  return (
+    <div style={{ width: 360, backgroundColor: EMBRY.bgPanel, borderLeft: `1px solid ${EMBRY.border}`, overflow: 'auto', flexShrink: 0 }}>
+      <div style={{ padding: '16px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={heading}>Edge Detail</div>
+        <button onClick={onClose} style={{ background: 'none', border: `1px solid ${EMBRY.border}`, borderRadius: 6, color: EMBRY.dim, fontSize: 11, padding: '4px 10px', cursor: 'pointer' }}>
+          Close
+        </button>
+      </div>
+      <div style={{ padding: '12px 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+          <span style={{ fontFamily: 'monospace', fontSize: 12, color: EMBRY.blue }}>{edge.source_control_id}</span>
+          <span style={{ color: EMBRY.dim }}>→</span>
+          <span style={{ fontFamily: 'monospace', fontSize: 12, color: EMBRY.blue }}>{edge.target_control_id}</span>
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <div style={label}>Method</div>
+          <div style={{ fontSize: 12, color: EMBRY.white, marginTop: 4 }}>{edge.method ?? '—'}</div>
+        </div>
+        <div style={{ marginBottom: 12 }}>
+          <div style={label}>Combined NRS</div>
+          <div style={{ fontSize: 28, fontWeight: 900, color: nrsColor(edge.combined_score), marginTop: 4 }}>
+            {edge.combined_score != null ? edge.combined_score.toFixed(4) : '—'}
+          </div>
+        </div>
+
+        {/* Mind / Taxonomy tags */}
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ ...label, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+            Mind Tags
+            <div style={glowDot(allTags.length > 0 ? EMBRY.green : EMBRY.red, 6)} />
+          </div>
+          {loading ? (
+            <div style={{ fontSize: 11, color: EMBRY.dim }}>Loading...</div>
+          ) : allTags.length > 0 ? (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {allTags.map((tag) => (
+                <span key={tag} style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4, backgroundColor: `${EMBRY.accent}18`, color: EMBRY.accent, border: `1px solid ${EMBRY.accent}33` }}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div style={{ fontSize: 11, color: EMBRY.red, padding: '4px 8px', borderRadius: 4, backgroundColor: `${EMBRY.red}08` }}>
+              No taxonomy tags on source/target controls
+            </div>
+          )}
         </div>
       </div>
     </div>
