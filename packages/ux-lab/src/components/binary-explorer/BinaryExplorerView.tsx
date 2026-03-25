@@ -1515,6 +1515,24 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   onMouseEnter={e => { if (historyIndex < sceneHistory.length - 1) { e.currentTarget.style.color = '#9f7aea'; e.currentTarget.style.backgroundColor = 'rgba(124,58,237,0.1)' } }}
                   onMouseLeave={e => { e.currentTarget.style.color = historyIndex < sceneHistory.length - 1 ? EMBRY.accent : EMBRY.muted; e.currentTarget.style.backgroundColor = 'transparent' }}
                 ><Redo size={14} /></button>
+
+                {/* Reset / Clear Scene — Tim's #1 ask */}
+                {sceneNodeIds.size > 0 && (
+                  <>
+                    <div style={{ width: 1, height: 16, background: EMBRY.border, margin: '0 4px' }} />
+                    <button
+                      onClick={() => { clearScene(); setSelectedNode(null); setAutoSeeded(false) }}
+                      title="Clear scene (keep binary loaded)"
+                      style={{
+                        width: 24, height: 24, padding: 4, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        borderRadius: 4, border: 'none', backgroundColor: 'transparent',
+                        cursor: 'pointer', color: '#6B7280', transition: 'all 0.2s',
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.color = EMBRY.white; e.currentTarget.style.backgroundColor = 'rgba(107,114,128,0.15)' }}
+                      onMouseLeave={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.backgroundColor = 'transparent' }}
+                    ><Trash2 size={13} /></button>
+                  </>
+                )}
               </div>
 
               {/* View Mode Toggle: Graph / Tree (icon buttons) */}
@@ -1919,6 +1937,13 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           <div style={{ textAlign: 'center' }}>
                             <div style={{ fontSize: 14, fontWeight: 800, color: EMBRY.white, fontFamily: 'JetBrains Mono, monospace' }}>{Math.round(selectedNode.confidence * 100)}%</div>
                             <div style={{ color: EMBRY.dim, fontSize: 7, textTransform: 'uppercase' }}>conf</div>
+                            {/* Provenance pills — what this confidence is based on */}
+                            <div style={{ display: 'flex', gap: 2, marginTop: 3 }}>
+                              {selectedNode.tier === 'T0' && <span style={{ fontSize: 6, padding: '0 3px', borderRadius: 2, background: '#2196F315', border: '1px solid #2196F333', color: '#2196F3' }}>AST</span>}
+                              {selectedNode.tier === 'T1' && <span style={{ fontSize: 6, padding: '0 3px', borderRadius: 2, background: '#4CAF5015', border: '1px solid #4CAF5033', color: '#4CAF50' }}>CFG</span>}
+                              {selectedNode.tier === 'T2' && <span style={{ fontSize: 6, padding: '0 3px', borderRadius: 2, background: '#FF980015', border: '1px dashed #FF980044', color: '#FF9800' }}>LLM</span>}
+                              {selectedNode.source_pattern && <span style={{ fontSize: 6, padding: '0 3px', borderRadius: 2, background: '#94a3b815', border: '1px solid #94a3b833', color: '#94a3b8' }}>SRC</span>}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1943,27 +1968,59 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
-                      {/* Row 3: Fields/Parameters inline (if present) */}
+                      {/* Row 3: Fields/Parameters — expandable struct view */}
                       {selectedNode.fields && selectedNode.fields.length > 0 && (
                         <div>
-                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>PARAMETERS ({selectedNode.fields.length})</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                            {selectedNode.fields.slice(0, 12).map(f => (
-                              <code key={f} onClick={() => onFeatureClick(f)} style={{ fontSize: 8, padding: '1px 3px', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: '#94a3b8', borderRadius: 2, cursor: 'pointer', fontFamily: 'JetBrains Mono, monospace' }}>{f}</code>
-                            ))}
-                            {selectedNode.fields.length > 12 && <span style={{ fontSize: 8, color: EMBRY.muted }}>+{selectedNode.fields.length - 12}</span>}
+                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>
+                            {selectedNode.nodeType === 'schema' ? 'STRUCT FIELDS' : 'PARAMETERS'} ({selectedNode.fields.length})
+                          </div>
+                          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 3, padding: '4px 0' }}>
+                            {selectedNode.fields.map((f: any, i: number) => {
+                              const name = typeof f === 'string' ? f : f.name || f.label || String(f)
+                              const type = typeof f === 'object' ? (f.type || f.dataType || '') : ''
+                              const desc = typeof f === 'object' ? (f.description || '') : ''
+                              return (
+                                <div key={i} onClick={() => onFeatureClick(name)}
+                                  style={{
+                                    display: 'flex', gap: 8, padding: '2px 8px', cursor: 'pointer',
+                                    borderBottom: i < selectedNode.fields!.length - 1 ? `1px solid ${EMBRY.border}` : 'none',
+                                  }}
+                                  onMouseEnter={e => (e.currentTarget.style.background = '#0a0a0a')}
+                                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                                >
+                                  <span style={{ color: '#2196F3', minWidth: 16 }}>{i}</span>
+                                  <span style={{ color: EMBRY.white, flex: 1 }}>{name}</span>
+                                  {type && <span style={{ color: '#9C27B0' }}>{type}</span>}
+                                  {desc && <span style={{ color: EMBRY.muted, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{desc}</span>}
+                                </div>
+                              )
+                            })}
                           </div>
                         </div>
                       )}
 
-                      {/* Row 4: States inline (if state machine) */}
+                      {/* Row 4: States — state machine transition view */}
                       {selectedNode.states && selectedNode.states.length > 0 && (
                         <div>
-                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>STATES ({selectedNode.states.length})</div>
+                          <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>STATE MACHINE ({selectedNode.states.length} states)</div>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                            {selectedNode.states.slice(0, 10).map(s => (
-                              <code key={s} style={{ fontSize: 8, padding: '1px 3px', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: '#9C27B0', borderRadius: 2, fontFamily: 'JetBrains Mono, monospace' }}>{s}</code>
-                            ))}
+                            {selectedNode.states.map((s: any, i: number) => {
+                              const name = typeof s === 'string' ? s : s.name || String(s)
+                              return (
+                                <div key={i} style={{
+                                  display: 'flex', alignItems: 'center', gap: 4,
+                                  fontSize: 9, padding: '3px 8px', borderRadius: 3,
+                                  background: i === 0 ? '#1a2721' : '#0a0a0a',
+                                  border: `1px solid ${i === 0 ? EMBRY.green + '44' : EMBRY.border}`,
+                                  color: i === 0 ? EMBRY.green : '#9C27B0',
+                                  fontFamily: 'JetBrains Mono, monospace',
+                                }}>
+                                  {i === 0 && <span style={{ fontSize: 7, color: EMBRY.green }}>▸</span>}
+                                  {name}
+                                  {i < selectedNode.states!.length - 1 && <span style={{ color: EMBRY.muted, marginLeft: 2 }}>→</span>}
+                                </div>
+                              )
+                            })}
                           </div>
                         </div>
                       )}
