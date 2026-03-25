@@ -528,13 +528,13 @@ const S = {
     cursor: 'pointer',
     color: EMBRY.dim,
     transition: '0.2s',
-    border: '1px solid transparent',
+    border: 'none',
     background: 'none',
   } as React.CSSProperties,
   navBtnActive: {
     background: '#1a1d23',
     color: EMBRY.green,
-    borderColor: `${EMBRY.green}4d`,
+    border: `1px solid ${EMBRY.green}4d`,
     boxShadow: `0 0 15px ${EMBRY.green}1a`,
   } as React.CSSProperties,
 
