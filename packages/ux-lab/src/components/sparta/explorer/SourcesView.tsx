@@ -144,6 +144,8 @@ function useURLDomains(): { domains: DomainGroup[]; total: number; loading: bool
 
 type ViewMode = { type: 'source'; idx: number } | { type: 'domain'; domain: string }
 
+const API_MEM = 'http://localhost:3001/api/memory'
+
 export function SourcesView() {
   const { data: fwCounts, loading: fwLoading } = useRawFrameworkCounts()
   const { domains: urlDomains, total: urlTotal, loading: urlsLoading } = useURLDomains()
@@ -152,6 +154,33 @@ export function SourcesView() {
   const [selectedUrl, setSelectedUrl] = useState<SpartaURL | null>(null)
   const [page, setPage] = useState(0)
   const [search, setSearch] = useState('')
+
+  // Server-side per-type counts for accurate sidebar numbers
+  const [typeCounts, setTypeCounts] = useState<Map<string, number>>(new Map())
+  useEffect(() => {
+    // Fetch exact counts for each source that has a controlType
+    const queries = SOURCES.filter(s => s.controlType).map(async (src) => {
+      for (const fw of src.rawFrameworks) {
+        try {
+          const res = await fetch(`${API_MEM}/list`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { source_framework: fw, control_type: src.controlType } }),
+          })
+          const data = await res.json()
+          if (data.total > 0) return { key: `${fw}:${src.controlType}`, count: data.total }
+        } catch { /* skip */ }
+      }
+      return null
+    })
+    Promise.all(queries).then(results => {
+      const m = new Map<string, number>()
+      for (const r of results) {
+        if (r) m.set(r.key, r.count)
+      }
+      setTypeCounts(m)
+    })
+  }, [])
   const [urlsExpanded, setUrlsExpanded] = useState(false)
   const [detailWidth, setDetailWidth] = useState(380)
   const dragging = useRef(false)
@@ -251,11 +280,18 @@ export function SourcesView() {
   }, [fwCounts])
 
   function getSourceCount(src: SourceDef): number {
-    // If this source has a controlType AND we have loaded data for its framework,
-    // use the type-specific count (exact) instead of framework total (inflated)
-    if (src.controlType && source && src.rawFrameworks.some((fw) => source.rawFrameworks.includes(fw)) && rawControls.length > 0) {
-      return loadedTypeCounts.get(src.controlType) ?? 0
+    // 1. Server-side per-type count (most accurate for worksheets with controlType)
+    if (src.controlType) {
+      for (const fw of src.rawFrameworks) {
+        const key = `${fw}:${src.controlType}`
+        if (typeCounts.has(key)) return typeCounts.get(key)!
+      }
+      // Fallback: loaded data type count if available
+      if (source && src.rawFrameworks.some((fw) => source.rawFrameworks.includes(fw)) && rawControls.length > 0) {
+        return loadedTypeCounts.get(src.controlType) ?? 0
+      }
     }
+    // 2. Framework-level count (for sources without controlType)
     let total = 0
     for (const fw of src.rawFrameworks) total += countLookup.get(fw) ?? 0
     return total

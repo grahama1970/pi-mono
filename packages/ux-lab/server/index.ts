@@ -462,6 +462,25 @@ app.get('/api/architecture/:id', async (req, res) => {
   }
 })
 
+// Read file content for architecture attachments (project-relative paths only)
+app.get('/api/architecture/file-content', async (req, res) => {
+  const filePath = typeof req.query.path === 'string' ? req.query.path : ''
+  if (!filePath || filePath.includes('..') || filePath.startsWith('/')) {
+    return res.status(400).send('Invalid path')
+  }
+  const PROJECT_ROOT = resolve(__dirname, '../../..')
+  const fullPath = resolve(PROJECT_ROOT, filePath)
+  if (!fullPath.startsWith(PROJECT_ROOT)) {
+    return res.status(403).send('Path traversal blocked')
+  }
+  try {
+    const content = await readFile(fullPath, 'utf-8')
+    res.type('text/plain').send(content)
+  } catch {
+    res.status(404).send(`File not found: ${filePath}`)
+  }
+})
+
 app.put('/api/architecture/:id', async (req, res) => {
   try {
     const id = req.params.id
