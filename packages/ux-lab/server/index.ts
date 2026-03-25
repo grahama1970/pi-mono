@@ -31,7 +31,7 @@ app.use(express.json())
 const MEMORY_SOCKET = '/run/user/1000/embry/memory.sock'
 const SCILLM_URL = process.env.SCILLM_URL ?? 'http://localhost:4001'
 const ARCH_SCOPE = 'architecture'
-const WORKSHEETS_PATH = '/home/graham/workspace/experiments/sparta/config/worksheets.yaml'
+const WORKSHEETS_PATH = process.env.WORKSHEETS_YAML ?? resolve(__dirname, '../fixtures/sparta-reference/worksheets.yaml')
 const WORKSHEETS_CACHE_TTL_MS = 60_000
 
 type JsonRecord = Record<string, unknown>
