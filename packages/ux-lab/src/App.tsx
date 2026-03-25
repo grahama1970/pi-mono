@@ -65,6 +65,7 @@ const MusicLab = React.lazy(() => import('./components/music-lab/MusicLabWorkben
 const PromptLab = React.lazy(() => import('./components/sparta/explorer/PromptLabView').then(m => ({ default: m.PromptLabView })));
 const ClassifierLab = React.lazy(() => import('./components/sparta/explorer/ClassifierLabView').then(m => ({ default: m.ClassifierLabView })));
 const LlmEvalLab = React.lazy(() => import('./components/sparta/explorer/LlmEvalLabView').then(m => ({ default: m.LlmEvalLabView })));
+const ArchitectureView = React.lazy(() => import('./components/architecture/ArchitectureView').then(m => ({ default: m.ArchitectureView })));
 import { DesignBoardCanvas } from './components/DesignBoardCanvas';
 import { AgentControl } from './components/common/AgentControl';
 import { TestingPanel } from './components/TestingPanel';
@@ -190,8 +191,8 @@ const Mockups = ({ projectId }: { projectId: string }) => {
 
 const FinalSite = ({ projectId }: { projectId: string }) => {
   return (
-    <div className="h-full flex flex-col bg-surface-base">
-      <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low">
+    <div className="flex-1 min-h-0 flex flex-col bg-surface-base">
+      <div className="p-2 border-b border-white/10 flex items-center justify-between bg-surface-low shrink-0">
         <div className="flex items-center gap-4 px-2">
           <h2 className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">FINAL_SITE: {projectId}</h2>
           <div className="flex items-center gap-2 px-2 py-0.5 bg-tactical-success/10 text-tactical-success text-[9px] font-mono border border-tactical-success/20">
@@ -199,7 +200,7 @@ const FinalSite = ({ projectId }: { projectId: string }) => {
           </div>
         </div>
       </div>
-      <div className="flex-1 overflow-auto bg-background modern-scrollbar">
+      <div className="flex-1 min-h-0 flex flex-col bg-background modern-scrollbar">
         <React.Suspense fallback={<div className="flex items-center justify-center h-full text-tactical-primary font-mono animate-pulse">RENDERING_FINAL_SITE...</div>}>
           {projectId === 'sparta-explorer' && (
             <SpartaExplorerView views={{
@@ -219,7 +220,8 @@ const FinalSite = ({ projectId }: { projectId: string }) => {
           {projectId === 'prompt-lab' && <PromptLab />}
           {projectId === 'llm-eval-lab' && <LlmEvalLab />}
           {projectId === 'classifier-lab' && <ClassifierLab />}
-          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab'].includes(projectId) && (
+          {projectId === 'architecture' && <ArchitectureView />}
+          {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
             </div>
@@ -855,6 +857,7 @@ const ProjectSidebar = ({
     { id: 'prompt-lab', title: 'Prompt Lab', subtitle: 'LLM prompt iteration', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/prompt-lab-optimize/stitch/prompt-optimizer-v1.png' },
     { id: 'llm-eval-lab', title: 'LLM Eval Lab', subtitle: 'Model evaluation', date: '2026-03-22', type: 'desktop' as const, thumbnail: '/captures/llm-eval-lab/stitch/8f916e26f7894b119ce06a2743fe262a.png' },
     { id: 'classifier-lab', title: 'Classifier Lab', subtitle: 'ML classifier training pipeline', date: '2026-03-22', type: 'desktop' as const },
+    { id: 'architecture', title: 'Architecture', subtitle: 'Visual collaboration diagrams', date: '2026-03-25', type: 'desktop' as const },
   ];
 
   const filteredProjects = searchQuery
@@ -983,19 +986,13 @@ const ProjectSidebar = ({
         {filteredProjects.map(p => <ProjectItem key={p.id} project={p} />)}
       </div>
 
-      {/* Agent Control */}
-      {!isCollapsed && (
-        <div className="px-3 py-2 border-t border-white/10">
-          <AgentControl projectId={activeProjectId} />
-        </div>
-      )}
-
-      <div className={cn("p-4 bg-surface-lowest border-t border-white/10", isCollapsed && "p-2")}>
+      {/* Create New Project — compact, no separate background */}
+      <div className={cn("px-3 py-2 border-t border-white/10", isCollapsed && "px-1")}>
         <button className={cn(
-          "w-full flex items-center justify-center gap-2 py-2 bg-tactical-primary/10 border border-tactical-primary/20 text-tactical-primary text-[10px] font-mono font-bold uppercase hover:bg-tactical-primary/20 transition-all rounded",
-          isCollapsed && "p-2"
+          "w-full flex items-center justify-center gap-1.5 py-1.5 border border-tactical-primary/20 text-tactical-primary text-[9px] font-mono font-bold uppercase hover:bg-tactical-primary/10 transition-all rounded",
+          isCollapsed && "p-1.5"
         )}>
-          <Plus className="w-3 h-3" /> {!isCollapsed && "Create New Project"}
+          <Plus className="w-3 h-3" /> {!isCollapsed && "New Project"}
         </button>
       </div>
 
@@ -1530,7 +1527,7 @@ export default function App() {
           systemHealth={systemHealth}
         />
         
-        <main className="flex-1 relative overflow-hidden tactical-corner tactical-corner-tl tactical-corner-br modern-scrollbar">
+        <main className="flex-1 relative min-h-0 flex flex-col tactical-corner tactical-corner-tl tactical-corner-br modern-scrollbar">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeView}
@@ -1538,7 +1535,7 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="w-full h-full"
+              className="w-full flex-1 min-h-0 flex flex-col"
             >
               {activeView === 'design-board' && <DesignBoardCanvas projectId={activeProjectId} />}
               {activeView === 'reviews' && <Reviews projectId={activeProjectId} />}
@@ -1554,7 +1551,7 @@ export default function App() {
                       </React.Suspense>
                     </div>
                   ) : activeProjectId === 'sparta-explorer' ? (
-                    <div className="flex-1 overflow-auto">
+                    <div className="flex-1 flex flex-col overflow-hidden">
                       <React.Suspense fallback={<div className="p-8 text-tactical-primary font-mono">LOADING_COMPONENT...</div>}>
                         <SpartaExplorerView views={{
                           Overview: <React.Suspense fallback={null}><OverviewView /></React.Suspense>,

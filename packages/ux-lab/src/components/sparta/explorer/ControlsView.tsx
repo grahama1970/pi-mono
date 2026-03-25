@@ -2,6 +2,10 @@ import { useState, useEffect, useCallback } from 'react'
 import { EMBRY, label, glowDot, card, heading, body, fwBadge } from '../common/EmbryStyle'
 import { useControlsPaginated, normalizeFramework } from '../../../hooks/useSpartaCollections'
 import type { SpartaControl } from '../../../hooks/useSpartaCollections'
+import { applyMagneticHover, removeMagneticHover, magneticRow, magneticRowSelected, nrsToStatus, statusBadgeStyle, statusBadgeLabel } from '../common/TableStyles'
+import { UtilityBar } from '../common/UtilityBar'
+import { useToast } from '../common/Toast'
+import { ControlIdPills } from '../common/ControlIdPills'
 
 const API = 'http://localhost:3001/api/memory'
 const PAGE_SIZE = 100
@@ -39,6 +43,43 @@ function isPlaceholder(desc?: string): boolean {
   return !desc || PLACEHOLDER_PATTERN.test(desc)
 }
 
+/**
+ * Parse a description that contains cross-reference sections like:
+ * "NIST Controls: PM-9,PM-28; SPARTA Countermeasures: RD-0001,RD-0002; SPARTA Techniques: SV-IT-2"
+ * Returns prose (actual description text) and structured sections of control IDs.
+ */
+function parseDescriptionSections(desc: string): { prose: string; sections: Array<{ heading: string; ids: string[] }> } {
+  const sectionPattern = /(?:^|;\s*)(NIST Controls|SPARTA Countermeasures|SPARTA Techniques|Sample Requirements|D3FEND Artifacts|ATT&CK Techniques|CWE Weaknesses):\s*/gi
+  const parts = desc.split(sectionPattern)
+  const sections: Array<{ heading: string; ids: string[] }> = []
+  let prose = ''
+
+  // parts[0] is text before any section header
+  // parts[1] is a section name, parts[2] is its content, etc.
+  if (parts.length <= 1) {
+    // No sections found — entire text is prose (or cross-refs without labels)
+    // Check if it looks like a comma-separated ID dump
+    const ids = desc.split(/[,;]\s*/).map(s => s.trim()).filter(s => /^[A-Z]{2,}-?\d/.test(s) || /^d3f:/.test(s) || /^SV-/.test(s) || /^T\d{4}/.test(s))
+    if (ids.length > 3 && ids.length / desc.split(/[,;]/).length > 0.7) {
+      // Mostly IDs — treat as unlabeled cross-references
+      sections.push({ heading: 'Cross-References', ids })
+      return { prose: '', sections }
+    }
+    return { prose: desc, sections: [] }
+  }
+
+  prose = parts[0].replace(/;\s*$/, '').trim()
+  for (let i = 1; i < parts.length; i += 2) {
+    const heading = parts[i]
+    const content = (parts[i + 1] ?? '').replace(/;\s*$/, '').trim()
+    if (!content) continue
+    const ids = content.split(/[,\s]+/).map(s => s.trim()).filter(Boolean)
+    if (ids.length > 0) sections.push({ heading, ids })
+  }
+
+  return { prose, sections }
+}
+
 function nrsColor(score: number | undefined): string {
   if (score == null) return EMBRY.dim
   if (score >= 0.80) return EMBRY.green
@@ -48,7 +89,7 @@ function nrsColor(score: number | undefined): string {
 
 /* ── Detail pane for selected control ────────────────────────────────────── */
 
-function ControlDetailPane({ control, onClose, onNavigate }: { control: SpartaControl; onClose: () => void; onNavigate?: (ctrl: SpartaControl) => void }) {
+function ControlDetailPane({ control, onClose, onNavigate, onToast }: { control: SpartaControl; onClose: () => void; onNavigate?: (ctrl: SpartaControl) => void; onToast: (msg: string) => void }) {
   const [qras, setQras] = useState<Array<Record<string, unknown>>>([])
   const [rels, setRels] = useState<Array<{ source_control_id?: string; target_control_id?: string; relationship_type?: string }>>([])
   const [loadingDetail, setLoadingDetail] = useState(false)
@@ -119,23 +160,57 @@ function ControlDetailPane({ control, onClose, onNavigate }: { control: SpartaCo
             Close
           </button>
         </div>
+        <UtilityBar controlId={control.control_id} name={control.name} framework={fw} description={control.description ?? ''} onToast={onToast} />
       </div>
 
-      {/* Description */}
-      <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
-        <div style={{ ...label, marginBottom: 4 }}>Description</div>
-        {deprecated ? (
-          <div style={{ fontSize: 12, color: EMBRY.muted, padding: '6px 10px', borderRadius: 6, backgroundColor: `${EMBRY.muted}08`, border: `1px solid ${EMBRY.muted}22`, fontStyle: 'italic' }}>
-            {control.description || 'This control has been deprecated or withdrawn.'}
-          </div>
-        ) : placeholder ? (
-          <div style={{ fontSize: 12, color: EMBRY.amber, padding: '6px 10px', borderRadius: 6, backgroundColor: `${EMBRY.amber}12`, border: `1px solid ${EMBRY.amber}22` }}>
-            NEEDS DESCRIPTION — placeholder text detected
-          </div>
-        ) : (
-          <div style={{ fontSize: 12, color: EMBRY.dim, lineHeight: 1.5 }}>{control.description}</div>
-        )}
-      </div>
+      {/* Description + Related Controls */}
+      {(() => {
+        const { prose, sections } = parseDescriptionSections(control.description ?? '')
+        const navigateToControl = (id: string) => {
+          if (!onNavigate) return
+          fetch(`http://localhost:3001/api/memory/list`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ collection: 'sparta_controls', limit: 1, filters: { control_id: id }, return_fields: ['control_id', 'name', 'description', 'source_framework', 'control_type', 'parent_id', 'domain', 'scope', 'weaknesses', 'mind', 'nrs_score', 'status'] }),
+          }).then(r => r.json()).then(data => {
+            const doc = (data.documents ?? [])[0] as SpartaControl | undefined
+            if (doc) onNavigate(doc)
+          }).catch(() => {})
+        }
+        return (
+          <>
+            {/* Actual description (prose only) */}
+            <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+              <div style={{ ...label, marginBottom: 4 }}>Description</div>
+              {deprecated ? (
+                <div style={{ fontSize: 12, color: EMBRY.muted, padding: '6px 10px', borderRadius: 6, backgroundColor: `${EMBRY.muted}08`, border: `1px solid ${EMBRY.muted}22`, fontStyle: 'italic' }}>
+                  {control.description || 'This control has been deprecated or withdrawn.'}
+                </div>
+              ) : placeholder ? (
+                <div style={{ fontSize: 12, color: EMBRY.amber, padding: '6px 10px', borderRadius: 6, backgroundColor: `${EMBRY.amber}12`, border: `1px solid ${EMBRY.amber}22` }}>
+                  NEEDS DESCRIPTION — placeholder text detected
+                </div>
+              ) : prose ? (
+                <div style={{ fontSize: 12, color: EMBRY.dim, lineHeight: 1.6 }}>{prose}</div>
+              ) : (
+                <div style={{ fontSize: 12, color: EMBRY.muted, fontStyle: 'italic' }}>No prose description — see related controls below</div>
+              )}
+            </div>
+
+            {/* Related Controls — grouped, color-coded, with hover tooltips */}
+            {sections.length > 0 && (
+              <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}` }}>
+                <div style={{ ...label, marginBottom: 8 }}>Related Controls</div>
+                {sections.map(({ heading: h, ids: sectionIds }) => (
+                  <div key={h} style={{ marginBottom: 10 }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: EMBRY.dim, marginBottom: 4 }}>{h}</div>
+                    <ControlIdPills ids={sectionIds} onControlClick={navigateToControl} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )
+      })()}
 
       {/* Metadata */}
       <div style={{ padding: '12px 20px', borderBottom: `1px solid ${EMBRY.border}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 10 }}>
@@ -416,6 +491,7 @@ export function ControlsView() {
   const [fwFilter, setFwFilter] = useState<string | undefined>(undefined)
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<SpartaControl | null>(null)
+  const [toast, showToast] = useToast()
 
   const rawFw = fwFilter ? FW_TO_RAW[fwFilter] : undefined
   const { data: controls, total, loading, error } = useControlsPaginated(page, PAGE_SIZE, rawFw)
@@ -439,7 +515,7 @@ export function ControlsView() {
   }
 
   return (
-    <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
       {/* Main table area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Header bar */}
@@ -505,6 +581,7 @@ export function ControlsView() {
                 <tr>
                   <th style={{ ...thStyle, width: 28 }}></th>
                   <th style={thStyle}>FW</th>
+                  <th style={{ ...thStyle, width: 80 }}>Status</th>
                   <th style={thStyle}>ID</th>
                   <th style={{ ...thStyle, width: '35%' }}>Name</th>
                   <th style={thStyle}>Type</th>
@@ -526,15 +603,19 @@ export function ControlsView() {
                       key={ctrl.control_id}
                       onClick={() => setSelected(ctrl)}
                       style={{
-                        cursor: 'pointer',
-                        backgroundColor: isSelected ? `${EMBRY.accent}12` : 'transparent',
+                        ...magneticRow,
+                        ...(isSelected ? magneticRowSelected : {}),
                         opacity: deprecated ? 0.5 : 1,
+                        borderLeftColor: isSelected ? EMBRY.blue : 'transparent',
                       }}
-                      onMouseEnter={(e) => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = `${EMBRY.blue}08` }}
-                      onMouseLeave={(e) => { if (!isSelected) (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent' }}
+                      onMouseEnter={(e) => applyMagneticHover(e.currentTarget, isSelected)}
+                      onMouseLeave={(e) => removeMagneticHover(e.currentTarget, isSelected)}
                     >
                       <td style={{ ...tdStyle, textAlign: 'center' }}><div style={glowDot(rowColor, 6)} /></td>
                       <td style={tdStyle}><span style={fwBadge(fw)}>{fw}</span></td>
+                      <td style={tdStyle}>
+                        {(() => { const s = nrsToStatus(ctrl.nrs_score); return s !== 'none' ? <span style={statusBadgeStyle(s)}>{statusBadgeLabel(s)}</span> : null })()}
+                      </td>
                       <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 11, fontWeight: 700 }}>{ctrl.control_id}</td>
                       <td style={{ ...tdStyle, color: deprecated ? EMBRY.muted : EMBRY.dim }}>{ctrl.name}</td>
                       <td style={{ ...tdStyle, fontSize: 10, color: EMBRY.dim }}>{ctrl.control_type}</td>
@@ -580,12 +661,13 @@ export function ControlsView() {
         </div>
       </div>
 
-      {/* Detail slide-over */}
+      {/* Detail flyout (overlays from right) */}
       {selected && (
-        <div style={slideOverStyle}>
-          <ControlDetailPane control={selected} onClose={() => setSelected(null)} onNavigate={(ctrl) => setSelected(ctrl)} />
+        <div style={flyoutStyle}>
+          <ControlDetailPane control={selected} onClose={() => setSelected(null)} onNavigate={(ctrl) => setSelected(ctrl)} onToast={showToast} />
         </div>
       )}
+      {toast}
     </div>
   )
 }
@@ -612,12 +694,17 @@ const tdStyle: React.CSSProperties = {
   color: EMBRY.white,
 }
 
-const slideOverStyle: React.CSSProperties = {
-  width: 440,
+const flyoutStyle: React.CSSProperties = {
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  width: 500,
+  height: '100%',
   backgroundColor: EMBRY.bgPanel,
   borderLeft: `1px solid ${EMBRY.border}`,
+  boxShadow: '-20px 0 50px rgba(0,0,0,0.8)',
   overflow: 'auto',
-  flexShrink: 0,
+  zIndex: 100,
 }
 
 function paginationBtn(enabled: boolean): React.CSSProperties {
