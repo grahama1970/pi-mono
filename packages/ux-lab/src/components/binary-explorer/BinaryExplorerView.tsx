@@ -200,7 +200,7 @@ export function BinaryExplorerView() {
   const [chatLoading, setChatLoading] = useState(false)
 
   // --- Graph Visual State ---
-  const [viewMode, setViewMode] = useState<'graph' | 'tree'>('graph')
+  const [viewMode, setViewMode] = useState<'graph' | 'tree' | 'code' | 'vulns'>('graph')
   const [layoutMode, setLayoutMode] = useState<'organic' | 'stratified' | 'clustered'>('organic')
   const [llmMentionedIds, setLlmMentionedIds] = useState<Set<string>>(new Set())
   const [perspective, setPerspective] = useState<Perspective>('all')
@@ -1551,6 +1551,20 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     backgroundColor: viewMode === 'tree' ? `${EMBRY.accent}20` : 'transparent',
                     color: viewMode === 'tree' ? EMBRY.accent : EMBRY.dim,
                   }}><List size={15} /></button>
+                <button onClick={() => setViewMode('code')} title="Code / Source view"
+                  style={{
+                    width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    borderRadius: 3, cursor: 'pointer', border: 'none',
+                    backgroundColor: viewMode === 'code' ? `${EMBRY.accent}20` : 'transparent',
+                    color: viewMode === 'code' ? EMBRY.accent : EMBRY.dim,
+                  }}><Code size={15} /></button>
+                <button onClick={() => setViewMode('vulns')} title="Vulnerability / CWE mapping"
+                  style={{
+                    width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    borderRadius: 3, cursor: 'pointer', border: 'none',
+                    backgroundColor: viewMode === 'vulns' ? `${EMBRY.accent}20` : 'transparent',
+                    color: viewMode === 'vulns' ? EMBRY.accent : EMBRY.dim,
+                  }}><Shield size={15} /></button>
               </div>
 
               {/* Layout removed — organic is the only useful layout for exploration */}
@@ -1669,6 +1683,142 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   />
                 )
               })()}
+
+              {/* Code View — full-pane source/decompilation browser */}
+              {viewMode === 'code' && (
+                <div style={{ flex: 1, overflow: 'auto', fontFamily: 'JetBrains Mono, monospace', fontSize: 10, background: '#050505' }}>
+                  {/* Source file list — all nodes with source_pattern */}
+                  {!selectedNode ? (
+                    <div style={{ padding: 12 }}>
+                      <div style={{ fontSize: 11, fontWeight: 800, color: EMBRY.white, marginBottom: 8 }}>SOURCE PATTERNS ({data.graphNodes.filter(n => n.source_pattern).length} available)</div>
+                      {data.graphNodes.filter(n => n.source_pattern).map(n => (
+                        <div key={n.id} onClick={() => onNodeClick(n)}
+                          style={{ padding: '6px 10px', borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer', display: 'flex', gap: 8, alignItems: 'center' }}
+                          onMouseEnter={e => (e.currentTarget.style.background = '#0a0a0a')}
+                          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                        >
+                          <span style={{ width: 6, height: 6, borderRadius: '50%', background: NODE_TYPE_COLORS[n.nodeType] ?? EMBRY.dim, flexShrink: 0 }} />
+                          <span style={{ color: EMBRY.white, fontWeight: 600 }}>{n.label}</span>
+                          <span style={{ color: EMBRY.muted, fontSize: 8 }}>{n.nodeType}</span>
+                          <span style={{ marginLeft: 'auto', color: EMBRY.dim, fontSize: 8 }}>{n.source_pattern!.split('\n').length} lines</span>
+                        </div>
+                      ))}
+                      {data.graphNodes.filter(n => n.source_pattern).length === 0 && (
+                        <div style={{ color: EMBRY.muted, padding: 20, textAlign: 'center' }}>
+                          No source patterns extracted. Run /analyze-elf with --extract-source to populate.
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                      {/* Header */}
+                      <div style={{ padding: '6px 12px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, background: '#060606' }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: NODE_TYPE_COLORS[selectedNode.nodeType] ?? EMBRY.dim }} />
+                        <span style={{ fontWeight: 800, color: EMBRY.white }}>{selectedNode.label}</span>
+                        <span style={{ color: EMBRY.muted, fontSize: 8 }}>{selectedNode.nodeType} · {selectedNode.cluster} · {selectedNode.tier}</span>
+                        <span style={{ flex: 1 }} />
+                        {/* Code sub-tabs */}
+                        {(['asm', 'c', 'python'] as const).map(t => (
+                          <button key={t} onClick={() => setCodeViewTab(t === 'asm' ? 'assembly' : t === 'c' ? 'decompiled' : 'pseudocode')}
+                            style={{
+                              fontSize: 9, padding: '2px 8px', borderRadius: 2, cursor: 'pointer', border: 'none',
+                              background: (t === 'asm' && codeViewTab === 'assembly') || (t === 'c' && codeViewTab === 'decompiled') || (t === 'python' && codeViewTab === 'pseudocode') ? `${EMBRY.accent}20` : 'transparent',
+                              color: (t === 'asm' && codeViewTab === 'assembly') || (t === 'c' && codeViewTab === 'decompiled') || (t === 'python' && codeViewTab === 'pseudocode') ? EMBRY.accent : EMBRY.dim,
+                              fontWeight: 700, textTransform: 'uppercase',
+                            }}>{t === 'asm' ? 'ASM' : t === 'c' ? 'C (decompiled)' : 'Python'}</button>
+                        ))}
+                      </div>
+                      {/* Code content with line numbers */}
+                      <div style={{ flex: 1, overflow: 'auto', padding: 0 }}>
+                        {(() => {
+                          const code = codeViewTab === 'pseudocode' ? (pseudocode || '# Select a node to generate Python pseudocode') : (selectedNode.source_pattern || '// No source data available for this node\n// Run /analyze-elf to extract source patterns')
+                          const lines = code.split('\n')
+                          const syntaxColor = codeViewTab === 'assembly' ? '#a5b4fc' : codeViewTab === 'decompiled' ? '#86efac' : '#fde68a'
+                          return (
+                            <pre style={{ margin: 0, padding: 0 }}>
+                              {lines.map((line, i) => (
+                                <div key={i} style={{ display: 'flex', borderBottom: '1px solid #111', minHeight: 18 }}>
+                                  <span style={{ width: 40, textAlign: 'right', paddingRight: 8, color: EMBRY.muted, fontSize: 9, userSelect: 'none', flexShrink: 0, background: '#030303' }}>{i + 1}</span>
+                                  <span style={{ color: syntaxColor, padding: '0 8px', whiteSpace: 'pre-wrap', flex: 1 }}>{line || ' '}</span>
+                                </div>
+                              ))}
+                            </pre>
+                          )
+                        })()}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Vulnerability / CWE Mapping View — full-pane table */}
+              {viewMode === 'vulns' && (
+                <div style={{ flex: 1, overflow: 'auto', fontSize: 10, fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div style={{ padding: '8px 12px', borderBottom: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 8, background: '#060606', flexShrink: 0 }}>
+                    <Shield size={14} style={{ color: EMBRY.red }} />
+                    <span style={{ fontWeight: 800, color: EMBRY.white }}>VULNERABILITY MAP</span>
+                    <span style={{ color: EMBRY.muted, fontSize: 8 }}>{taxonomyMap.size} nodes with taxonomy data</span>
+                    <span style={{ flex: 1 }} />
+                    <input value={tableSearch} onChange={e => setTableSearch(e.target.value)}
+                      placeholder="Filter by CWE, ATT&CK, feature..."
+                      style={{ background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, fontSize: 9, padding: '3px 8px', outline: 'none', borderRadius: 2, width: 200 }}
+                    />
+                  </div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+                    <thead>
+                      <tr style={{ borderBottom: `2px solid ${EMBRY.border}` }}>
+                        <th style={{ width: 180, padding: '6px 8px', textAlign: 'left', color: EMBRY.dim, fontSize: 8, fontWeight: 700 }}>FEATURE</th>
+                        <th style={{ width: 70, padding: '6px 8px', textAlign: 'left', color: EMBRY.dim, fontSize: 8, fontWeight: 700 }}>TYPE</th>
+                        <th style={{ width: 50, padding: '6px 8px', textAlign: 'center', color: EMBRY.dim, fontSize: 8, fontWeight: 700 }}>CONF</th>
+                        <th style={{ padding: '6px 8px', textAlign: 'left', color: '#FF5722', fontSize: 8, fontWeight: 700 }}>CWE</th>
+                        <th style={{ padding: '6px 8px', textAlign: 'left', color: '#FF9800', fontSize: 8, fontWeight: 700 }}>ATT&CK</th>
+                        <th style={{ padding: '6px 8px', textAlign: 'left', color: '#2196F3', fontSize: 8, fontWeight: 700 }}>D3FEND</th>
+                        <th style={{ padding: '6px 8px', textAlign: 'left', color: '#9C27B0', fontSize: 8, fontWeight: 700 }}>MIND</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data.graphNodes
+                        .filter(n => {
+                          const tax = taxonomyMap.get(n.id)
+                          if (!tax) return false
+                          if (!tableSearch) return true
+                          const q = tableSearch.toLowerCase()
+                          return n.label.toLowerCase().includes(q) || n.nodeType.includes(q) ||
+                            (tax.cwe || []).join(' ').toLowerCase().includes(q) ||
+                            (tax.attack || []).join(' ').toLowerCase().includes(q) ||
+                            (tax.mind || []).join(' ').toLowerCase().includes(q)
+                        })
+                        .sort((a, b) => {
+                          const aTax = taxonomyMap.get(a.id)
+                          const bTax = taxonomyMap.get(b.id)
+                          return ((bTax?.cwe?.length || 0) + (bTax?.attack?.length || 0)) - ((aTax?.cwe?.length || 0) + (aTax?.attack?.length || 0))
+                        })
+                        .map(n => {
+                          const tax = taxonomyMap.get(n.id)!
+                          const confColor = n.confidence >= 0.8 ? EMBRY.green : n.confidence >= 0.6 ? EMBRY.amber : EMBRY.red
+                          return (
+                            <tr key={n.id} onClick={() => onNodeClick(n)}
+                              style={{ borderBottom: `1px solid ${EMBRY.border}`, cursor: 'pointer' }}
+                              onMouseEnter={e => (e.currentTarget.style.background = '#0a0a0a')}
+                              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                            >
+                              <td style={{ padding: '5px 8px', color: EMBRY.white, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n.label}</td>
+                              <td style={{ padding: '5px 8px' }}>
+                                <span style={{ fontSize: 7, padding: '1px 4px', borderRadius: 2, background: `${NODE_TYPE_COLORS[n.nodeType] || EMBRY.dim}20`, color: NODE_TYPE_COLORS[n.nodeType] || EMBRY.dim, border: `1px solid ${NODE_TYPE_COLORS[n.nodeType] || EMBRY.dim}33` }}>{n.nodeType}</span>
+                              </td>
+                              <td style={{ padding: '5px 8px', textAlign: 'center', color: confColor, fontWeight: 700 }}>{Math.round(n.confidence * 100)}%</td>
+                              <td style={{ padding: '5px 8px', color: '#FF5722', fontSize: 8 }}>{(tax.cwe || []).join(', ') || '—'}</td>
+                              <td style={{ padding: '5px 8px', color: '#FF9800', fontSize: 8 }}>{(tax.attack || []).join(', ') || '—'}</td>
+                              <td style={{ padding: '5px 8px', color: '#2196F3', fontSize: 8 }}>{(tax.d3fend || []).join(', ') || '—'}</td>
+                              <td style={{ padding: '5px 8px', color: '#9C27B0', fontSize: 8 }}>{(tax.mind || []).join(', ') || '—'}</td>
+                            </tr>
+                          )
+                        })}
+                    </tbody>
+                  </table>
+                  {taxonomyLoading && <div style={{ padding: 20, textAlign: 'center', color: EMBRY.accent }}>Loading taxonomy data...</div>}
+                </div>
+              )}
 
               {/* Empty scene prompt — only in graph mode */}
               {sceneNodeIds.size === 0 && !data.loading && viewMode === 'graph' && (

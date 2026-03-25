@@ -206,6 +206,10 @@ def _build_cmd(backend_name: str, model: str, prompt: str,
     # Backend-specific image flags (e.g. gemini -f file.png)
     cmd.extend(build_image_flags(cfg.get("image_flag"), image_paths or []))
 
+    # Allow access to 12TB storage for training data, models, artifacts
+    if backend_name == "claude" and Path("/mnt/storage12tb").is_dir():
+        cmd.extend(["--add-dir", "/mnt/storage12tb"])
+
     return cmd
 
 

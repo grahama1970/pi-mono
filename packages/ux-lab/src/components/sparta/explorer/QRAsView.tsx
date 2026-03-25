@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { EMBRY, card, label, heading, body, glowDot } from '../common/EmbryStyle'
 import { useQRAs } from '../../../hooks/useSpartaCollections'
 import type { SpartaQRA } from '../../../hooks/useSpartaCollections'
+import { useSpartaNav } from './SpartaExplorer'
 
 function groundingColor(score: number | undefined): string {
   if (score == null) return EMBRY.dim
@@ -23,8 +24,13 @@ function tierBadge(pass: boolean | undefined, tier: string): React.ReactNode {
 }
 
 export function QRAsView() {
-  const { data: qras, loading, error, refresh } = useQRAs()
+  const nav = useSpartaNav()
+  const controlFilter = nav.tabFilters.QRAs?.controlId
+  const { data: qras, loading, error, refresh } = useQRAs("", controlFilter)
   const [currentIndex, setCurrentIndex] = useState(0)
+
+  // Reset index when filter changes
+  useEffect(() => { setCurrentIndex(0) }, [controlFilter])
   const [decisions, setDecisions] = useState<Map<string, 'accept' | 'reject'>>(new Map())
   const [undoTimer, setUndoTimer] = useState<{ key: string; timer: number } | null>(null)
 
@@ -105,6 +111,12 @@ export function QRAsView() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', borderBottom: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>
           <div style={heading}>QRA Review</div>
           <div style={{ ...label }}>{currentIndex + 1} / {qras.length}</div>
+          {controlFilter && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 12px', backgroundColor: `${EMBRY.accent}12`, borderRadius: 4, border: `1px solid ${EMBRY.accent}33` }}>
+              <span style={{ fontSize: 10, color: EMBRY.accent }}>Filtered: {controlFilter}</span>
+              <button onClick={() => nav.clearTabFilter('QRAs')} style={{ background: 'none', border: 'none', color: EMBRY.dim, cursor: 'pointer', fontSize: 12 }}>×</button>
+            </div>
+          )}
           <div style={{ flex: 1 }} />
           <span style={{ fontSize: 10, color: EMBRY.dim }}>
             A=Accept R=Reject E=Edit | ←→ navigate
