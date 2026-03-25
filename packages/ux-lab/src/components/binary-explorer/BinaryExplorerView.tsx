@@ -588,13 +588,19 @@ export function BinaryExplorerView() {
     if (!data.loading && data.graphNodes.length > 0) loadSavedScenes()
   }, [data.loading, data.graphNodes.length, loadSavedScenes])
 
-  // Auto-seed namespaces on first load (fixes "EMPTY SCENE" dead end)
+  // Auto-seed on first load: namespaces + top 3 most-connected nodes
   const [autoSeeded, setAutoSeeded] = useState(false)
   useEffect(() => {
     if (autoSeeded || data.loading || data.graphNodes.length === 0 || sceneNodeIds.size > 0) return
     const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
-    if (namespaces.length > 0) {
-      addToScene(namespaces.map(n => n.id))
+    const topHubs = data.graphNodes
+      .filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
+      .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+      .sort((a, b) => b.deg - a.deg)
+      .slice(0, 3)
+    const seedIds = [...namespaces.map(n => n.id), ...topHubs.map(n => n.id)]
+    if (seedIds.length > 0) {
+      addToScene(seedIds)
       setAutoSeeded(true)
     }
   }, [data.loading, data.graphNodes.length, sceneNodeIds.size, autoSeeded])
@@ -1540,6 +1546,20 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 >
                   {Object.entries(PERSPECTIVE_LABELS).map(([k,v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
+              </div>
+
+              {/* Layout Mode */}
+              <div style={{ display: 'flex', gap: 1, alignItems: 'center', borderLeft: `1px solid ${EMBRY.border}`, paddingLeft: 10, marginRight: 4 }}>
+                {(['organic', 'stratified', 'clustered'] as const).map(mode => (
+                  <button key={mode} onClick={() => setLayoutMode(mode)} title={`Layout: ${mode}`}
+                    style={{
+                      fontSize: 8, fontWeight: layoutMode === mode ? 800 : 400,
+                      padding: '2px 6px', borderRadius: 2, cursor: 'pointer', border: 'none',
+                      background: layoutMode === mode ? `${EMBRY.accent}20` : 'transparent',
+                      color: layoutMode === mode ? EMBRY.accent : EMBRY.dim,
+                    }}
+                  >{mode === 'organic' ? 'Force' : mode === 'stratified' ? 'Hierarchy' : 'Cluster'}</button>
+                ))}
               </div>
 
               {/* Scene Save/Load */}
