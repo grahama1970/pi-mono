@@ -1,10 +1,36 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [react()],
-  server: { port: 3000 },
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      // Import skill components directly — no duplication
+      '@skills': resolve(__dirname, '../../.pi/skills'),
+      // Map NVIS theme to EMBRY shim so skill components use Explorer's design system
+      '@skills-theme': resolve(__dirname, 'src/components/sparta/common/nvis-shim.ts'),
+    },
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime'],
+  },
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+      '/ws': {
+        target: 'ws://localhost:3001',
+        ws: true,
+      },
+      '/test-results': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'node',
