@@ -4,7 +4,7 @@
  *
  * Reusable across code view mode and detail panel code tab.
  */
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useState } from 'react'
 import { EMBRY } from '../common/EmbryStyle'
 
 // ── Token-level syntax highlighting (regex tokenizer) ────────────────────────
@@ -27,7 +27,7 @@ const TOKEN_COLORS: Record<TokenType, string> = {
   plain: '#abb2bf',       // default
 }
 
-const ASM_KEYWORDS = /\b(mov|push|pop|call|ret|jmp|je|jne|jg|jl|jge|jle|ja|jb|jae|jbe|add|sub|mul|div|xor|and|or|not|shl|shr|cmp|test|lea|nop|int|syscall|sysenter|lock|rep|movzx|movsx|cdq|cbw|cwde|imul|idiv)\b/g
+const ASM_KEYWORDS = /\b(mov|movzx|movsx|movsxd|movabs|movdqu|movdqa|movaps|movups|push|pop|pushf|popf|pushfq|popfq|call|ret|retn|retf|jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|add|sub|mul|div|imul|idiv|inc|dec|neg|not|xor|and|or|shl|shr|sar|sal|rol|ror|rcl|rcr|cmp|test|lea|nop|int|syscall|sysenter|sysexit|sysret|lock|rep|repe|repne|repz|repnz|cdq|cdqe|cbw|cwde|cqo|bsf|bsr|bswap|bt|bts|btr|btc|xchg|xadd|cmpxchg|cmpxchg8b|cmpxchg16b|leave|enter|hlt|pause|lfence|mfence|sfence|endbr32|endbr64|cmove|cmovne|cmovz|cmovnz|cmovg|cmovge|cmovl|cmovle|cmova|cmovae|cmovb|cmovbe|cmovs|cmovns|cmovo|cmovno|sete|setne|setz|setnz|setg|setge|setl|setle|seta|setae|setb|setbe|sets|setns|seto|setno|lahf|sahf|stc|clc|std|cld|sti|cli|rdtsc|rdtscp|cpuid|nop|ud2|int3|into|iret|iretd|iretq|popfd|pushfd|pushfq|popfq|vmovdqu|vmovdqa|vpxor|vpand|vpor|vpcmpeqb|vpcmpeqd|vpsubb|vpsubw|vpsubd|vpsllq|vpsrlq|addss|subss|mulss|divss|addsd|subsd|mulsd|divsd|xorps|xorpd|andps|andpd|orps|orpd|comisd|comiss|ucomisd|ucomiss|cvtsi2sd|cvtsi2ss|cvttsd2si|cvttss2si)\b/g
 const ASM_REGISTERS = /\b(rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8|r9|r10|r11|r12|r13|r14|r15|eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|si|di|bp|sp|al|bl|cl|dl|ah|bh|ch|dh|cs|ds|es|fs|gs|ss|rip|eip|ip|DWORD|QWORD|BYTE|WORD|PTR)\b/g
 const C_KEYWORDS = /\b(if|else|for|while|do|switch|case|break|continue|return|goto|sizeof|typedef|struct|union|enum|const|static|extern|volatile|inline|register|auto|signed|unsigned|restrict|_Bool|_Complex|_Imaginary)\b/g
 const C_TYPES = /\b(void|int|char|short|long|float|double|size_t|ssize_t|uint8_t|uint16_t|uint32_t|uint64_t|int8_t|int16_t|int32_t|int64_t|bool|FILE|NULL|true|false)\b/g
@@ -57,9 +57,27 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
     return [{ text, type: 'directive' }]
   }
 
+  // Inline comment detection — split off trailing comment before tokenizing code
+  // ASM: find first ';' not inside a string
+  // C/Python: find '//' or '#' not inside a string
+  let codepart = text
+  let commentSuffix: string | null = null
+
+  if (language === 'asm') {
+    const idx = text.indexOf(';')
+    if (idx >= 0) { codepart = text.slice(0, idx); commentSuffix = text.slice(idx) }
+  } else if (language === 'c') {
+    const idx = text.indexOf('//')
+    if (idx >= 0) { codepart = text.slice(0, idx); commentSuffix = text.slice(idx) }
+  } else if (language === 'python') {
+    // Find '#' not inside a string (simple heuristic: count quotes before the #)
+    const idx = text.indexOf('#')
+    if (idx >= 0) { codepart = text.slice(0, idx); commentSuffix = text.slice(idx) }
+  }
+
   // Token-level splitting
   const tokens: Token[] = []
-  let remaining = text
+  const remaining = codepart
 
   const patterns: { regex: RegExp; type: TokenType }[] =
     language === 'asm' ? [
@@ -112,6 +130,9 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
     }
   }
 
+  // Append inline comment as a single comment token
+  if (commentSuffix) tokens.push({ text: commentSuffix, type: 'comment' })
+
   return tokens.length > 0 ? tokens : [{ text, type: 'plain' }]
 }
 
@@ -136,10 +157,14 @@ interface CodePaneProps {
   showAddresses?: boolean
   /** Show opcode bytes */
   showOpcodes?: boolean
+  /** Show copy-to-clipboard button in header */
+  showCopyButton?: boolean
   /** Max height (CSS) */
   maxHeight?: string
   /** Header label */
   header?: string
+  /** data-testid for the root element */
+  testId?: string
 }
 
 export function CodePane({
@@ -153,20 +178,50 @@ export function CodePane({
   onLineClick,
   showAddresses = false,
   showOpcodes = false,
+  showCopyButton = false,
   maxHeight = '100%',
   header,
+  testId,
 }: CodePaneProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [copied, setCopied] = useState(false)
   const lines = code.split('\n')
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    }).catch(() => {/* ignore clipboard errors */})
+  }, [code])
 
   const handleMouseEnter = useCallback((i: number) => onLineHover?.(i), [onLineHover])
   const handleMouseLeave = useCallback(() => onLineHover?.(null), [onLineHover])
 
+  // Basic block boundary detection for ASM — a block ends after unconditional jumps/rets
+  // and begins at a new label. Used to insert a subtle visual separator.
+  const isBlockEnd = (line: string) => {
+    const t = line.trim().split(/\s+/)[0].toLowerCase().replace(/^(lock|rep[ne]?z?)\s+/, '')
+    return /^(ret|retn|retf|jmp|ud2|hlt)$/.test(t)
+  }
+  const isLabelLine = (line: string) => /^\s*[.\w]+:/.test(line)
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: 11, background: '#1e1e1e' }}>
+    <div data-testid={testId ?? 'code-pane'} style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: 11, background: '#1e1e1e' }}>
       {header && (
-        <div style={{ padding: '4px 12px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', background: '#252526', flexShrink: 0 }}>
-          {header}
+        <div style={{ padding: '4px 12px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', background: '#252526', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ flex: 1 }}>{header}</span>
+          {showCopyButton && (
+            <button
+              data-testid="code-pane-copy"
+              onClick={handleCopy}
+              title="Copy to clipboard"
+              style={{
+                fontSize: 8, padding: '1px 6px', background: copied ? `${EMBRY.green}20` : 'transparent',
+                border: `1px solid ${copied ? EMBRY.green : EMBRY.border}`, color: copied ? EMBRY.green : EMBRY.dim,
+                borderRadius: 2, cursor: 'pointer', fontWeight: 700, letterSpacing: '0.5px',
+              }}
+            >{copied ? 'COPIED' : 'COPY'}</button>
+          )}
         </div>
       )}
       <div ref={scrollRef} style={{ flex: 1, overflow: 'auto', maxHeight }}>
@@ -176,10 +231,17 @@ export function CodePane({
             const isHighlighted = highlightedLines?.has(i)
             const addr = addresses?.[i]
             const opcode = opcodes?.[i]
+            // Basic block separator: insert a thin rule before a label line that follows
+            // a non-empty, non-label previous line (i.e., start of a new block)
+            const showBlockSeparator = language === 'asm' && i > 0 && isLabelLine(line) && lines[i - 1].trim() !== ''
 
             return (
+              <div key={i}>
+              {showBlockSeparator && (
+                <div data-testid="asm-block-separator" style={{ height: 1, background: '#2a2a2a', margin: '4px 0', borderTop: '1px solid #2d2d2d' }} />
+              )}
               <div
-                key={i}
+                data-block-end={language === 'asm' && isBlockEnd(line) ? 'true' : undefined}
                 style={{
                   display: 'flex',
                   minHeight: 20,
@@ -223,6 +285,7 @@ export function CodePane({
                     <span key={ti} style={{ color: TOKEN_COLORS[tok.type] }}>{tok.text}</span>
                   ))}
                 </span>
+              </div>
               </div>
             )
           })}

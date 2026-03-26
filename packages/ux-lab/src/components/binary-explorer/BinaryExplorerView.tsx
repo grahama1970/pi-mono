@@ -308,6 +308,8 @@ export function BinaryExplorerView() {
   const [codeViewTab, setCodeViewTab] = useState<'assembly' | 'decompiled' | 'pseudocode'>('pseudocode')
   const [pseudocode, setPseudocode] = useState<string | null>(null)
   const [pseudocodeLoading, setPseudocodeLoading] = useState(false)
+  const [pseudocodeModel, setPseudocodeModel] = useState<string | null>(null)
+  const [pseudocodeGenCount, setPseudocodeGenCount] = useState(0)
   const [leftPaneWidth, setLeftPaneWidth] = useState(65)
 
   // --- Voice State ---
@@ -434,9 +436,10 @@ export function BinaryExplorerView() {
   // Generate Python pseudocode for selected node
   useEffect(() => {
     if (!selectedNode || codeViewTab !== 'pseudocode' || dataTab !== 'code') return
-    if (pseudocode && pseudocodeLoading) return
+    if (pseudocodeLoading) return
     setPseudocodeLoading(true)
     setPseudocode(null)
+    setPseudocodeModel(null)
     const nodeInfo = `Feature: ${selectedNode.label}\nType: ${selectedNode.nodeType}\nDescription: ${selectedNode.description || 'N/A'}\n${selectedNode.source_pattern ? `Source pattern:\n${selectedNode.source_pattern}` : ''}${selectedNode.fields?.length ? `\nFields: ${selectedNode.fields.map((f: any) => f.name || f).join(', ')}` : ''}${selectedNode.states?.length ? `\nStates: ${selectedNode.states.map((s: any) => s.name || s).join(', ')}` : ''}`
 
     fetch('/api/scillm', {
@@ -445,7 +448,7 @@ export function BinaryExplorerView() {
       body: JSON.stringify({
         model: 'text',
         messages: [
-          { role: 'system', content: 'You are a reverse engineering assistant. Convert binary feature descriptions into clean Python pseudocode that a beginner could understand. Include comments explaining what each section does. Keep it concise (under 40 lines).' },
+          { role: 'system', content: 'You are a reverse engineering expert assistant. Convert binary feature descriptions into Pythonic pseudocode for RE analysts. Use ctypes or construct-style structs where applicable. Include comments explaining obfuscation patterns, data structures, and control flow. Be concise (under 50 lines) and accurate — never invent behaviors not present in the feature description.' },
           { role: 'user', content: `Generate Python pseudocode for this binary feature:\n\n${nodeInfo}` }
         ],
         temperature: 0.2,
@@ -453,10 +456,14 @@ export function BinaryExplorerView() {
       }),
     })
       .then(r => r.json())
-      .then((d: any) => setPseudocode(d.choices?.[0]?.message?.content || 'No pseudocode generated'))
-      .catch(() => setPseudocode('# Error: LLM service unavailable'))
+      .then((d: any) => {
+        setPseudocode(d.choices?.[0]?.message?.content || '# No pseudocode generated')
+        setPseudocodeModel(d.model || 'scillm')
+      })
+      .catch(() => { setPseudocode('# Error: LLM service unavailable'); setPseudocodeModel(null) })
       .finally(() => setPseudocodeLoading(false))
-  }, [selectedNode?.id, codeViewTab, dataTab])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedNode?.id, codeViewTab, dataTab, pseudocodeGenCount])
 
   // --- Saved Scenes ---
   const [savedScenes, setSavedScenes] = useState<{ name: string; nodeIds: string[]; perspective: Perspective; layoutMode: string }[]>([])
@@ -2006,6 +2013,20 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         <span style={{ fontWeight: 800, color: EMBRY.white }}>{selectedNode.label}</span>
                         <span style={{ color: EMBRY.muted, fontSize: 8 }}>{selectedNode.nodeType} · {selectedNode.cluster} · {selectedNode.tier}</span>
                         <span style={{ flex: 1 }} />
+                        {/* LLM badge — shown when pseudocode tab is active */}
+                        {codeViewTab === 'pseudocode' && pseudocodeModel && (
+                          <span data-testid="llm-model-badge" style={{ fontSize: 7, padding: '1px 5px', borderRadius: 2, background: '#FF980015', border: '1px dashed #FF980044', color: '#FF9800', fontWeight: 700, letterSpacing: '0.5px' }}>
+                            LLM · {pseudocodeModel}
+                          </span>
+                        )}
+                        {codeViewTab === 'pseudocode' && pseudocode && !pseudocodeLoading && (
+                          <button
+                            data-testid="pseudocode-regen"
+                            onClick={() => { setPseudocodeGenCount(c => c + 1) }}
+                            title="Regenerate pseudocode"
+                            style={{ fontSize: 8, padding: '1px 6px', background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.dim, borderRadius: 2, cursor: 'pointer', fontWeight: 700 }}
+                          >↺ REGEN</button>
+                        )}
                         {/* Code sub-tabs */}
                         {(['asm', 'c', 'python'] as const).map(t => (
                           <button key={t} onClick={() => setCodeViewTab(t === 'asm' ? 'assembly' : t === 'c' ? 'decompiled' : 'pseudocode')}
@@ -2025,7 +2046,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             : (selectedNode.source_pattern || '// No source data available\n// Run /analyze-elf to extract source patterns')}
                           language={codeViewTab === 'assembly' ? 'asm' : codeViewTab === 'decompiled' ? 'c' : 'python'}
                           header={`${selectedNode.label} — ${codeViewTab === 'assembly' ? 'Assembly' : codeViewTab === 'decompiled' ? 'Decompiled C' : 'Python Pseudocode'}`}
-                          onLineClick={(i) => {
+                          showCopyButton
+                          testId="code-view-pane"
+                          onLineClick={(_i) => {
                             // Future: cross-link to graph nodes at this line
                           }}
                         />
