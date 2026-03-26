@@ -30,6 +30,41 @@ export const EMBRY = {
 		NIST: "#4a9eff",
 		CWE: "#ffaa00",
 	} as Record<string, string>,
+
+	/**
+	 * Graph node-type semantic colors — colorblind-safe palette.
+	 *
+	 * Design rationale:
+	 *  - Avoids pure red/green pairs (deuteranopia/protanopia affects ~8% of males).
+	 *  - Each type is distinguishable by hue AND luminance so grayscale screenshots
+	 *    still separate types visually — important for CTF write-up videos.
+	 *  - Matches a fixed legend: same type → same color everywhere in the tool.
+	 *
+	 * Legend:
+	 *  function   #4a9eff  blue    — callable unit / top-level symbol
+	 *  block      #f59e0b  amber   — basic block inside a function
+	 *  syscall    #c084fc  purple  — OS interface boundary
+	 *  extern     #22d3ee  cyan    — PLT / imported symbol
+	 *  data       #a3a3a3  gray    — static data / rodata reference
+	 *  entry      #00ff88  green   — program / function entry point
+	 *  exit       #ff6b6b  coral   — return / tail-call exit
+	 *  selected   #ffd700  gold    — currently focused node (high contrast)
+	 *  highlight  #ff9500  orange  — search match / user annotation
+	 */
+	graph: {
+		function: "#4a9eff", // blue   — callable unit
+		block: "#f59e0b", // amber  — basic block
+		syscall: "#c084fc", // purple — OS boundary
+		extern: "#22d3ee", // cyan   — PLT / imported
+		data: "#a3a3a3", // gray   — static data
+		entry: "#00ff88", // green  — entry point
+		exit: "#ff6b6b", // coral  — return/exit (distinct from pure red)
+		selected: "#ffd700", // gold   — active selection
+		highlight: "#ff9500", // orange — search / annotation
+		edge: "rgba(255,255,255,0.25)", // default edge color
+		edgeBack: "#ff6b6b", // back-edge (loop) — coral, matches exit semantic
+		edgeCross: "#c084fc", // cross-edge       — purple, matches syscall semantic
+	} as const,
 } as const;
 
 /** Card wrapper style */
