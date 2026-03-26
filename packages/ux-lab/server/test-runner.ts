@@ -769,11 +769,12 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
               verdict,
             };
           } catch (prErr: any) {
+            console.error(`[PERSONA_REVIEW] FAILED for ${personaSlug}:`, prErr.message, prErr.cause || '');
             return {
               status: 'FAILED',
-              detail: `Persona review subagent unreachable: ${prErr.message}`,
+              detail: `Persona review subagent error: ${prErr.message}`,
               expected: `${personaSlug}: ${reviewCriteria}`,
-              actual: 'Subagent service unavailable',
+              actual: `Subagent service unavailable: ${prErr.message}`,
             };
           }
         }
