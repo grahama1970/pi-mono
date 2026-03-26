@@ -1529,7 +1529,7 @@ registerTestRunnerRoutes(app, broadcast)
 
 const PORT = process.env.PORT ?? 3001
 
-httpServer.listen(PORT, () => {
+httpServer.listen(Number(PORT), '0.0.0.0', () => {
   console.log(`UX Lab API on http://localhost:${PORT}`)
   console.log(`  Memory daemon: ${MEMORY_SOCKET}`)
   console.log(`  scillm: ${SCILLM_URL}`)

@@ -131,21 +131,32 @@ If no model is specified, defaults to Claude (sonnet).
 > **NOT OpenAI-compatible.** This is NOT a `/v1/chat/completions` endpoint.
 > The field is `prompt` (a string), NOT `messages` (an array).
 > Do NOT send `{"messages": [{"role": "user", "content": "..."}]}` — it will fail.
+>
+> **BANNED: curl, urllib, requests.** All API calls MUST use `import httpx`.
+> This is NON-NEGOTIABLE. Agents that use curl or urllib are violating project rules.
+> The examples below use httpx. Do not translate them to curl.
 
 ### POST /chat (blocking)
 
-```bash
-curl -X POST http://localhost:8620/chat \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "What is 2+2?", "model": "sonnet"}'
+```python
+import httpx
 
-# Use Codex
-curl -X POST http://localhost:8620/chat \
-  -d '{"prompt": "Review this code", "model": "gpt-5.3-codex"}'
+# Claude (default)
+resp = httpx.post("http://localhost:8620/chat",
+    json={"prompt": "What is 2+2?", "model": "sonnet"},
+    timeout=300)
+result = resp.json()
+print(result["response"])
 
-# Use Gemini
-curl -X POST http://localhost:8620/chat \
-  -d '{"prompt": "Explain this paper", "model": "gemini-2.5-pro"}'
+# Codex
+resp = httpx.post("http://localhost:8620/chat",
+    json={"prompt": "Review this code", "model": "codex"},
+    timeout=600)
+
+# Gemini
+resp = httpx.post("http://localhost:8620/chat",
+    json={"prompt": "Explain this paper", "model": "gemini-2.5-pro"},
+    timeout=300)
 ```
 
 Response:
@@ -167,17 +178,19 @@ Response:
 
 Send base64-encoded images for vision review. Get images back from agents.
 
-```bash
-# Send a screenshot for Gemini vision review
-curl -X POST http://localhost:8620/chat \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Review this UI screenshot for accessibility issues",
-    "model": "gemini-2.5-pro",
-    "images": [
-      {"data": "<base64>", "media_type": "image/png", "filename": "screenshot.png"}
-    ]
-  }'
+```python
+import httpx, base64
+from pathlib import Path
+
+img_b64 = base64.b64encode(Path("screenshot.png").read_bytes()).decode()
+resp = httpx.post("http://localhost:8620/chat",
+    json={
+        "prompt": "Review this UI screenshot for accessibility issues",
+        "model": "gemini-2.5-pro",
+        "images": [{"data": img_b64, "media_type": "image/png", "filename": "screenshot.png"}]
+    },
+    timeout=300)
+result = resp.json()
 ```
 
 Response includes output images when the agent produces them:
@@ -202,10 +215,15 @@ How it works:
 
 Real-time streaming via Server-Sent Events. Heartbeats every 15s.
 
-```bash
-curl -N -X POST http://localhost:8620/chat/stream \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "Explain monads", "model": "opus-4.6"}'
+```python
+import httpx
+
+with httpx.stream("POST", "http://localhost:8620/chat/stream",
+    json={"prompt": "Explain monads", "model": "opus-4.6"},
+    timeout=600) as resp:
+    for line in resp.iter_lines():
+        if line.startswith("data: "):
+            print(line[6:])
 ```
 
 ### GET /health
@@ -237,12 +255,15 @@ Reset accumulated usage counters.
 Lists all tracked subagent tasks in task-monitor compatible format. Pollable
 by `/dashboard` at `http://localhost:8620/tasks`.
 
-```bash
+```python
+import httpx
+
 # All tasks
-curl http://localhost:8620/tasks
+resp = httpx.get("http://localhost:8620/tasks", timeout=10)
+tasks = resp.json()
 
 # Only running tasks
-curl http://localhost:8620/tasks?status=running
+resp = httpx.get("http://localhost:8620/tasks", params={"status": "running"}, timeout=10)
 ```
 
 Response:
@@ -351,16 +372,61 @@ it mid-read. A 17-task plan needs 30-50 turns.
 ./run.sh claude "Implement 17 tasks" --timeout 600 --max-turns 50
 ```
 
-### Stream Mode (RECOMMENDED for long-running tasks)
+### Stream Mode (MANDATORY for long-running tasks)
 
-Use `--stream` for tasks > 60s. The blocking `/chat` endpoint buffers all output
-until completion. The SSE `/chat/stream` endpoint provides:
-- Heartbeats every 15s (proves agent is alive)
-- Incremental text output (shows which task is being worked on)
-- Proper idle timeout behavior (resets on each event)
+**ALWAYS use `/chat/stream` for tasks > 60s.** The blocking `/chat` endpoint
+buffers all output until completion — you see nothing until the agent finishes.
+The SSE `/chat/stream` endpoint shows you what the agent is doing in real time.
 
-```bash
-./run.sh claude "Implement tasks" --timeout 600 --max-turns 50 --stream
+SSE events:
+- `event: meta` — task started, includes backend/model/task_id
+- `event: text` — incremental agent output (tool calls, reasoning, results)
+- `event: heartbeat` — every 15s, proves agent is alive
+- `event: done` — task finished, includes exit_code/duration/cost
+
+#### How to monitor a subagent (httpx SSE):
+
+```python
+import httpx
+
+# Start a long task with SSE streaming
+with httpx.stream("POST", "http://localhost:8620/chat/stream",
+    json={
+        "prompt": "Read and execute /home/node/workspace/08_PLAN.md",
+        "model": "codex",
+        "idle_timeout": 600,
+    },
+    timeout=httpx.Timeout(connect=10, read=700, write=10, pool=10),
+) as stream:
+    for line in stream.iter_lines():
+        if not line:
+            continue
+        if line.startswith("event: "):
+            event_type = line[7:]
+        elif line.startswith("data: "):
+            data = line[6:]
+            # Print agent output as it happens
+            if event_type == "text":
+                print(data)
+            elif event_type == "done":
+                print(f"\\n=== DONE: {data}")
+            elif event_type == "meta":
+                print(f"=== STARTED: {data}")
+```
+
+#### Why NOT /chat (blocking):
+
+```python
+# BAD — you see NOTHING for 20 minutes, then get a wall of text
+resp = httpx.post("http://localhost:8620/chat",
+    json={"prompt": "Execute 4 tasks...", "model": "codex"},
+    timeout=600)
+# ^^^ Blocks. No progress. No monitoring. Looks hung. Can't tell if stuck.
+
+# GOOD — you see every tool call, every file read, every result
+with httpx.stream("POST", "http://localhost:8620/chat/stream", ...):
+    for line in stream.iter_lines():
+        ...  # Real-time visibility
 ```
 
 ### Backend Routing Convention
@@ -370,6 +436,58 @@ until completion. The SSE `/chat/stream` endpoint provides:
 | Code implementation | `claude` | Best at writing code with tool use |
 | Design review | `gemini` | Strong vision, large context for mockups |
 | Code review | `codex` | Deep code analysis and reasoning |
+
+## Best Practices
+
+### DO: Pass a plan file path, not a long prompt
+
+The agent has workspace access. Write your plan as a markdown file and point the agent at it.
+The agent reads the file, has full context from the workspace, and executes systematically.
+
+```python
+import httpx
+
+# GOOD — agent reads the plan file from the mounted workspace
+resp = httpx.post("http://localhost:8620/chat",
+    json={
+        "prompt": "Read and execute the plan at /home/node/workspace/08_SPARTA_DATA_FIXES.md",
+        "model": "codex",
+    },
+    timeout=600)
+
+# GOOD — short prompt referencing existing code
+resp = httpx.post("http://localhost:8620/chat",
+    json={
+        "prompt": "Fix the bug in /home/node/workspace/packages/ux-lab/src/components/sparta/explorer/SourcesView.tsx — ESA descriptions contain raw HTML. Strip tags and extract text.",
+        "model": "codex",
+    },
+    timeout=300)
+```
+
+### DON'T: Long inline prompts, curl, urllib
+
+```python
+# BAD — massive inline prompt (agent loses context, hard to debug)
+resp = httpx.post("http://localhost:8620/chat",
+    json={
+        "prompt": "Step 1: fetch controls from POST http://localhost:3001/api/memory/list with {collection: sparta_controls, limit: 200, filters: {source_framework: ESA}...} Step 2: for each control where description starts with < strip HTML tags... Step 3: ...(500 more words)...",
+        "model": "codex",
+    },
+    timeout=600)
+# The agent has the workspace — write a plan file instead.
+```
+
+```python
+# BANNED — do not use curl, urllib, or requests
+import subprocess
+subprocess.run(["curl", "-X", "POST", ...])  # NEVER
+
+import urllib.request  # NEVER
+urllib.request.urlopen(...)
+
+import requests  # NEVER
+requests.post(...)
+```
 
 ## Security
 
