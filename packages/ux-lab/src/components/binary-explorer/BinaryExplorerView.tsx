@@ -297,8 +297,10 @@ export function BinaryExplorerView() {
   const [dataPanelHeight, setDataPanelHeight] = useState(220)
   const [dataTab, setDataTab] = useState<'summary' | 'connections' | 'ast' | 'explain' | 'raw' | 'table' | 'code'>('summary')
   const [tableSearch, setTableSearch] = useState('')
-  const [tableSortKey, setTableSortKey] = useState<'label' | 'nodeType' | 'cluster' | 'confidence' | 'connections' | 'cwe' | 'attack'>('connections')
+  const [tableSortKey, setTableSortKey] = useState<'label' | 'nodeType' | 'cluster' | 'address' | 'confidence' | 'connections' | 'cwe' | 'attack'>('connections')
   const [tableSortAsc, setTableSortAsc] = useState(false)
+  const [tableVisibleCols, setTableVisibleCols] = useState<Set<string>>(new Set(['label', 'nodeType', 'cluster', 'address', 'confidence', 'connections', 'cwe', 'attack', 'annotation']))
+  const [tableAnnotations, setTableAnnotations] = useState<Map<string, string>>(new Map())
 
   // --- Taxonomy State ---
   const [taxonomyMap, setTaxonomyMap] = useState<Map<string, { mind: string[]; cwe: string[]; attack: string[]; d3fend: string[]; nist: string[] }>>(new Map())
