@@ -3507,11 +3507,12 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                             { label: 'Crypto & key handling', query: `What cryptographic routines are present in ${binaryName}? Locate key generation, IV reuse, or weak algorithm usage.` },
                           ].map(g => (
                             <div key={g.label} onClick={() => { setChatInput(''); sendChat(g.query) }}
-                              style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '5px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 2, transition: 'background 0.15s' }}
+                              style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '6px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 4, transition: 'background 0.15s', border: `1px solid ${EMBRY.border}` }}
                               onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}12`)}
                               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                             >
-                              <span style={{ fontSize: 8, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, minWidth: 130 }}>{g.label}</span>
+                              <span style={{ fontSize: 8, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{g.label}</span>
+                              <span style={{ fontSize: 9, color: EMBRY.dim, lineHeight: '1.4', fontStyle: 'italic' }}>{g.query}</span>
                             </div>
                           ))}
                         </div>
