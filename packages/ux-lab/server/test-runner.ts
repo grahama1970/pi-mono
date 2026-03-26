@@ -718,7 +718,7 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
 
           // Per-persona model routing
           const prModels: Record<string, string> = {
-            'tim-blazytko': 'codex', 'gynvael-coldwind': 'claude-opus-4-6', 'liveoverflow': 'gemini-3-flash-preview',
+            'tim-blazytko': 'sonnet', 'gynvael-coldwind': 'sonnet', 'liveoverflow': 'gemini-2.5-flash',
           };
 
           try {
