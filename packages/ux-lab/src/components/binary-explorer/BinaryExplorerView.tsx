@@ -2044,6 +2044,26 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     <Shield size={14} style={{ color: EMBRY.red }} />
                     <span style={{ fontWeight: 800, color: EMBRY.white }}>VULNERABILITY MAP</span>
                     <span style={{ color: EMBRY.muted, fontSize: 8 }}>{taxonomyMap.size} nodes with taxonomy data</span>
+                    <button
+                      onClick={() => {
+                        setTaxonomyMap(new Map())
+                        setTaxonomyLoading(true)
+                        const nodes = data.graphNodes.filter(n => n.nodeType !== 'namespace').slice(0, 200)
+                        Promise.all(nodes.map(n =>
+                          fetch(`${API}/api/memory/taxonomy/extract`, {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ text: `${n.label} ${n.description || ''} ${n.nodeType}` }),
+                          }).then(r => r.json()).then(d => ({ id: n.id, tags: d })).catch(() => ({ id: n.id, tags: {} }))
+                        )).then(results => {
+                          const next = new Map<string, { mind: string[]; cwe: string[]; attack: string[]; d3fend: string[]; nist: string[] }>()
+                          for (const { id, tags } of results) next.set(id, { mind: tags.mind||[], cwe: tags.cwe||[], attack: tags.attack||[], d3fend: tags.d3fend||[], nist: tags.nist||[] })
+                          setTaxonomyMap(next)
+                          setTaxonomyLoading(false)
+                        })
+                      }}
+                      title="Re-run auto-tagging for all nodes"
+                      style={{ fontSize: 7, padding: '1px 6px', background: 'transparent', border: `1px solid #9C27B044`, color: '#9C27B0', borderRadius: 2, cursor: 'pointer', fontWeight: 700 }}
+                    >RE-TAG</button>
                     <span style={{ flex: 1 }} />
                     <input value={tableSearch} onChange={e => setTableSearch(e.target.value)}
                       placeholder="Filter by CWE, ATT&CK, feature..."
