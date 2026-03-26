@@ -727,7 +727,7 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
             console.log(`[PERSONA_REVIEW] ${personaSlug} via ${subagentModel} on port ${subagentPort}...`);
 
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 180_000); // 3 min timeout
+            const timeoutId = setTimeout(() => controller.abort(), 600_000); // 10 min — subagent browses + evaluates
 
             const prRes = await fetch(`http://localhost:${subagentPort}/chat`, {
               method: 'POST',
