@@ -2823,28 +2823,61 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   )}
 
                   {dataTab === 'table' && (() => {
-                    // Sortable table with taxonomy columns (NIST/CWE/ATT&CK/D3FEND/CAPEC)
+                    // Sortable function table: name, type, namespace, address, confidence, connections, CWE, ATT&CK, annotation
+                    const extractAddress = (label: string): string => {
+                      const m = label.match(/(?:sub|loc|fun|nullsub)_([0-9a-fA-F]+)/i)
+                      return m ? `0x${m[1].toUpperCase()}` : '—'
+                    }
+                    const ALL_COLS = [
+                      { id: 'label', title: 'Name', sortable: true },
+                      { id: 'nodeType', title: 'Type', sortable: true },
+                      { id: 'cluster', title: 'Namespace', sortable: true },
+                      { id: 'address', title: 'Address', sortable: true },
+                      { id: 'confidence', title: 'Conf', sortable: true },
+                      { id: 'connections', title: 'Conn', sortable: true },
+                      { id: 'cwe', title: 'CWE', sortable: true },
+                      { id: 'attack', title: 'ATT&CK', sortable: true },
+                      { id: 'annotation', title: 'Notes', sortable: false },
+                    ] as const
                     const nodeWithDeg = data.graphNodes.map(n => {
                       const tax = taxonomyMap.get(n.id)
                       return {
                         ...n,
+                        address: extractAddress(n.label),
                         connections: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length,
                         cwe: tax?.cwe?.join(', ') || '',
                         attack: tax?.attack?.join(', ') || '',
-                        d3fend: tax?.d3fend?.join(', ') || '',
-                        nist: tax?.nist?.join(', ') || '',
-                        mind: tax?.mind?.join(', ') || '',
+                        annotation: tableAnnotations.get(n.id) || '',
                       }
                     })
                     const q = tableSearch.toLowerCase()
                     const filtered = nodeWithDeg
-                      .filter(n => !q || n.label.toLowerCase().includes(q) || n.nodeType.includes(q) || n.cluster.includes(q) || n.cwe.toLowerCase().includes(q) || n.attack.toLowerCase().includes(q))
+                      .filter(n => !q || n.label.toLowerCase().includes(q) || n.nodeType.includes(q) || n.cluster.includes(q) || n.cwe.toLowerCase().includes(q) || n.attack.toLowerCase().includes(q) || n.annotation.toLowerCase().includes(q))
                       .sort((a, b) => {
                         const va = (a as any)[tableSortKey] ?? ''
                         const vb = (b as any)[tableSortKey] ?? ''
                         const cmp = typeof va === 'number' ? va - (vb as number) : String(va).localeCompare(String(vb))
                         return tableSortAsc ? cmp : -cmp
                       })
+                    const exportCSV = () => {
+                      const cols = ALL_COLS.filter(c => tableVisibleCols.has(c.id))
+                      const header = cols.map(c => c.title).join(',')
+                      const rows = filtered.map(n =>
+                        cols.map(c => {
+                          const v = c.id === 'annotation' ? (tableAnnotations.get(n.id) || '') : (n as any)[c.id] ?? ''
+                          return `"${String(v).replace(/"/g, '""')}"`
+                        }).join(',')
+                      )
+                      const blob = new Blob([[header, ...rows].join('\n')], { type: 'text/csv' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a'); a.href = url; a.download = `${binaryName}-functions.csv`; a.click()
+                      URL.revokeObjectURL(url)
+                    }
+                    const toggleCol = (id: string) => {
+                      const next = new Set(tableVisibleCols)
+                      if (next.has(id)) { if (next.size > 1) next.delete(id) } else next.add(id)
+                      setTableVisibleCols(next)
+                    }
                     const sortHeader = (key: typeof tableSortKey, label: string) => (
                       <th key={key} onClick={() => { if (tableSortKey === key) setTableSortAsc(!tableSortAsc); else { setTableSortKey(key); setTableSortAsc(true) } }}
                         style={{ padding: '4px 6px', fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: tableSortKey === key ? EMBRY.accent : EMBRY.dim, cursor: 'pointer', textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, whiteSpace: 'nowrap' }}>
@@ -2853,41 +2886,66 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     )
                     return (
                       <div>
-                        <div style={{ display: 'flex', gap: 8, marginBottom: 6, alignItems: 'center' }}>
+                        <div style={{ display: 'flex', gap: 6, marginBottom: 4, alignItems: 'center', flexWrap: 'wrap' }}>
                           <input value={tableSearch} onChange={e => setTableSearch(e.target.value)}
-                            placeholder="Filter features, CWE, ATT&CK..." style={{ flex: 1, background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }} />
-                          <span style={{ fontSize: 8, color: EMBRY.muted }}>{filtered.length}/{nodeWithDeg.length}</span>
-                          {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading taxonomy...</span>}
+                            placeholder="Filter name, namespace, CWE, notes..." style={{ flex: 1, minWidth: 120, background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 2, padding: '3px 8px', color: EMBRY.white, fontSize: 10, outline: 'none', fontFamily: 'JetBrains Mono, monospace' }} />
+                          <span style={{ fontSize: 8, color: EMBRY.muted, whiteSpace: 'nowrap' }}>{filtered.length}/{nodeWithDeg.length}</span>
+                          {taxonomyLoading && <span style={{ fontSize: 8, color: EMBRY.accent }}>Loading...</span>}
+                          <button onClick={exportCSV} title="Export visible columns to CSV"
+                            style={{ fontSize: 8, padding: '2px 8px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                            ↓ CSV
+                          </button>
                         </div>
-                        <div style={{ maxHeight: 300, overflow: 'auto' }}>
+                        <div style={{ display: 'flex', gap: 3, marginBottom: 6, flexWrap: 'wrap' }}>
+                          {ALL_COLS.map(col => (
+                            <button key={col.id} onClick={() => toggleCol(col.id)}
+                              style={{ fontSize: 8, padding: '1px 6px', borderRadius: 2, cursor: 'pointer', border: `1px solid ${tableVisibleCols.has(col.id) ? EMBRY.accent : EMBRY.border}`, background: tableVisibleCols.has(col.id) ? `${EMBRY.accent}20` : 'transparent', color: tableVisibleCols.has(col.id) ? EMBRY.accent : EMBRY.muted }}>
+                              {col.title}
+                            </button>
+                          ))}
+                        </div>
+                        <div style={{ maxHeight: 280, overflow: 'auto' }}>
                           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}>
                             <thead><tr>
-                              {sortHeader('label', 'Name')}
-                              {sortHeader('nodeType', 'Type')}
-                              {sortHeader('cluster', 'Cluster')}
-                              {sortHeader('connections', 'Conn')}
-                              {sortHeader('cwe', 'CWE')}
-                              {sortHeader('attack', 'ATT&CK')}
+                              {tableVisibleCols.has('label') && sortHeader('label', 'Name')}
+                              {tableVisibleCols.has('nodeType') && sortHeader('nodeType', 'Type')}
+                              {tableVisibleCols.has('cluster') && sortHeader('cluster', 'Namespace')}
+                              {tableVisibleCols.has('address') && sortHeader('address', 'Address')}
+                              {tableVisibleCols.has('confidence') && sortHeader('confidence', 'Conf')}
+                              {tableVisibleCols.has('connections') && sortHeader('connections', 'Conn')}
+                              {tableVisibleCols.has('cwe') && sortHeader('cwe', 'CWE')}
+                              {tableVisibleCols.has('attack') && sortHeader('attack', 'ATT&CK')}
+                              {tableVisibleCols.has('annotation') && <th style={{ padding: '4px 6px', fontSize: 8, fontWeight: 700, textTransform: 'uppercase', color: EMBRY.dim, textAlign: 'left', borderBottom: `1px solid ${EMBRY.border}`, whiteSpace: 'nowrap' }}>Notes</th>}
                             </tr></thead>
                             <tbody>
-                              {filtered.slice(0, 100).map(n => (
+                              {filtered.slice(0, 200).map(n => (
                                 <tr key={n.id}
                                   onClick={() => onFeatureClick(n.label)}
                                   style={{ cursor: 'pointer', borderBottom: `1px solid ${EMBRY.border}`, background: n.id === selectedNode?.id ? `${EMBRY.accent}15` : 'transparent' }}
                                   onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
                                   onMouseLeave={e => (e.currentTarget.style.background = n.id === selectedNode?.id ? `${EMBRY.accent}15` : 'transparent')}
                                 >
-                                  <td style={{ padding: '3px 6px', color: '#22d3ee' }}>{n.label}</td>
-                                  <td style={{ padding: '3px 6px' }}>
+                                  {tableVisibleCols.has('label') && <td style={{ padding: '3px 6px', color: '#22d3ee', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={n.label}>{n.label}</td>}
+                                  {tableVisibleCols.has('nodeType') && <td style={{ padding: '3px 6px' }}>
                                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                                      <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: NODE_TYPE_COLORS[n.nodeType] ?? EMBRY.dim, display: 'inline-block' }} />
+                                      <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: NODE_TYPE_COLORS[n.nodeType] ?? EMBRY.dim, display: 'inline-block', flexShrink: 0 }} />
                                       {n.nodeType.replace('_', ' ')}
                                     </span>
-                                  </td>
-                                  <td style={{ padding: '3px 6px', color: EMBRY.dim }}>{n.cluster}</td>
-                                  <td style={{ padding: '3px 6px', fontWeight: n.connections > 10 ? 700 : 400, color: n.connections > 10 ? EMBRY.white : EMBRY.dim }}>{n.connections}</td>
-                                  <td style={{ padding: '3px 6px', color: '#ef4444', fontSize: 8 }}>{n.cwe}</td>
-                                  <td style={{ padding: '3px 6px', color: '#f97316', fontSize: 8 }}>{n.attack}</td>
+                                  </td>}
+                                  {tableVisibleCols.has('cluster') && <td style={{ padding: '3px 6px', color: EMBRY.dim, maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={n.cluster}>{n.cluster}</td>}
+                                  {tableVisibleCols.has('address') && <td style={{ padding: '3px 6px', color: n.address === '—' ? EMBRY.dim : '#a78bfa', fontFamily: 'JetBrains Mono, monospace' }}>{n.address}</td>}
+                                  {tableVisibleCols.has('confidence') && <td style={{ padding: '3px 6px', color: n.confidence > 0.8 ? '#22c55e' : n.confidence > 0.5 ? '#eab308' : EMBRY.dim }}>{(n.confidence * 100).toFixed(0)}%</td>}
+                                  {tableVisibleCols.has('connections') && <td style={{ padding: '3px 6px', fontWeight: n.connections > 10 ? 700 : 400, color: n.connections > 10 ? EMBRY.white : EMBRY.dim }}>{n.connections}</td>}
+                                  {tableVisibleCols.has('cwe') && <td style={{ padding: '3px 6px', color: '#ef4444', fontSize: 8, maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={n.cwe}>{n.cwe}</td>}
+                                  {tableVisibleCols.has('attack') && <td style={{ padding: '3px 6px', color: '#f97316', fontSize: 8, maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={n.attack}>{n.attack}</td>}
+                                  {tableVisibleCols.has('annotation') && <td style={{ padding: '2px 4px' }} onClick={e => e.stopPropagation()}>
+                                    <input
+                                      value={tableAnnotations.get(n.id) || ''}
+                                      onChange={e => setTableAnnotations(prev => new Map(prev).set(n.id, e.target.value))}
+                                      placeholder="add note..."
+                                      style={{ width: 100, background: 'transparent', border: `1px solid ${EMBRY.border}`, color: EMBRY.white, fontSize: 8, padding: '1px 4px', outline: 'none', borderRadius: 1, fontFamily: 'JetBrains Mono, monospace' }}
+                                    />
+                                  </td>}
                                 </tr>
                               ))}
                             </tbody>
