@@ -9,7 +9,7 @@ import { EMBRY } from '../common/EmbryStyle'
 
 // ── Token-level syntax highlighting (regex tokenizer) ────────────────────────
 
-type TokenType = 'keyword' | 'register' | 'number' | 'string' | 'comment' | 'label' | 'directive' | 'punctuation' | 'type' | 'function' | 'plain'
+type TokenType = 'keyword' | 'register' | 'number' | 'string' | 'comment' | 'label' | 'directive' | 'punctuation' | 'type' | 'function' | 'plain' | 'sizespec' | 'symbol'
 
 interface Token { text: string; type: TokenType }
 
@@ -25,10 +25,19 @@ const TOKEN_COLORS: Record<TokenType, string> = {
   type: '#e5c07b',        // yellow — int, char, void, struct, uint64_t
   function: '#61afef',    // blue — printf, malloc, free
   plain: '#abb2bf',       // default
+  sizespec: '#56b6c2',   // cyan — DWORD PTR, QWORD PTR, BYTE PTR, WORD PTR
+  symbol: '#e5c07b',     // yellow — known libc/WinAPI import names
 }
 
 const ASM_KEYWORDS = /\b(mov|movzx|movsx|movsxd|movabs|movdqu|movdqa|movaps|movups|push|pop|pushf|popf|pushfq|popfq|call|ret|retn|retf|jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|add|sub|mul|div|imul|idiv|inc|dec|neg|not|xor|and|or|shl|shr|sar|sal|rol|ror|rcl|rcr|cmp|test|lea|nop|int|syscall|sysenter|sysexit|sysret|lock|rep|repe|repne|repz|repnz|cdq|cdqe|cbw|cwde|cqo|bsf|bsr|bswap|bt|bts|btr|btc|xchg|xadd|cmpxchg|cmpxchg8b|cmpxchg16b|leave|enter|hlt|pause|lfence|mfence|sfence|endbr32|endbr64|cmove|cmovne|cmovz|cmovnz|cmovg|cmovge|cmovl|cmovle|cmova|cmovae|cmovb|cmovbe|cmovs|cmovns|cmovo|cmovno|sete|setne|setz|setnz|setg|setge|setl|setle|seta|setae|setb|setbe|sets|setns|seto|setno|lahf|sahf|stc|clc|std|cld|sti|cli|rdtsc|rdtscp|cpuid|nop|ud2|int3|into|iret|iretd|iretq|popfd|pushfd|pushfq|popfq|vmovdqu|vmovdqa|vpxor|vpand|vpor|vpcmpeqb|vpcmpeqd|vpsubb|vpsubw|vpsubd|vpsllq|vpsrlq|addss|subss|mulss|divss|addsd|subsd|mulsd|divsd|xorps|xorpd|andps|andpd|orps|orpd|comisd|comiss|ucomisd|ucomiss|cvtsi2sd|cvtsi2ss|cvttsd2si|cvttss2si)\b/g
-const ASM_REGISTERS = /\b(rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8|r9|r10|r11|r12|r13|r14|r15|eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|si|di|bp|sp|al|bl|cl|dl|ah|bh|ch|dh|cs|ds|es|fs|gs|ss|rip|eip|ip|DWORD|QWORD|BYTE|WORD|PTR)\b/g
+// Intel syntax registers — size specifiers (DWORD/QWORD/etc.) are NOT registers; kept separate below
+const ASM_REGISTERS = /\b(rax|rbx|rcx|rdx|rsi|rdi|rbp|rsp|r8|r9|r10|r11|r12|r13|r14|r15|r8d|r9d|r10d|r11d|r12d|r13d|r14d|r15d|r8w|r9w|r10w|r11w|r12w|r13w|r14w|r15w|r8b|r9b|r10b|r11b|r12b|r13b|r14b|r15b|eax|ebx|ecx|edx|esi|edi|ebp|esp|ax|bx|cx|dx|si|di|bp|sp|al|bl|cl|dl|ah|bh|ch|dh|cs|ds|es|fs|gs|ss|rip|eip|ip|xmm0|xmm1|xmm2|xmm3|xmm4|xmm5|xmm6|xmm7|xmm8|xmm9|xmm10|xmm11|xmm12|xmm13|xmm14|xmm15|ymm0|ymm1|ymm2|ymm3|ymm4|ymm5|ymm6|ymm7|ymm8|ymm9|ymm10|ymm11|ymm12|ymm13|ymm14|ymm15|zmm0|zmm1|zmm2|zmm3|zmm4|zmm5|zmm6|zmm7|zmm8|zmm9|zmm10|zmm11|zmm12|zmm13|zmm14|zmm15|st0|st1|st2|st3|st4|st5|st6|st7|mm0|mm1|mm2|mm3|mm4|mm5|mm6|mm7|cr0|cr2|cr3|cr4|cr8|dr0|dr1|dr2|dr3|dr6|dr7)\b/g
+// AT&T syntax: %register (percent-prefixed)
+const ASM_REGISTERS_ATT = /%([re]?[abcd]x|[re]?[sd]i|[re]?[sb]p|r(?:1[0-5]|[89])[dwb]?|r(?:1[0-5]|[89])|[re]ip|[re]flags|[abcd][lh]|[csdefs]s|xmm\d{1,2}|ymm\d{1,2}|zmm\d{1,2}|mm[0-7]|st[0-7])\b/g
+// Intel size specifiers (operand width qualifiers, not registers)
+const ASM_SIZE_SPECS = /\b(BYTE|WORD|DWORD|QWORD|OWORD|TBYTE|XMMWORD|YMMWORD|ZMMWORD|PTR)\b/g
+// Known libc / POSIX / Windows API / C++ runtime symbols commonly seen in disassembly
+const ASM_KNOWN_SYMBOLS = /\b(printf|fprintf|sprintf|snprintf|vprintf|vfprintf|vsprintf|vsnprintf|scanf|fscanf|sscanf|malloc|calloc|realloc|free|cfree|malloc_usable_size|posix_memalign|aligned_alloc|memcpy|memmove|memset|memcmp|memchr|memrchr|strlen|strnlen|strcpy|strncpy|stpcpy|stpncpy|strcmp|strncmp|strcasecmp|strncasecmp|strcat|strncat|strchr|strrchr|strstr|strtok|strtok_r|strtol|strtoul|strtoll|strtoull|strtod|strtof|strtold|atoi|atol|atoll|atof|fopen|fclose|fread|fwrite|fseek|fseeko|ftell|ftello|rewind|fflush|fgetc|fputc|fgets|fputs|getc|putc|getchar|putchar|ungetc|ferror|feof|clearerr|fileno|fdopen|popen|pclose|exit|_exit|abort|atexit|at_quick_exit|quick_exit|getenv|putenv|setenv|unsetenv|system|qsort|bsearch|rand|srand|rand_r|time|clock|difftime|mktime|localtime|gmtime|strftime|gettimeofday|clock_gettime|nanosleep|sleep|usleep|open|close|read|write|lseek|pread|pwrite|stat|fstat|lstat|access|chmod|chown|unlink|rename|mkdir|rmdir|getcwd|chdir|fork|exec|execv|execvp|execve|waitpid|wait|kill|signal|sigaction|mmap|munmap|mprotect|brk|sbrk|ioctl|fcntl|pipe|dup|dup2|socket|bind|connect|listen|accept|send|recv|sendto|recvfrom|sendmsg|recvmsg|setsockopt|getsockopt|shutdown|closesocket|WSAStartup|WSACleanup|WSAGetLastError|CreateFileA|CreateFileW|ReadFile|WriteFile|CloseHandle|VirtualAlloc|VirtualFree|VirtualProtect|VirtualQuery|HeapAlloc|HeapFree|HeapCreate|HeapDestroy|LocalAlloc|LocalFree|GlobalAlloc|GlobalFree|LoadLibraryA|LoadLibraryW|FreeLibrary|GetProcAddress|GetModuleHandleA|GetModuleHandleW|CreateProcessA|CreateProcessW|OpenProcess|TerminateProcess|GetCurrentProcess|GetCurrentThread|WaitForSingleObject|WaitForMultipleObjects|CreateThread|ExitThread|GetLastError|SetLastError|RegOpenKeyA|RegOpenKeyW|RegCloseKey|RegQueryValueA|RegQueryValueW|RegSetValueA|RegSetValueW|MessageBoxA|MessageBoxW|GetTickCount|GetTickCount64|QueryPerformanceCounter|QueryPerformanceFrequency|__libc_start_main|__stack_chk_fail|__stack_chk_guard|__cxa_allocate_exception|__cxa_throw|__cxa_begin_catch|__cxa_end_catch|__cxa_rethrow|__cxa_free_exception|__gxx_personality_v0|__dso_handle|_ZdlPv|_Znwm|_Znam|_ZdaPv|operator_new|operator_delete)\b/g
 const C_KEYWORDS = /\b(if|else|for|while|do|switch|case|break|continue|return|goto|sizeof|typedef|struct|union|enum|const|static|extern|volatile|inline|register|auto|signed|unsigned|restrict|_Bool|_Complex|_Imaginary)\b/g
 const C_TYPES = /\b(void|int|char|short|long|float|double|size_t|ssize_t|uint8_t|uint16_t|uint32_t|uint64_t|int8_t|int16_t|int32_t|int64_t|bool|FILE|NULL|true|false)\b/g
 const PY_KEYWORDS = /\b(def|class|if|elif|else|for|while|try|except|finally|with|as|import|from|return|yield|raise|pass|break|continue|lambda|and|or|not|in|is|assert|del|global|nonlocal|async|await|None|True|False|self)\b/g
@@ -88,8 +97,13 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
   const patterns: { regex: RegExp; type: TokenType }[] =
     language === 'asm' ? [
       { regex: ASM_KEYWORDS, type: 'keyword' },
+      { regex: ASM_KNOWN_SYMBOLS, type: 'symbol' },
+      { regex: ASM_SIZE_SPECS, type: 'sizespec' },
       { regex: ASM_REGISTERS, type: 'register' },
-      { regex: /0x[0-9a-fA-F]+|\b\d+\b/g, type: 'number' },
+      { regex: ASM_REGISTERS_ATT, type: 'register' },
+      // Hex address/immediate: uppercase with 0x prefix for display consistency
+      { regex: /0x[0-9a-fA-F]+/g, type: 'number' },
+      { regex: /\b\d+\b/g, type: 'number' },
       { regex: /"[^"]*"|'[^']*'/g, type: 'string' },
     ] : language === 'c' ? [
       { regex: C_KEYWORDS, type: 'keyword' },
@@ -194,6 +208,31 @@ function analyzeObfuscation(lines: string[]): ObfuscationAnalysis {
   return { deadCodeLines, nopSledLines, opaquePredLines }
 }
 
+// ── Assembly helpers ──────────────────────────────────────────────────────────
+
+const BRANCH_MNEMONICS = /^\s*(jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|call)\s+/i
+
+/** Extract the branch/call target operand (label name or hex address) from an asm line. */
+function parseBranchTarget(line: string): string | null {
+  const m = line.match(/^\s*(?:lock\s+)?(?:j\w+|call)\s+((?:0x[0-9a-fA-F]+|\w[\w.@$+\-]*))(?:\s|$)/i)
+  return m ? m[1] : null
+}
+
+/** Format a numeric address as zero-padded uppercase hex (8 digits for 32-bit, 16 for 64-bit). */
+function formatAddress(addr: string | number): string {
+  if (typeof addr === 'number') {
+    const hex = addr.toString(16).toUpperCase()
+    // Heuristic: ≤ 0xFFFFFFFF → 32-bit (8 digits), else 64-bit (16 digits)
+    return addr <= 0xFFFFFFFF ? `0x${hex.padStart(8, '0')}` : `0x${hex.padStart(16, '0')}`
+  }
+  // Already a string — normalise: if it starts with 0x, uppercase the hex digits
+  if (/^0x[0-9a-fA-F]+$/i.test(addr)) {
+    const hex = addr.slice(2).toUpperCase()
+    return `0x${hex.padStart(hex.length <= 8 ? 8 : 16, '0')}`
+  }
+  return addr
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 interface CodePaneProps {
@@ -262,6 +301,15 @@ export function CodePane({
   const obfAnalysis: ObfuscationAnalysis | null =
     language === 'asm' && obfuscationHints ? analyzeObfuscation(lines) : null
 
+  // Branch target index: label name → line index (for visual branch connection)
+  const labelIndex = new Map<string, number>()
+  if (language === 'asm') {
+    lines.forEach((line, i) => {
+      const m = line.match(/^\s*([.\w@$]+):/)
+      if (m) labelIndex.set(m[1], i)
+    })
+  }
+
   return (
     <div data-testid={testId ?? 'code-pane'} style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: 11, background: '#1e1e1e' }}>
       {header && (
@@ -292,6 +340,14 @@ export function CodePane({
             // a non-empty, non-label previous line (i.e., start of a new block)
             const showBlockSeparator = language === 'asm' && i > 0 && isLabelLine(line) && lines[i - 1].trim() !== ''
             const blockEnd = language === 'asm' && isBlockEnd(line)
+
+            // Branch target indicator: resolve target label to a line number if possible
+            const isBranchLine = language === 'asm' && BRANCH_MNEMONICS.test(line)
+            const branchTarget = isBranchLine ? parseBranchTarget(line) : null
+            const branchTargetLine = branchTarget != null ? labelIndex.get(branchTarget) : undefined
+            const branchTargetDisplay = branchTarget != null
+              ? (branchTargetLine != null ? `→ L${branchTargetLine + 1}` : `→ ${branchTarget}`)
+              : null
 
             // Obfuscation hint backgrounds (layered under highlight)
             const isDeadCode = obfAnalysis?.deadCodeLines.has(i)
@@ -333,21 +389,23 @@ export function CodePane({
                   background: '#1a1a1a', borderRight: '1px solid #2d2d2d',
                 }}>{i + 1}</span>
 
-                {/* Address gutter (optional) */}
+                {/* Address gutter (optional) — zero-padded uppercase hex (8 or 16 digits) */}
                 {showAddresses && (
                   <span style={{
-                    width: 70, textAlign: 'right', paddingRight: 8,
+                    width: 110, textAlign: 'right', paddingRight: 8,
                     color: '#5a5a6a', fontSize: 10, userSelect: 'none', flexShrink: 0,
+                    fontVariantNumeric: 'tabular-nums',
                   }}>
-                    {addr != null ? (typeof addr === 'number' ? `0x${addr.toString(16)}` : addr) : ''}
+                    {addr != null ? formatAddress(addr) : ''}
                   </span>
                 )}
 
-                {/* Opcode bytes (optional) */}
+                {/* Opcode bytes (optional) — wide enough for 15-byte encodings (e.g. VEX/EVEX) */}
                 {showOpcodes && opcode && (
                   <span style={{
-                    width: 90, color: '#4a5568', fontSize: 9,
+                    width: 150, color: '#4a5568', fontSize: 9,
                     paddingRight: 8, flexShrink: 0, letterSpacing: '0.5px',
+                    fontVariantNumeric: 'tabular-nums',
                   }}>{opcode}</span>
                 )}
 

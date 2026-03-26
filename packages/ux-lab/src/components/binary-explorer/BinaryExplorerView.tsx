@@ -242,18 +242,21 @@ function renderInline(text: string, onFeatureClick: (name: string) => void): Rea
 interface ExplainStep { type: 'question' | 'grounding' | 'exploration' | 'intent' | 'answer'; label: string; detail?: string; chips?: { label: string; color: string }[] }
 interface ChatMessage { role: 'user' | 'assistant'; content: string; isExplanation?: boolean; feedback?: 'up' | 'down' | null; _querySpec?: Record<string, unknown>; _explain?: ExplainStep[] }
 
-type Perspective = 'all' | 'security' | 'data_flow' | 'protocol'
+type Perspective = 'all' | 'security' | 'data_flow' | 'protocol' | 'attack_surface'
 const PERSPECTIVE_LABELS: Record<Perspective, string> = {
   all: 'All Features',
   security: 'Security',
   data_flow: 'Data Flow',
   protocol: 'Protocol',
+  attack_surface: 'Attack Surface',
 }
 const PERSPECTIVE_TYPES: Record<Perspective, string[]> = {
   all: [],  // empty = no filter
   security: ['rpc', 'schema', 'event', 'namespace'],
   data_flow: ['schema', 'event', 'state_machine', 'namespace'],
   protocol: ['namespace', 'rpc', 'cli_command', 'event'],
+  // Attack surface: input handlers, network listeners, file parsers, CLI entry points
+  attack_surface: ['cli_command', 'rpc', 'event', 'parameter'],
 }
 
 export function BinaryExplorerView() {
@@ -1468,7 +1471,24 @@ export function BinaryExplorerView() {
       }
 
       // Load prompt template from /prompt-lab
-      const systemPrompt = `You are a reverse-engineering analyst for the "${binaryName}" binary extracted via /analyze-elf + /treesitter.
+      const isBeginnerMode = analysisMode === 'beginner'
+      const systemPrompt = isBeginnerMode
+        ? `You are a helpful guide explaining the "${binaryName}" program to someone who has never done reverse engineering before. Answer in plain, everyday English. Avoid jargon — if you must use a technical term, explain it in one sentence. When someone asks "what does this program do?", give a simple one-paragraph summary of its purpose, not a list of internal components. Treat every question as if it comes from a curious person who just wants to understand what they're looking at.
+
+## What we know about this program
+${nodeCtx ? nodeCtx + (edgeCtx ? '\nConnections: ' + edgeCtx : '') : 'No specific part selected — give an overview.'}
+
+## Program internals (for your reference — translate these into plain English for the user)
+${graphQueryCtx}
+${memoryRecallCtx ? '\n## Prior analysis\n' + memoryRecallCtx : ''}
+
+## Instructions
+- Answer in plain English — no bullet-point walls of jargon
+- Lead with what the program or feature *does*, not what it *is*
+- If a beginner asks a vague question ("what is this?", "what does it do?"), give a useful plain-language answer
+- Keep answers short: 2-3 sentences for simple questions, a short paragraph for complex ones
+- Only use \`code\` formatting for actual function or variable names`
+        : `You are a reverse-engineering analyst for the "${binaryName}" binary extracted via /analyze-elf + /treesitter.
 
 ## Context
 ${nodeCtx ? nodeCtx + (edgeCtx ? '\nConnections: ' + edgeCtx : '') : 'No node selected.'}
@@ -2239,6 +2259,30 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <div>
                         <div>View Vulnerability Map</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND mapping table</div>
+                      </div>
+                    </button>
+
+                    <button onClick={() => {
+                      // Seed graph with attack surface nodes: CLI commands, RPCs, events, parameters
+                      // These are the external-facing entry points a CTF player hunts first
+                      const entryPoints = data.graphNodes.filter(n =>
+                        n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
+                      )
+                      const topByConnections = entryPoints
+                        .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+                        .sort((a, b) => b.deg - a.deg)
+                        .slice(0, 20)
+                      addToScene(topByConnections.map(n => n.id))
+                      handleSetPerspective('attack_surface')
+                    }} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#1a0a0a', border: `1px solid #f4433633`, color: '#f44336',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <span style={{ fontSize: 18 }}>🎯</span>
+                      <div>
+                        <div>Find Entry Points</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CLI args · RPC handlers · events · params — where input enters</div>
                       </div>
                     </button>
                   </div>
@@ -3151,9 +3195,9 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         <div style={{ marginBottom: 12, padding: '8px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4 }}>
                           <div style={{ fontSize: 8, fontWeight: 800, color: EMBRY.accent, marginBottom: 6 }}>GUIDED ANALYSIS PATH</div>
                           {[
-                            { step: 1, label: 'What is this binary made of?', query: `What are the main components of ${binaryName}?` },
-                            { step: 2, label: 'How do the parts communicate?', query: `How do ${namespaces[0] || 'the namespaces'} and ${namespaces[1] || 'other components'} interact?` },
-                            { step: 3, label: 'Where could this break?', query: `What is the attack surface of ${binaryName}?` },
+                            { step: 1, label: 'What does this program do?', query: `What does ${binaryName} do? Explain it in plain English.` },
+                            { step: 2, label: 'How is it structured inside?', query: `What are the main components of ${binaryName}? Explain simply.` },
+                            { step: 3, label: 'Where could this break or be attacked?', query: `What is the attack surface of ${binaryName}? Explain in plain English.` },
                           ].map(g => (
                             <div key={g.step} onClick={() => { setChatInput(''); sendChat(g.query) }}
                               style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '5px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 2, transition: 'background 0.15s' }}
@@ -3179,8 +3223,17 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   )
                 })()}
                 {chatMessages.length === 0 && selectedNode && (
-                  <div style={{ padding: 16, textAlign: 'center', color: EMBRY.dim, fontSize: 11 }}>
-                    Ask a question about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong>
+                  <div style={{ padding: 16, color: EMBRY.dim, fontSize: 11 }}>
+                    <div style={{ textAlign: 'center', marginBottom: 8 }}>
+                      Ask anything about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong>
+                    </div>
+                    {(['What does this do?', 'Explain this in plain English.', 'What calls this?'] as const).map(q => (
+                      <div key={q} onClick={() => sendChat(`${q.replace('this', selectedNode.label)}`)}
+                        style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }}
+                        onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)}
+                        onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}
+                      >{q.replace('this', selectedNode.label)}</div>
+                    ))}
                   </div>
                 )}
                 {chatMessages.map((m, i) => (

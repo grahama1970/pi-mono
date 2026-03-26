@@ -1,0 +1,20 @@
+[
+  {
+    "persona": "tim-blazytko",
+    "model": "sonnet",
+    "tasks": [
+      {
+        "group": "code-view",
+        "criterion": "As someone who writes deobfuscation passes: Is the ASM view useful for understanding obfuscated code? Can you identify obfuscation patterns (opaque predicates, control flow flattening, dead code)? Are basic blocks visually separated? Is there CFG-level visualization? Would this ASM view integrate with your deobfuscation pipeline?",
+        "source_file": "src/components/binary-explorer/CodePane.tsx",
+        "status": "done",
+        "score": 0,
+        "commit": "738799f1",
+        "error": "",
+        "duration_s": 139.38665342330933
+      }
+    ],
+    "start_time": 1774554296.4996734,
+    "end_time": 1774554435.886565
+  }
+]

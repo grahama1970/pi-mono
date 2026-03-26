@@ -18,7 +18,7 @@ export interface BinaryGraphProps {
   onNodeClick?: (node: BinaryGraphNode) => void
   onNodeHover?: (node: BinaryGraphNode | null) => void
   onContextMenu?: (node: BinaryGraphNode, x: number, y: number) => void
-  layoutMode?: 'organic' | 'stratified' | 'clustered'
+  layoutMode?: 'organic' | 'stratified' | 'clustered' | 'hierarchical'
   selectedNodeId?: string | null
   graphSvgRef?: React.MutableRefObject<SVGSVGElement | null>
   expandedNodeIds?: Set<string>
@@ -43,6 +43,26 @@ const EDGE_COLORS: Record<string, string> = {
 const EDGE_WIDTHS: Record<string, number> = {
   contains: 1.2, payload: 2.0, emits: 2.4,
   triggers: 3.0, has_parameter: 1.5,
+}
+
+// Shape path generators: each centered at origin, radius r.
+// event→diamond, schema→square, cli_command→triangle, all others→circle (bezier).
+function nodeShapePath(type: string, radius: number): string {
+  if (radius === 0) return 'M0,0'
+  const r = radius
+  if (type === 'event') {
+    return `M0,${-r} L${r},0 L0,${r} L${-r},0 Z`
+  }
+  if (type === 'schema') {
+    const s = r * 0.88
+    return `M${-s},${-s} L${s},${-s} L${s},${s} L${-s},${s} Z`
+  }
+  if (type === 'cli_command') {
+    return `M0,${-r} L${r * 0.93},${r * 0.6} L${-r * 0.93},${r * 0.6} Z`
+  }
+  // Cubic bezier circle approximation
+  const k = r * 0.5523
+  return `M0,${-r} C${k},${-r} ${r},${-k} ${r},0 C${r},${k} ${k},${r} 0,${r} C${-k},${r} ${-r},${k} ${-r},0 C${-r},${-k} ${-k},${-r} 0,${-r} Z`
 }
 
 // Gemini design spec: logarithmic size-by-degree with type overrides
@@ -350,6 +370,67 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       simulation
         .force('x', d3.forceX((d) => clusterPos[(d as SimNode).cluster]?.x ?? width / 2).strength(0.15))
         .force('y', d3.forceY((d) => clusterPos[(d as SimNode).cluster]?.y ?? height / 2).strength(0.15))
+    } else if (layoutMode === 'hierarchical') {
+      // DAG rank assignment for call/data-flow graphs (Sugiyama-style, simplified).
+      // Assigns ranks via BFS from zero-in-degree roots so callers appear above callees.
+      // Fixed fx/fy positions prevent simulation drift — layout is stable by construction.
+      const adjOut = new Map<string, string[]>()
+      const inDeg = new Map<string, number>()
+      for (const n of simNodes) { adjOut.set(n.id, []); inDeg.set(n.id, 0) }
+      for (const e of simEdges) {
+        const s = typeof e.source === 'string' ? e.source : (e.source as SimNode).id
+        const t = typeof e.target === 'string' ? e.target : (e.target as SimNode).id
+        adjOut.get(s)?.push(t)
+        inDeg.set(t, (inDeg.get(t) ?? 0) + 1)
+      }
+      const rank = new Map<string, number>()
+      const bfsQueue: string[] = []
+      for (const n of simNodes) {
+        if ((inDeg.get(n.id) ?? 0) === 0) { rank.set(n.id, 0); bfsQueue.push(n.id) }
+      }
+      // Fallback for fully cyclic graphs: treat all nodes as rank 0 roots
+      if (bfsQueue.length === 0) simNodes.forEach(n => { rank.set(n.id, 0); bfsQueue.push(n.id) })
+      let bqi = 0
+      while (bqi < bfsQueue.length) {
+        const cur = bfsQueue[bqi++]
+        const r = rank.get(cur) ?? 0
+        for (const t of (adjOut.get(cur) ?? [])) {
+          if (!rank.has(t) || rank.get(t)! < r + 1) {
+            rank.set(t, r + 1)
+            bfsQueue.push(t)
+          }
+        }
+      }
+      // Unranked nodes (disconnected) go at rank 0
+      let maxRank = 0
+      for (const n of simNodes) {
+        if (!rank.has(n.id)) rank.set(n.id, 0)
+        const r = rank.get(n.id)!
+        if (r > maxRank) maxRank = r
+      }
+      // Group by rank, sort within rank by degree (hubs centred — reduces visual crossings)
+      const rankGroups = new Map<number, SimNode[]>()
+      for (const n of simNodes) {
+        const r = rank.get(n.id) ?? 0
+        if (!rankGroups.has(r)) rankGroups.set(r, [])
+        rankGroups.get(r)!.push(n)
+      }
+      for (const [, ns] of rankGroups) {
+        ns.sort((a, b) => (degree.get(b.id) ?? 0) - (degree.get(a.id) ?? 0))
+      }
+      // Assign fixed positions: callers at top, callees at bottom
+      const vPad = 60
+      const rankSpacing = Math.min(130, (height - vPad * 2) / Math.max(maxRank, 1))
+      for (const [r, ns] of rankGroups) {
+        const y = vPad + r * rankSpacing
+        const xStep = (width - padding * 2) / (ns.length + 1)
+        ns.forEach((n, i) => {
+          n.fx = padding + (i + 1) * xStep
+          n.fy = y
+          n.x = n.fx
+          n.y = n.fy
+        })
+      }
     }
 
     // --- Pre-warm the simulation (CRITICAL for preventing violent jitter) ---

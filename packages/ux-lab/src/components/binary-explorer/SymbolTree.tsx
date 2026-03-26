@@ -1,14 +1,20 @@
 /**
  * SymbolTree — Ghidra-style hierarchy view for Binary Explorer.
- * Collapsible tree: namespaces → type groups → features.
+ * Collapsible tree: binary root → namespaces → type groups → symbols.
  * Click selects (updates data panel). Right-click for context menu.
  * Shared component pattern — same selectedNode/onSelect as graph.
  *
- * v2: Sticky namespace headers, fuzzy search, peek preview on hover,
+ * v3: Proper RE hierarchy (binary → namespaces → type groups → symbols),
+ *     type icons (not just dots), sort controls (alpha/tier/connections),
+ *     sticky namespace headers, fuzzy search, peek preview on hover,
  *     relationship grouping (JetBrains logical view pattern).
  */
 import { useState, useMemo, useRef, useEffect } from 'react'
-import { ChevronRight, ChevronDown, Search, X, Eye } from 'lucide-react'
+import {
+  ChevronRight, ChevronDown, Search, X,
+  Code2, Zap, Database, GitBranch, Terminal, Hash, Package, Radio,
+  ArrowUpAZ, Layers, Activity,
+} from 'lucide-react'
 import { EMBRY } from '../common/EmbryStyle'
 import { NODE_TYPE_COLORS } from '../../hooks/useBinaryData'
 import type { BinaryGraphNode } from '../../hooks/useBinaryData'
@@ -67,6 +73,8 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
   const [peekPos, setPeekPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const peekTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [viewMode, setViewMode] = useState<'type' | 'relationship'>('type')
+  // Sort mode: alpha = name, tier = importance rank (T0→T2), connections = edge degree
+  const [sortBy, setSortBy] = useState<'alpha' | 'tier' | 'connections'>('alpha')
 
   // Build tree structure
   const tree = useMemo(() => {
@@ -76,6 +84,13 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
       const arr = edgeMap.get(e._from) || []
       arr.push(e._to)
       edgeMap.set(e._from, arr)
+    })
+
+    // Build degree map locally so sort-by-connections works
+    const localDegree = new Map<string, number>()
+    allEdges.forEach(e => {
+      localDegree.set(e._from, (localDegree.get(e._from) ?? 0) + 1)
+      localDegree.set(e._to, (localDegree.get(e._to) ?? 0) + 1)
     })
 
     const q = search.toLowerCase()
@@ -139,9 +154,19 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
         }
       }
 
-      // Sort children within each type
-      for (const [, arr] of children) arr.sort((a, b) => a.label.localeCompare(b.label))
-      for (const [, group] of relationGroups) group.nodes.sort((a, b) => a.label.localeCompare(b.label))
+      // Sort children within each type according to sortBy
+      const tierRank = (t: string) => t === 'T0' ? 0 : t === 'T1' ? 1 : 2
+      const nodeCmp = (a: BinaryGraphNode, b: BinaryGraphNode): number => {
+        if (sortBy === 'tier') return tierRank(a.tier) - tierRank(b.tier) || a.label.localeCompare(b.label)
+        if (sortBy === 'connections') {
+          const da = localDegree.get(a.id) ?? 0
+          const db = localDegree.get(b.id) ?? 0
+          return db - da || a.label.localeCompare(b.label)
+        }
+        return a.label.localeCompare(b.label)
+      }
+      for (const [, arr] of children) arr.sort(nodeCmp)
+      for (const [, group] of relationGroups) group.nodes.sort(nodeCmp)
 
       if (totalCount > 0 || !q) {
         result.push({ name: ns.label, id: ns.id, node: ns, children, relationGroups, totalCount })
@@ -154,8 +179,10 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
       setExpandedTypes(new Set(result.flatMap(r => [...r.children.keys()].map(t => `${r.id}:${t}`))))
     }
 
-    return result.sort((a, b) => b.totalCount - a.totalCount)
-  }, [graphNodes, allEdges, search, typeFilter])
+    // Sort namespaces by totalCount desc, then alpha
+    result.sort((a, b) => b.totalCount - a.totalCount || a.name.localeCompare(b.name))
+    return result
+  }, [graphNodes, allEdges, search, typeFilter, sortBy])
 
   // Degree lookup for connection count
   const degreeMap = useMemo(() => {
