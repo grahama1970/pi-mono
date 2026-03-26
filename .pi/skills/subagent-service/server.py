@@ -51,7 +51,7 @@ if WORKSPACE_DIR and not Path(WORKSPACE_DIR).is_dir():
 # Strip nested-session guard
 os.environ.pop("CLAUDECODE", None)
 
-IDLE_TIMEOUT_S = 120
+IDLE_TIMEOUT_S = 0  # no timeout — training models takes hours
 HEARTBEAT_INTERVAL_S = 15
 # 10 MB readline buffer — Claude CLI stream-json outputs image data as single
 # JSON lines that can exceed asyncio's default 64 KB StreamReader limit.
