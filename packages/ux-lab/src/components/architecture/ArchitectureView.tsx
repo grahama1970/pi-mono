@@ -83,15 +83,12 @@ const EXCALIDRAW_CSS = `
   transform-origin: top right !important;
 }
 
-/* Force text elements to respect their strokeColor in dark theme.
-   Excalidraw dark theme overrides text color via CSS — this prevents it. */
-.excalidraw.theme--dark text[stroke],
-.excalidraw.theme--dark .excalidraw-canvas text {
-  fill: currentColor !important;
-}
-.excalidraw.theme--dark {
-  --color-on-surface: #ffffff;
-  --text-primary-color: #ffffff;
+/* Excalidraw dark mode applies filter: invert() hue-rotate() to the ENTIRE canvas,
+   which inverts all element colors including strokeColor.
+   Disable the filter so programmatic colors render as specified.
+   See: https://github.com/excalidraw/excalidraw/issues/6669 */
+.excalidraw.theme--dark .excalidraw__canvas {
+  filter: none !important;
 }
 `
 
