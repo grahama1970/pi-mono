@@ -744,12 +744,29 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
             const prData = await prRes.json() as any;
             console.log(`[PERSONA_REVIEW] ${personaSlug}: exit=${prData.exit_code}, response_len=${(prData.response||'').length}`);
             const prAnswer = prData.response || 'No persona review response';
-            const prPassed = prAnswer.toUpperCase().includes('"PASS"') || prAnswer.includes('"verdict": "PASS"');
+
+            // Parse structured JSON from subagent response
+            let score = 0;
+            let verdict = 'FAIL';
+            try {
+              const jsonMatch = prAnswer.match(/\{[\s\S]*\}/);
+              if (jsonMatch) {
+                const parsed = JSON.parse(jsonMatch[0]);
+                verdict = (parsed.verdict || '').toUpperCase();
+                score = typeof parsed.score === 'number' ? parsed.score : 0;
+              }
+            } catch {
+              // Fallback: string check if JSON parse fails
+              verdict = prAnswer.toUpperCase().includes('"PASS"') ? 'PASS' : 'FAIL';
+            }
+            const prPassed = verdict === 'PASS';
 
             return {
               status: prPassed ? 'PASSED' : 'FAILED',
               expected: `${personaSlug}: ${reviewCriteria}`,
               actual: prAnswer,
+              score,
+              verdict,
             };
           } catch (prErr: any) {
             return {
