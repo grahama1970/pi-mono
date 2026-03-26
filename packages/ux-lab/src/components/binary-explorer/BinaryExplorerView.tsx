@@ -475,6 +475,10 @@ export function BinaryExplorerView() {
 
   // --- Context Menu ---
   const [contextMenu, setContextMenu] = useState<{ x: number, y: number, node: BinaryGraphNode } | null>(null)
+  /** Local rename overrides: nodeId → display label */
+  const [nodeLabels, setNodeLabels] = useState<Record<string, string>>({})
+  /** Local annotations: nodeId → comment text */
+  const [nodeAnnotations, setNodeAnnotations] = useState<Record<string, string>>({})
 
   // --- Investigation Journal ---
   const [journalSteps, setJournalSteps] = useState<Step[]>([])
@@ -1663,7 +1667,43 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
           </div>
         </div>
       ) : data.error ? (
-        <div style={{ padding: 20, color: EMBRY.red }}>{data.error}</div>
+        <div style={{ display: 'flex', flex: 1, height: '100%' }}>
+          <BinaryLeftPane
+            binaryName={binaryName}
+            binaries={binaries}
+            binaryMetas={binaryMetas}
+            onSelectBinary={(name) => { setBinaryName(name); clearScene(); setChatMessages([]); setAutoSeeded(false) }}
+            savedScenes={savedScenes}
+            onLoadScene={loadScene}
+            onIngest={() => {
+              const path = prompt('Path to ELF binary:')
+              if (path) { setIngestPath(path); setIsIngesting(true) }
+            }}
+          />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, background: '#050505' }}>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, fontWeight: 700, color: EMBRY.red, letterSpacing: '0.1em' }}>
+              BACKEND UNREACHABLE
+            </div>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, color: EMBRY.muted, maxWidth: 420, textAlign: 'center', lineHeight: 1.6 }}>
+              {data.error.includes('fetch') || data.error.includes('NetworkError') || data.error.includes('Failed to fetch')
+                ? 'Cannot connect to the memory daemon. Make sure the backend is running on port 3001.'
+                : data.error}
+            </div>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, color: EMBRY.dim, textAlign: 'center' }}>
+              backend: {API}
+            </div>
+            <button
+              onClick={() => data.refresh()}
+              style={{
+                fontFamily: 'JetBrains Mono, monospace', fontSize: 11, fontWeight: 700,
+                padding: '8px 20px', background: 'transparent', border: `1px solid ${EMBRY.accent}`,
+                color: EMBRY.accent, cursor: 'pointer', letterSpacing: '0.08em',
+              }}
+            >
+              ↺ RETRY
+            </button>
+          </div>
+        </div>
       ) : (
         <div style={styles.panes}>
           {/* ═══ LEFT SIDEBAR: Binary selector + scenes + sessions ═══ */}
@@ -2315,38 +2355,92 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
             </div>
 
             {/* Context Menu Overlay */}
-            {contextMenu && (
-              <div onClick={() => setContextMenu(null)} style={{ position: 'fixed', inset: 0, zIndex: 9999 }} onContextMenu={e => { e.preventDefault(); setContextMenu(null) }}>
-                <div style={{ position: 'absolute', top: contextMenu.y, left: contextMenu.x, background: '#090909', border: `1px solid ${EMBRY.border}`, padding: '4px', borderRadius: 2, minWidth: 160, boxShadow: '0 8px 32px rgba(0,0,0,0.8)' }} onClick={e => e.stopPropagation()}>
-                  <div style={{ padding: '6px 10px', fontSize: 9, fontWeight: 700, color: EMBRY.dim, borderBottom: `1px solid ${EMBRY.border}`, marginBottom: 4 }}>{contextMenu.node.label.toUpperCase()}</div>
-                  <div style={styles.contextItem} onClick={() => { addNodeWithNeighbors(contextMenu.node.id, 1, 6); setContextMenu(null) }}><Network size={12} /> Expand 6 Neighbors</div>
-                  <div style={styles.contextItem} onClick={() => { addNodeWithNeighbors(contextMenu.node.id, 1, 20); setContextMenu(null) }}><Network size={12} /> Expand All Neighbors</div>
-                  <div style={styles.contextItem} onClick={() => { removeFromScene(contextMenu.node.id); setContextMenu(null) }}><Trash2 size={12} /> Remove from Scene</div>
-                  <div style={{ height: 1, background: EMBRY.border, margin: '4px 0' }} />
-                  <div style={{ padding: '4px 10px', fontSize: 8, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase' }}>Scene Actions</div>
-                  <div style={styles.contextItem} onClick={() => {
-                    setContextMenu(null)
-                    setChatInput(`Trace the execution path of ${contextMenu.node.label}. What state machines, events, and schemas does it touch?`)
-                    setTimeout(() => sendChat(), 100)
-                  }}><Workflow size={12} /> Trace Execution Path</div>
-                  <div style={styles.contextItem} onClick={() => {
-                    setContextMenu(null)
-                    setChatInput(`What is the security attack surface of ${contextMenu.node.label}? What auth, permissions, or external inputs does it use?`)
-                    setTimeout(() => sendChat(), 100)
-                  }}><Shield size={12} /> Find Attack Surface</div>
-                  <div style={styles.contextItem} onClick={() => {
-                    setContextMenu(null)
-                    const other = selectedNode && selectedNode.id !== contextMenu.node.id ? selectedNode.label : ''
-                    if (other) {
-                      setChatInput(`Compare ${contextMenu.node.label} and ${other}. How are they related? What do they share?`)
-                    } else {
-                      setChatInput(`What are the most important connections of ${contextMenu.node.label} and why?`)
-                    }
-                    setTimeout(() => sendChat(), 100)
-                  }}><Search size={12} /> {selectedNode && selectedNode.id !== contextMenu.node.id ? `Compare with ${selectedNode.label}` : 'Analyze Connections'}</div>
-                </div>
-              </div>
-            )}
+            {contextMenu && (() => {
+              const n = contextMenu.node
+              const displayLabel = nodeLabels[n.id] ?? n.label
+              const annotation = nodeAnnotations[n.id]
+              return (
+                <ContextMenu
+                  x={contextMenu.x}
+                  y={contextMenu.y}
+                  title={displayLabel}
+                  onClose={() => setContextMenu(null)}
+                  items={[
+                    {
+                      label: 'Rename', icon: <Code size={12} />, shortcut: 'N',
+                      onClick: () => {
+                        const next = window.prompt('Rename node:', displayLabel)
+                        if (next && next.trim()) setNodeLabels(m => ({ ...m, [n.id]: next.trim() }))
+                      },
+                    },
+                    {
+                      label: annotation ? 'Edit Annotation' : 'Add Annotation',
+                      icon: <MessageSquare size={12} />, shortcut: ';',
+                      onClick: () => {
+                        const next = window.prompt('Annotation:', annotation ?? '')
+                        if (next !== null) setNodeAnnotations(m => ({ ...m, [n.id]: next.trim() }))
+                      },
+                    },
+                    {
+                      label: 'Copy ID / Address', icon: <List size={12} />, shortcut: 'Ctrl+C',
+                      onClick: () => { navigator.clipboard.writeText(n.id) },
+                    },
+                    { label: '', separator: true, onClick: () => {} },
+                    { label: 'Navigation', header: true, onClick: () => {} },
+                    {
+                      label: 'Show Cross-References', icon: <Search size={12} />, shortcut: 'X',
+                      onClick: () => {
+                        setChatInput(`List all cross-references (callers and callees) of ${displayLabel}. What nodes reference it and what does it reference?`)
+                        setTimeout(() => sendChat(), 100)
+                      },
+                    },
+                    {
+                      label: 'Expand 6 Neighbors', icon: <Network size={12} />, shortcut: 'E',
+                      onClick: () => { addNodeWithNeighbors(n.id, 1, 6) },
+                    },
+                    {
+                      label: 'Expand All Neighbors', icon: <Network size={12} />,
+                      onClick: () => { addNodeWithNeighbors(n.id, 1, 20) },
+                    },
+                    { label: '', separator: true, onClick: () => {} },
+                    { label: 'Analysis', header: true, onClick: () => {} },
+                    {
+                      label: 'Trace Execution Path', icon: <Workflow size={12} />,
+                      onClick: () => {
+                        setChatInput(`Trace the execution path of ${displayLabel}. What state machines, events, and schemas does it touch?`)
+                        setTimeout(() => sendChat(), 100)
+                      },
+                    },
+                    {
+                      label: 'Find Attack Surface', icon: <Shield size={12} />,
+                      onClick: () => {
+                        setChatInput(`What is the security attack surface of ${displayLabel}? What auth, permissions, or external inputs does it use?`)
+                        setTimeout(() => sendChat(), 100)
+                      },
+                    },
+                    {
+                      label: selectedNode && selectedNode.id !== n.id
+                        ? `Compare with ${selectedNode.label}` : 'Analyze Connections',
+                      icon: <Search size={12} />,
+                      onClick: () => {
+                        const other = selectedNode && selectedNode.id !== n.id ? selectedNode.label : ''
+                        if (other) {
+                          setChatInput(`Compare ${displayLabel} and ${other}. How are they related? What do they share?`)
+                        } else {
+                          setChatInput(`What are the most important connections of ${displayLabel} and why?`)
+                        }
+                        setTimeout(() => sendChat(), 100)
+                      },
+                    },
+                    { label: '', separator: true, onClick: () => {} },
+                    {
+                      label: 'Remove from Scene', icon: <Trash2 size={12} />, danger: true, shortcut: 'Del',
+                      onClick: () => { removeFromScene(n.id) },
+                    },
+                  ]}
+                />
+              )
+            })()}
 
             {/* ═══ BOTTOM DATA VIEW — resizable, tabbed inspector ═══ */}
             {/* Drag handle for vertical resize */}
@@ -3226,12 +3320,24 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   type Seg = { text: string; entity?: boolean }
                   const suggestions: { segments: Seg[]; raw: string }[] = []
                   const q = (segs: Seg[]) => suggestions.push({ segments: segs, raw: segs.map(s => s.text).join('') })
-                  if (namespaces.length >= 2) q([{text:'How do '},{text:namespaces[0],entity:true},{text:' and '},{text:namespaces[1],entity:true},{text:' interact?'}])
-                  if (topRpcs[0]) q([{text:'What does '},{text:topRpcs[0].label,entity:true},{text:' do?'}])
-                  if (stateMachines[0]) q([{text:'Trace the '},{text:stateMachines[0],entity:true},{text:' state machine'}])
-                  if (namespaces.length > 0) q([{text:'What is the attack surface of '},{text:namespaces[0],entity:true},{text:'?'}])
-                  if (topRpcs[1]) q([{text:'How does '},{text:topRpcs[1].label,entity:true},{text:' connect to '},{text:topRpcs[2]?.label||namespaces[0],entity:true},{text:'?'}])
-                  q([{text:'What are the core schemas in '},{text:binaryName,entity:true},{text:'?'}])
+                  if (analysisMode === 'investigator') {
+                    // RE workflow queries — domain-specific, actionable
+                    q([{text:`Find all functions in `},{text:binaryName,entity:true},{text:` that process network input`}])
+                    q([{text:`Show obfuscated or high-entropy functions in `},{text:binaryName,entity:true}])
+                    q([{text:`What anti-debugging or anti-analysis techniques does `},{text:binaryName,entity:true},{text:` use?`}])
+                    q([{text:`Find cryptographic routines and key material handling in `},{text:binaryName,entity:true}])
+                    if (namespaces.length > 0) q([{text:'What is the full call graph rooted at '},{text:namespaces[0],entity:true},{text:'?'}])
+                    if (topRpcs[0]) q([{text:'What external inputs reach '},{text:topRpcs[0].label,entity:true},{text:' and how are they validated?'}])
+                    if (stateMachines[0]) q([{text:'Identify reachable states from '},{text:stateMachines[0],entity:true},{text:' and flag impossible transitions'}])
+                    q([{text:`Which functions in `},{text:binaryName,entity:true},{text:` manipulate strings without bounds checking?`}])
+                  } else {
+                    if (namespaces.length >= 2) q([{text:'How do '},{text:namespaces[0],entity:true},{text:' and '},{text:namespaces[1],entity:true},{text:' interact?'}])
+                    if (topRpcs[0]) q([{text:'What does '},{text:topRpcs[0].label,entity:true},{text:' do?'}])
+                    if (stateMachines[0]) q([{text:'Trace the '},{text:stateMachines[0],entity:true},{text:' state machine'}])
+                    if (namespaces.length > 0) q([{text:'What is the attack surface of '},{text:namespaces[0],entity:true},{text:'?'}])
+                    if (topRpcs[1]) q([{text:'How does '},{text:topRpcs[1].label,entity:true},{text:' connect to '},{text:topRpcs[2]?.label||namespaces[0],entity:true},{text:'?'}])
+                    q([{text:'What are the core schemas in '},{text:binaryName,entity:true},{text:'?'}])
+                  }
                   return (
                     <div style={{ padding: 10 }}>
                       <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>{binaryName.toUpperCase()}</div>
@@ -3258,6 +3364,25 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                           ))}
                         </div>
                       )}
+                      {/* Investigator RE workflow path */}
+                      {analysisMode === 'investigator' && (
+                        <div style={{ marginBottom: 12, padding: '8px 10px', background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 4 }}>
+                          <div style={{ fontSize: 8, fontWeight: 800, color: EMBRY.dim, marginBottom: 6, letterSpacing: '0.08em' }}>RE WORKFLOW</div>
+                          {[
+                            { label: 'Deobfuscation pass', query: `Identify control flow flattening, opaque predicates, or dead code in ${binaryName}. Which functions look obfuscated?` },
+                            { label: 'Network attack surface', query: `Find all functions in ${binaryName} that receive or parse network input. What validation is missing?` },
+                            { label: 'Crypto & key handling', query: `What cryptographic routines are present in ${binaryName}? Locate key generation, IV reuse, or weak algorithm usage.` },
+                          ].map(g => (
+                            <div key={g.label} onClick={() => { setChatInput(''); sendChat(g.query) }}
+                              style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '5px 8px', cursor: 'pointer', borderRadius: 3, marginBottom: 2, transition: 'background 0.15s' }}
+                              onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}12`)}
+                              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                            >
+                              <span style={{ fontSize: 8, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, minWidth: 130 }}>{g.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                       <div style={{ fontSize: 8, color: EMBRY.dim, marginBottom: 6, fontWeight: 800 }}>SUGGESTED QUERIES</div>
                       {suggestions.map((s, si) => (
                         <div key={si} onClick={() => { setChatInput(s.raw); setTimeout(() => { setChatInput(''); sendChat(s.raw) }, 50) }} style={{ fontSize: 10, color: EMBRY.dim, padding: '6px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }} onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)} onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}>
@@ -3275,12 +3400,21 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     <div style={{ textAlign: 'center', marginBottom: 8 }}>
                       Ask anything about <strong style={{ color: EMBRY.white }}>{selectedNode.label}</strong>
                     </div>
-                    {(['What does this do?', 'Explain this in plain English.', 'What calls this?'] as const).map(q => (
-                      <div key={q} onClick={() => sendChat(`${q.replace('this', selectedNode.label)}`)}
+                    {(analysisMode === 'investigator' ? [
+                      `What does ${selectedNode.label} do? Walk me through the logic.`,
+                      `What callers reach ${selectedNode.label} and what arguments do they pass?`,
+                      `Does ${selectedNode.label} process untrusted input? Where could it be exploited?`,
+                      `Are there obfuscation patterns in ${selectedNode.label}?`,
+                    ] : [
+                      `What does ${selectedNode.label} do?`,
+                      `Explain ${selectedNode.label} in plain English.`,
+                      `What calls ${selectedNode.label}?`,
+                    ]).map(q => (
+                      <div key={q} onClick={() => sendChat(q)}
                         style={{ fontSize: 10, color: EMBRY.accent, padding: '4px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4, cursor: 'pointer', marginBottom: 4, transition: 'background 0.15s' }}
                         onMouseEnter={e => (e.currentTarget.style.background = `${EMBRY.accent}18`)}
                         onMouseLeave={e => (e.currentTarget.style.background = `${EMBRY.accent}08`)}
-                      >{q.replace('this', selectedNode.label)}</div>
+                      >{q}</div>
                     ))}
                   </div>
                 )}
@@ -3414,7 +3548,11 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   <input style={{ ...styles.chatInput, border: 'none', background: 'transparent' }} placeholder={
                     [...chatMessages].reverse().find(m => m.role === 'assistant')?.feedback === 'down'
                       ? 'What should have happened instead?'
-                      : selectedNode ? `Ask about ${selectedNode.label}...` : 'Ask about this binary...'
+                      : selectedNode
+                        ? `Ask about ${selectedNode.label}... (e.g. "what calls this?" / "obfuscated?")`
+                        : analysisMode === 'investigator'
+                          ? 'e.g. "find obfuscated functions" / "network input handlers" / "crypto routines"'
+                          : 'Ask about this binary...'
                   } value={chatInput} onChange={e => setChatInput(e.target.value)} />
                 </div>
                 <button type="submit" style={styles.sendButton}>↑</button>

@@ -1,6 +1,8 @@
 /**
- * ContextMenu — Shared right-click context menu for LeftPane items.
- * Used by Binary Explorer (binaries), Testing (manifests), Prompt Lab (prompts).
+ * ContextMenu — Shared right-click context menu for LeftPane items and graph nodes.
+ * Used by Binary Explorer (binaries, graph nodes), Testing (manifests), Prompt Lab (prompts).
+ *
+ * Supports: keyboard shortcuts, section separators, section headers, disabled items.
  */
 import { useEffect, useRef } from 'react'
 import { EMBRY } from './EmbryStyle'
@@ -8,7 +10,14 @@ import { EMBRY } from './EmbryStyle'
 export interface ContextMenuItem {
   label: string
   icon?: React.ReactNode
+  /** Keyboard shortcut label shown right-aligned (e.g. "N", "Ctrl+C", ";") */
+  shortcut?: string
+  /** Render as a horizontal divider (label/icon/onClick ignored) */
+  separator?: boolean
+  /** Render as a non-interactive section header */
+  header?: boolean
   danger?: boolean
+  disabled?: boolean
   onClick: () => void
 }
 
@@ -16,10 +25,12 @@ interface ContextMenuProps {
   x: number
   y: number
   items: ContextMenuItem[]
+  /** Optional title shown at the top of the menu */
+  title?: string
   onClose: () => void
 }
 
-export function ContextMenu({ x, y, items, onClose }: ContextMenuProps) {
+export function ContextMenu({ x, y, items, title, onClose }: ContextMenuProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -36,34 +47,87 @@ export function ContextMenu({ x, y, items, onClose }: ContextMenuProps) {
   }, [onClose])
 
   // Adjust position to stay in viewport
-  const menuWidth = 160
-  const menuHeight = items.length * 32 + 8
+  const menuWidth = 220
+  const itemCount = items.filter(i => !i.separator && !i.header).length
+  const sepCount = items.filter(i => i.separator).length
+  const headerCount = items.filter(i => i.header).length
+  const titleHeight = title ? 28 : 0
+  const menuHeight = titleHeight + itemCount * 28 + sepCount * 9 + headerCount * 22 + 8
   const adjustedX = x + menuWidth > window.innerWidth ? x - menuWidth : x
   const adjustedY = y + menuHeight > window.innerHeight ? y - menuHeight : y
 
   return (
-    <div ref={ref} style={{
-      position: 'fixed', left: adjustedX, top: adjustedY, zIndex: 99999,
-      background: '#0a0a0a', border: `1px solid ${EMBRY.border}`,
-      borderRadius: 4, padding: '4px 0', minWidth: menuWidth,
-      boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
-    }}>
-      {items.map((item, i) => (
-        <div key={i}
-          onClick={() => { item.onClick(); onClose() }}
-          style={{
-            padding: '6px 12px', fontSize: 11, cursor: 'pointer',
-            color: item.danger ? '#ff4444' : EMBRY.white,
-            display: 'flex', alignItems: 'center', gap: 8,
-            transition: 'background 0.1s',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
-          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-        >
-          {item.icon}
-          {item.label}
+    <div
+      ref={ref}
+      onContextMenu={e => e.preventDefault()}
+      style={{
+        position: 'fixed', left: adjustedX, top: adjustedY, zIndex: 99999,
+        background: '#0a0a0a', border: `1px solid ${EMBRY.border}`,
+        borderRadius: 4, padding: '4px 0', minWidth: menuWidth,
+        boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
+        userSelect: 'none',
+      }}
+    >
+      {title && (
+        <div style={{
+          padding: '5px 12px', fontSize: 9, fontWeight: 700,
+          color: EMBRY.dim, borderBottom: `1px solid ${EMBRY.border}`,
+          marginBottom: 4, letterSpacing: '0.08em',
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+        }}>
+          {title.toUpperCase()}
         </div>
-      ))}
+      )}
+      {items.map((item, i) => {
+        if (item.separator) {
+          return <div key={i} style={{ height: 1, background: EMBRY.border, margin: '4px 0' }} />
+        }
+        if (item.header) {
+          return (
+            <div key={i} style={{
+              padding: '4px 12px', fontSize: 8, fontWeight: 700,
+              color: EMBRY.dim, textTransform: 'uppercase', letterSpacing: '0.1em',
+              marginTop: 2,
+            }}>
+              {item.label}
+            </div>
+          )
+        }
+        return (
+          <div
+            key={i}
+            onClick={() => {
+              if (item.disabled) return
+              item.onClick()
+              onClose()
+            }}
+            style={{
+              padding: '5px 12px', fontSize: 11, cursor: item.disabled ? 'default' : 'pointer',
+              color: item.disabled ? EMBRY.dim : item.danger ? '#ff4444' : EMBRY.white,
+              display: 'flex', alignItems: 'center', gap: 8,
+              transition: 'background 0.1s',
+              opacity: item.disabled ? 0.45 : 1,
+            }}
+            onMouseEnter={e => { if (!item.disabled) e.currentTarget.style.background = '#1a1a1a' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+          >
+            <span style={{ width: 14, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              {item.icon}
+            </span>
+            <span style={{ flex: 1 }}>{item.label}</span>
+            {item.shortcut && (
+              <span style={{
+                fontSize: 9, color: EMBRY.dim, fontFamily: 'monospace',
+                background: '#1a1a1a', borderRadius: 2,
+                padding: '1px 5px', border: `1px solid ${EMBRY.border}`,
+                letterSpacing: '0.05em', flexShrink: 0,
+              }}>
+                {item.shortcut}
+              </span>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }

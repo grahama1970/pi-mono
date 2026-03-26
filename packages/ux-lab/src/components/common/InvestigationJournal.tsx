@@ -20,6 +20,8 @@ import {
 	Download,
 	X,
 	Eraser,
+	FileText,
+	Camera,
 } from "lucide-react";
 import { EMBRY, panel, label, heading } from "./EmbryStyle";
 
@@ -99,6 +101,39 @@ function exportMarkdown(steps: Step[]): string {
 			`| ${i + 1} | ${formatTime(s.timestamp)} | ${meta.label} | ${desc} | ${note} |`,
 		);
 	});
+	return lines.join("\n");
+}
+
+function exportWriteup(steps: Step[]): string {
+	const lines: string[] = [
+		"# CTF Writeup",
+		"",
+		`*Generated: ${new Date().toISOString()}*`,
+		"",
+		"## Overview",
+		"",
+		"> Replace this section with a brief challenge description.",
+		"",
+		"## Analysis",
+		"",
+	];
+	steps.forEach((s, i) => {
+		const meta = ACTION_META[s.action];
+		lines.push(`### Step ${i + 1} — ${meta.label}`);
+		lines.push("");
+		lines.push(`**Time:** ${formatTime(s.timestamp)}`);
+		if (s.snapshot) {
+			lines.push("**Snapshot:** *(graph state captured)*");
+		}
+		lines.push("");
+		lines.push(s.description);
+		if (s.note) {
+			lines.push("");
+			lines.push(`> ${s.note}`);
+		}
+		lines.push("");
+	});
+	lines.push("## Conclusion", "", "> Replace with your findings and flag.");
 	return lines.join("\n");
 }
 
@@ -229,7 +264,18 @@ const styles = {
 		color: EMBRY.white,
 		outline: "none",
 		marginTop: 4,
+		resize: "vertical",
+		minHeight: 52,
 	} satisfies React.CSSProperties,
+	snapshotBadge: {
+		fontFamily: MONO,
+		fontSize: 9,
+		color: EMBRY.blue,
+		display: "flex",
+		alignItems: "center" as const,
+		gap: 2,
+		marginTop: 2,
+	},
 	actions: {
 		display: "flex",
 		alignItems: "center" as const,
@@ -266,7 +312,7 @@ export function InvestigationJournal({
 	const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 	const [editingIdx, setEditingIdx] = useState<number | null>(null);
 	const [noteText, setNoteText] = useState("");
-	const inputRef = useRef<HTMLInputElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const timelineRef = useRef<HTMLDivElement>(null);
 
 	/* Auto-scroll to latest step */
@@ -310,6 +356,12 @@ export function InvestigationJournal({
 		downloadBlob(md, `investigation-journal-${ts}.md`);
 	}, [steps]);
 
+	const handleExportWriteup = useCallback(() => {
+		const md = exportWriteup(steps);
+		const ts = new Date().toISOString().slice(0, 10);
+		downloadBlob(md, `ctf-writeup-${ts}.md`);
+	}, [steps]);
+
 	const Chevron = collapsed ? ChevronRight : ChevronDown;
 
 	return (
@@ -338,7 +390,15 @@ export function InvestigationJournal({
 					>
 						<button
 							style={styles.iconBtn}
-							title="Export as Markdown"
+							title="Export as CTF Writeup"
+							onClick={handleExportWriteup}
+							disabled={steps.length === 0}
+						>
+							<FileText size={13} color={EMBRY.amber} />
+						</button>
+						<button
+							style={styles.iconBtn}
+							title="Export raw journal (Markdown table)"
 							onClick={handleExport}
 							disabled={steps.length === 0}
 						>
@@ -396,6 +456,14 @@ export function InvestigationJournal({
 										{step.description}
 									</div>
 
+									{/* Snapshot indicator */}
+									{step.snapshot && (
+										<div style={styles.snapshotBadge}>
+											<Camera size={9} color={EMBRY.blue} />
+											snapshot captured
+										</div>
+									)}
+
 									{/* Note display */}
 									{step.note && !isEditing && (
 										<div style={styles.note}>{step.note}</div>
@@ -406,32 +474,43 @@ export function InvestigationJournal({
 										<div
 											style={{
 												display: "flex",
+												flexDirection: "column",
 												gap: 4,
-												alignItems: "center",
+												marginTop: 4,
 											}}
 										>
-											<input
+											<textarea
 												ref={inputRef}
 												style={styles.noteInput}
 												value={noteText}
+												rows={3}
 												onChange={(e) =>
 													setNoteText(e.target.value)
 												}
 												onKeyDown={(e) => {
-													if (e.key === "Enter")
+													if (e.key === "Enter" && (e.ctrlKey || e.metaKey))
 														handleSaveNote();
 													if (e.key === "Escape")
 														handleCancelNote();
 												}}
-												placeholder="Add a note..."
+												placeholder="Add a personal note (Ctrl+Enter to save)..."
 											/>
-											<button
-												style={styles.iconBtn}
-												onClick={handleCancelNote}
-												title="Cancel"
-											>
-												<X size={12} />
-											</button>
+											<div style={{ display: "flex", gap: 4, justifyContent: "flex-end" }}>
+												<button
+													style={{ ...styles.iconBtn, fontSize: 10, color: EMBRY.green }}
+													onClick={handleSaveNote}
+													title="Save note"
+												>
+													Save
+												</button>
+												<button
+													style={styles.iconBtn}
+													onClick={handleCancelNote}
+													title="Cancel"
+												>
+													<X size={12} />
+												</button>
+											</div>
 										</div>
 									)}
 								</div>
