@@ -8,7 +8,7 @@ import '@excalidraw/excalidraw/index.css'
 import type { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw'
 import {
   Plus, Save, Brain, Map,
-  Trash2, Copy, Pencil, History, GitBranch,
+  Trash2, Copy, Pencil, History, GitBranch, Link2,
 } from 'lucide-react'
 import { EMBRY, heading } from '../common/EmbryStyle'
 import { LeftPane, LeftPaneSection, paneItemStyle } from '../common/LeftPane'
@@ -144,7 +144,7 @@ function DragHandle({ onDrag }: { onDrag: (delta: number) => void }) {
 
 /* ─── ArchitectureView ───────────────────────────────────────── */
 
-export function ArchitectureView() {
+export function ArchitectureView({ initialProjectId }: { initialProjectId?: string } = {}) {
   const [projects, setProjects] = useState<ArchProject[]>(FALLBACK_PROJECTS)
   const [activeId, setActiveId] = useState<string>('')
   const [projectsLoaded, setProjectsLoaded] = useState(false)
@@ -165,7 +165,9 @@ export function ArchitectureView() {
         }))
         if (list.length > 0) {
           setProjects(list)
-          setActiveId(list[0].id)
+          // Deep-link: if initialProjectId matches a project, select it
+          const deepLinked = initialProjectId && list.find(p => p.id === initialProjectId)
+          setActiveId(deepLinked ? deepLinked.id : list[0].id)
         } else {
           setActiveId(FALLBACK_PROJECTS[0].id)
         }
@@ -177,6 +179,14 @@ export function ArchitectureView() {
     loadProjects()
     return () => { cancelled = true }
   }, [])
+
+  /* Sync activeId → URL hash for deep-linking */
+  useEffect(() => {
+    if (activeId && projectsLoaded) {
+      window.location.hash = `architecture/${activeId}`
+    }
+  }, [activeId, projectsLoaded])
+
   const [renamingId, setRenamingId] = useState<string | null>(null)
   const [renameValue, setRenameValue] = useState('')
   const [selectedElement, setSelectedElement] = useState<InspectedElement | null>(null)
@@ -339,6 +349,14 @@ export function ArchitectureView() {
             }
             setProjects(prev => [...prev, dup])
           }
+        },
+      },
+      {
+        label: 'Copy Link',
+        icon: <Link2 size={11} />,
+        onClick: () => {
+          const url = `${window.location.origin}/#architecture/${projectId}`
+          navigator.clipboard.writeText(url)
         },
       },
       { label: 'Version History', icon: <History size={11} />, onClick: () => {} },
