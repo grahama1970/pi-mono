@@ -484,7 +484,7 @@ export function BinaryExplorerView() {
   // --- Investigation Journal ---
   const [journalSteps, setJournalSteps] = useState<Step[]>([])
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
-  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('beginner')
+  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('investigator')
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))
   const [smTracedPath, setSmTracedPath] = useState<Set<number>>(new Set())
   const [splitCodeView, setSplitCodeView] = useState(false) // Godbolt-style horizontal split: code left, graph right
@@ -2346,12 +2346,15 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     )}
                   </div>
 
-                  <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 10, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10 }}>
-                    Select an analysis entry point:
+                  {/* Beginner orientation blurb */}
+                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 10, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10, lineHeight: 1.6 }}>
+                    <span style={{ color: EMBRY.fg }}>Binary Explorer</span> maps a compiled binary into an interactive graph — functions, data structures, RPC handlers, and how they connect.
+                    {' '}<span style={{ color: EMBRY.accent }}>New here?</span> Start with <strong style={{ color: EMBRY.fg }}>Seed Namespaces</strong> to get an overview, then click any node to explore deeper.
                   </div>
 
                   {/* Quick actions */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {/* Primary CTA — labelled as start-here for newcomers */}
                     <button onClick={() => {
                       setSeeding(true)
                       setTimeout(() => {
@@ -2371,10 +2374,13 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       transition: 'all 0.2s ease', opacity: seeding ? 0.8 : 1,
                     }}>
                       <Layers size={16} style={{ flexShrink: 0, animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }} />
-                      <div>
-                        <div>{seeding ? 'Seeding…' : 'Seed Namespaces'}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          {seeding ? 'Seeding…' : 'Seed Namespaces'}
+                          {!seeding && <span style={{ fontSize: 8, padding: '1px 5px', background: `${EMBRY.accent}22`, border: `1px solid ${EMBRY.accent}44`, borderRadius: 2, fontWeight: 700, letterSpacing: '0.08em' }}>START HERE</span>}
+                        </div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
-                          {seeding ? 'Loading binary structure into graph…' : 'Namespaces + top 5 connected features'}
+                          {seeding ? 'Loading binary structure into graph…' : 'Best first step — loads top-level modules + 5 most-connected features'}
                         </div>
                       </div>
                     </button>
@@ -2387,7 +2393,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <Code size={16} style={{ flexShrink: 0 }} />
                       <div>
                         <div>Browse Source Patterns</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM / decompiled C / Python pseudocode</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>Read decompiled C / ASM — great for spotting dangerous functions like strcpy, gets</div>
                       </div>
                     </button>
 
@@ -2399,7 +2405,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <Shield size={16} style={{ flexShrink: 0 }} />
                       <div>
                         <div>View Vulnerability Map</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND mapping table</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND — see which bug classes were auto-detected</div>
                       </div>
                     </button>
 
@@ -2421,7 +2427,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       <Network size={16} style={{ flexShrink: 0 }} />
                       <div>
                         <div>Find Entry Points</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CLI args · RPC handlers · events · params — where input enters</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CLI args · RPC handlers · events — where attacker-controlled input enters the binary</div>
                       </div>
                     </button>
                   </div>

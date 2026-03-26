@@ -225,7 +225,7 @@ Do NOT read more than 2 files. Edit immediately."""
         head_before = sp.run(["git", "rev-parse", "HEAD"], cwd=repo_root, capture_output=True, text=True).stdout.strip()
 
         try:
-            text, tools, dur_ms = await run_subagent(prompt, max_turns=30)
+            text, tools, dur_ms = await run_subagent(prompt, max_turns=50)
             task.duration_s = time.time() - start
 
             # Detect success from git — if a new commit landed with the task group name, it worked

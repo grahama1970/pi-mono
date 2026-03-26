@@ -265,7 +265,76 @@ graph TD
     style ISO_REL fill:#fda,stroke:#963
 ```
 
-**The hierarchy matters because:** when scoring the relationship between AC-1 and CM0001, the score is not just "do their mind tags overlap?" — it's "how many SPARTA techniques reference both of them, which tactics do those techniques belong to, and do their NIST/ISO categories align?" All three layers are deterministic and from the spreadsheet.
+### Comparison: NIST Control ↔ SPARTA Countermeasure
+
+```json
+{
+  "AC-1": {
+    "framework": "NIST",
+    "family": "Access Control",
+    "mind": ["Evade", "Exploit", "Model", "Persist"],
+    "technique_count": 67
+  },
+  "CM0001": {
+    "framework": "SPARTA",
+    "type": "countermeasure",
+    "mind": ["Evade", "Exploit", "Harden", "Model", "Persist"],
+    "technique_count": 44
+  },
+  "shared_techniques": 39,
+  "shared_by_tactic": {
+    "Reconnaissance": 30,
+    "Exfiltration": 3,
+    "Initial Access": 2,
+    "Defense Evasion": 2,
+    "Persistence": 1,
+    "Lateral Movement": 1
+  },
+  "mind_jaccard": 0.80,
+  "shared_technique_ratio": 0.54,
+  "score": 0.39
+}
+```
+
+AC-1 and CM0001 share **39 of 72 techniques** (54%). Mostly Reconnaissance — both address spacecraft design information protection. Mind overlap is 4/5 tags (80%). Strong relationship.
+
+### Comparison: NIST Control ↔ CWE Weakness
+
+```json
+{
+  "AC-1": {
+    "framework": "NIST",
+    "family": "Access Control",
+    "mind": ["Evade", "Exploit", "Model", "Persist"],
+    "technique_count": 67
+  },
+  "CWE-287": {
+    "framework": "CWE",
+    "type": "weakness",
+    "pillar": "CWE-284",
+    "abstraction": "Class",
+    "mind": ["Evade", "Exploit", "Harden", "Model", "Persist"],
+    "technique_count": 140,
+    "capec_ids": ["CAPEC-114", "CAPEC-115", "CAPEC-151", "..."],
+    "attack_technique_ids": ["T1134", "T1040", "T1548", "T1557", "..."]
+  },
+  "shared_techniques": 35,
+  "shared_by_tactic": {
+    "Reconnaissance": 14,
+    "Resource Development": 8,
+    "Initial Access": 5,
+    "Defense Evasion": 3,
+    "Persistence": 2,
+    "Exfiltration": 2,
+    "Lateral Movement": 1
+  },
+  "mind_jaccard": 0.80,
+  "shared_technique_ratio": 0.20,
+  "score": 0.27
+}
+```
+
+CWE-287 (Improper Authentication) has its own MITRE chain: `CWE-287 → CAPEC-114,CAPEC-115... → T1134,T1548... → Exploit,Evade`. The CWE brings 140 technique references (broader than AC-1's 67), so the shared ratio is lower (20%) despite 35 shared techniques. The CWE's `pillar_cwe: CWE-284` and `abstraction: Class` are CWE-specific taxonomy tags.
 
 ## Files Changed
 
