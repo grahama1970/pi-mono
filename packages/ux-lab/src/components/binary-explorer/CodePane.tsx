@@ -71,7 +71,7 @@ function detectAsmSyntax(code: string): 'intel' | 'att' | 'arm' | 'unknown' {
   return 'unknown'
 }
 
-function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
+function tokenizeLine(text: string, language: 'asm' | 'c' | 'python', syntax?: 'intel' | 'att' | 'arm' | 'unknown'): Token[] {
   if (!text) return [{ text: ' ', type: 'plain' }]
 
   // Comment detection (full line)
@@ -124,19 +124,29 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
   const remaining = codepart
 
   const patterns: { regex: RegExp; type: TokenType }[] =
-    language === 'asm' ? [
-      // AT&T size-suffixed mnemonics before base keywords so movl beats mov
-      { regex: ASM_KEYWORDS_ATT, type: 'keyword' },
-      { regex: ASM_KEYWORDS, type: 'keyword' },
-      { regex: ASM_KNOWN_SYMBOLS, type: 'symbol' },
-      { regex: ASM_SIZE_SPECS, type: 'sizespec' },
-      { regex: ASM_REGISTERS, type: 'register' },
-      { regex: ASM_REGISTERS_ATT, type: 'register' },
-      // Hex address/immediate: 0x-prefixed, uppercase hex digits for display consistency
-      { regex: /0x[0-9a-fA-F]+/g, type: 'number' },
-      { regex: /\b\d+\b/g, type: 'number' },
-      { regex: /"[^"]*"|'[^']*'/g, type: 'string' },
-    ] : language === 'c' ? [
+    language === 'asm' ? (
+      syntax === 'att' ? [
+        // AT&T dialect: size-suffixed mnemonics first so movl beats mov, no Intel size specs
+        { regex: ASM_KEYWORDS_ATT, type: 'keyword' },
+        { regex: ASM_KEYWORDS, type: 'keyword' },
+        { regex: ASM_KNOWN_SYMBOLS, type: 'symbol' },
+        { regex: ASM_REGISTERS_ATT, type: 'register' },
+        // AT&T immediates: $0x1234 or $42 — highlight before bare hex/decimal
+        { regex: /\$(?:0x[0-9a-fA-F]+|-?\d+)\b/g, type: 'number' },
+        { regex: /0x[0-9a-fA-F]+/g, type: 'number' },
+        { regex: /\b\d+\b/g, type: 'number' },
+        { regex: /"[^"]*"|'[^']*'/g, type: 'string' },
+      ] : [
+        // Intel / ARM / unknown: size specifiers (DWORD PTR etc.) and Intel/ARM registers only
+        { regex: ASM_KEYWORDS, type: 'keyword' },
+        { regex: ASM_KNOWN_SYMBOLS, type: 'symbol' },
+        { regex: ASM_SIZE_SPECS, type: 'sizespec' },
+        { regex: ASM_REGISTERS, type: 'register' },
+        { regex: /0x[0-9a-fA-F]+/g, type: 'number' },
+        { regex: /\b\d+\b/g, type: 'number' },
+        { regex: /"[^"]*"|'[^']*'/g, type: 'string' },
+      ]
+    ) : language === 'c' ? [
       { regex: C_KEYWORDS, type: 'keyword' },
       { regex: C_TYPES, type: 'type' },
       { regex: /\b[a-zA-Z_]\w*(?=\s*\()/g, type: 'function' },
@@ -453,7 +463,7 @@ export function CodePane({
       <div ref={scrollRef} style={{ flex: 1, overflow: 'auto', maxHeight }}>
         <pre style={{ margin: 0, padding: 0 }}>
           {lines.map((line, i) => {
-            const tokens = tokenizeLine(line, language)
+            const tokens = tokenizeLine(line, language, asmSyntax ?? undefined)
             const isHighlighted = highlightedLines?.has(i)
             const addr = addresses?.[i]
             const opcode = opcodes?.[i]
