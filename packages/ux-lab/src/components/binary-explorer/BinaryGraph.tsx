@@ -157,7 +157,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     d3.select(svg).selectAll('*').remove()
 
     const root = d3.select(svg).attr('viewBox', `0 0 ${width} ${height}`)
-    root.append('rect').attr('width', width).attr('height', height).attr('fill', EMBRY.bgDeep)
+    const bgRect = root.append('rect').attr('width', width).attr('height', height).attr('fill', EMBRY.bgDeep).style('cursor', 'default')
 
     // SVG defs: animations + arrowhead markers
     const defs = root.append('defs')
@@ -655,8 +655,14 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     // Initial sync
     applySelection(selectedNodeIdRef.current)
 
-    // Click → tell React it clicked
+    // Background click → deselect (clicking empty space clears selection)
+    bgRect.on('click', () => {
+      applySelection(null)
+    })
+
+    // Click → tell React it clicked (single-click only, not after drag)
     nodeGs.on('click', function (_event, d) {
+      if (_wasDraggedRef.current) { _wasDraggedRef.current = false; return }
       if (onNodeClickRef.current) {
         const original = nodes.find((n) => n.id === d.id)
         if (original) onNodeClickRef.current(original)
@@ -827,9 +833,11 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .text((d) => d.label.length > 22 ? `${d.label.slice(0, 20)}…` : d.label)
 
     // ── Drag ──
+    // Shared flag: set true on drag, checked in click handler to suppress false clicks
+    let _wasDraggedRef = { current: false }
     const drag = d3.drag<SVGGElement, SimNode, d3.SubjectPosition>()
-      .on('start', (event, d) => { if (!event.active) simulation.alphaTarget(0.1).restart(); d.fx = d.x; d.fy = d.y })
-      .on('drag', (event, d) => { d.fx = event.x; d.fy = event.y })
+      .on('start', (event, d) => { _wasDraggedRef.current = false; if (!event.active) simulation.alphaTarget(0.1).restart(); d.fx = d.x; d.fy = d.y })
+      .on('drag', (event, d) => { _wasDraggedRef.current = true; d.fx = event.x; d.fy = event.y })
       .on('end', (event, d) => { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     nodeGs.call(drag as any) // Type assertion necessary due to complex D3 Selection overlap with React types
