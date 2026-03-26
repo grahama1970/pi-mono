@@ -121,10 +121,12 @@ def _build_elements(components: list[dict], connections: list[dict], name: str =
         rect_id = f"rect_{comp_id}"
         label_id = f"label_{comp_id}"
 
-        # Diamonds need more width to fit text (text area is ~50% of diamond bounding box)
+        # Diamonds: equal width and height for a proper square-rotated-45 shape
         w = box_w
         if is_diamond:
-            w = int(box_w * 1.3)  # wider to compensate for diamond's narrow text area
+            side = int(row_h * 0.75)  # 75% of row height, square
+            w = side
+            h = side
 
         # Grid layout: use row/col if specified, else stack vertically
         row = comp.get("row")
@@ -142,8 +144,8 @@ def _build_elements(components: list[dict], connections: list[dict], name: str =
         # Track position for arrow generation
         comp_map[comp_id] = {"rect_id": rect_id, "y": comp_y, "h": h, "x": comp_x, "w": w}
 
-        # Build bound elements list (text + arrows added later)
-        bound = [{"id": label_id, "type": "text"}]
+        # Build bound elements list (arrows added later; text bound only for rectangles)
+        bound = [] if is_diamond else [{"id": label_id, "type": "text"}]
 
         elements.append({
             "type": shape_type,
@@ -153,7 +155,7 @@ def _build_elements(components: list[dict], connections: list[dict], name: str =
             "width": w,
             "height": h,
             "strokeColor": color,
-            "backgroundColor": f"{color}44",
+            "backgroundColor": f"{color}99",  # higher opacity for readability
             "fillStyle": "solid",
             "strokeWidth": 2,
             "roughness": 0,
@@ -172,41 +174,85 @@ def _build_elements(components: list[dict], connections: list[dict], name: str =
             "customData": {"label": label, "tech": tech, "latency": latency, "description": comp.get("description", "")},
         })
 
-        full_text = f"{label}\n{subtitle}" if subtitle else label
-        elements.append({
-            "type": "text",
-            "id": label_id,
-            "x": comp_x + 10,
-            "y": comp_y + 10,
-            "width": w - 20,
-            "height": h - 20,
-            "text": full_text,
-            "originalText": full_text,
-            "autoResize": True,
-            "fontSize": font_size,
-            "fontFamily": 3,
-            "textAlign": "center",
-            "verticalAlign": "middle",
-            "strokeColor": "#ffffff",
-            "backgroundColor": "transparent",
-            "fillStyle": "solid",
-            "strokeWidth": 1,
-            "roughness": 0,
-            "opacity": 100,
-            "angle": 0,
-            "isDeleted": False,
-            "groupIds": [],
-            "roundness": None,
-            "boundElements": None,
-            "link": None,
-            "locked": False,
-            "containerId": rect_id,
-            "lineHeight": 1.2,
-            "version": 2,
-            "versionNonce": _nonce(),
-            "seed": _nonce(),
-            "updated": 1774450000000,
-        })
+        # For diamonds: label BELOW the shape (unbound, not inside)
+        # For rectangles: label inside the shape (bound via containerId)
+        if is_diamond:
+            # Strip ◇ prefix for cleaner label below diamond
+            clean_label = label.lstrip("◇ ").strip()
+            # Center text below diamond — width must fit the full label
+            label_w = max(len(clean_label) * 8, 150)  # ~8px per char, min 150
+            text_x = comp_x + w / 2 - label_w / 2  # center below diamond
+            text_y = comp_y + h + 6  # below the diamond
+            elements.append({
+                "type": "text",
+                "id": label_id,
+                "x": text_x,
+                "y": text_y,
+                "width": label_w,
+                "height": font_size + 8,
+                "text": clean_label,
+                "originalText": clean_label,
+                "autoResize": True,
+                "fontSize": font_size + 2,  # slightly larger for below-diamond labels
+                "fontFamily": 3,  # monospace for crisp readability
+                "textAlign": "center",
+                "verticalAlign": "top",
+                "strokeColor": "#ffffff",  # white text on dark canvas
+                "backgroundColor": "transparent",
+                "fillStyle": "solid",
+                "strokeWidth": 1,
+                "roughness": 0,
+                "opacity": 100,
+                "angle": 0,
+                "isDeleted": False,
+                "groupIds": [],
+                "roundness": None,
+                "boundElements": None,
+                "link": None,
+                "locked": False,
+                "containerId": None,  # NOT bound to diamond
+                "lineHeight": 1.2,
+                "version": 2,
+                "versionNonce": _nonce(),
+                "seed": _nonce(),
+                "updated": 1774450000000,
+            })
+        else:
+            full_text = f"{label}\n{subtitle}" if subtitle else label
+            elements.append({
+                "type": "text",
+                "id": label_id,
+                "x": comp_x + 10,
+                "y": comp_y + 10,
+                "width": w - 20,
+                "height": h - 20,
+                "text": full_text,
+                "originalText": full_text,
+                "autoResize": True,
+                "fontSize": font_size,
+                "fontFamily": 3,  # monospace for crisp readability
+                "textAlign": "center",
+                "verticalAlign": "middle",
+                "strokeColor": "#ffffff",
+                "backgroundColor": "transparent",
+                "fillStyle": "solid",
+                "strokeWidth": 1,
+                "roughness": 0,
+                "opacity": 100,
+                "angle": 0,
+                "isDeleted": False,
+                "groupIds": [],
+                "roundness": None,
+                "boundElements": None,
+                "link": None,
+                "locked": False,
+                "containerId": rect_id,
+                "lineHeight": 1.2,
+                "version": 2,
+                "versionNonce": _nonce(),
+                "seed": _nonce(),
+                "updated": 1774450000000,
+            })
 
         y_cursor += h + 8
 
