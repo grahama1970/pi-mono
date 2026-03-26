@@ -18,22 +18,23 @@ class CDPClient {
   private childProcess: any = null;
 
   async connect(): Promise<void> {
-    // Try user's Chrome first, then launch headless fallback
-    let pages: any[];
+    let pages: any[] | undefined;
     let port = CDP_PORT;
+
+    // Try user's Chrome first
     try {
       pages = await this._getPages(CDP_PORT);
       console.log(`[CDP] Connected to user Chrome on port ${CDP_PORT}`);
     } catch {
-      console.log(`[CDP] User Chrome not available on port ${CDP_PORT}, launching headless...`);
+      // Launch headless fallback
+      console.log(`[CDP] User Chrome not on port ${CDP_PORT}, launching headless on ${CDP_HEADLESS_PORT}...`);
       await this._launchHeadless();
       port = CDP_HEADLESS_PORT;
-      // Wait for Chrome to start
-      for (let i = 0; i < 10; i++) {
-        try { pages = await this._getPages(CDP_HEADLESS_PORT); break; } catch { await new Promise(r => setTimeout(r, 500)); }
+      for (let i = 0; i < 15; i++) {
+        try { pages = await this._getPages(CDP_HEADLESS_PORT); break; } catch { await new Promise(r => setTimeout(r, 1000)); }
       }
-      if (!pages!) throw new Error('Failed to start headless Chrome with CDP');
     }
+    if (!pages || pages.length === 0) throw new Error(`No CDP pages found on port ${port}`);
 
     // Find a page with our UX Lab URL, or use the first page
     const target = pages.find((p: any) => p.url?.includes('localhost:5173') || p.url?.includes('localhost:3001') || p.url?.includes('localhost:3002'))
@@ -457,7 +458,7 @@ async function executeTestRun(runId: string, tests: TestDefinition[], baseUrl: s
     // Connect to existing Chrome via CDP — no Puppeteer, no new browser launch
     activeCDP = new CDPClient();
     await activeCDP.connect();
-    console.log(`[TEST_RUNNER] Connected to Chrome via CDP on port ${CDP_PORT}`);
+    console.log(`[TEST_RUNNER] CDP connected`);
 
     for (const test of tests) {
       if (!activeCDP) break; // Aborted
@@ -693,100 +694,65 @@ async function executeStep(cdp: CDPClient, step: TestStep, runId: string): Promi
             screenshotUrl: `/test-results/${runId}/${vsScreenPath}`,
           };
         }
-      }
-      case 'persona_review': {
-        // Take screenshot → fetch persona context from /memory → send to Gemini VLM
-        // for persona-specific evaluation of the UI
-        const prScreenPath = `screenshots/persona_${step.persona || 'unknown'}_${step.name || 'review'}_${Date.now()}.png`;
-        const prFullPath = join(RESULTS_DIR, runId, prScreenPath);
-        mkdirSync(join(RESULTS_DIR, runId, 'screenshots'), { recursive: true });
-        await cdp.screenshot(prFullPath);
-        const prImgBase64 = readFileSync(prFullPath).toString('base64');
-
-        // Fetch persona context (QRAs) from memory
-        let personaContext = '';
-        const personaSlug = step.persona || 'unknown';
-        const personaScope = step.persona_scope || personaSlug;
-        try {
-          const recallRes = await fetch('http://localhost:3001/api/memory/recall', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              q: `${personaSlug} reverse engineering binary analysis tool evaluation`,
-              k: 5,
-              scope: personaScope,
-            }),
-          });
-          const recallData = await recallRes.json() as any;
-          const items = recallData.items || [];
-          personaContext = items.map((i: any) => `Q: ${i.problem || ''}\nA: ${i.solution || ''}`).join('\n\n');
-        } catch { /* persona context is optional enrichment */ }
-
-        // Load AGENTS.md for persona voice/perspective
-        let agentProfile = '';
-        const agentPath = join(resolve(process.cwd(), '..', '..'), '.pi', 'agents', personaSlug, 'AGENTS.md');
-        if (existsSync(agentPath)) {
-          agentProfile = readFileSync(agentPath, 'utf-8').slice(0, 2000);
         }
+        case 'persona_review': {
+          const personaSlug = step.persona || 'unknown';
+          const personaName = personaSlug.replace(/-/g, ' ');
+          const reviewCriteria = step.review_criteria || step.text || 'Evaluate this reverse engineering tool interface for usability, information density, and workflow support.';
+          const reviewUrl = step.url || await cdp.evaluate('window.location.href');
 
-        const reviewCriteria = step.review_criteria || step.text || 'Evaluate this reverse engineering tool interface for usability, information density, and workflow support.';
+          // Load AGENTS.md profile for persona context
+          let agentProfile = '';
+          const agentPath = join(resolve(process.cwd(), '..', '..'), '.pi', 'agents', personaSlug, 'AGENTS.md');
+          if (existsSync(agentPath)) {
+            agentProfile = readFileSync(agentPath, 'utf-8');
+          }
 
-        // Load prompt from /prompt-lab (NOT hand-written)
-        const promptLabDir = resolve(process.cwd(), '..', '..', '.pi', 'skills', 'prompt-lab', 'prompts');
-        const promptTemplate = existsSync(join(promptLabDir, 'persona_review_v1.txt'))
-          ? readFileSync(join(promptLabDir, 'persona_review_v1.txt'), 'utf-8')
-          : 'You are {persona_name}. Review the screenshot. Return JSON with verdict, score, strengths, weaknesses, changes.';
+          // Load persona review prompt template from prompt-lab
+          const promptPath = resolve(process.cwd(), '..', '..', '.pi', 'skills', 'prompt-lab', 'prompts', 'persona_review_v1.txt');
+          const promptTemplate = existsSync(promptPath)
+            ? readFileSync(promptPath, 'utf-8')
+            : 'Persona: {persona_name}\nURL: {review_url}\nCriteria: {review_criteria}\nProfile:\n{agent_profile}\n\nNavigate to the URL and return your review.';
 
-        const personaPrompt = promptTemplate
-          .replace('{persona_name}', personaSlug.replace(/-/g, ' '))
-          .replace('{agent_profile}', agentProfile ? agentProfile.slice(0, 800) : '')
-          .replace('{persona_context}', personaContext ? personaContext.slice(0, 1500) : '')
-          .replace('{review_criteria}', reviewCriteria);
+          let personaPrompt = promptTemplate
+            .replace('{persona_name}', personaName)
+            .replace('{review_url}', String(reviewUrl || ''))
+            .replace('{review_criteria}', reviewCriteria)
+            .replace('{agent_profile}', agentProfile);
 
-        try {
-          // Route to /subagent-service — NOT scillm
-          // Use whichever subagent-service container is running
-          const SUBAGENT_PORT = Number(process.env.SUBAGENT_PORT || 8620);
-          const personaPorts: Record<string, number> = {
-            'tim-blazytko': SUBAGENT_PORT, 'gynvael-coldwind': SUBAGENT_PORT, 'liveoverflow': SUBAGENT_PORT,
-          };
-          const personaModels: Record<string, string> = {
-            'tim-blazytko': 'codex', 'gynvael-coldwind': 'claude-opus-4-6', 'liveoverflow': 'gemini-3-flash-preview',
-          };
-          const subagentPort = personaPorts[personaSlug] || 8622;
-          const subagentModel = personaModels[personaSlug] || 'codex';
+          // Ensure required context is present even if template placeholders differ.
+          personaPrompt += `\n\n[Review Context]\nPersona: ${personaName}\nURL: ${reviewUrl || ''}\nCriteria: ${reviewCriteria}\n`;
 
-          const prRes = await fetch(`http://localhost:${subagentPort}/chat`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: subagentModel,
-              prompt: personaPrompt + '\n\n[Screenshot attached as context — evaluate what you see in the Binary Explorer interface]',
-              workspace: resolve(process.cwd()),
-            }),
-          });
+          try {
+            const prRes = await fetch('http://localhost:8620/chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: 'codex',
+                prompt: personaPrompt,
+                workspace: resolve(process.cwd()),
+              }),
+            });
 
-          const prData = await prRes.json() as any;
-          const prAnswer = prData.response || 'No persona review response';
-          const prPassed = prAnswer.toUpperCase().includes('"PASS"') || prAnswer.includes('"verdict": "PASS"');
+            const prData = await prRes.json() as any;
+            const prAnswer = prData.response || 'No persona review response';
+            const prPassed = prAnswer.toUpperCase().includes('"PASS"') || prAnswer.includes('"verdict": "PASS"');
 
-          return {
-            status: prPassed ? 'PASSED' : 'FAILED',
-            expected: `${personaSlug}: ${reviewCriteria}`,
-            actual: prAnswer,
-            screenshotUrl: `/test-results/${runId}/${prScreenPath}`,
-          };
-        } catch (prErr: any) {
-          return {
-            status: 'FAILED',
-            detail: `Persona review VLM unreachable: ${prErr.message}`,
-            expected: `${personaSlug}: ${reviewCriteria}`,
-            actual: 'VLM service unavailable',
-            screenshotUrl: `/test-results/${runId}/${prScreenPath}`,
-          };
+            return {
+              status: prPassed ? 'PASSED' : 'FAILED',
+              expected: `${personaSlug}: ${reviewCriteria}`,
+              actual: prAnswer,
+            };
+          } catch (prErr: any) {
+            return {
+              status: 'FAILED',
+              detail: `Persona review subagent unreachable: ${prErr.message}`,
+              expected: `${personaSlug}: ${reviewCriteria}`,
+              actual: 'Subagent service unavailable',
+            };
+          }
         }
       }
-    }
     return { status: 'PASSED' };
   } catch (err: any) {
     return { status: 'FAILED', detail: err.message };
