@@ -136,6 +136,56 @@ function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
   return tokens.length > 0 ? tokens : [{ text, type: 'plain' }]
 }
 
+// ── Basic block & obfuscation analysis ───────────────────────────────────────
+
+const isBlockEnd = (line: string) => {
+  const t = line.trim().split(/\s+/)[0].toLowerCase().replace(/^(lock|rep[ne]?z?)\s+/, '')
+  return /^(ret|retn|retf|jmp|ud2|hlt)$/.test(t)
+}
+const isLabelLine = (line: string) => /^\s*[.\w]+:/.test(line)
+
+interface ObfuscationAnalysis {
+  deadCodeLines: Set<number>
+  nopSledLines: Set<number>
+  opaquePredLines: Set<number>
+}
+
+function analyzeObfuscation(lines: string[]): ObfuscationAnalysis {
+  const deadCodeLines = new Set<number>()
+  const nopSledLines = new Set<number>()
+  const opaquePredLines = new Set<number>()
+  let inDeadCode = false
+
+  lines.forEach((line, i) => {
+    const trimmed = line.trim()
+    if (!trimmed) { inDeadCode = false; return }
+
+    if (inDeadCode) {
+      if (isLabelLine(line)) {
+        inDeadCode = false
+      } else {
+        deadCodeLines.add(i)
+      }
+    }
+
+    if (!inDeadCode && isBlockEnd(line)) inDeadCode = true
+
+    // NOP sled: single nop or string of nops
+    if (/^\s*nop\b/i.test(line)) nopSledLines.add(i)
+
+    // Opaque predicate candidates: xor reg,reg or cmp reg,const before a conditional jump
+    if (/^\s*(xor\s+\w+,\s*\w+|cmp\s+\w+,\s*(0x[0-9a-fA-F]+|\d+))\b/i.test(line)) {
+      const next = lines[i + 1]?.trim() ?? ''
+      if (/^(je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe)\b/i.test(next)) {
+        opaquePredLines.add(i)
+        opaquePredLines.add(i + 1)
+      }
+    }
+  })
+
+  return { deadCodeLines, nopSledLines, opaquePredLines }
+}
+
 // ── Component ────────────────────────────────────────────────────────────────
 
 interface CodePaneProps {
@@ -165,6 +215,8 @@ interface CodePaneProps {
   header?: string
   /** data-testid for the root element */
   testId?: string
+  /** Enable obfuscation pattern hints: dead code, NOP sleds, opaque predicate candidates */
+  obfuscationHints?: boolean
 }
 
 export function CodePane({
@@ -182,6 +234,7 @@ export function CodePane({
   maxHeight = '100%',
   header,
   testId,
+  obfuscationHints = false,
 }: CodePaneProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [copied, setCopied] = useState(false)
@@ -197,13 +250,9 @@ export function CodePane({
   const handleMouseEnter = useCallback((i: number) => onLineHover?.(i), [onLineHover])
   const handleMouseLeave = useCallback(() => onLineHover?.(null), [onLineHover])
 
-  // Basic block boundary detection for ASM — a block ends after unconditional jumps/rets
-  // and begins at a new label. Used to insert a subtle visual separator.
-  const isBlockEnd = (line: string) => {
-    const t = line.trim().split(/\s+/)[0].toLowerCase().replace(/^(lock|rep[ne]?z?)\s+/, '')
-    return /^(ret|retn|retf|jmp|ud2|hlt)$/.test(t)
-  }
-  const isLabelLine = (line: string) => /^\s*[.\w]+:/.test(line)
+  // Obfuscation analysis (ASM only, gated on prop)
+  const obfAnalysis: ObfuscationAnalysis | null =
+    language === 'asm' && obfuscationHints ? analyzeObfuscation(lines) : null
 
   return (
     <div data-testid={testId ?? 'code-pane'} style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: 11, background: '#1e1e1e' }}>
@@ -234,6 +283,17 @@ export function CodePane({
             // Basic block separator: insert a thin rule before a label line that follows
             // a non-empty, non-label previous line (i.e., start of a new block)
             const showBlockSeparator = language === 'asm' && i > 0 && isLabelLine(line) && lines[i - 1].trim() !== ''
+            const blockEnd = language === 'asm' && isBlockEnd(line)
+
+            // Obfuscation hint backgrounds (layered under highlight)
+            const isDeadCode = obfAnalysis?.deadCodeLines.has(i)
+            const isNopSled = obfAnalysis?.nopSledLines.has(i)
+            const isOpaquePred = obfAnalysis?.opaquePredLines.has(i)
+            const obfBg = isHighlighted ? highlightColor
+              : isDeadCode ? '#1a0f0f'
+              : isNopSled ? '#0f1a10'
+              : isOpaquePred ? '#1a140a'
+              : 'transparent'
 
             return (
               <div key={i}>
@@ -241,11 +301,15 @@ export function CodePane({
                 <div data-testid="asm-block-separator" style={{ height: 1, background: '#2a2a2a', margin: '4px 0', borderTop: '1px solid #2d2d2d' }} />
               )}
               <div
-                data-block-end={language === 'asm' && isBlockEnd(line) ? 'true' : undefined}
+                data-block-end={blockEnd ? 'true' : undefined}
+                data-dead-code={isDeadCode ? 'true' : undefined}
+                data-nop-sled={isNopSled ? 'true' : undefined}
+                data-opaque-pred={isOpaquePred ? 'true' : undefined}
                 style={{
                   display: 'flex',
                   minHeight: 20,
-                  background: isHighlighted ? highlightColor : 'transparent',
+                  background: obfBg,
+                  borderBottom: blockEnd ? '1px solid #2d2d2d' : undefined,
                   cursor: onLineClick ? 'pointer' : 'default',
                   transition: 'background 0.1s',
                 }}
@@ -282,9 +346,14 @@ export function CodePane({
                 {/* Tokenized code content */}
                 <span style={{ padding: '0 8px', whiteSpace: 'pre', flex: 1 }}>
                   {tokens.map((tok, ti) => (
-                    <span key={ti} style={{ color: TOKEN_COLORS[tok.type] }}>{tok.text}</span>
+                    <span key={ti} style={{ color: isDeadCode ? '#4a3a3a' : TOKEN_COLORS[tok.type] }}>{tok.text}</span>
                   ))}
                 </span>
+
+                {/* Obfuscation hint badges */}
+                {isDeadCode && <span title="Unreachable code (after unconditional transfer)" style={{ fontSize: 8, color: '#7a3a3a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>DEAD</span>}
+                {isNopSled && <span title="NOP sled — possible padding or anti-disassembly" style={{ fontSize: 8, color: '#3a7a3a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>NOP</span>}
+                {isOpaquePred && <span title="Potential opaque predicate candidate" style={{ fontSize: 8, color: '#7a6a2a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>OP?</span>}
               </div>
               </div>
             )
@@ -295,5 +364,5 @@ export function CodePane({
   )
 }
 
-export { tokenizeLine, TOKEN_COLORS }
-export type { Token, TokenType, CodePaneProps }
+export { tokenizeLine, TOKEN_COLORS, analyzeObfuscation, isBlockEnd, isLabelLine }
+export type { Token, TokenType, CodePaneProps, ObfuscationAnalysis }
