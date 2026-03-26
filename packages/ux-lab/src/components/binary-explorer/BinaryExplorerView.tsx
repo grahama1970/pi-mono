@@ -2757,6 +2757,42 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         </div>
                       )}
 
+                      {/* Row 7: Full node metadata — _id, _key, binary_name, namespace, all extra fields */}
+                      {(() => {
+                        const fullDoc = data.allNodes.find(n => n._id === selectedNode.id) as any
+                        if (!fullDoc) return null
+                        // Show fields not already prominent in the summary
+                        const shown = new Set(['description', 'source_pattern', 'fields', 'states', 'label', 'name'])
+                        const metaRows: { key: string; value: string }[] = []
+                        // Always front-and-center: document identity + provenance
+                        if (fullDoc._id) metaRows.push({ key: '_id', value: fullDoc._id })
+                        if (fullDoc._key) metaRows.push({ key: '_key', value: fullDoc._key })
+                        if (fullDoc.binary_name) metaRows.push({ key: 'binary', value: fullDoc.binary_name })
+                        if (fullDoc.namespace) metaRows.push({ key: 'namespace', value: fullDoc.namespace })
+                        // Any other fields from the raw document not already displayed
+                        for (const [k, v] of Object.entries(fullDoc)) {
+                          if (k.startsWith('_') && k !== '_id' && k !== '_key') continue
+                          if (shown.has(k) || ['binary_name', 'namespace', 'node_type', 'cluster', 'extraction_tier', 'confidence'].includes(k)) continue
+                          if (v == null || (Array.isArray(v) && (v as any[]).length === 0)) continue
+                          if (typeof v === 'object') continue
+                          metaRows.push({ key: k, value: String(v) })
+                        }
+                        if (metaRows.length === 0) return null
+                        return (
+                          <div>
+                            <div style={{ fontSize: 8, color: EMBRY.dim, fontWeight: 700, textTransform: 'uppercase', marginBottom: 3 }}>NODE METADATA</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '90px 1fr', gap: '1px 8px', fontFamily: 'JetBrains Mono, monospace', fontSize: 9, background: '#050505', border: `1px solid ${EMBRY.border}`, borderRadius: 3, padding: '4px 8px' }}>
+                              {metaRows.map(({ key, value }) => (
+                                <>
+                                  <span key={`k-${key}`} style={{ color: EMBRY.muted, paddingTop: 1 }}>{key}</span>
+                                  <span key={`v-${key}`} style={{ color: key === '_id' || key === '_key' ? '#4a9eff' : key === 'binary' ? '#22d3ee' : key === 'namespace' ? '#9C27B0' : EMBRY.white, wordBreak: 'break-all' }}>{value}</span>
+                                </>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      })()}
+
                       {/* Bookmark */}
                       <button
                         onClick={() => {
@@ -2998,10 +3034,22 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   {dataTab === 'raw' && (() => {
                     // Show full ArangoDB document, not the stripped D3 node
                     const fullDoc = data.allNodes.find(n => n._id === selectedNode.id)
+                    const jsonText = JSON.stringify(fullDoc ?? selectedNode, null, 2)
                     return (
-                      <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
-                        {JSON.stringify(fullDoc ?? selectedNode, null, 2)}
-                      </pre>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>
+                            {fullDoc ? 'ArangoDB document' : 'graph node (full doc not loaded)'} · {Object.keys(fullDoc ?? selectedNode).length} fields
+                          </span>
+                          <button
+                            onClick={() => navigator.clipboard.writeText(jsonText).catch(() => {})}
+                            style={{ marginLeft: 'auto', fontSize: 8, padding: '2px 8px', background: `${EMBRY.accent}15`, border: `1px solid ${EMBRY.accent}33`, color: EMBRY.accent, borderRadius: 2, cursor: 'pointer' }}
+                          >COPY</button>
+                        </div>
+                        <pre style={{ fontSize: 9, color: EMBRY.dim, background: '#020202', padding: 8, border: `1px solid ${EMBRY.border}`, overflowX: 'auto', margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'JetBrains Mono, monospace' }}>
+                          {jsonText}
+                        </pre>
+                      </div>
                     )
                   })()}
                 </div>
