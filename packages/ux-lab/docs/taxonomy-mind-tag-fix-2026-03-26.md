@@ -265,76 +265,92 @@ graph TD
     style ISO_REL fill:#fda,stroke:#963
 ```
 
-### Comparison: NIST Control ↔ SPARTA Countermeasure
+### 1. Control → Technique
+
+A SPARTA technique explicitly references controls in its spreadsheet columns (NIST Rev5 Controls, CWE Classes, Countermeasures, etc.). This is the base relationship.
 
 ```json
 {
-  "AC-1": {
+  "control": {
+    "id": "AC-1",
     "framework": "NIST",
     "family": "Access Control",
-    "mind": ["Evade", "Exploit", "Model", "Persist"],
-    "technique_count": 67
+    "mind": ["Evade", "Exploit", "Model", "Persist"]
   },
-  "CM0001": {
+  "technique": {
+    "id": "REC-0001",
+    "name": "Gather Spacecraft Design Information",
+    "tactic": "Reconnaissance",
+    "mind": ["Model"]
+  },
+  "why_related": "REC-0001 references AC-1 in its NIST Rev5 Controls column",
+  "shared_mind": ["Model"]
+}
+```
+
+### 2. Control → Control (through shared technique)
+
+Two controls are related because a technique references both. The technique is the join.
+
+```json
+{
+  "technique": {
+    "id": "REC-0001",
+    "name": "Gather Spacecraft Design Information",
+    "tactic": "Reconnaissance",
+    "mind": ["Model"]
+  },
+  "control_a": {
+    "id": "AC-1",
+    "framework": "NIST",
+    "family": "Access Control",
+    "mind": ["Evade", "Exploit", "Model", "Persist"]
+  },
+  "control_b": {
+    "id": "CM0001",
     "framework": "SPARTA",
     "type": "countermeasure",
-    "mind": ["Evade", "Exploit", "Harden", "Model", "Persist"],
-    "technique_count": 44
+    "mind": ["Evade", "Exploit", "Harden", "Model", "Persist"]
   },
-  "shared_techniques": 39,
-  "shared_by_tactic": {
-    "Reconnaissance": 30,
-    "Exfiltration": 3,
-    "Initial Access": 2,
-    "Defense Evasion": 2,
-    "Persistence": 1,
-    "Lateral Movement": 1
-  },
-  "mind_jaccard": 0.80,
-  "shared_technique_ratio": 0.54,
-  "score": 0.39
+  "why_related": "REC-0001 references AC-1 (NIST column) and CM0001 (Countermeasures column)",
+  "all_three_share": ["Model"],
+  "controls_share": ["Evade", "Exploit", "Model", "Persist"]
 }
 ```
 
-AC-1 and CM0001 share **39 of 72 techniques** (54%). Mostly Reconnaissance — both address spacecraft design information protection. Mind overlap is 4/5 tags (80%). Strong relationship.
+### 3. Control → CWE (through shared technique + MITRE chain)
 
-### Comparison: NIST Control ↔ CWE Weakness
+Same join through the technique. The CWE also carries its own MITRE chain (CWE → CAPEC → ATT&CK) which provides additional mind tags.
 
 ```json
 {
-  "AC-1": {
+  "technique": {
+    "id": "REC-0001",
+    "name": "Gather Spacecraft Design Information",
+    "tactic": "Reconnaissance",
+    "mind": ["Model"]
+  },
+  "control": {
+    "id": "AC-1",
     "framework": "NIST",
     "family": "Access Control",
-    "mind": ["Evade", "Exploit", "Model", "Persist"],
-    "technique_count": 67
+    "mind": ["Evade", "Exploit", "Model", "Persist"]
   },
-  "CWE-287": {
+  "cwe": {
+    "id": "CWE-287",
     "framework": "CWE",
-    "type": "weakness",
     "pillar": "CWE-284",
-    "abstraction": "Class",
     "mind": ["Evade", "Exploit", "Harden", "Model", "Persist"],
-    "technique_count": 140,
-    "capec_ids": ["CAPEC-114", "CAPEC-115", "CAPEC-151", "..."],
-    "attack_technique_ids": ["T1134", "T1040", "T1548", "T1557", "..."]
+    "mitre_chain": {
+      "capec": ["CAPEC-114", "CAPEC-115", "CAPEC-151", "CAPEC-194"],
+      "attack": ["T1134", "T1040", "T1548", "T1563"]
+    }
   },
-  "shared_techniques": 35,
-  "shared_by_tactic": {
-    "Reconnaissance": 14,
-    "Resource Development": 8,
-    "Initial Access": 5,
-    "Defense Evasion": 3,
-    "Persistence": 2,
-    "Exfiltration": 2,
-    "Lateral Movement": 1
-  },
-  "mind_jaccard": 0.80,
-  "shared_technique_ratio": 0.20,
-  "score": 0.27
+  "why_related": "REC-0001 references AC-1 (NIST column) and CWE-287 (CWE Classes column)",
+  "all_three_share": ["Model"],
+  "control_cwe_share": ["Evade", "Exploit", "Model", "Persist"]
 }
 ```
-
-CWE-287 (Improper Authentication) has its own MITRE chain: `CWE-287 → CAPEC-114,CAPEC-115... → T1134,T1548... → Exploit,Evade`. The CWE brings 140 technique references (broader than AC-1's 67), so the shared ratio is lower (20%) despite 35 shared techniques. The CWE's `pillar_cwe: CWE-284` and `abstraction: Class` are CWE-specific taxonomy tags.
 
 ## Files Changed
 

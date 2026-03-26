@@ -2346,15 +2346,12 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     )}
                   </div>
 
-                  {/* Beginner orientation blurb */}
-                  <div style={{ fontSize: 10, color: EMBRY.dim, marginBottom: 10, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10, lineHeight: 1.6 }}>
-                    <span style={{ color: EMBRY.fg }}>Binary Explorer</span> maps a compiled binary into an interactive graph — functions, data structures, RPC handlers, and how they connect.
-                    {' '}<span style={{ color: EMBRY.accent }}>New here?</span> Start with <strong style={{ color: EMBRY.fg }}>Seed Namespaces</strong> to get an overview, then click any node to explore deeper.
+                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: EMBRY.dim, marginBottom: 8, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10, textTransform: 'uppercase' as const }}>
+                    Analysis Strategy
                   </div>
 
                   {/* Quick actions */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    {/* Primary CTA — labelled as start-here for newcomers */}
                     <button onClick={() => {
                       setSeeding(true)
                       setTimeout(() => {
@@ -2375,37 +2372,10 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     }}>
                       <Layers size={16} style={{ flexShrink: 0, animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }} />
                       <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                          {seeding ? 'Seeding…' : 'Seed Namespaces'}
-                          {!seeding && <span style={{ fontSize: 8, padding: '1px 5px', background: `${EMBRY.accent}22`, border: `1px solid ${EMBRY.accent}44`, borderRadius: 2, fontWeight: 700, letterSpacing: '0.08em' }}>START HERE</span>}
-                        </div>
+                        <div>{seeding ? 'Seeding…' : 'Namespace Overview'}</div>
                         <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
-                          {seeding ? 'Loading binary structure into graph…' : 'Best first step — loads top-level modules + 5 most-connected features'}
+                          {seeding ? 'Resolving namespace hierarchy…' : `${data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces · top-5 hub nodes by edge degree`}
                         </div>
-                      </div>
-                    </button>
-
-                    <button onClick={() => setViewMode('code')} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                    }}>
-                      <Code size={16} style={{ flexShrink: 0 }} />
-                      <div>
-                        <div>Browse Source Patterns</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>Read decompiled C / ASM — great for spotting dangerous functions like strcpy, gets</div>
-                      </div>
-                    </button>
-
-                    <button onClick={() => setViewMode('vulns')} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                    }}>
-                      <Shield size={16} style={{ flexShrink: 0 }} />
-                      <div>
-                        <div>View Vulnerability Map</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE / ATT&CK / D3FEND — see which bug classes were auto-detected</div>
                       </div>
                     </button>
 
@@ -2426,10 +2396,44 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                     }}>
                       <Network size={16} style={{ flexShrink: 0 }} />
                       <div>
-                        <div>Find Entry Points</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CLI args · RPC handlers · events — where attacker-controlled input enters the binary</div>
+                        <div>Attack Surface</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
+                          {`${data.graphNodes.filter(n => ['cli_command','rpc','event','parameter'].includes(n.nodeType)).length} entry points — CLI · RPC · events · params, ranked by degree`}
+                        </div>
                       </div>
                     </button>
+
+                    <button onClick={() => setViewMode('vulns')} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <Shield size={16} style={{ flexShrink: 0 }} />
+                      <div>
+                        <div>Taxonomy Table</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE · ATT&CK · D3FEND · CAPEC — structured for export or pipeline ingestion</div>
+                      </div>
+                    </button>
+
+                    <button onClick={() => setViewMode('code')} style={{
+                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
+                      background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
+                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
+                    }}>
+                      <Code size={16} style={{ flexShrink: 0 }} />
+                      <div>
+                        <div>Disassembly View</div>
+                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM · decompiled C · Python pseudocode — node-linked, synced to graph</div>
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Automation hint */}
+                  <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Workflow size={11} style={{ color: EMBRY.muted, flexShrink: 0 }} />
+                    <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>
+                      REST API: <span style={{ color: EMBRY.dim }}>/api/binary/:name/features</span> · <span style={{ color: EMBRY.dim }}>/api/binary/:name/graph</span>
+                    </span>
                   </div>
                 </div>
               )}
@@ -3408,7 +3412,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                       background: analysisMode === mode ? `${EMBRY.accent}20` : 'transparent',
                       color: analysisMode === mode ? EMBRY.accent : EMBRY.dim,
                       textTransform: 'uppercase',
-                    }}>{mode}</button>
+                    }}>{mode === 'beginner' ? 'guided' : 'expert'}</button>
                   ))}
                 </div>
                 {/* Actions shown for whichever tab is active */}
