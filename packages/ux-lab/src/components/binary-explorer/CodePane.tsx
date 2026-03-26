@@ -416,6 +416,15 @@ export function CodePane({
                   ))}
                 </span>
 
+                {/* Branch target indicator — resolves label to line number when possible */}
+                {branchTargetDisplay && (
+                  <span
+                    data-branch-target={branchTarget ?? undefined}
+                    data-branch-target-line={branchTargetLine != null ? String(branchTargetLine) : undefined}
+                    title={branchTargetLine != null ? `Branch target: ${branchTarget} (line ${branchTargetLine + 1})` : `Branch target: ${branchTarget}`}
+                    style={{ fontSize: 8, color: '#4a7a9a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center', fontStyle: 'italic' }}
+                  >{branchTargetDisplay}</span>
+                )}
                 {/* Obfuscation hint badges */}
                 {isDeadCode && <span title="Unreachable code (after unconditional transfer)" style={{ fontSize: 8, color: '#7a3a3a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>DEAD</span>}
                 {isNopSled && <span title="NOP sled — possible padding or anti-disassembly" style={{ fontSize: 8, color: '#3a7a3a', paddingRight: 6, flexShrink: 0, userSelect: 'none', alignSelf: 'center' }}>NOP</span>}
@@ -430,5 +439,5 @@ export function CodePane({
   )
 }
 
-export { tokenizeLine, TOKEN_COLORS, analyzeObfuscation, isBlockEnd, isLabelLine }
+export { tokenizeLine, TOKEN_COLORS, analyzeObfuscation, isBlockEnd, isLabelLine, parseBranchTarget, formatAddress }
 export type { Token, TokenType, CodePaneProps, ObfuscationAnalysis }

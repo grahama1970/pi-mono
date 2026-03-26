@@ -251,27 +251,45 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
     has_parameter: '#9C27B0', contains: '#64748b',
   }
 
-  const renderFeatureRow = (node: BinaryGraphNode, indent: number) => (
-    <div key={node.id}
-      onClick={() => onSelectNode(node)}
-      onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, node }) }}
-      onMouseEnter={e => handlePeekEnter(node, e)}
-      onMouseLeave={handlePeekLeave}
-      style={{
-        display: 'flex', alignItems: 'center', gap: 6, padding: `2px 8px 2px ${indent}px`, cursor: 'pointer',
-        background: selectedNode?.id === node.id ? `${EMBRY.accent}10` : 'transparent',
-        borderLeft: selectedNode?.id === node.id ? `2px solid ${EMBRY.accent}` : '2px solid transparent',
-      }}
-      onMouseOver={e => { if (selectedNode?.id !== node.id) (e.currentTarget as HTMLDivElement).style.background = '#111' }}
-      onMouseOut={e => { if (selectedNode?.id !== node.id) (e.currentTarget as HTMLDivElement).style.background = 'transparent' }}
-    >
-      <span style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: NODE_TYPE_COLORS[node.nodeType] || EMBRY.dim, flexShrink: 0 }} />
-      <span style={{ fontSize: 10, color: EMBRY.white, flex: 1, fontFamily: 'JetBrains Mono, monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {search ? highlightMatch(node.label, search) : node.label}
-      </span>
-      <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace', flexShrink: 0 }}>{degreeMap.get(node.id) ?? 0}</span>
-    </div>
-  )
+  // Icons that map to RE-meaningful node types — icons beat colored dots for quick scanning
+  const NODE_TYPE_ICONS: Record<string, React.ReactNode> = {
+    rpc:           <Code2    size={10} />,
+    event:         <Radio    size={10} />,
+    schema:        <Database size={10} />,
+    state_machine: <GitBranch size={10} />,
+    cli_command:   <Terminal size={10} />,
+    parameter:     <Hash     size={10} />,
+    namespace:     <Package  size={10} />,
+  }
+
+  const renderFeatureRow = (node: BinaryGraphNode, indent: number) => {
+    const iconColor = NODE_TYPE_COLORS[node.nodeType] || EMBRY.dim
+    const tierLabel = node.tier !== 'T2' ? node.tier : null // T0/T1 shown, T2 omitted (noise)
+    return (
+      <div key={node.id}
+        onClick={() => onSelectNode(node)}
+        onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, node }) }}
+        onMouseEnter={e => handlePeekEnter(node, e)}
+        onMouseLeave={handlePeekLeave}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 6, padding: `2px 8px 2px ${indent}px`, cursor: 'pointer',
+          background: selectedNode?.id === node.id ? `${EMBRY.accent}10` : 'transparent',
+          borderLeft: selectedNode?.id === node.id ? `2px solid ${EMBRY.accent}` : '2px solid transparent',
+        }}
+        onMouseOver={e => { if (selectedNode?.id !== node.id) (e.currentTarget as HTMLDivElement).style.background = '#111' }}
+        onMouseOut={e => { if (selectedNode?.id !== node.id) (e.currentTarget as HTMLDivElement).style.background = 'transparent' }}
+      >
+        <span style={{ color: iconColor, flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          {NODE_TYPE_ICONS[node.nodeType] ?? <Zap size={10} />}
+        </span>
+        <span style={{ fontSize: 10, color: EMBRY.white, flex: 1, fontFamily: 'JetBrains Mono, monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {search ? highlightMatch(node.label, search) : node.label}
+        </span>
+        {tierLabel && <span style={{ fontSize: 7, color: EMBRY.muted, padding: '0 2px', borderRadius: 2, border: `1px solid ${EMBRY.border}`, flexShrink: 0 }}>{tierLabel}</span>}
+        <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace', flexShrink: 0 }}>{degreeMap.get(node.id) ?? 0}</span>
+      </div>
+    )
+  }
 
   return (
     <div ref={treeRef} tabIndex={0} style={{ display: 'flex', flexDirection: 'column', height: '100%', outline: 'none' }}>
@@ -296,6 +314,15 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
             }}>{type.replace('_', ' ')}</button>
           ))}
           <span style={{ flex: 1 }} />
+          {/* Sort control */}
+          <button
+            onClick={() => setSortBy(s => s === 'alpha' ? 'tier' : s === 'tier' ? 'connections' : 'alpha')}
+            title={sortBy === 'alpha' ? 'Sorted A→Z (click for tier)' : sortBy === 'tier' ? 'Sorted by tier (click for connections)' : 'Sorted by connections (click for A→Z)'}
+            style={{ fontSize: 7, padding: '1px 4px', borderRadius: 2, cursor: 'pointer', border: `1px solid ${EMBRY.border}`, background: 'transparent', color: EMBRY.dim, display: 'flex', alignItems: 'center', gap: 2 }}>
+            {sortBy === 'alpha' && <><ArrowUpAZ size={8} /> AZ</>}
+            {sortBy === 'tier'  && <><Layers    size={8} /> TIER</>}
+            {sortBy === 'connections' && <><Activity size={8} /> CONN</>}
+          </button>
           {/* View mode toggle: by type vs by relationship */}
           <button onClick={() => setViewMode(v => v === 'type' ? 'relationship' : 'type')}
             title={viewMode === 'type' ? 'Group by relationship' : 'Group by type'}
@@ -307,6 +334,14 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
 
       {/* Tree with sticky namespace headers */}
       <div style={{ flex: 1, overflow: 'auto', padding: '4px 0' }}>
+        {/* Binary root — mirrors Ghidra's program tree top node */}
+        {tree.length > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', background: '#0d0d0d', borderBottom: `1px solid ${EMBRY.border}` }}>
+            <span style={{ color: EMBRY.dim, display: 'flex', alignItems: 'center' }}><Layers size={11} /></span>
+            <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.dim, fontFamily: 'JetBrains Mono, monospace', flex: 1 }}>binary</span>
+            <span style={{ fontSize: 8, color: EMBRY.muted }}>{tree.length} ns · {tree.reduce((s, n) => s + n.totalCount, 0)} sym</span>
+          </div>
+        )}
         {tree.map(ns => (
           <div key={ns.id}>
             {/* Sticky namespace header */}
@@ -322,7 +357,7 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
               }}
             >
               {expanded.has(ns.id) ? <ChevronDown size={12} color={EMBRY.dim} /> : <ChevronRight size={12} color={EMBRY.dim} />}
-              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: NODE_TYPE_COLORS.namespace, flexShrink: 0 }} />
+              <span style={{ color: NODE_TYPE_COLORS.namespace, display: 'flex', alignItems: 'center', flexShrink: 0 }}><Package size={11} /></span>
               <span style={{ fontSize: 11, fontWeight: 700, color: EMBRY.white, flex: 1, fontFamily: 'JetBrains Mono, monospace' }}>{ns.name}</span>
               <span style={{ fontSize: 9, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>{ns.totalCount}</span>
             </div>
@@ -337,7 +372,9 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
                   <div onClick={() => toggleType(typeKey)}
                     style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '2px 8px 2px 24px', cursor: 'pointer' }}>
                     {expandedTypes.has(typeKey) ? <ChevronDown size={10} color={EMBRY.muted} /> : <ChevronRight size={10} color={EMBRY.muted} />}
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: NODE_TYPE_COLORS[type] || EMBRY.dim, flexShrink: 0 }} />
+                    <span style={{ color: NODE_TYPE_COLORS[type] || EMBRY.dim, display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+                      {NODE_TYPE_ICONS[type] ?? <Zap size={10} />}
+                    </span>
                     <span style={{ fontSize: 9, color: NODE_TYPE_COLORS[type] || EMBRY.dim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{type.replace('_', ' ')}</span>
                     <span style={{ fontSize: 8, color: EMBRY.muted }}>{nodes.length}</span>
                   </div>
