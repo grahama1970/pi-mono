@@ -10,43 +10,6 @@ import { useToast } from '../common/Toast'
 import { useWorksheets, worksheetToSourceDef } from '../../../hooks/useWorksheets'
 import type { SourceDef } from '../../../hooks/useWorksheets'
 
-// ── Source definitions ──────────────────────────────────────────────────────
-
-// Legacy: replaced by useWorksheets()
-// interface SourceDef {
-//   name: string
-//   group: 'sparta' | 'external' | 'urls'
-//   rawFrameworks: string[]
-//   controlType?: string
-//   file: string
-//   minExpected: number
-//   tooltip: string
-// }
-
-// Legacy: replaced by useWorksheets()
-// const SOURCES: SourceDef[] = [
-//   // SPARTA-Data.xlsx worksheets
-//   { name: 'SPARTA Tactics', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'tactic', file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '9 high-level adversary objectives (Reconnaissance, Resource Development, Initial Access, etc.)' },
-//   { name: 'SPARTA Techniques', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'technique', file: 'SPARTA-Data.xlsx', minExpected: 100, tooltip: '217 specific attack methods mapped to tactics, with risk scores and cross-framework references' },
-//   { name: 'SPARTA Countermeasures', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'countermeasure', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '92 defensive measures with NIST, ISO, D3FEND, and sample requirement mappings' },
-//   { name: 'Space Threats', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'space_threat', file: 'SPARTA-Data.xlsx', minExpected: 20, tooltip: '45 space-specific threats organized by Defense-in-Depth layer and threat tier' },
-//   { name: 'Indicators of Behavior', group: 'sparta', rawFrameworks: ['SPARTA', 'sparta'], controlType: 'indicator', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '194 observable indicators with STIX patterns linked to SPARTA TTPs' },
-//   { name: 'NIST References', group: 'sparta', rawFrameworks: ['NIST', 'nist'], controlType: 'nist_control', file: 'SPARTA-Data.xlsx', minExpected: 500, tooltip: '1,008 NIST SP 800-53 controls with SPARTA technique/countermeasure mappings and space segment guidance' },
-//   { name: 'D3FEND Tactics', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'tactic', file: 'SPARTA-Data.xlsx', minExpected: 3, tooltip: '7 MITRE D3FEND defensive tactic categories' },
-//   { name: 'D3FEND Techniques', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'technique', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '178 defensive techniques from the MITRE D3FEND knowledge graph' },
-//   { name: 'D3FEND Artifacts', group: 'sparta', rawFrameworks: ['D3FEND', 'd3fend'], controlType: 'artifact', file: 'SPARTA-Data.xlsx', minExpected: 50, tooltip: '242 digital artifacts that D3FEND techniques operate on (files, processes, network objects)' },
-//   { name: 'ISO 27001 References', group: 'sparta', rawFrameworks: ['ISO', 'iso'], file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '138 ISO/IEC 27001 control references cross-mapped to SPARTA' },
-//   { name: 'NASABPG', group: 'sparta', rawFrameworks: ['NASA'], file: 'SPARTA-Data.xlsx', minExpected: 5, tooltip: '15 references from NASA\'s Space Security Best Practices Guide' },
-//   // External pipeline sources
-//   { name: 'ATT&CK Enterprise', group: 'external', rawFrameworks: ['ATT_CK_Enterprise', 'attack'], file: 'enterprise-attack.json', minExpected: 500, tooltip: 'MITRE ATT&CK Enterprise — techniques, malware, tools, and courses of action for IT systems' },
-//   { name: 'ATT&CK Mobile', group: 'external', rawFrameworks: ['ATT_CK_Mobile'], file: 'mobile-attack.json', minExpected: 50, tooltip: 'MITRE ATT&CK Mobile — techniques targeting Android and iOS devices' },
-//   { name: 'ATT&CK ICS', group: 'external', rawFrameworks: ['ATT_CK_ICS'], file: 'ics-attack.json', minExpected: 50, tooltip: 'MITRE ATT&CK ICS — techniques targeting industrial control systems' },
-//   { name: 'CWE', group: 'external', rawFrameworks: ['CWE', 'cwe'], file: 'cwec_v4.19.1.xml', minExpected: 200, tooltip: 'Common Weakness Enumeration v4.19.1 — software/hardware weakness types' },
-//   { name: 'NVD', group: 'external', rawFrameworks: ['nvd', 'NVD'], file: 'nvd (via CWE)', minExpected: 1000, tooltip: 'National Vulnerability Database — CVE-linked controls imported via CWE pipeline' },
-//   { name: 'ESA', group: 'external', rawFrameworks: ['ESA'], file: 'esa_shield_scraped.json', minExpected: 50, tooltip: 'European Space Agency SPACE-SHIELD — 137 space-specific attack techniques' },
-//   { name: 'NIST Controls', group: 'external', rawFrameworks: ['NIST', 'nist'], controlType: 'control', file: 'nist_rev4_controls.csv', minExpected: 500, tooltip: 'NIST SP 800-53 Rev 4/5 full control catalog (separate from SPARTA worksheet cross-references)' },
-// ]
-
 const TYPE_COLORS: Record<string, string> = {
   technique: '#e06c75', attack_technique: '#e06c75', attack_mobile_technique: '#e06c75',
   attack_ics_technique: '#e06c75', esa_technique: '#e06c75', d3fend_technique: '#61afef',
