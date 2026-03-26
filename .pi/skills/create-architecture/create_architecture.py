@@ -364,7 +364,11 @@ def _build_elements(components: list[dict], connections: list[dict], name: str =
             "updated": 1774450000000,
         })
 
-    return elements
+    # Z-order: shapes first, then arrows, then text on top (last = renders on top)
+    shapes = [e for e in elements if e["type"] in ("rectangle", "diamond", "ellipse")]
+    arrows = [e for e in elements if e["type"] == "arrow"]
+    texts = [e for e in elements if e["type"] == "text"]
+    return shapes + arrows + texts
 
 
 def _build_attachments(components: list[dict]) -> dict[str, list[str]]:

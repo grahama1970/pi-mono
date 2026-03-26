@@ -82,6 +82,17 @@ const EXCALIDRAW_CSS = `
   transform: scale(0.65) !important;
   transform-origin: top right !important;
 }
+
+/* Force text elements to respect their strokeColor in dark theme.
+   Excalidraw dark theme overrides text color via CSS — this prevents it. */
+.excalidraw.theme--dark text[stroke],
+.excalidraw.theme--dark .excalidraw-canvas text {
+  fill: currentColor !important;
+}
+.excalidraw.theme--dark {
+  --color-on-surface: #ffffff;
+  --text-primary-color: #ffffff;
+}
 `
 
 /* ─── DragHandle ─────────────────────────────────────────────── */
@@ -195,7 +206,7 @@ export function ArchitectureView() {
   /* Hydrate minimal stored elements into full Excalidraw format */
   const hydrateElement = (el: Record<string, unknown>) => {
     const base = {
-      version: 1,
+      version: (el.version as number) ?? 2,  // preserve version to respect strokeColor
       versionNonce: Math.floor(Math.random() * 2_000_000_000),
       seed: Math.floor(Math.random() * 2_000_000_000),
       isDeleted: false,
@@ -241,7 +252,18 @@ export function ArchitectureView() {
           const api = excalidrawAPIRef.current
           if (api) {
             api.updateScene({ elements: hydrated })
-            api.scrollToContent(undefined, { fitToContent: true })
+            // Force text colors after updateScene (Excalidraw dark theme overrides strokeColor)
+            setTimeout(() => {
+              const els = api.getSceneElements()
+              const fixed = els.map((e: Record<string, unknown>) => {
+                if (e.type === 'text' && e.strokeColor !== '#ffffff') {
+                  return { ...e, strokeColor: '#ffffff', version: ((e.version as number) || 1) + 1 }
+                }
+                return e
+              })
+              api.updateScene({ elements: fixed })
+              api.scrollToContent(undefined, { fitToContent: true })
+            }, 50)
           } else {
             pendingLoadRef.current = JSON.stringify(hydrated)
           }
