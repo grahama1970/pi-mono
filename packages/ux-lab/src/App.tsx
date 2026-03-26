@@ -220,7 +220,7 @@ const FinalSite = ({ projectId }: { projectId: string }) => {
           {projectId === 'prompt-lab' && <PromptLab />}
           {projectId === 'llm-eval-lab' && <LlmEvalLab />}
           {projectId === 'classifier-lab' && <ClassifierLab />}
-          {projectId === 'architecture' && <ArchitectureView />}
+          {projectId === 'architecture' && <ArchitectureView initialProjectId={hashSubpath || undefined} />}
           {!['sparta-explorer', 'binary-explorer', 'music-lab-pipeline', 'prompt-lab', 'llm-eval-lab', 'classifier-lab', 'architecture'].includes(projectId) && (
             <div className="flex items-center justify-center h-full text-slate-500 font-mono text-sm">
               NO_FINAL_SITE_VIEW_FOR: {projectId}
@@ -1477,6 +1477,7 @@ export default function App() {
   const initial = parseHash();
   const [activeProjectId, setActiveProjectId] = useState<string>(initial.project);
   const [activeView, setActiveView] = useState<View>(initial.view);
+  const [hashSubpath, setHashSubpath] = useState<string>(initial.subpath || '');
   const systemHealth = useSystemHealth();
 
   // Sync hash → state on popstate (back/forward)
@@ -1485,6 +1486,7 @@ export default function App() {
       const parsed = parseHash();
       setActiveProjectId(parsed.project);
       if (parsed.view) setActiveView(parsed.view);
+      setHashSubpath(parsed.subpath || '');
     };
     window.addEventListener('hashchange', onHashChange);
     // Also apply on mount if hash is present
