@@ -3,9 +3,110 @@
  * Used by Binary Explorer (binaries, graph nodes), Testing (manifests), Prompt Lab (prompts).
  *
  * Supports: keyboard shortcuts, section separators, section headers, disabled items.
+ *
+ * Binary analysis presets: buildBinaryNodeMenuItems() returns IDA/Ghidra-style node items.
  */
 import { useEffect, useRef } from 'react'
 import { EMBRY } from './EmbryStyle'
+
+// ── Binary node context menu ──────────────────────────────────────────────────
+
+export interface BinaryNodeInfo {
+  address: string
+  name?: string
+  hasXrefs?: boolean
+  canExpand?: boolean
+  canCollapse?: boolean
+}
+
+export interface BinaryNodeActions {
+  onRename?: () => void
+  onAnnotate?: () => void
+  onShowXrefs?: () => void
+  onCopyAddress?: () => void
+  onExpandNeighbors?: () => void
+  onCollapseNode?: () => void
+  onSetBreakpoint?: () => void
+  onFollowCall?: () => void
+}
+
+/**
+ * Returns IDA/Ghidra-style context menu items for a binary graph node.
+ * Pass the result as `items` to <ContextMenu />.
+ */
+export function buildBinaryNodeMenuItems(
+  node: BinaryNodeInfo,
+  actions: BinaryNodeActions,
+): ContextMenuItem[] {
+  const items: ContextMenuItem[] = [
+    // Navigation section
+    { label: 'Navigation', header: true, onClick: () => {} },
+    {
+      label: 'Follow Call / Jump',
+      shortcut: 'Enter',
+      disabled: !actions.onFollowCall,
+      onClick: actions.onFollowCall ?? (() => {}),
+    },
+    {
+      label: 'Show Cross-References',
+      shortcut: 'X',
+      disabled: !actions.onShowXrefs && !node.hasXrefs,
+      onClick: actions.onShowXrefs ?? (() => {}),
+    },
+    { separator: true, onClick: () => {} },
+
+    // Graph section
+    { label: 'Graph', header: true, onClick: () => {} },
+    {
+      label: 'Expand Neighbors',
+      shortcut: 'E',
+      disabled: !actions.onExpandNeighbors || node.canExpand === false,
+      onClick: actions.onExpandNeighbors ?? (() => {}),
+    },
+    {
+      label: 'Collapse Node',
+      shortcut: 'Backspace',
+      disabled: !actions.onCollapseNode || node.canCollapse === false,
+      onClick: actions.onCollapseNode ?? (() => {}),
+    },
+    { separator: true, onClick: () => {} },
+
+    // Annotation section
+    { label: 'Annotation', header: true, onClick: () => {} },
+    {
+      label: 'Rename…',
+      shortcut: 'N',
+      disabled: !actions.onRename,
+      onClick: actions.onRename ?? (() => {}),
+    },
+    {
+      label: 'Add Comment / Annotation…',
+      shortcut: ';',
+      disabled: !actions.onAnnotate,
+      onClick: actions.onAnnotate ?? (() => {}),
+    },
+    { separator: true, onClick: () => {} },
+
+    // Clipboard section
+    { label: 'Clipboard', header: true, onClick: () => {} },
+    {
+      label: `Copy Address  (${node.address})`,
+      shortcut: 'Ctrl+C',
+      disabled: !actions.onCopyAddress,
+      onClick: actions.onCopyAddress ?? (() => {}),
+    },
+    { separator: true, onClick: () => {} },
+
+    // Debug section
+    {
+      label: 'Toggle Breakpoint',
+      shortcut: 'F2',
+      disabled: !actions.onSetBreakpoint,
+      onClick: actions.onSetBreakpoint ?? (() => {}),
+    },
+  ]
+  return items
+}
 
 export interface ContextMenuItem {
   label: string

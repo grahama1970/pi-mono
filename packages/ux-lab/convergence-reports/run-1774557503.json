@@ -1,0 +1,366 @@
+[
+  {
+    "persona": "tim-blazytko",
+    "model": "sonnet",
+    "tasks": [
+      {
+        "group": "first-impressions",
+        "criterion": "As an RE professional who builds agentic analysis pipelines: Does this tool's initial state communicate what binaries are available and how to start analysis? Is the information hierarchy clear? Does it feel like a professional tool or a toy? Could this integrate into an automated analysis workflow?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 7.7496514320373535
+      },
+      {
+        "group": "graph-navigation",
+        "criterion": "As someone who builds graph-based analysis tools: Is the force-directed layout appropriate for binary call/data flow graphs? Are edge crossings minimized? Is the layout stable (nodes don't jump around)? Would a hierarchical layout be better for showing call hierarchies? Can you switch between layout algorithms?",
+        "source_file": "src/components/binary-explorer/BinaryGraph.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.495626449584961
+      },
+      {
+        "group": "node-detail",
+        "criterion": "As someone who analyzes IPC and RPC interfaces: When viewing an RPC endpoint or API node, are parameters shown with types? Are request/response schemas visible? Is the calling convention documented? Can you see which functions implement the endpoint? Are authentication/authorization requirements noted? Would this help you build a fuzzer for the interface?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.590214490890503
+      },
+      {
+        "group": "symbol-tree",
+        "criterion": "As someone who navigates symbol tables: Is the tree hierarchy logical (binary \u2192 sections \u2192 namespaces \u2192 functions)? Are node types indicated by icons? Is the tree sortable (alphabetical, by address, by size)? Can you see the total count at each level? Does the tree mirror the actual binary structure or is it an abstraction?",
+        "source_file": "src/components/binary-explorer/SymbolTree.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 9.109217643737793
+      },
+      {
+        "group": "table-view",
+        "criterion": "As someone who analyzes function tables in binaries: Are the table columns appropriate (name, type, address, size, namespace, tags)? Can you customize which columns are visible? Are the column widths appropriate for the data? Is there a way to add custom columns for annotation? Would you want to export this table to CSV for batch processing?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 3.4573521614074707
+      },
+      {
+        "group": "taxonomy-integration",
+        "criterion": "As someone who uses semantic tagging for binary classification: Are SPARTA mind tags visible on nodes? Are the tags relevant to the node's actual function? Can you add/remove tags manually? Is there an auto-tagging capability? Do tags influence the graph layout or coloring? Would you use tags to build a malware family classifier?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 9.283170461654663
+      },
+      {
+        "group": "code-view",
+        "criterion": "As someone who writes deobfuscation passes: Is the ASM view useful for understanding obfuscated code? Can you identify obfuscation patterns (opaque predicates, control flow flattening, dead code)? Are basic blocks visually separated? Is there CFG-level visualization? Would this ASM view integrate with your deobfuscation pipeline?",
+        "source_file": "src/components/binary-explorer/CodePane.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.634667158126831
+      },
+      {
+        "group": "chat-analysis",
+        "criterion": "As someone who builds NL interfaces for binary analysis: Is the chat positioned as a first-class analysis tool? Are suggested queries relevant to RE workflows? Could you ask 'find all functions that process network input' or 'show obfuscated functions'? Does the chat understand binary analysis domain terminology? Would this replace or complement your existing scripting workflow?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.619634389877319
+      },
+      {
+        "group": "automation",
+        "criterion": "As someone who scripts everything: Is there an API behind this UI that I could call directly? Are the network requests visible in DevTools with a clear REST/GraphQL pattern? Could I build a headless client? Is there API documentation? Would this support building automated analysis pipelines that feed results into other tools?",
+        "source_file": "server/index.ts",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 4.547014951705933
+      },
+      {
+        "group": "perspective-views",
+        "criterion": "As someone who focuses on security analysis: Is there a security-focused view that highlights attack surfaces, vulnerable functions, and security-relevant code paths? Does the security perspective filter out irrelevant nodes? Are risk scores or severity indicators shown? Would this accelerate a security audit compared to generic code browsing?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 7.946303844451904
+      },
+      {
+        "group": "scene-management",
+        "criterion": "As someone who works on analysis across multiple sessions: Can you save the current scene (graph state, selections, annotations)? Is there a save/load UI? Is the scene format portable (could you share it with a colleague)? Does the scene include chat history? Would scene management enable reproducible analysis workflows?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 10.054271936416626
+      },
+      {
+        "group": "investigation-journal",
+        "criterion": "As someone who documents analysis for reproducibility: Is there an investigation journal that records your actions? Are navigation steps, queries, and findings logged automatically? Can you add manual notes? Is the journal timestamped? Would this journal be useful for writing a technical report or training an agentic analysis pipeline?",
+        "source_file": "src/components/common/InvestigationJournal.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 9.703186750411987
+      }
+    ],
+    "start_time": 1774557401.2111347,
+    "end_time": 1774557503.5747325
+  },
+  {
+    "persona": "gynvael-coldwind",
+    "model": "sonnet",
+    "tasks": [
+      {
+        "group": "first-impressions",
+        "criterion": "As a low-level systems programmer: Does the initial load communicate this is a serious binary analysis tool? Is the layout efficient for someone who will spend hours inspecting binaries? Does the information density match what you'd expect from IDA Pro or Ghidra's initial state?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.461803913116455
+      },
+      {
+        "group": "data-structures",
+        "criterion": "As someone who parses binary formats: Are schema fields displayed with proper type annotations (uint32_t, char*, struct pointer)? Are field sizes shown in bytes? Is there endianness indication? Can you see the raw offset of each field within the structure? Are bitfields represented correctly?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.571256637573242
+      },
+      {
+        "group": "graph-exploration",
+        "criterion": "As someone who analyzes program structure graphs: Are different node types (functions, data structures, namespaces, imports) visually distinct? Can you tell at a glance what category a node belongs to? Is the color/shape coding consistent and learnable? Does the legend (if any) cover all node types?",
+        "source_file": "src/components/binary-explorer/BinaryGraph.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 9.387648344039917
+      },
+      {
+        "group": "code-view",
+        "criterion": "As someone who reads x86/ARM assembly daily: Is the assembly syntax correct (Intel vs AT&T, consistent)? Are operand sizes explicit? Are addresses properly formatted as hex? Are symbolic names resolved for known library calls? Is the instruction encoding (opcode bytes) shown alongside mnemonics? Are branch targets visually connected?",
+        "source_file": "src/components/binary-explorer/CodePane.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 4.111630201339722
+      },
+      {
+        "group": "node-detail",
+        "criterion": "As a thorough analyst who needs every byte documented: Does the detail panel show all available metadata for the selected node? Is there a raw JSON/data view? Are field types, sizes, and offsets shown? Is anything hidden that should be front-and-center? Would you need to switch to another tool to get information that's missing here?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 7.344886541366577
+      },
+      {
+        "group": "search-and-filter",
+        "criterion": "As someone who searches for specific functions and addresses: Is the search instant or does it lag? Does it search across node names, addresses, and content? Can you search by hex pattern or regex? Are results ranked by relevance? Is the current search term visible and easy to modify? Does search highlight matches in the graph?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.4436469078063965
+      },
+      {
+        "group": "context-menu",
+        "criterion": "As someone who relies on right-click menus in IDA and Ghidra: Does right-clicking a node show useful options (rename, annotate, show xrefs, copy address, expand neighbors)? Are the menu items relevant to binary analysis? Is the menu organized logically? Are there keyboard shortcuts shown next to menu items? Is the custom context menu used instead of the browser default?",
+        "source_file": "src/components/common/ContextMenu.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 7.90858268737793
+      },
+      {
+        "group": "cross-references",
+        "criterion": "As someone who traces dependencies to understand attack surfaces: Can you trace all callers and callees of a selected function? Is the call depth configurable? Can you see the full dependency chain from entry point to a specific function? Are indirect calls (via function pointers, vtables) represented? Can you highlight a specific call path?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.678280591964722
+      },
+      {
+        "group": "state-machines",
+        "criterion": "As someone who reverse engineers protocol state machines: Is there a dedicated state machine visualization? Are states shown as nodes in a ring or directed graph? Are transitions labeled with the triggering event/condition? Can you trace a path through the state machine? Is the initial state clearly marked? Are error/terminal states visually distinct?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 7.033923387527466
+      },
+      {
+        "group": "performance",
+        "criterion": "As someone who analyzes binaries with thousands of functions: How does the graph perform with the current number of nodes? Is there any lag when clicking, panning, or zooming? Would you trust this to handle 500+ nodes without WebGL/Canvas? Is there a virtualization strategy visible (lazy loading, level-of-detail)? What's the upper bound before it becomes unusable?",
+        "source_file": "src/components/binary-explorer/BinaryGraph.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.444922685623169
+      },
+      {
+        "group": "chat-analysis",
+        "criterion": "As a security researcher who would ask technical RE questions: Is the chat interface positioned to answer questions about the binary? Can you see suggested queries that are relevant to binary analysis? Does the chat area feel like a first-class analysis tool (as per the design philosophy) or an afterthought? Would you use natural language to query the binary?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 13.285676002502441
+      }
+    ],
+    "start_time": 1774557401.2340395,
+    "end_time": 1774557493.8762696
+  },
+  {
+    "persona": "liveoverflow",
+    "model": "sonnet",
+    "tasks": [
+      {
+        "group": "first-impressions",
+        "criterion": "As a security educator who makes complex topics accessible: Could a CTF beginner understand how to use this tool? Is there guidance on what to do first? Does the empty-graph progressive disclosure help or confuse newcomers? What would you add to make this a teaching tool? Would you feature this in a YouTube tutorial?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.136361598968506
+      },
+      {
+        "group": "progressive-disclosure",
+        "criterion": "As someone who believes UI should tell a story: Is the transition from empty to populated graph smooth and understandable? Does the animation convey that nodes are 'appearing' in response to your action? Is it clear that you caused this to happen? Would a beginner understand that clicking 'Seed Namespaces' loads the binary's structure? Is there a loading indicator?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 9.357359647750854
+      },
+      {
+        "group": "learning-path",
+        "criterion": "As someone who thinks about pedagogical order: In what order would a newcomer discover features? Is the order logical (overview \u2192 detail \u2192 code \u2192 chat)? Are advanced features hidden until basics are understood? Could someone accidentally discover a confusing advanced feature before understanding the basics? Is there a natural flow?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.585343837738037
+      },
+      {
+        "group": "vulnerability-hunting",
+        "criterion": "As someone who hunts for bugs in CTF challenges: Can you identify the binary's attack surface (input handlers, network listeners, file parsers)? Are these highlighted or do you have to find them yourself? Would a beginner know where to start looking for vulnerabilities? Is there a 'find interesting functions' feature? Would this help you during a CTF time crunch?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.559502124786377
+      },
+      {
+        "group": "code-view",
+        "criterion": "As someone who uses Python to explain binary concepts: Is the Python pseudocode readable for someone who knows Python but not assembly? Does it accurately represent the binary's logic? Are comments included to explain non-obvious operations? Would you use this in a tutorial to explain what a function does? Is it better than reading raw C decompilation?",
+        "source_file": "src/components/binary-explorer/CodePane.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 7.330973386764526
+      },
+      {
+        "group": "chat-exploration",
+        "criterion": "As someone who explains things in plain English: Can the chat understand plain English questions about the binary? Could a beginner ask 'what does this program do?' and get a useful answer? Does it handle vague questions gracefully? Is the chat the most beginner-friendly entry point to analysis? Would you recommend starting with the chat instead of the graph?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.416738510131836
+      },
+      {
+        "group": "visual-design",
+        "criterion": "As someone who uses color to teach: Are the colors in the graph meaningful (different colors for different types)? Is there a legend explaining the color coding? Would a colorblind viewer understand the graph? Are the colors consistent throughout the tool (same type = same color everywhere)? Is the color scheme aesthetically pleasing for screenshots and videos?",
+        "source_file": "src/components/common/EmbryStyle.ts",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 5.366825819015503
+      },
+      {
+        "group": "ctf-workflow",
+        "criterion": "As someone who writes CTF writeups: Is there an investigation journal that records your analysis steps? Could you export it as a writeup? Does it capture screenshots of the graph at each step? Would this save time writing a CTF writeup after the competition? Can you add personal notes alongside automated recording?",
+        "source_file": "src/components/common/InvestigationJournal.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.717848300933838
+      },
+      {
+        "group": "graph-interaction",
+        "criterion": "As someone who values intuitive interactions: Does clicking a node do what you'd expect? Is single-click = select and double-click = expand obvious? Are click targets large enough to hit easily? Does clicking empty space deselect? Is there visual feedback on hover (cursor change, highlight)? Would a newcomer understand the click model without instruction?",
+        "source_file": "src/components/binary-explorer/BinaryGraph.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 9.437357425689697
+      },
+      {
+        "group": "accessibility",
+        "criterion": "As someone who advocates for inclusive tools: Can you navigate the tool using only the keyboard? Does Tab move through interactive elements in a logical order? Can you use arrow keys in the graph? Are keyboard shortcuts available? Is there a keyboard shortcut reference? Would a viewer with a broken mouse be able to use this tool?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.854367733001709
+      },
+      {
+        "group": "error-states",
+        "criterion": "As someone who demos tools live and things break: What happens if the backend is unreachable? Is there a clear error message or does the UI just hang? Would a beginner understand what went wrong? Is there a retry button? Does the error state look professional or like an unhandled exception? Would this embarrass you in a live demo?",
+        "source_file": "src/components/binary-explorer/BinaryExplorerView.tsx",
+        "status": "failed",
+        "score": 0,
+        "commit": "",
+        "error": "[Errno 32] Broken pipe",
+        "duration_s": 6.5501086711883545
+      }
+    ],
+    "start_time": 1774557401.2561207,
+    "end_time": 1774557490.1430347
+  }
+]

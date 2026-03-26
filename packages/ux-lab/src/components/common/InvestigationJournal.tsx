@@ -46,6 +46,8 @@ export interface Step {
 	note?: string;
 	/** Serialised scene snapshot for replay (opaque to this component) */
 	snapshot?: unknown;
+	/** Base-64 data URL of the graph screenshot at this step (for writeup embed) */
+	screenshotUrl?: string;
 }
 
 export interface InvestigationJournalProps {
@@ -53,6 +55,10 @@ export interface InvestigationJournalProps {
 	onReplay: (stepIndex: number) => void;
 	onDelete: (stepIndex: number) => void;
 	onAddNote: (stepIndex: number, note: string) => void;
+	/** CTF challenge name — used as the writeup title and export filename */
+	challengeTitle?: string;
+	/** Called when the user edits the challenge title inline */
+	onChallengeTitleChange?: (title: string) => void;
 }
 
 /* ────────────────────────── Icon map ────────────────────────── */
@@ -104,9 +110,9 @@ function exportMarkdown(steps: Step[]): string {
 	return lines.join("\n");
 }
 
-function exportWriteup(steps: Step[]): string {
+function exportWriteup(steps: Step[], challengeTitle = "CTF Challenge"): string {
 	const lines: string[] = [
-		"# CTF Writeup",
+		`# ${challengeTitle} — Writeup`,
 		"",
 		`*Generated: ${new Date().toISOString()}*`,
 		"",
@@ -122,14 +128,18 @@ function exportWriteup(steps: Step[]): string {
 		lines.push(`### Step ${i + 1} — ${meta.label}`);
 		lines.push("");
 		lines.push(`**Time:** ${formatTime(s.timestamp)}`);
-		if (s.snapshot) {
-			lines.push("**Snapshot:** *(graph state captured)*");
-		}
 		lines.push("");
 		lines.push(s.description);
+		if (s.screenshotUrl) {
+			lines.push("");
+			lines.push(`![Step ${i + 1} graph screenshot](${s.screenshotUrl})`);
+		} else if (s.snapshot) {
+			lines.push("");
+			lines.push("*Graph state captured (no screenshot)*");
+		}
 		if (s.note) {
 			lines.push("");
-			lines.push(`> ${s.note}`);
+			lines.push(`> **Note:** ${s.note}`);
 		}
 		lines.push("");
 	});
@@ -307,12 +317,17 @@ export function InvestigationJournal({
 	onReplay,
 	onDelete,
 	onAddNote,
+	challengeTitle = "",
+	onChallengeTitleChange,
 }: InvestigationJournalProps) {
 	const [collapsed, setCollapsed] = useState(false);
 	const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 	const [editingIdx, setEditingIdx] = useState<number | null>(null);
 	const [noteText, setNoteText] = useState("");
+	const [editingTitle, setEditingTitle] = useState(false);
+	const [titleDraft, setTitleDraft] = useState(challengeTitle);
 	const inputRef = useRef<HTMLTextAreaElement>(null);
+	const titleInputRef = useRef<HTMLInputElement>(null);
 	const timelineRef = useRef<HTMLDivElement>(null);
 
 	/* Auto-scroll to latest step */
@@ -328,6 +343,19 @@ export function InvestigationJournal({
 			inputRef.current?.focus();
 		}
 	}, [editingIdx]);
+
+	/* Focus title input */
+	useEffect(() => {
+		if (editingTitle) {
+			titleInputRef.current?.focus();
+			titleInputRef.current?.select();
+		}
+	}, [editingTitle]);
+
+	const handleSaveTitle = useCallback(() => {
+		setEditingTitle(false);
+		onChallengeTitleChange?.(titleDraft.trim());
+	}, [titleDraft, onChallengeTitleChange]);
 
 	const handleStartNote = useCallback(
 		(idx: number) => {
@@ -357,10 +385,12 @@ export function InvestigationJournal({
 	}, [steps]);
 
 	const handleExportWriteup = useCallback(() => {
-		const md = exportWriteup(steps);
+		const title = challengeTitle.trim() || "ctf-challenge";
+		const md = exportWriteup(steps, title || undefined);
+		const slug = title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 		const ts = new Date().toISOString().slice(0, 10);
-		downloadBlob(md, `ctf-writeup-${ts}.md`);
-	}, [steps]);
+		downloadBlob(md, `${slug || "ctf-writeup"}-${ts}.md`);
+	}, [steps, challengeTitle]);
 
 	const Chevron = collapsed ? ChevronRight : ChevronDown;
 
@@ -381,6 +411,45 @@ export function InvestigationJournal({
 					<span style={heading}>Investigation Journal</span>
 					<span style={styles.badge}>{steps.length}</span>
 				</div>
+				{!collapsed && onChallengeTitleChange && (
+					<div
+						style={{ display: "flex", alignItems: "center", gap: 4, flex: 1, marginLeft: 8 }}
+						onClick={(e) => e.stopPropagation()}
+					>
+						{editingTitle ? (
+							<input
+								ref={titleInputRef}
+								value={titleDraft}
+								onChange={(e) => setTitleDraft(e.target.value)}
+								onBlur={handleSaveTitle}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") handleSaveTitle();
+									if (e.key === "Escape") { setEditingTitle(false); setTitleDraft(challengeTitle); }
+								}}
+								placeholder="Challenge name…"
+								style={{
+									fontSize: 11,
+									fontFamily: MONO,
+									background: EMBRY.bgDeep,
+									border: `1px solid ${EMBRY.border}`,
+									borderRadius: 4,
+									color: EMBRY.white,
+									padding: "2px 6px",
+									outline: "none",
+									width: 160,
+								}}
+							/>
+						) : (
+							<span
+								title="Click to set challenge title for writeup"
+								onClick={() => setEditingTitle(true)}
+								style={{ fontSize: 11, color: challengeTitle ? EMBRY.amber : EMBRY.muted, cursor: "text", fontStyle: challengeTitle ? "normal" : "italic" }}
+							>
+								{challengeTitle || "set challenge title…"}
+							</span>
+						)}
+					</div>
+				)}
 
 				{!collapsed && (
 					<div
@@ -456,8 +525,25 @@ export function InvestigationJournal({
 										{step.description}
 									</div>
 
-									{/* Snapshot indicator */}
-									{step.snapshot && (
+									{/* Screenshot thumbnail */}
+									{step.screenshotUrl && (
+										<img
+											src={step.screenshotUrl}
+											alt={`Step ${idx + 1} screenshot`}
+											style={{
+												marginTop: 4,
+												borderRadius: 4,
+												border: `1px solid ${EMBRY.border}`,
+												maxWidth: "100%",
+												maxHeight: 80,
+												objectFit: "cover" as const,
+												display: "block",
+											}}
+										/>
+									)}
+
+									{/* Snapshot indicator (no screenshot) */}
+									{step.snapshot && !step.screenshotUrl && (
 										<div style={styles.snapshotBadge}>
 											<Camera size={9} color={EMBRY.blue} />
 											snapshot captured

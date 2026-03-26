@@ -146,6 +146,9 @@ async def run_subagent(prompt: str, max_turns: int = 15) -> tuple[str, list[str]
 
     async with httpx.AsyncClient(timeout=httpx.Timeout(400, connect=10)) as client:
         async with client.stream("POST", SUBAGENT_URL, json=payload) as resp:
+            if resp.status_code != 200:
+                body = await resp.aread()
+                raise RuntimeError(f"Subagent returned {resp.status_code}: {body.decode()[:200]}")
             current_event = ""
             async for line in resp.aiter_lines():
                 line = line.strip()

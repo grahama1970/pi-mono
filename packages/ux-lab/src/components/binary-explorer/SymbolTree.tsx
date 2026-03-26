@@ -36,6 +36,13 @@ interface TreeNamespace {
   // Relationship groups: group by what edges connect to
   relationGroups: Map<string, { edgeType: string; nodes: BinaryGraphNode[] }>
   totalCount: number
+  section: string // .text / .data / .events / .bss
+}
+
+interface TreeSection {
+  name: string // .text, .data, .events, .bss
+  namespaces: TreeNamespace[]
+  totalCount: number
 }
 
 /** Simple fuzzy match: characters must appear in order */
@@ -73,8 +80,10 @@ export function SymbolTree({ graphNodes, allEdges, selectedNode, onSelectNode, o
   const [peekPos, setPeekPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const peekTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [viewMode, setViewMode] = useState<'type' | 'relationship'>('type')
-  // Sort mode: alpha = name, tier = importance rank (T0→T2), connections = edge degree
-  const [sortBy, setSortBy] = useState<'alpha' | 'tier' | 'connections'>('alpha')
+  // Sort mode: alpha = name, address = VA order (mirrors disasm view), size = largest first
+  const [sortBy, setSortBy] = useState<'alpha' | 'address' | 'size'>('alpha')
+  const [binaryExpanded, setBinaryExpanded] = useState(true)
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['.text', '.data', '.events', '.bss']))
 
   // Build tree structure
   const tree = useMemo(() => {

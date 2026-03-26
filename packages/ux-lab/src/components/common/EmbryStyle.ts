@@ -52,20 +52,50 @@ export const EMBRY = {
 	 *  highlight  #ff9500  orange  — search match / user annotation
 	 */
 	graph: {
-		function: "#4a9eff", // blue   — callable unit
-		block: "#f59e0b", // amber  — basic block
-		syscall: "#c084fc", // purple — OS boundary
-		extern: "#22d3ee", // cyan   — PLT / imported
-		data: "#a3a3a3", // gray   — static data
-		entry: "#00ff88", // green  — entry point
-		exit: "#ff6b6b", // coral  — return/exit (distinct from pure red)
-		selected: "#ffd700", // gold   — active selection
-		highlight: "#ff9500", // orange — search / annotation
-		edge: "rgba(255,255,255,0.25)", // default edge color
-		edgeBack: "#ff6b6b", // back-edge (loop) — coral, matches exit semantic
-		edgeCross: "#c084fc", // cross-edge       — purple, matches syscall semantic
+		function: "#4a9eff", // blue        — callable unit
+		block: "#f59e0b", // amber       — basic block
+		syscall: "#c084fc", // violet      — OS boundary
+		extern: "#22d3ee", // cyan        — PLT / imported
+		data: "#a3a3a3", // gray        — static data
+		entry: "#a8ff57", // lime        — entry point (lime not green: avoids red/green confusion in deuteranopia)
+		exit: "#ff6b6b", // coral       — return/exit (coral not pure red: safer for protanopia)
+		selected: "#ffd700", // gold        — active selection (high contrast on dark bg)
+		highlight: "#ff9500", // orange      — search / annotation
+		edge: "rgba(255,255,255,0.25)", // default edge
+		edgeBack: "#ff6b6b", // back-edge (loop) — coral, matches exit
+		edgeCross: "#c084fc", // cross-edge       — violet, matches syscall
 	} as const,
 } as const;
+
+/**
+ * Ordered legend rows for rendering a graph color-key in the UI or video
+ * thumbnails.  Import this wherever you render a <GraphLegend> component so
+ * every surface shows the same mapping.
+ *
+ * Colorblind notes:
+ *  - entry (lime #a8ff57) and exit (coral #ff6b6b) differ by both hue AND
+ *    luminance — distinguishable under deuteranopia/protanopia simulation.
+ *  - function (blue) / syscall (violet) / extern (cyan) are spread across the
+ *    blue spectrum but differ enough in luminance that grayscale screenshots
+ *    still separate them.
+ *  - selected (gold) is the highest-luminance color — pops on any background.
+ */
+export const GRAPH_LEGEND = [
+	{ type: "function", color: "#4a9eff", label: "Function", desc: "Callable unit / top-level symbol" },
+	{ type: "block", color: "#f59e0b", label: "Block", desc: "Basic block inside a function" },
+	{ type: "syscall", color: "#c084fc", label: "Syscall", desc: "OS interface / system call" },
+	{ type: "extern", color: "#22d3ee", label: "Extern", desc: "PLT / imported symbol" },
+	{ type: "data", color: "#a3a3a3", label: "Data", desc: "Static data / rodata reference" },
+	{ type: "entry", color: "#a8ff57", label: "Entry", desc: "Program / function entry point" },
+	{ type: "exit", color: "#ff6b6b", label: "Exit", desc: "Return / tail-call exit" },
+	{ type: "selected", color: "#ffd700", label: "Selected", desc: "Currently focused node" },
+	{ type: "highlight", color: "#ff9500", label: "Highlight", desc: "Search match / annotation" },
+] as const;
+
+/** Resolve a graph node-type key to its color; falls back to EMBRY.dim for unknown types. */
+export function graphNodeColor(type: string): string {
+	return (EMBRY.graph as Record<string, string>)[type] ?? EMBRY.dim;
+}
 
 /** Card wrapper style */
 export const card = {

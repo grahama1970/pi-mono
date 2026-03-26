@@ -105,11 +105,15 @@ function hullPath(points: [number, number][], pad = 16): string {
 export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNodeClick, onNodeHover, onContextMenu, layoutMode = 'organic', selectedNodeId = null, graphSvgRef }: BinaryGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null)
+  const [activeLayout, setActiveLayout] = useState<'organic' | 'stratified' | 'clustered' | 'hierarchical'>(layoutMode)
   const clickedRef = useRef<string | null>(null)
   const onNodeClickRef = useRef(onNodeClick)
   onNodeClickRef.current = onNodeClick
   const onContextMenuRef = useRef(onContextMenu)
   onContextMenuRef.current = onContextMenu
+
+  // Sync activeLayout when prop changes (external control still works)
+  useEffect(() => { setActiveLayout(layoutMode) }, [layoutMode])
 
   // Sync external ref
   useEffect(() => { if (graphSvgRef) graphSvgRef.current = svgRef.current }, [graphSvgRef])
@@ -343,7 +347,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .alphaTarget(0)
       .velocityDecay(0.4)
 
-    if (layoutMode === 'stratified') {
+    if (activeLayout === 'stratified') {
       const getY = (type: string) => {
         if (type === 'cli_command' || type === 'namespace') return height * 0.15
         if (type === 'rpc') return height * 0.35
@@ -354,7 +358,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       simulation
         .force('y', d3.forceY((d) => getY((d as SimNode).nodeType)).strength(0.12))
         .force('x', d3.forceX(width / 2).strength(0.02))
-    } else if (layoutMode === 'clustered') {
+    } else if (activeLayout === 'clustered') {
       // Group nodes by namespace/cluster into spatial regions
       const clusters = [...new Set(simNodes.map(n => n.cluster))]
       const cols = Math.ceil(Math.sqrt(clusters.length))
@@ -370,7 +374,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       simulation
         .force('x', d3.forceX((d) => clusterPos[(d as SimNode).cluster]?.x ?? width / 2).strength(0.15))
         .force('y', d3.forceY((d) => clusterPos[(d as SimNode).cluster]?.y ?? height / 2).strength(0.15))
-    } else if (layoutMode === 'hierarchical') {
+    } else if (activeLayout === 'hierarchical') {
       // DAG rank assignment for call/data-flow graphs (Sugiyama-style, simplified).
       // Assigns ranks via BFS from zero-in-degree roots so callers appear above callees.
       // Fixed fx/fy positions prevent simulation drift — layout is stable by construction.
@@ -760,11 +764,10 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .attr('fill', 'transparent')
       .style('cursor', 'pointer')
 
-    // Main node circle — starts at r=0, animates to full size
-    nodeGs.append('circle')
+    // Main node shape — path so each type gets a distinct visual shape (circle/diamond/square/triangle)
+    nodeGs.append('path')
       .attr('class', 'node-shape')
-      .attr('cx', 0).attr('cy', 0)
-      .attr('r', 0) // start at 0 for entrance animation
+      .attr('d', 'M0,0') // start collapsed for entrance animation
       .attr('fill', (d) => NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim)
       .attr('fill-opacity', (d) => nodeImportance(d))
       .attr('stroke', (d) => d.id === selectedNodeIdRef.current ? EMBRY.white : (NODE_TYPE_COLORS[d.nodeType] ?? EMBRY.dim))
@@ -775,7 +778,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
       .delay((_d, i) => Math.min(i * 12, 500))
       .duration(350)
       .ease(d3.easeCubicOut)
-      .attr('r', r)
+      .attr('d', (d) => nodeShapePath(d.nodeType, r(d)))
 
     // State machine: additional ring for visual distinction
     nodeGs.filter((d) => d.nodeType === 'state_machine')
@@ -836,9 +839,19 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     // Shared flag: set true on drag, checked in click handler to suppress false clicks
     let _wasDraggedRef = { current: false }
     const drag = d3.drag<SVGGElement, SimNode, d3.SubjectPosition>()
-      .on('start', (event, d) => { _wasDraggedRef.current = false; if (!event.active) simulation.alphaTarget(0.1).restart(); d.fx = d.x; d.fy = d.y })
+      .on('start', (event, d) => {
+        _wasDraggedRef.current = false
+        // Hierarchical mode uses fixed positions — don't heat up the simulation
+        if (!event.active && activeLayout !== 'hierarchical') simulation.alphaTarget(0.1).restart()
+        d.fx = d.x; d.fy = d.y
+      })
       .on('drag', (event, d) => { _wasDraggedRef.current = true; d.fx = event.x; d.fy = event.y })
-      .on('end', (event, d) => { if (!event.active) simulation.alphaTarget(0); d.fx = null; d.fy = null })
+      .on('end', (event, d) => {
+        if (!event.active) simulation.alphaTarget(0)
+        // Hierarchical: keep node pinned at its dragged position to preserve rank layout
+        // Organic/stratified/clustered: release so physics can settle
+        if (activeLayout !== 'hierarchical') { d.fx = null; d.fy = null }
+      })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     nodeGs.call(drag as any) // Type assertion necessary due to complex D3 Selection overlap with React types
 
@@ -930,7 +943,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
   // Rebuild on data change, layout change, OR when dimensions first arrive (null → measured).
   // ResizeObserver debounces at 150ms so resize-triggered rebuilds are rare.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataKey, layoutMode, dimensions])
+  }, [dataKey, activeLayout, dimensions])
 
   useEffect(() => { return setupSimulation() }, [setupSimulation])
 
@@ -959,12 +972,12 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
 
     // Enhanced match highlighting: green stroke + glow for matched nodes
     if (filtering) {
-      nodeGs.selectAll<SVGCircleElement, SimNode>('circle').transition().duration(200)
+      nodeGs.selectAll<SVGPathElement, SimNode>('.node-shape').transition().duration(200)
         .attr('stroke', (d) => matchedNodeIds!.has(d.id) ? '#39FF14' : (d.id === selectedNodeIdRef.current ? '#fff' : (NODE_TYPE_COLORS[d.nodeType] ?? '#6b7280')))
         .attr('stroke-width', (d) => matchedNodeIds!.has(d.id) ? 3 : (d.id === selectedNodeIdRef.current ? 2.5 : 1))
         .attr('filter', (d) => matchedNodeIds!.has(d.id) ? 'url(#glow)' : 'none')
     } else {
-      nodeGs.selectAll<SVGCircleElement, SimNode>('circle').transition().duration(200)
+      nodeGs.selectAll<SVGPathElement, SimNode>('.node-shape').transition().duration(200)
         .attr('stroke', (d) => d.id === selectedNodeIdRef.current ? '#fff' : (NODE_TYPE_COLORS[d.nodeType] ?? '#6b7280'))
         .attr('stroke-width', (d) => d.id === selectedNodeIdRef.current ? 2.5 : 1)
         .attr('filter', 'none')
@@ -1017,7 +1030,31 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
             </span>
           ))}
         </div>
-        <span style={{ marginLeft: 'auto', color: EMBRY.muted }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, alignItems: 'center' }}>
+          {(['organic', 'hierarchical', 'stratified', 'clustered'] as const).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setActiveLayout(mode)}
+              title={
+                mode === 'organic' ? 'Force-directed (explore clusters)' :
+                mode === 'hierarchical' ? 'Sugiyama DAG — callers top, callees bottom' :
+                mode === 'stratified' ? 'Layer by node type' :
+                'Group by namespace cluster'
+              }
+              style={{
+                fontSize: 8, padding: '1px 6px', cursor: 'pointer',
+                fontFamily: 'JetBrains Mono, monospace', textTransform: 'uppercase',
+                letterSpacing: '0.04em', border: `1px solid ${activeLayout === mode ? EMBRY.accent : EMBRY.border}`,
+                background: activeLayout === mode ? `${EMBRY.accent}22` : 'transparent',
+                color: activeLayout === mode ? EMBRY.accent : EMBRY.muted,
+                borderRadius: 0,
+              }}
+            >
+              {mode === 'organic' ? 'force' : mode === 'hierarchical' ? 'dag' : mode === 'stratified' ? 'strat' : 'clust'}
+            </button>
+          ))}
+        </div>
+        <span style={{ color: EMBRY.muted }}>
           {nodes.length} nodes
         </span>
       </div>

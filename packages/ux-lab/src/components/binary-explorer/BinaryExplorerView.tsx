@@ -289,6 +289,7 @@ export function BinaryExplorerView() {
   const [chatInput, setChatInput] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
   const [seeding, setSeeding] = useState(false)
+  const [seedDone, setSeedDone] = useState(0) // node count after seed, briefly shown as confirmation toast
 
   // --- Graph Visual State ---
   const [viewMode, setViewMode] = useState<'graph' | 'tree' | 'code' | 'vulns'>('graph')
@@ -302,8 +303,11 @@ export function BinaryExplorerView() {
   const [dataPanelHeight, setDataPanelHeight] = useState(220)
   const [dataTab, setDataTab] = useState<'summary' | 'connections' | 'ast' | 'explain' | 'raw' | 'table' | 'code'>('summary')
   const [tableSearch, setTableSearch] = useState('')
-  const [tableSortKey, setTableSortKey] = useState<'label' | 'nodeType' | 'cluster' | 'confidence' | 'connections' | 'cwe' | 'attack'>('connections')
+  const [tableSortKey, setTableSortKey] = useState<'label' | 'nodeType' | 'cluster' | 'confidence' | 'connections' | 'cwe' | 'attack' | 'address' | 'size' | 'namespace'>('connections')
   const [tableSortAsc, setTableSortAsc] = useState(false)
+  const [tableVisibleCols, setTableVisibleCols] = useState<Set<string>>(new Set(['label', 'nodeType', 'address', 'size', 'namespace', 'connections', 'cwe', 'attack']))
+  const [tableAnnotations, setTableAnnotations] = useState<Record<string, string>>({})
+  const [tableShowColPicker, setTableShowColPicker] = useState(false)
 
   // --- Taxonomy State ---
   const [taxonomyMap, setTaxonomyMap] = useState<Map<string, { mind: string[]; cwe: string[]; attack: string[]; d3fend: string[]; nist: string[] }>>(new Map())
@@ -484,7 +488,7 @@ export function BinaryExplorerView() {
   // --- Investigation Journal ---
   const [journalSteps, setJournalSteps] = useState<Step[]>([])
   const [rightTab, setRightTab] = useState<'chat' | 'journal'>('chat')
-  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('investigator')
+  const [analysisMode, setAnalysisMode] = useState<'beginner' | 'investigator'>('beginner')
   const [visibleTypes, setVisibleTypes] = useState<Set<string>>(new Set(['rpc', 'event', 'schema', 'state_machine', 'cli_command', 'namespace', 'parameter']))
   const [smTracedPath, setSmTracedPath] = useState<Set<number>>(new Set())
   const [splitCodeView, setSplitCodeView] = useState(false) // Godbolt-style horizontal split: code left, graph right
@@ -2306,160 +2310,203 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                 </div>
               )}
 
-              {/* Empty scene card — actionable, not confusing */}
+              {/* Empty scene panel — dense binary info like IDA/Ghidra initial state */}
               {sceneNodeIds.size === 0 && !data.loading && !seeding && viewMode === 'graph' && (
                 <div style={{
                   position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                  zIndex: 5, pointerEvents: 'auto', width: 380,
-                  background: '#0a0a0a', border: `1px solid ${EMBRY.border}`, borderRadius: 6,
-                  padding: '24px 28px', boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
-                  animation: 'scene-card-in 0.25s ease both',
+                  zIndex: 5, pointerEvents: 'auto', width: 460,
+                  background: '#080808', border: `1px solid ${EMBRY.border}`, borderRadius: 3,
+                  boxShadow: '0 4px 24px rgba(0,0,0,0.8)',
+                  animation: 'scene-card-in 0.15s ease both',
+                  fontFamily: 'JetBrains Mono, monospace',
                 }}>
-                  {/* Binary identity header */}
-                  <div style={{ marginBottom: 14 }}>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
-                      <span style={{ fontSize: 15, fontWeight: 900, color: EMBRY.white, fontFamily: 'JetBrains Mono, monospace' }}>{binaryName}</span>
-                      <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', color: EMBRY.green, border: `1px solid ${EMBRY.green}44`, borderRadius: 2, padding: '1px 5px' }}>READY</span>
-                    </div>
-                    {binaryMetas[binaryName] && (() => {
-                      const m = binaryMetas[binaryName]
-                      return (
-                        <>
-                          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 6 }}>
-                            {(m.format || m.arch) && (
-                              <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.fg, fontFamily: 'JetBrains Mono, monospace' }}>
-                                {[m.format, m.arch].filter(Boolean).join(' / ')}
-                              </span>
-                            )}
-                            {m.sizeBytes > 0 && <span style={{ fontSize: 10, color: EMBRY.dim }}>{m.sizeBytes > 1048576 ? `${(m.sizeBytes / 1048576).toFixed(1)} MB` : `${(m.sizeBytes / 1024).toFixed(0)} KB`}</span>}
-                            {m.stripped && <span style={{ fontSize: 9, color: '#ef4444', border: '1px solid #ef444433', borderRadius: 2, padding: '1px 4px' }}>STRIPPED</span>}
-                            {m.pie && <span style={{ fontSize: 9, color: '#22c55e', border: '1px solid #22c55e33', borderRadius: 2, padding: '1px 4px' }}>PIE</span>}
-                            {m.relro && <span style={{ fontSize: 9, color: '#3b82f6', border: '1px solid #3b82f633', borderRadius: 2, padding: '1px 4px' }}>{m.relro.toUpperCase()}</span>}
-                          </div>
-                          {m.sha256 && (
-                            <div
-                              title={`SHA256: ${m.sha256}\nClick to copy`}
-                              onClick={() => navigator.clipboard.writeText(m.sha256)}
-                              style={{ fontSize: 9, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.accent, cursor: 'pointer', letterSpacing: '0.04em' }}
-                            >{m.sha256.slice(0, 16)}…</div>
-                          )}
-                          {/* Feature type inventory */}
-                          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 8 }}>
-                            {Object.entries(m.byType).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).map(([type, count]) => (
-                              <span key={type} style={{
-                                fontSize: 9, padding: '2px 6px', borderRadius: 2,
-                                background: `${NODE_TYPE_COLORS[type] || EMBRY.muted}18`,
-                                color: NODE_TYPE_COLORS[type] || EMBRY.muted,
-                                border: `1px solid ${NODE_TYPE_COLORS[type] || EMBRY.muted}33`,
-                                fontFamily: 'JetBrains Mono, monospace',
-                              }}>
-                                {count} {TYPE_ABBREV[type] || type}
-                              </span>
+                  {/* Title bar — IDA-style */}
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '5px 10px', borderBottom: `1px solid ${EMBRY.border}`,
+                    background: '#0d0d0d',
+                  }}>
+                    <Shield size={11} style={{ color: EMBRY.accent, flexShrink: 0 }} />
+                    <span style={{ fontSize: 10, fontWeight: 700, color: EMBRY.white, letterSpacing: '0.05em', flex: 1 }}>{binaryName}</span>
+                    {binaries.length > 1 && (
+                      <span style={{ fontSize: 8, color: EMBRY.muted, letterSpacing: '0.04em', marginRight: 8 }}>
+                        {binaries.indexOf(binaryName) + 1}/{binaries.length}
+                      </span>
+                    )}
+                    {data.graphNodes.length > 0
+                      ? <span style={{ fontSize: 8, color: EMBRY.green, letterSpacing: '0.08em' }}>ANALYSIS READY</span>
+                      : <span style={{ fontSize: 8, color: '#f59e0b', letterSpacing: '0.08em' }}>NOT INGESTED</span>
+                    }
+                  </div>
+
+                  {/* Binary properties table — dense, like IDA's file info dialog */}
+                  {binaryMetas[binaryName] && (() => {
+                    const m = binaryMetas[binaryName]
+                    const rows: [string, React.ReactNode][] = []
+                    if (m.format) rows.push(['Format', <span style={{ color: EMBRY.white }}>{m.format}</span>])
+                    if (m.arch) rows.push(['Arch', <span style={{ color: EMBRY.white }}>{m.arch}</span>])
+                    if (m.entryPoint) rows.push(['Entry point', <span style={{ color: '#f59e0b' }}>{m.entryPoint}</span>])
+                    if (m.sizeBytes > 0) rows.push(['File size', <span style={{ color: EMBRY.fg }}>{m.sizeBytes > 1048576 ? `${(m.sizeBytes / 1048576).toFixed(2)} MB` : `${(m.sizeBytes / 1024).toFixed(0)} KB`} ({m.sizeBytes.toLocaleString()} B)</span>])
+                    if (typeof m.importCount === 'number') rows.push(['Imports', <span style={{ color: EMBRY.fg }}>{m.importCount}</span>])
+                    rows.push(['Features', <span style={{ color: EMBRY.fg }}>{m.featureCount} nodes · {m.edgeCount} edges</span>])
+                    const flags: React.ReactNode[] = []
+                    if (m.stripped) flags.push(<span key="s" style={{ color: '#ef4444' }}>STRIPPED</span>)
+                    if (m.pie) flags.push(<span key="p" style={{ color: '#22c55e' }}>PIE</span>)
+                    if (m.relro) flags.push(<span key="r" style={{ color: '#3b82f6' }}>{m.relro.toUpperCase()}</span>)
+                    if (flags.length > 0) rows.push(['Mitigations', <span style={{ display: 'flex', gap: 8 }}>{flags}</span>])
+                    if (m.sha256) rows.push(['SHA-256', (
+                      <span
+                        title={`SHA256: ${m.sha256}\nClick to copy`}
+                        onClick={() => navigator.clipboard.writeText(m.sha256)}
+                        style={{ color: EMBRY.accent, cursor: 'pointer' }}
+                      >{m.sha256}</span>
+                    )])
+                    return (
+                      <div style={{ padding: '6px 10px', borderBottom: `1px solid ${EMBRY.border}` }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 9 }}>
+                          <tbody>
+                            {rows.map(([label, value]) => (
+                              <tr key={label as string}>
+                                <td style={{ color: EMBRY.muted, paddingRight: 16, paddingBottom: 2, whiteSpace: 'nowrap', verticalAlign: 'top', width: 80 }}>{label}</td>
+                                <td style={{ paddingBottom: 2, color: EMBRY.fg }}>{value}</td>
+                              </tr>
                             ))}
-                          </div>
-                        </>
-                      )
-                    })()}
-                    {!binaryMetas[binaryName] && (
-                      <div style={{ fontSize: 10, color: EMBRY.dim }}>
-                        {data.stats.totalNodes} features · {data.stats.totalEdges} edges · {data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces
+                          </tbody>
+                        </table>
+                        <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap', marginTop: 6 }}>
+                          {Object.entries(m.byType).filter(([, c]) => c > 0).sort((a, b) => b[1] - a[1]).map(([type, count]) => (
+                            <span key={type} style={{
+                              fontSize: 8, padding: '1px 5px', borderRadius: 2,
+                              background: `${NODE_TYPE_COLORS[type] || EMBRY.muted}15`,
+                              color: NODE_TYPE_COLORS[type] || EMBRY.muted,
+                              border: `1px solid ${NODE_TYPE_COLORS[type] || EMBRY.muted}30`,
+                            }}>
+                              {count} {TYPE_ABBREV[type] || type}
+                            </span>
+                          ))}
+                        </div>
                       </div>
+                    )
+                  })()}
+                  {!binaryMetas[binaryName] && (
+                    <div style={{ padding: '6px 10px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 9, color: EMBRY.dim }}>
+                      {data.stats.totalNodes} features · {data.stats.totalEdges} edges · {data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces
+                    </div>
+                  )}
+
+                  {/* Quick-load actions — compact 2-column grid */}
+                  <div style={{ padding: '6px 10px' }}>
+                    {data.graphNodes.length === 0 ? (
+                      <div style={{ padding: '10px 0', textAlign: 'center' }}>
+                        <div style={{ fontSize: 9, color: '#f59e0b', marginBottom: 6, fontWeight: 700 }}>No features found for this binary</div>
+                        <div style={{ fontSize: 8, color: EMBRY.muted, lineHeight: 1.6 }}>
+                          Use <span style={{ color: EMBRY.accent }}>+ INGEST BINARY</span> in the left pane to extract features,<br />
+                          or run the analyzer pipeline via the REST API below.
+                        </div>
+                      </div>
+                    ) : (
+                    <>
+                    <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 5, letterSpacing: '0.06em' }}>LOAD INTO GRAPH</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+                      <button onClick={() => {
+                        setSeeding(true)
+                        setTimeout(() => {
+                          const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
+                          const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
+                            .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+                            .sort((a, b) => b.deg - a.deg).slice(0, 5)
+                          addToScene([...namespaces.map(n => n.id), ...topHubs.map(n => n.id)])
+                          setSeeding(false)
+                        }, 0)
+                      }} disabled={seeding} style={{
+                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
+                        background: `${EMBRY.accent}10`, border: `1px solid ${EMBRY.accent}33`,
+                        color: EMBRY.accent, borderRadius: 2, cursor: seeding ? 'default' : 'pointer',
+                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
+                      }}>
+                        <Layers size={11} style={{ flexShrink: 0, animation: seeding ? 'seed-spin 0.8s linear infinite' : 'none' }} />
+                        <div>
+                          <div>{seeding ? 'Loading…' : 'Namespaces + Hubs'}</div>
+                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>{`${data.graphNodes.filter(n => n.nodeType === 'namespace').length} ns · top-5 by degree`}</div>
+                        </div>
+                      </button>
+
+                      <button onClick={() => {
+                        const entryPoints = data.graphNodes.filter(n =>
+                          n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
+                        )
+                        const topByConnections = entryPoints
+                          .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
+                          .sort((a, b) => b.deg - a.deg)
+                          .slice(0, 20)
+                        addToScene(topByConnections.map(n => n.id))
+                        handleSetPerspective('attack_surface')
+                      }} style={{
+                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
+                        background: '#1a0a0a', border: `1px solid #f4433633`, color: '#f44336',
+                        borderRadius: 2, cursor: 'pointer',
+                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
+                      }}>
+                        <Network size={11} style={{ flexShrink: 0 }} />
+                        <div>
+                          <div>Entry Points</div>
+                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>{`${data.graphNodes.filter(n => ['cli_command','rpc','event','parameter'].includes(n.nodeType)).length} nodes · RPC · CLI · events`}</div>
+                        </div>
+                      </button>
+
+                      <button onClick={() => setViewMode('code')} style={{
+                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
+                        background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
+                        borderRadius: 2, cursor: 'pointer',
+                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
+                      }}>
+                        <Code size={11} style={{ flexShrink: 0 }} />
+                        <div>
+                          <div>Disassembly</div>
+                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>ASM · decompiled C · pseudocode</div>
+                        </div>
+                      </button>
+
+                      <button onClick={() => setViewMode('vulns')} style={{
+                        display: 'flex', alignItems: 'center', gap: 6, padding: '5px 8px',
+                        background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
+                        borderRadius: 2, cursor: 'pointer',
+                        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 700, textAlign: 'left',
+                      }}>
+                        <Shield size={11} style={{ flexShrink: 0 }} />
+                        <div>
+                          <div>Vuln Map</div>
+                          <div style={{ fontSize: 7, fontWeight: 400, color: EMBRY.dim, marginTop: 1 }}>CWE · ATT&CK · D3FEND</div>
+                        </div>
+                      </button>
+                    </div>
+                    </>
                     )}
                   </div>
 
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.08em', color: EMBRY.dim, marginBottom: 8, borderTop: `1px solid ${EMBRY.border}`, paddingTop: 10, textTransform: 'uppercase' as const }}>
-                    Analysis Strategy
-                  </div>
-
-                  {/* Quick actions */}
-                  <div style={{ marginBottom: 6, fontSize: 9, color: EMBRY.muted, display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ color: EMBRY.accent, fontSize: 11 }}>↓</span>
-                    <span>Click an option below to load the binary's structure into the graph</span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                    <button onClick={() => {
-                      setSeeding(true)
-                      // Delay gives React time to paint the loading overlay before the synchronous computation blocks
-                      setTimeout(() => {
-                        const namespaces = data.graphNodes.filter(n => n.nodeType === 'namespace')
-                        const topHubs = data.graphNodes.filter(n => n.nodeType !== 'parameter' && n.nodeType !== 'namespace')
-                          .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
-                          .sort((a, b) => b.deg - a.deg).slice(0, 5)
-                        addToScene([...namespaces.map(n => n.id), ...topHubs.map(n => n.id)])
-                        setSeeding(false)
-                      }, 350)
-                    }} disabled={seeding} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: `${EMBRY.accent}10`,
-                      border: `2px solid ${EMBRY.accent}`,
-                      color: EMBRY.accent,
-                      borderRadius: 4, cursor: seeding ? 'default' : 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                      transition: 'all 0.2s ease',
-                    }}>
-                      <Layers size={16} style={{ flexShrink: 0 }} />
-                      <div style={{ flex: 1 }}>
-                        <div>Seed Namespaces  <span style={{ fontSize: 9, fontWeight: 400, color: EMBRY.dim }}>— start here</span></div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
-                          {`Loads ${data.graphNodes.filter(n => n.nodeType === 'namespace').length} namespaces + top-5 hub nodes → populates the graph`}
+                  {/* Pipeline / REST API — prominent for automation workflows */}
+                  <div style={{
+                    padding: '6px 10px', borderTop: `1px solid ${EMBRY.border}`,
+                    background: '#0a0a0a',
+                  }}>
+                    <div style={{ fontSize: 8, color: EMBRY.muted, marginBottom: 5, letterSpacing: '0.06em', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <Workflow size={9} style={{ color: EMBRY.muted }} />
+                      REST API
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      {[
+                        ['GET', `/api/binary/${binaryName}/features`, 'feature graph JSON'],
+                        ['GET', `/api/binary/${binaryName}/graph`, 'adjacency + edge data'],
+                        ['GET', `/api/binary/${binaryName}/taxonomy`, 'CWE / ATT&CK export'],
+                        ['POST', '/api/binary/ingest', 'trigger ingestion pipeline'],
+                      ].map(([method, path, desc]) => (
+                        <div key={path} style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
+                          <span style={{ fontSize: 7, fontWeight: 700, color: method === 'GET' ? '#22c55e' : '#f59e0b', minWidth: 28 }}>{method}</span>
+                          <span style={{ fontSize: 8, color: EMBRY.accent, fontFamily: 'JetBrains Mono, monospace', flex: 1 }}>{path}</span>
+                          <span style={{ fontSize: 7, color: EMBRY.muted }}>{desc}</span>
                         </div>
-                      </div>
-                    </button>
-
-                    <button onClick={() => {
-                      const entryPoints = data.graphNodes.filter(n =>
-                        n.nodeType === 'cli_command' || n.nodeType === 'rpc' || n.nodeType === 'event' || n.nodeType === 'parameter'
-                      )
-                      const topByConnections = entryPoints
-                        .map(n => ({ id: n.id, deg: data.allEdges.filter(e => e._from === n.id || e._to === n.id).length }))
-                        .sort((a, b) => b.deg - a.deg)
-                        .slice(0, 20)
-                      addToScene(topByConnections.map(n => n.id))
-                      handleSetPerspective('attack_surface')
-                    }} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: '#1a0a0a', border: `1px solid #f4433633`, color: '#f44336',
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                    }}>
-                      <Network size={16} style={{ flexShrink: 0 }} />
-                      <div>
-                        <div>Attack Surface</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>
-                          {`${data.graphNodes.filter(n => ['cli_command','rpc','event','parameter'].includes(n.nodeType)).length} entry points — CLI · RPC · events · params, ranked by degree`}
-                        </div>
-                      </div>
-                    </button>
-
-                    <button onClick={() => setViewMode('vulns')} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: '#1a1520', border: `1px solid #9C27B033`, color: '#9C27B0',
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                    }}>
-                      <Shield size={16} style={{ flexShrink: 0 }} />
-                      <div>
-                        <div>Taxonomy Table</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>CWE · ATT&CK · D3FEND · CAPEC — structured for export or pipeline ingestion</div>
-                      </div>
-                    </button>
-
-                    <button onClick={() => setViewMode('code')} style={{
-                      display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                      background: '#0a1520', border: `1px solid #2196F333`, color: '#2196F3',
-                      borderRadius: 4, cursor: 'pointer', fontWeight: 700, fontSize: 11, textAlign: 'left',
-                    }}>
-                      <Code size={16} style={{ flexShrink: 0 }} />
-                      <div>
-                        <div>Disassembly View</div>
-                        <div style={{ fontSize: 8, fontWeight: 400, color: EMBRY.dim, marginTop: 2 }}>ASM · decompiled C · Python pseudocode — node-linked, synced to graph</div>
-                      </div>
-                    </button>
-                  </div>
-
-                  {/* Automation hint */}
-                  <div style={{ marginTop: 12, paddingTop: 10, borderTop: `1px solid ${EMBRY.border}`, display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Workflow size={11} style={{ color: EMBRY.muted, flexShrink: 0 }} />
-                    <span style={{ fontSize: 8, color: EMBRY.muted, fontFamily: 'JetBrains Mono, monospace' }}>
-                      REST API: <span style={{ color: EMBRY.dim }}>/api/binary/:name/features</span> · <span style={{ color: EMBRY.dim }}>/api/binary/:name/graph</span>
-                    </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -2691,10 +2738,10 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   {([
                     { id: 'summary' as const, title: 'Overview', icon: <Layers size={14} /> },
                     { id: 'connections' as const, title: 'Connections', icon: <Network size={14} /> },
-                    { id: 'ast' as const, title: 'AST / Fields', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M8 4C5.5 6.5 4 9 4 12s1.5 5.5 4 8" /><path d="M16 4c2.5 2.5 4 5 4 8s-1.5 5.5-4 8" /><line x1="9.5" y1="9" x2="14.5" y2="15" /><line x1="14.5" y1="9" x2="9.5" y2="15" /></svg> },
                     { id: 'explain' as const, title: 'Explanation', icon: <MessageSquare size={14} /> },
                     { id: 'code' as const, title: 'Code View', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M7 8l-4 4 4 4"/><path d="M17 8l4 4-4 4"/><path d="M14 4l-4 16"/></svg> },
                     { id: 'table' as const, title: 'All Features', icon: <Table2 size={14} /> },
+                    { id: 'ast' as const, title: 'AST / Fields', icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M8 4C5.5 6.5 4 9 4 12s1.5 5.5 4 8" /><path d="M16 4c2.5 2.5 4 5 4 8s-1.5 5.5-4 8" /><line x1="9.5" y1="9" x2="14.5" y2="15" /><line x1="14.5" y1="9" x2="9.5" y2="15" /></svg> },
                     { id: 'raw' as const, title: 'Raw JSON', icon: <Code size={14} /> },
                   ]).map(tab => (
                     <button key={tab.id} title={tab.title}
@@ -3402,7 +3449,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   }}
                 >
                   <MessageSquare size={12} />
-                  ANALYSIS
+                  {analysisMode === 'beginner' ? 'CHAT — START HERE' : 'NL ANALYSIS'}
                 </button>
                 <button
                   onClick={() => setRightTab('journal')}
@@ -3553,13 +3600,19 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                   return (
                     <div style={{ padding: 10 }}>
                       <div style={{ fontSize: 14, fontWeight: 900, color: EMBRY.white, marginBottom: 4 }}>{binaryName.toUpperCase()}</div>
-                      <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 12 }}>
+                      <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: analysisMode === 'investigator' ? 6 : 12 }}>
                         {data.stats.totalNodes} features · {namespaces.length} namespaces · {stateMachines.length} state machines
                       </div>
+                      {analysisMode === 'investigator' && (
+                        <div style={{ fontSize: 9, color: EMBRY.accent, marginBottom: 12, fontFamily: 'JetBrains Mono, monospace', opacity: 0.7 }}>
+                          NL interface · domain-aware · complements scripting
+                        </div>
+                      )}
                       {/* Beginner guided path */}
                       {analysisMode === 'beginner' && (
                         <div style={{ marginBottom: 12, padding: '8px 10px', background: `${EMBRY.accent}08`, border: `1px solid ${EMBRY.accent}22`, borderRadius: 4 }}>
-                          <div style={{ fontSize: 8, fontWeight: 800, color: EMBRY.accent, marginBottom: 6 }}>GUIDED ANALYSIS PATH</div>
+                          <div style={{ fontSize: 9, color: EMBRY.accent, fontWeight: 800, marginBottom: 2 }}>Start here — no jargon needed</div>
+                          <div style={{ fontSize: 9, color: EMBRY.dim, marginBottom: 8, lineHeight: '1.4' }}>Just ask in plain English. Click a question or type your own.</div>
                           {[
                             { step: 1, label: 'What does this program do?', query: `What does ${binaryName} do? Explain it in plain English.` },
                             { step: 2, label: 'How is it structured inside?', query: `What are the main components of ${binaryName}? Explain simply.` },
@@ -3765,7 +3818,7 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         ? `Ask about ${selectedNode.label}... (e.g. "what calls this?" / "obfuscated?")`
                         : analysisMode === 'investigator'
                           ? 'e.g. "find obfuscated functions" / "network input handlers" / "crypto routines"'
-                          : 'Ask about this binary...'
+                          : 'Try: "what does this program do?" — plain English works!'
                   } value={chatInput} onChange={e => setChatInput(e.target.value)} />
                 </div>
                 <button type="submit" style={styles.sendButton}>↑</button>

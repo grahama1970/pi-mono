@@ -9,7 +9,7 @@ import { EMBRY } from '../common/EmbryStyle'
 
 // ── Token-level syntax highlighting (regex tokenizer) ────────────────────────
 
-type TokenType = 'keyword' | 'register' | 'number' | 'string' | 'comment' | 'label' | 'directive' | 'punctuation' | 'type' | 'function' | 'plain' | 'sizespec' | 'symbol'
+type TokenType = 'keyword' | 'register' | 'number' | 'string' | 'comment' | 'label' | 'directive' | 'punctuation' | 'type' | 'function' | 'plain' | 'sizespec' | 'symbol' | 'operator'
 
 interface Token { text: string; type: TokenType }
 
@@ -27,6 +27,7 @@ const TOKEN_COLORS: Record<TokenType, string> = {
   plain: '#abb2bf',       // default
   sizespec: '#56b6c2',   // cyan — DWORD PTR, QWORD PTR, BYTE PTR, WORD PTR
   symbol: '#e5c07b',     // yellow — known libc/WinAPI import names
+  operator: '#e06c75',   // red — bitwise/shift ops critical in binary analysis pseudocode (&, |, ^, ~, <<, >>)
 }
 
 const ASM_KEYWORDS = /\b(mov|movzx|movsx|movsxd|movabs|movdqu|movdqa|movaps|movups|push|pop|pushf|popf|pushfq|popfq|call|ret|retn|retf|jmp|je|jne|jz|jnz|jg|jl|jge|jle|ja|jb|jae|jbe|js|jns|jo|jno|jp|jnp|jcxz|jecxz|jrcxz|add|sub|mul|div|imul|idiv|inc|dec|neg|not|xor|and|or|shl|shr|sar|sal|rol|ror|rcl|rcr|cmp|test|lea|nop|int|syscall|sysenter|sysexit|sysret|lock|rep|repe|repne|repz|repnz|cdq|cdqe|cbw|cwde|cqo|bsf|bsr|bswap|bt|bts|btr|btc|xchg|xadd|cmpxchg|cmpxchg8b|cmpxchg16b|leave|enter|hlt|pause|lfence|mfence|sfence|endbr32|endbr64|cmove|cmovne|cmovz|cmovnz|cmovg|cmovge|cmovl|cmovle|cmova|cmovae|cmovb|cmovbe|cmovs|cmovns|cmovo|cmovno|sete|setne|setz|setnz|setg|setge|setl|setle|seta|setae|setb|setbe|sets|setns|seto|setno|lahf|sahf|stc|clc|std|cld|sti|cli|rdtsc|rdtscp|cpuid|nop|ud2|int3|into|iret|iretd|iretq|popfd|pushfd|pushfq|popfq|vmovdqu|vmovdqa|vpxor|vpand|vpor|vpcmpeqb|vpcmpeqd|vpsubb|vpsubw|vpsubd|vpsllq|vpsrlq|addss|subss|mulss|divss|addsd|subsd|mulsd|divsd|xorps|xorpd|andps|andpd|orps|orpd|comisd|comiss|ucomisd|ucomiss|cvtsi2sd|cvtsi2ss|cvttsd2si|cvttss2si)\b/g
@@ -41,6 +42,12 @@ const ASM_KNOWN_SYMBOLS = /\b(printf|fprintf|sprintf|snprintf|vprintf|vfprintf|v
 const C_KEYWORDS = /\b(if|else|for|while|do|switch|case|break|continue|return|goto|sizeof|typedef|struct|union|enum|const|static|extern|volatile|inline|register|auto|signed|unsigned|restrict|_Bool|_Complex|_Imaginary)\b/g
 const C_TYPES = /\b(void|int|char|short|long|float|double|size_t|ssize_t|uint8_t|uint16_t|uint32_t|uint64_t|int8_t|int16_t|int32_t|int64_t|bool|FILE|NULL|true|false)\b/g
 const PY_KEYWORDS = /\b(def|class|if|elif|else|for|while|try|except|finally|with|as|import|from|return|yield|raise|pass|break|continue|lambda|and|or|not|in|is|assert|del|global|nonlocal|async|await|None|True|False|self)\b/g
+// Bitwise/shift operators are the core logic in binary analysis pseudocode — highlight them distinctly
+// so readers can scan mask operations (& 0xFF), bit tests (flags & (1 << n)), rotates, etc. at a glance.
+// Compound assignments first so >>= / <<= don't split into >> and =.
+const PY_OPERATORS = /(<<=|>>=|&=|\|=|\^=|<<|>>|~)/g
+// Known Python stdlib + binary-analysis helpers seen in pseudocode
+const PY_KNOWN_SYMBOLS = /\b(struct|binascii|hashlib|hmac|ctypes|zlib|lzma|bz2|base64|codecs|io|os|sys|re|pack|unpack|pack_into|unpack_from|calcsize|hexlify|unhexlify|b2a_hex|a2b_hex|digest|hexdigest|compress|decompress|b64encode|b64decode|open|len|range|enumerate|zip|map|filter|sorted|reversed|list|dict|set|tuple|bytes|bytearray|int|str|hex|bin|oct|ord|chr|abs|min|max|sum|print|repr|isinstance|issubclass|getattr|setattr|hasattr|type|id|hash)\b/g
 
 function tokenizeLine(text: string, language: 'asm' | 'c' | 'python'): Token[] {
   if (!text) return [{ text: ' ', type: 'plain' }]
@@ -343,8 +350,20 @@ export function CodePane({
     })
   }
 
+  // Obfuscation summary for pipeline integration / legend
+  const obfSummary = obfAnalysis ? {
+    cff: obfAnalysis.cffSuspectLines.size,
+    op: obfAnalysis.opaquePredLines.size,
+    dead: obfAnalysis.deadCodeLines.size,
+    nop: obfAnalysis.nopSledLines.size,
+  } : null
+
   return (
-    <div data-testid={testId ?? 'code-pane'} style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: 11, background: '#1e1e1e' }}>
+    <div
+      data-testid={testId ?? 'code-pane'}
+      data-obfuscation-summary={obfSummary ? JSON.stringify(obfSummary) : undefined}
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: 11, background: '#1e1e1e' }}
+    >
       {header && (
         <div style={{ padding: '4px 12px', borderBottom: `1px solid ${EMBRY.border}`, fontSize: 9, fontWeight: 700, color: EMBRY.dim, textTransform: 'uppercase', background: '#252526', flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ flex: 1 }}>{header}</span>
@@ -359,6 +378,31 @@ export function CodePane({
                 borderRadius: 2, cursor: 'pointer', fontWeight: 700, letterSpacing: '0.5px',
               }}
             >{copied ? 'COPIED' : 'COPY'}</button>
+          )}
+        </div>
+      )}
+      {obfSummary && (obfSummary.cff > 0 || obfSummary.op > 0 || obfSummary.dead > 0 || obfSummary.nop > 0) && (
+        <div style={{ display: 'flex', gap: 8, padding: '3px 12px', background: '#1a1a2e', borderBottom: '1px solid #2d2d3d', flexShrink: 0, alignItems: 'center', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 8, color: '#4a4a6a', textTransform: 'uppercase', fontWeight: 700, marginRight: 4 }}>Obfuscation</span>
+          {obfSummary.cff > 0 && (
+            <span title={`${obfSummary.cff} lines — control flow flattening suspect (OLLVM-style dispatcher back-edge)`} style={{ fontSize: 8, color: '#6a7abf', background: '#0d0f1a', border: '1px solid #2a2f5a', borderRadius: 2, padding: '1px 5px', cursor: 'default' }}>
+              CFF ×{obfSummary.cff}
+            </span>
+          )}
+          {obfSummary.op > 0 && (
+            <span title={`${obfSummary.op} lines — opaque predicate candidates (xor/cmp → conditional jump)`} style={{ fontSize: 8, color: '#bf9a3a', background: '#1a140a', border: '1px solid #5a4a1a', borderRadius: 2, padding: '1px 5px', cursor: 'default' }}>
+              OP? ×{obfSummary.op}
+            </span>
+          )}
+          {obfSummary.dead > 0 && (
+            <span title={`${obfSummary.dead} lines — unreachable code (after unconditional transfer)`} style={{ fontSize: 8, color: '#bf4a4a', background: '#1a0f0f', border: '1px solid #5a2a2a', borderRadius: 2, padding: '1px 5px', cursor: 'default' }}>
+              DEAD ×{obfSummary.dead}
+            </span>
+          )}
+          {obfSummary.nop > 0 && (
+            <span title={`${obfSummary.nop} lines — NOP sled (padding or anti-disassembly)`} style={{ fontSize: 8, color: '#4abf4a', background: '#0f1a10', border: '1px solid #2a5a2a', borderRadius: 2, padding: '1px 5px', cursor: 'default' }}>
+              NOP ×{obfSummary.nop}
+            </span>
           )}
         </div>
       )}

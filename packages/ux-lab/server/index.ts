@@ -93,6 +93,40 @@ app.get('/api/health', async (_req, res) => {
   })
 })
 
+// ── API documentation (scriptable / headless client reference) ───────────────
+
+app.get('/api/docs', (_req, res) => {
+  res.json({
+    description: 'UX Lab REST API — all endpoints are scriptable and usable from headless clients or automation pipelines.',
+    base_url: 'http://localhost:3000',
+    auth: 'none',
+    content_type: 'application/json',
+    endpoints: [
+      { method: 'GET',  path: '/api/health',               description: 'Server + memory daemon health check' },
+      { method: 'GET',  path: '/api/docs',                 description: 'This document — machine-readable API reference' },
+      { method: 'GET',  path: '/api/worksheets',           description: 'List SPARTA worksheets from fixtures YAML' },
+      { method: 'POST', path: '/api/memory/recall',        description: 'BM25 + semantic + graph search across ArangoDB collections', body: { q: 'string', collections: ['sparta_controls','sparta_qra','sparta_relationships','technique_knowledge'], k: 'number (default 20)' } },
+      { method: 'POST', path: '/api/memory/learn',         description: 'Store a new lesson/finding into ArangoDB', body: { problem: 'string', solution: 'string', tags: 'string[]', scope: 'string' } },
+      { method: 'GET',  path: '/api/memory/health',        description: 'Memory daemon health check (proxied)' },
+      { method: 'POST', path: '/api/scillm',               description: 'LLM inference via scillm gateway', body: { model: 'string', messages: 'Message[]', stream: 'boolean' } },
+      { method: 'GET',  path: '/api/models',               description: 'Discover available LLM models grouped by provider' },
+      { method: 'GET',  path: '/api/projects/:id/models',  description: 'ModelPicker-format model registry for a project' },
+      { method: 'GET',  path: '/api/architectures',        description: 'List saved architecture diagrams' },
+      { method: 'POST', path: '/api/architectures',        description: 'Save a new architecture diagram' },
+      { method: 'GET',  path: '/api/architectures/:id',    description: 'Load a specific architecture diagram by ID' },
+      { method: 'PUT',  path: '/api/architectures/:id',    description: 'Update an existing architecture diagram' },
+      { method: 'DELETE', path: '/api/architectures/:id',  description: 'Delete an architecture diagram' },
+    ],
+    automation_notes: [
+      'All endpoints accept and return JSON — no session cookies or CSRF tokens required.',
+      'CORS is open to any localhost port — suitable for local tooling and CLI wrappers.',
+      'Use /api/memory/recall to build automated analysis pipelines that query the SPARTA knowledge graph.',
+      'Stream LLM responses from /api/scillm with { stream: true } for pipeline-friendly output.',
+      'The /api/memory/learn endpoint lets external tools feed results back into the knowledge base.',
+    ],
+  })
+})
+
 app.get('/api/worksheets', async (_req, res) => {
   try {
     if (worksheetsCache && Date.now() < worksheetsCache.expiresAt) {
