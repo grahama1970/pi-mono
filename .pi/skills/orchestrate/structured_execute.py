@@ -199,7 +199,7 @@ def _subagent_backend_name(model: str) -> str:
 async def _ensure_subagent_instance(instance: str, cwd: Path) -> int:
     """Start a subagent Docker container and return its port."""
     proc = await asyncio.create_subprocess_exec(
-        str(SUBAGENT_RUN), "start", "--name", instance, "--workspace", str(cwd),
+        str(SUBAGENT_RUN), "start", "--name", instance, "--workspace", str(cwd), "--with-memory",
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
     )
     stdout_start, stderr_start = await proc.communicate()
