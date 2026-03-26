@@ -3467,14 +3467,33 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                         const callingConv: string = fullDoc?.calling_convention || fullDoc?.call_convention || ''
                         const returnType: string = fullDoc?.return_type || fullDoc?.returns || ''
                         const handler: string = fullDoc?.handler || fullDoc?.handler_fn || fullDoc?.implementation || fullDoc?.impl_fn || fullDoc?.function || ''
+                        const handlerList: string[] = (() => {
+                          const h = fullDoc?.handlers || fullDoc?.handler_fns || fullDoc?.implementations
+                          if (Array.isArray(h) && h.length > 0) return h.map(String)
+                          if (handler) return [handler]
+                          return []
+                        })()
+                        // Also surface implementing functions from incoming 'contains' edges (function nodes wrapping this RPC)
+                        const containsCallers = incomingEdges
+                          .filter(e => e.type === 'contains')
+                          .map(e => e.source)
+                          .filter(s => !handlerList.includes(s))
+                        const paramNodeEdges = outgoingEdges.filter(e => e.type === 'has_parameter')
+                        const paramFromGraph: { name: string; type?: string; required?: boolean }[] = paramNodeEdges
+                          .map(e => {
+                            const n = data.graphNodes.find(g => g.id === e.targetId) as any
+                            const t = n ? (n.fields?.[0]?.type || (n as any).data_type || (n as any).type || undefined) : undefined
+                            return { name: n?.label ?? e.target, type: t }
+                          })
                         const paramList: { name: string; type?: string; required?: boolean }[] = (() => {
                           const raw = fullDoc?.parameters || fullDoc?.params
-                          if (Array.isArray(raw)) {
+                          if (Array.isArray(raw) && raw.length > 0) {
                             return raw.map((p: any) => typeof p === 'object'
                               ? { name: p.name || p.label || String(p), type: p.type || p.data_type, required: p.required }
                               : { name: String(p) }
                             )
                           }
+                          if (paramFromGraph.length > 0) return paramFromGraph
                           return (selectedNode.fields ?? []).map(f => ({ name: f }))
                         })()
                         const payloadOut = outgoingEdges.filter(e => e.type === 'payload')
@@ -3499,9 +3518,22 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
                                   <span style={{ color: EMBRY.muted }}>Returns</span>
                                   <span style={{ color: '#34d399' }}>{returnType}</span>
                                 </>}
-                                {handler && <>
-                                  <span style={{ color: EMBRY.muted }}>Handler</span>
-                                  <span style={{ color: '#fbbf24', wordBreak: 'break-all' }}>{handler}</span>
+                                {handlerList.length > 0 && <>
+                                  <span style={{ color: EMBRY.muted, alignSelf: 'flex-start', paddingTop: 1 }}>Handler{handlerList.length > 1 ? 's' : ''}</span>
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                    {handlerList.map((h, i) => (
+                                      <code key={i} style={{ color: '#fbbf24', wordBreak: 'break-all', fontSize: 8, cursor: 'pointer' }} onClick={() => onFeatureClick(h)}>{h}</code>
+                                    ))}
+                                  </div>
+                                </>}
+                                {containsCallers.length > 0 && <>
+                                  <span style={{ color: EMBRY.muted, alignSelf: 'flex-start', paddingTop: 1 }}>Callers</span>
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                    {containsCallers.slice(0, 4).map((c, i) => (
+                                      <code key={i} style={{ color: '#94a3b8', wordBreak: 'break-all', fontSize: 8, cursor: 'pointer' }} onClick={() => onFeatureClick(c)}>{c}</code>
+                                    ))}
+                                    {containsCallers.length > 4 && <span style={{ fontSize: 7, color: EMBRY.muted }}>+{containsCallers.length - 4} more</span>}
+                                  </div>
                                 </>}
                                 <span style={{ color: EMBRY.muted }}>Tier</span>
                                 <span style={{ color: selectedNode.tier === 'T0' ? EMBRY.green : selectedNode.tier === 'T1' ? EMBRY.amber : EMBRY.red }}>{selectedNode.tier}</span>
@@ -3586,11 +3618,29 @@ ${memoryRecallCtx ? '\n## ArangoDB Memory\n' + memoryRecallCtx : ''}
 
                             {/* Fuzzer summary */}
                             <div style={{ background: '#050a05', border: '1px solid #22c55e22', borderRadius: 3, padding: '4px 8px' }}>
-                              <div style={{ fontSize: 8, color: EMBRY.green, fontWeight: 700, textTransform: 'uppercase', marginBottom: 2 }}>FUZZER TARGETS</div>
+                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
+                                <div style={{ fontSize: 8, color: EMBRY.green, fontWeight: 700, textTransform: 'uppercase' }}>FUZZER TARGETS</div>
+                                <button
+                                  style={{ fontSize: 7, padding: '1px 6px', borderRadius: 2, cursor: 'pointer', background: '#0a1a0a', border: `1px solid ${EMBRY.green}44`, color: EMBRY.green }}
+                                  onClick={() => {
+                                    const structName = selectedNode.label.replace(/[^a-zA-Z0-9_]/g, '_')
+                                    const params = paramList.map(p => `  ${p.type ?? 'uint8_t'} ${p.name};  // ${p.required === false ? 'optional' : 'required'}`).join('\n')
+                                    const handlerComment = handlerList.length > 0 ? `// Handler: ${handlerList.join(', ')}\n` : ''
+                                    const authComment = hasAuth ? `// Auth: ${authDetail || 'required'}\n` : '// Auth: none\n'
+                                    const convComment = callingConv ? `// Calling convention: ${callingConv}\n` : ''
+                                    const reqSchemas = payloadOut.map(e => `// REQ schema: ${e.target}`).join('\n')
+                                    const rspSchemas = payloadIn.map(e => `// RSP schema: ${e.source}`).join('\n')
+                                    const tmpl = `${handlerComment}${authComment}${convComment}${reqSchemas}${reqSchemas ? '\n' : ''}${rspSchemas}${rspSchemas ? '\n' : ''}typedef struct {\n${params || '  // no typed params extracted'}\n} ${structName}_t;\n`
+                                    navigator.clipboard.writeText(tmpl).catch(() => {})
+                                  }}
+                                >COPY STRUCT</button>
+                              </div>
                               <div style={{ fontSize: 8, fontFamily: 'JetBrains Mono, monospace', color: EMBRY.muted, display: 'flex', flexWrap: 'wrap', gap: '2px 10px' }}>
                                 <span>{paramList.length} input{paramList.length !== 1 ? 's' : ''}</span>
                                 {payloadOut.length > 0 && <span>{payloadOut.length} req schema{payloadOut.length !== 1 ? 's' : ''}</span>}
                                 {payloadIn.length > 0 && <span>{payloadIn.length} rsp schema{payloadIn.length !== 1 ? 's' : ''}</span>}
+                                {handlerList.length > 0 && <span>{handlerList.length} handler{handlerList.length !== 1 ? 's' : ''}</span>}
+                                {containsCallers.length > 0 && <span>{containsCallers.length} caller{containsCallers.length !== 1 ? 's' : ''}</span>}
                                 <span style={{ color: hasAuth ? '#ef444488' : EMBRY.green }}>{hasAuth ? 'auth-gated' : 'unauthenticated'}</span>
                                 {callingConv && <span>conv: {callingConv}</span>}
                                 <span

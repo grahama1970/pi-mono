@@ -562,6 +562,9 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
 
     // Double-click to fit graph to viewport (not reset to origin)
     root.on('dblclick.zoom', () => fitToGraph())
+    // Expose for keyboard shortcut
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(svg as any).__fitToGraph = fitToGraph
 
     // ── Imperative Selection Bridge ──
     const applySelection = (targetId: string | null) => {
@@ -1119,8 +1122,22 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
     return () => observer.disconnect()
   }, [])
 
+  // Keyboard shortcuts: F = fit-to-graph, Escape = deselect
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const svg = svgRef.current
+      if (!svg) return
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (e.key === 'f' || e.key === 'F') { if ((svg as any).__fitToGraph) (svg as any).__fitToGraph() }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (e.key === 'Escape') { if ((svg as any).__applySelection) (svg as any).__applySelection(null) }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
+
   return (
-    <div style={{ padding: 0, overflow: 'hidden', flex: '1 1 0%', minHeight: 0, display: 'flex', flexDirection: 'column', borderRadius: 0 }}>
+    <div style={{ padding: 0, overflow: 'hidden', flex: '1 1 0%', minHeight: 0, display: 'flex', flexDirection: 'column', borderRadius: 0 }} tabIndex={0}>
       {/* Legend */}
       <div style={{
         padding: '6px 12px', borderBottom: `1px solid ${EMBRY.border}`,
@@ -1161,6 +1178,7 @@ export function BinaryGraph({ nodes, edges, matchedNodeIds, visitedNodeIds, onNo
         <span style={{ color: EMBRY.muted }}>
           {nodes.length} nodes
         </span>
+        <span style={{ color: EMBRY.muted, fontSize: 8, opacity: 0.5 }}>F=fit Esc=desel dblclick=fit</span>
       </div>
 
       {/* SVG Container */}
